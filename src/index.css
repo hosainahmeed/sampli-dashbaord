@@ -8,37 +8,6 @@
   --body-text-2: #7c818c;
   --black: #0d0a36;
   --white: #ffffff;
-
-  /* Neutral Colors */
-  --neutral-50: #fafafa;
-  --neutral-100: #f5f5f5;
-  --neutral-200: #e5e5e5;
-  --neutral-300: #d4d4d4;
-  --neutral-400: #a3a3a3;
-  --neutral-500: #737373;
-  --neutral-600: #525252;
-  --neutral-700: #404040;
-  --neutral-800: #262626;
-  --neutral-900: #171717;
-
-  /* Primary Shades */
-  --rasuch-50: #f0e9f9;
-  --rasuch-100: #e0d3f2;
-  --rasuch-200: #b290df;
-  --rasuch-300: #6621bf;
-
-  /* Accent Colors */
-  --success: #00ebbd;
-  --info: #907ffb;
-  --warning: #e2cc05;
-  --error: #e2cc05;
-
-  /* Strokes */
-  --black-5: #00ebbd;
-  --black-10: #00ebbd;
-  --black-15: #00ebbd;
-  --white-10: #907ffb;
-  --white-15: #e2cc05;
 }
 
 * {
@@ -81,6 +50,6 @@ body::-webkit-scrollbar {
 .ant-upload {
   width: 100% !important;
 }
-.switch{
+.switch {
   background-color: #41db76 !important;
 }

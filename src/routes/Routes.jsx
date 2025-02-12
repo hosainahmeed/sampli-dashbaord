@@ -20,6 +20,7 @@ import ContactInfo from "../components/ui/ContactInfo";
 import ComplianceInfo from "../components/ui/ComplianceInfo.jsx";
 import AddProduct from "../components/page-Component/AddProduct.jsx";
 import SettingPage from "../pages/SettingPage.jsx";
+import OrderDetails from "../pages/OrderDetails/OrderDetails.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       { path: "/product/add-product", element: <AddProduct /> },
       { path: "/settings", element: <SettingPage /> },
       { path: "/campaign/single-campaign", element: <SingleCampaign /> },
+      { path: "/sales/single-order", element: <OrderDetails /> },
     ],
   },
   { path: "/otp", element: <Otp /> },

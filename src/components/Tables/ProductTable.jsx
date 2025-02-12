@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
 import UploadCsv from "../page-Component/UploadCsv";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const { Option } = Select;
 
@@ -181,9 +182,34 @@ const ProductTable = () => {
             </div>
           ),
         }}
-        pagination={true}
+        pagination={{
+          showSizeChanger: false,
+          defaultPageSize: 5,
+          defaultCurrent: 1,
+          position: ["bottomCenter"],
+          itemRender: (current, type, originalElement) => {
+            if (type === "prev") {
+              return (
+                <Button className="!border-none ">
+                  <FaAngleLeft />
+                </Button>
+              );
+            }
+            if (type === "next") {
+              return (
+                <Button className="!border-none ">
+                  <FaAngleRight />
+                </Button>
+              );
+            }
+            if (type === "page") {
+              return current;
+            }
+            return originalElement;
+          },
+        }}
       />
-       
+
       <Modal
         centered
         footer={null}
@@ -199,4 +225,3 @@ const ProductTable = () => {
 };
 
 export default ProductTable;
-

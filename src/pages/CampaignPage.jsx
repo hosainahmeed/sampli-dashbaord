@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function CampaignPage() {
   return (
-    <div className="bg-red-400">
+    <div>
       <div className=" flex-center-between mb-4">
         <h1 className="text-2xl font-bold">Campaign</h1>
         <Link to="/create-campaign">
