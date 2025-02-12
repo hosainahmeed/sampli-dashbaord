@@ -20,7 +20,7 @@ function ExistingProduct() {
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
   return (
-    <div className="" style={{ backgroundImage: `url(${planet1})` }}>
+    <div className="bg-transparent" style={{ backgroundImage: `url(${planet1})` }}>
       <div className="w-full h-[70vh] max-h-[70vh] scrollbar overflow-y-scroll mt-12">
         {steps[currentStep].component}
       </div>
@@ -38,7 +38,7 @@ function ExistingProduct() {
           onClick={nextStep}
           className="px-4 py-2 bg-blue-600 text-white rounded-md"
         >
-          {currentStep < steps.length - 1 ? "Next" : "Finish"}
+          {currentStep < steps.length - 1 ? "Next" : "Confirm & Publish"}
         </Button>
       </div>
     </div>

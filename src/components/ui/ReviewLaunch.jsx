@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "antd";
+import { Card, Empty } from "antd";
 
 const ReviewLaunch = () => {
   const [campaignDetails, setCampaignDetails] = useState(() => {
     return JSON.parse(localStorage.getItem("targetAudience")) || {};
   });
   console.log(campaignDetails);
-  
+
   const selectedProducts =
     JSON.parse(localStorage.getItem("selectedProducts")) || [];
 
@@ -15,7 +15,7 @@ const ReviewLaunch = () => {
   }, [campaignDetails]);
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-3xl flex flex-col gap-2 mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-xl font-semibold mb-2">Review & Launch</h1>
       <p className="text-gray-600 mb-4">
         Confirm and review your campaign details
@@ -39,25 +39,29 @@ const ReviewLaunch = () => {
 
       <Card className="mb-4">
         <h2 className="text-lg font-semibold">Products for Review</h2>
-        <div className="mt-4">
-          {selectedProducts.map((product) => (
-            <div
-              key={product?.id}
-              className="flex items-start space-x-4 mb-4 border-b pb-4"
-            >
-              <div className="w-16 h-16 bg-gray-200 rounded-lg">
-                {product?.image}
+        {selectedProducts.length > 0 ? (
+          <div className="mt-4">
+            {selectedProducts.map((product) => (
+              <div
+                key={product?.id}
+                className="flex items-start space-x-4 mb-4 border-b pb-4"
+              >
+                <div className="w-16 h-16 bg-gray-200 rounded-lg">
+                  {product?.image}
+                </div>
+                <div>
+                  <h3 className="font-medium">{product?.name}</h3>
+                  <p className="text-gray-600 text-sm">{product?.category}</p>
+                  <p className="text-gray-500 text-sm">
+                    ${product?.price} • {product?.units} Units
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium">{product?.name}</h3>
-                <p className="text-gray-600 text-sm">{product?.category}</p>
-                <p className="text-gray-500 text-sm">
-                  ${product?.price} • {product?.units} Units
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <Empty description="No products selected" />
+        )}
       </Card>
 
       <Card>

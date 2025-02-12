@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input, Select, DatePicker, Button } from "antd";
 import InputField from "./InputField";
 import FormWrapper from "./FormWrapper";
+import toast from "react-hot-toast";
 
 const { Option } = Select;
 
@@ -85,7 +86,7 @@ const TargetAudienceForm = () => {
     };
 
     localStorage.setItem("targetAudience", JSON.stringify(finalData));
-    alert("Data saved successfully!");
+    toast.success("Data saved successfully!");
   };
 
   return (
