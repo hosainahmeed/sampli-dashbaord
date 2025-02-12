@@ -50,7 +50,7 @@ function Header() {
   );
 
   return (
-    <div className="px-10 border-b-[1px] border-[#eee] py-4 flex justify-between items-center">
+    <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
       <img src={brandlogo} alt="brand logo" />
       <div className="flex items-center gap-4 text-2xl">
         <CiCircleQuestion />

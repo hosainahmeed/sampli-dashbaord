@@ -34,7 +34,7 @@ function CreateCampaign() {
           style={{ width: "100%" }}
         >
           <Card
-            hoverable
+            // hoverable
             onClick={() => setSelectedOption("existing")}
             style={{
               marginBottom: 12,
@@ -53,7 +53,7 @@ function CreateCampaign() {
           </Card>
 
           <Card
-            hoverable
+            // hoverable
             onClick={() => setSelectedOption("new")}
             style={{
               border:

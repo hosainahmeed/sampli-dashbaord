@@ -81,3 +81,6 @@ body::-webkit-scrollbar {
 .ant-upload {
   width: 100% !important;
 }
+.switch{
+  background-color: #41db76 !important;
+}
