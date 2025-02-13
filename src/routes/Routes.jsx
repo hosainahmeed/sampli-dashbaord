@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-// import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../layout/MainLayout";
 import DashboardHome from "../pages/DashboardHome";
 import CampaignPage from "../pages/CampaignPage";
@@ -25,7 +25,11 @@ import OrderDetails from "../pages/OrderDetails/OrderDetails.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       { path: "/", element: <DashboardHome /> },
       { path: "/campaign", element: <CampaignPage /> },

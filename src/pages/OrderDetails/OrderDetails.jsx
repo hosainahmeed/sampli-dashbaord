@@ -66,10 +66,10 @@ function OrderDetails() {
           <Button type="primary">Track Item</Button>
         </div>
       </div>
-      <div className="flex justify-between gap-4">
+          <Title className="!mt-4" level={4}>Order Item</Title>
+      <div className="flex !mt-12 justify-between items-start gap-4">
         <div className="flex-1">
-          <div className="mt-6">
-            <Title level={4}>Order Item</Title>
+          <div className="">
             <Card
               title={
                 <Space className="w-full py-4 justify-between">
