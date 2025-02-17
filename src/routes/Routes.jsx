@@ -75,10 +75,10 @@ export const router = createBrowserRouter([
 
   // Ahsan Mahfuz
   { path: '/choose-role', element: <ChooseRole /> },
-  { path: '/signup', element: <Signup /> },
+  { path: '/signup/reviewer', element: <Signup /> },
   { path: '/sign-up-otp', element: <SignUpOtp /> },
   { path: '/sign-up-more-info', element: <SignUpMoreInformation /> },
-  { path: '/sign-up-select-all-categories', element: <AllCategories /> },
+  { path: '/sign-up-select-all-categories', element: <SelectAllCategories /> },
 ])
 
 {
