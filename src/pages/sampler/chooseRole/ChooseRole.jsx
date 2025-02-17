@@ -92,7 +92,7 @@ const ChooseRole = () => {
         <div className="mt-4 text-gray-500 text-center">
           Already have an account?{' '}
           <Link
-            to="/register"
+            to="/login"
             className="text-blue-500 hover:underline transition-all"
           >
             Login

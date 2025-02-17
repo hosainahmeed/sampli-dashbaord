@@ -22,6 +22,13 @@ import AddProduct from '../components/page-Component/AddProduct.jsx'
 import SettingPage from '../pages/SettingPage.jsx'
 import OrderDetails from '../pages/OrderDetails/OrderDetails.jsx'
 import ChooseRole from '../pages/sampler/chooseRole/ChooseRole.jsx'
+import Signup from '../pages/sampler/signup/Signup.jsx'
+import SignUpOtp from '../pages/sampler/signup/SignUpOtp.jsx'
+import SignUpMoreInformation from '../pages/sampler/signup/SignUpMoreInformation.jsx'
+import SelectAllCategories from '../pages/sampler/signup/selectCategories/SelectAllCategories.jsx'
+import AllCategories from '../pages/sampler/signup/selectCategories/AllCategories.jsx'
+import Navbar from '../pages/sampler/navbar/Navbar.jsx'
+import SamplerHome from '../pages/sampler/SamplerHome/SamplerHome.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +56,13 @@ export const router = createBrowserRouter([
       // Ahsan Mahfuz
     ],
   },
+
+  {
+    path: '/',
+    element: <Navbar />,
+    children: [{ path: '/sampler', element: <SamplerHome /> }],
+  },
+
   { path: '/otp', element: <Otp /> },
   { path: '/login', element: <Login /> },
   { path: '/register', element: <Register /> },
@@ -58,9 +72,13 @@ export const router = createBrowserRouter([
   { path: '/reset-password', element: <ResetPassword /> },
   { path: '/business-info', element: <BusinessInfoForm /> },
   { path: '/forgot-password', element: <ForgetPassword /> },
-  { path: '/choose-role', element: <ChooseRole /> },
 
   // Ahsan Mahfuz
+  { path: '/choose-role', element: <ChooseRole /> },
+  { path: '/signup', element: <Signup /> },
+  { path: '/sign-up-otp', element: <SignUpOtp /> },
+  { path: '/sign-up-more-info', element: <SignUpMoreInformation /> },
+  { path: '/sign-up-select-all-categories', element: <AllCategories /> },
 ])
 
 {
