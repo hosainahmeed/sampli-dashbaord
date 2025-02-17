@@ -58,9 +58,8 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: '/',
-    element: <Navbar />,
-    children: [{ path: '/sampler', element: <SamplerHome /> }],
+    path: '/sampler/campaign',
+    element: <SamplerHome />,
   },
 
   { path: '/otp', element: <Otp /> },
