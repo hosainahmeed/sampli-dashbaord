@@ -6,8 +6,6 @@ import ChooseRole from "../pages/sampler/chooseRole/ChooseRole.jsx";
 import Signup from "../pages/sampler/signup/Signup.jsx";
 import SignUpOtp from "../pages/sampler/signup/SignUpOtp.jsx";
 import SignUpMoreInformation from "../pages/sampler/signup/SignUpMoreInformation.jsx";
-import AllCategories from "../pages/sampler/signup/selectCategories/AllCategories.jsx";
-import Navbar from "../pages/sampler/navbar/Navbar.jsx";
 import SamplerHome from "../pages/sampler/SamplerHome/SamplerHome.jsx";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
@@ -28,6 +26,15 @@ import OrderDetails from "../pages/Business/order/OrderDetails.jsx";
 import CampaignPage from "../pages/Business/Campaign/CampaignPage.jsx";
 import CreateCampaign from "../pages/Business/Campaign/CreateCampaign.jsx";
 import ExistingProduct from "../pages/Business/Campaign/ExistingProduct.jsx";
+import SelectAllCategories from "../pages/sampler/signup/selectCategories/SelectAllCategories.jsx";
+import AllOfferSampler from "../pages/sampler/SamplerHome/components/offer/AllOfferSampler.jsx";
+import EarningsSampler from "../pages/sampler/SamplerHome/components/reviewsAndEarnings/EarningsSampler.jsx";
+import TransactionHistorySampler from "../pages/sampler/SamplerHome/components/reviewsAndEarnings/TransactionHistorySampler.jsx";
+import ShipmentAndAlertSampler from "../pages/sampler/SamplerHome/components/shipments/ShipmentAndAlertSampler.jsx";
+import OfferShipmentsSampler from "../pages/sampler/SamplerHome/components/shipments/components/OfferShipmentsSampler.jsx";
+import MyPurchasesSampler from "../pages/sampler/SamplerHome/components/shipments/components/MyPurchasesSampler.jsx";
+import WishlistSampler from "../pages/sampler/SamplerHome/components/shipments/components/WishlistSampler.jsx";
+import NotificationsSampler from "../pages/sampler/SamplerHome/components/shipments/components/NotificationsSampler.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -51,17 +58,45 @@ export const router = createBrowserRouter([
       { path: "/settings", element: <SettingPage /> },
       { path: "/campaign/single-campaign", element: <SingleCampaign /> },
       { path: "/sales/single-order", element: <OrderDetails /> },
-
-      // Ahsan Mahfuz
     ],
   },
 
+  // Ahsan Mahfuz
+
+  // campaign section
   {
-    path: "/",
-    element: <Navbar />,
-    children: [{ path: "/sampler", element: <SamplerHome /> }],
+    path: "/sampler/campaign",
+    element: <SamplerHome />,
+  },
+  {
+    path: "/sampler/campaign/all-offer",
+    element: <AllOfferSampler />,
+  },
+  {
+    path: "/sampler/campaign/all-offer",
+    element: <AllOfferSampler />,
+  },
+  {
+    path: "/sampler/campaign/earnings",
+    element: <EarningsSampler />,
+  },
+  {
+    path: "/sampler/campaign/transaction-history",
+    element: <TransactionHistorySampler />,
   },
 
+  {
+    path: "/sampler/campaign/shipments",
+    element: <ShipmentAndAlertSampler />,
+    children: [
+      { path: "offer-shipments", element: <OfferShipmentsSampler /> },
+      { path: "my-purchases", element: <MyPurchasesSampler /> },
+      { path: "wishlist", element: <WishlistSampler /> },
+      { path: "notifications", element: <NotificationsSampler /> },
+    ],
+  },
+
+  // hossain
   { path: "/otp", element: <Otp /> },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
@@ -74,10 +109,10 @@ export const router = createBrowserRouter([
 
   // Ahsan Mahfuz
   { path: "/choose-role", element: <ChooseRole /> },
-  { path: "/signup", element: <Signup /> },
+  { path: "/signup/reviewer", element: <Signup /> },
   { path: "/sign-up-otp", element: <SignUpOtp /> },
   { path: "/sign-up-more-info", element: <SignUpMoreInformation /> },
-  { path: "/sign-up-select-all-categories", element: <AllCategories /> },
+  { path: "/sign-up-select-all-categories", element: <SelectAllCategories /> },
 ]);
 
 {

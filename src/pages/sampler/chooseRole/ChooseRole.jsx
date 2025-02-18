@@ -14,9 +14,9 @@ const ChooseRole = () => {
   const router = useNavigate()
   const handleNext = () => {
     if (selectedOption === 'existing') {
-      return router('/create-campaign/existing-product')
+      return router('/signup/reviewer')
     } else if (selectedOption === 'new') {
-      return router('/create-campaign/new-product')
+      return router('/signup/business')
     }
   }
 

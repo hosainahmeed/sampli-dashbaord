@@ -1,8 +1,6 @@
 import React from 'react'
-import { Button, Typography, Divider, Form, Select } from 'antd'
-import { AppleOutlined, GoogleOutlined } from '@ant-design/icons'
+import { Button, Typography,  Form, Select } from 'antd'
 import Logo from '../../../components/ui/Logo'
-import { TiSocialFacebook } from 'react-icons/ti'
 import InputField from '../../../components/ui/InputField'
 import FormWrapper from '../../../components/ui/FormWrapper'
 import { Link, useNavigate } from 'react-router-dom'
@@ -16,7 +14,7 @@ const SignUpMoreInformation = () => {
   const onFinish = (values) => {
     console.log(values)
     toast.success('Sent otp to your email!')
-    Navigate('/sign-up-otp')
+    Navigate('/sign-up-select-all-categories')
   }
 
   return (
