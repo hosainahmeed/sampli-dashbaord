@@ -73,26 +73,30 @@ const NotificationCard = ({ notification }) => {
         <section className="flex justify-between  ">
           <div className="flex items-center justify-center gap-3 ">
             <div>{notification.type}</div>
-            <div
-              className={` p-1 text-[14px] rounded-md ${
-                notification.category == 'Review program'
-                  ? 'bg-red-100 text-red-400'
-                  : 'bg-blue-100 text-blue-400'
-              }`}
-            >
-              {notification.category}
-            </div>
+            {notification.category && (
+              <div
+                className={` p-1 text-[14px] rounded-md ${
+                  notification.category == 'Review program'
+                    ? 'bg-red-100 text-red-400'
+                    : 'bg-blue-100 text-blue-400'
+                }`}
+              >
+                {notification.category}
+              </div>
+            )}
           </div>
           <div className="text-gray-500  ">{notification.time}</div>
         </section>
 
-        <div className='flex justify-between  items-start mt-3'>
+        <div className="flex justify-between  items-start mt-3">
           <section className="text-gray-500 max-w-[400px] w-full">
             {notification.message}
           </section>
           {!notification.image && (
-          //   <img src={notification.image} alt={notification.category} />
-               <div className='border border-blue-500 text-blue-500 p-2 rounded-md'>{notification.button}</div>
+            //   <img src={notification.image} alt={notification.category} />
+            <div className="border border-blue-500 text-blue-500 p-2 rounded-md">
+              {notification.button}
+            </div>
           )}
         </div>
 
