@@ -29,6 +29,9 @@ import SelectAllCategories from '../pages/sampler/signup/selectCategories/Select
 import AllCategories from '../pages/sampler/signup/selectCategories/AllCategories.jsx'
 import Navbar from '../pages/sampler/navbar/Navbar.jsx'
 import SamplerHome from '../pages/sampler/SamplerHome/SamplerHome.jsx'
+import AllOfferSampler from '../pages/sampler/SamplerHome/components/offer/AllOfferSampler.jsx'
+import ShipmentsSampler from '../pages/sampler/SamplerHome/components/shipments/ShipmentsSampler.jsx'
+import EarningsSampler from '../pages/sampler/SamplerHome/components/reviewsAndEarnings/EarningsSampler.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -52,16 +55,30 @@ export const router = createBrowserRouter([
       { path: '/settings', element: <SettingPage /> },
       { path: '/campaign/single-campaign', element: <SingleCampaign /> },
       { path: '/sales/single-order', element: <OrderDetails /> },
-
-      // Ahsan Mahfuz
     ],
   },
 
+  // Ahsan Mahfuz
+
+  // campaign section
   {
     path: '/sampler/campaign',
     element: <SamplerHome />,
   },
+  {
+    path: '/sampler/campaign/all-offer',
+    element: <AllOfferSampler />,
+  },
+  {
+    path: '/sampler/campaign/all-offer',
+    element: <AllOfferSampler />,
+  },
+  {
+    path: '/sampler/campaign/earnings',
+    element: <EarningsSampler />,
+  },
 
+  // hossain
   { path: '/otp', element: <Otp /> },
   { path: '/login', element: <Login /> },
   { path: '/register', element: <Register /> },

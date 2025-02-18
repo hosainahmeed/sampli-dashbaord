@@ -2,7 +2,7 @@ import React from 'react'
 
 const OfferCardSampler = ({ product }) => {
   return (
-    <div className="w-full max-w-[250px] bg-white  rounded-md shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="w-full max-w-[235px] bg-white  rounded-md shadow-md overflow-hidden hover:shadow-2xl transition-shadow">
       {/* Product Image */}
       <div className=" flex justify-center w-full">
         <img
@@ -34,11 +34,11 @@ const OfferCardSampler = ({ product }) => {
       <div className="border-t border-gray-100 cursor-pointer">
         <button
           className={`w-full cursor-pointer font-medium text-sm py-4 ${
-            product.status === 'Offer accepted'
-              ? 'text-blue-600 bg-blue-100'
-              : product.status === 'Offer expired'
-              ? 'text-red-600 bg-red-100'
-              : 'text-white bg-blue-500'
+            product.status === 'Offer Accepted'
+              ? '!text-blue-600 bg-blue-100'
+              : product.status === 'Offer Expired'
+              ? '!text-red-600 bg-red-100'
+              : '!text-white bg-blue-500'
           }`}
         >
           {product.status}
