@@ -1,56 +1,74 @@
-import React from 'react'
-import { Menu, Avatar, Badge } from 'antd'
-import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
-import Logo from '../../../components/ui/Logo'
-import { MdOutlineCampaign } from 'react-icons/md'
+import React from 'react';
+import { Menu, Avatar, Badge } from 'antd';
+import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Link, useLocation } from 'react-router-dom';
+import Logo from '../../../components/ui/Logo';
+import { MdOutlineCampaign, MdRssFeed } from 'react-icons/md';
+import { AiOutlineShopping } from 'react-icons/ai';
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
-    <div className="flex justify-between items-center p-4 shadow-md bg-white">
+    <div className="flex justify-between items-center p-4 responsive-width">
       {/* Logo */}
-      <div className="flex items-center space-x-2 text-2xl ">
+      <div className="flex items-center space-x-2 text-2xl">
         <Logo />
       </div>
 
       {/* Navigation Links */}
-      <Menu mode="horizontal" className="border-none">
-        <Menu.Item key="campaign" className="text-blue-600 font-medium">
-          <Link to="/campaign">
+      <div className=" flex items-center justify-center">
+        <div key="/sampler/campaign">
+          <Link
+            to="/sampler/campaign"
+            className={`flex items-center justify-center gap-1 px-7 py-2 ${
+              location.pathname === '/sampler/campaign' ? 'border-b-2 border-blue-600 font-semibold text-blue-600' : 'text-gray-500'
+            }`}
+          >
             <MdOutlineCampaign />
             Campaign
           </Link>
-        </Menu.Item>
-        <Menu.Item key="feed" disabled>
-          <Link to="/feed">
-            <span role="img" aria-label="feed">
-              📡
-            </span>{' '}
+        </div>
+
+
+        <div key="/feed">
+          <Link
+            to="/feed"
+            className={`flex items-center justify-center gap-1 px-7 py-2 ${
+              location.pathname === '/feed' ? 'border-b-2 border-blue-600 font-semibold text-blue-600' : 'text-gray-500'
+            }`}
+          >
+            <MdRssFeed />
             Feed
           </Link>
-        </Menu.Item>
-        <Menu.Item key="shop" disabled>
-          <Link to="/shop">
-            <span role="img" aria-label="shop">
-              🛍️
-            </span>{' '}
+        </div>
+
+        
+        <div key="/shop">
+          <Link
+            to="/shop"
+            className={`flex items-center justify-center gap-1 px-7 py-2 ${
+              location.pathname === '/shop' ? 'border-b-2 border-blue-600 font-semibold text-blue-600' : 'text-gray-500'
+            }`}
+          >
+            <AiOutlineShopping />
             Shop
           </Link>
-        </Menu.Item>
-      </Menu>
+        </div>
+      </div>
 
       {/* Icons and Profile */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 justify-center gap-5">
         <Badge dot>
           <ShoppingCartOutlined className="text-xl text-gray-500" />
         </Badge>
         <Badge count={1}>
           <BellOutlined className="text-xl text-gray-500" />
         </Badge>
-        <Avatar src="/user.jpg" size={32} />
+        <Avatar src={`https://i.pravatar.cc/32?u=${Math.floor(Math.random() * 1000)}`} size={40} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
