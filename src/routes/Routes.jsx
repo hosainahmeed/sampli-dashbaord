@@ -1,12 +1,19 @@
 import React from "react";
+import MainLayout from "../layout/MainLayout";
+import Login from "../pages/auth/Login.jsx";
+import Otp from "../pages/auth/Otp.jsx";
+import ChooseRole from "../pages/sampler/chooseRole/ChooseRole.jsx";
+import Signup from "../pages/sampler/signup/Signup.jsx";
+import SignUpOtp from "../pages/sampler/signup/SignUpOtp.jsx";
+import SignUpMoreInformation from "../pages/sampler/signup/SignUpMoreInformation.jsx";
+import AllCategories from "../pages/sampler/signup/selectCategories/AllCategories.jsx";
+import Navbar from "../pages/sampler/navbar/Navbar.jsx";
+import SamplerHome from "../pages/sampler/SamplerHome/SamplerHome.jsx";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import MainLayout from "../layout/MainLayout";
 import DashboardHome from "../pages/Business/home/DashboardHome.jsx";
 import SingleCampaign from "../pages/Business/SingleCampaign";
 import ProductPage from "../pages/Business/Product/ProductPage.jsx";
-import Login from "../pages/auth/Login.jsx";
-import Otp from "../pages/auth/Otp.jsx";
 import ResetPassword from "../pages/auth/ResetPassword.jsx";
 import ForgetPassword from "../pages/auth/ForgetPassword.jsx";
 import Register from "../pages/auth/Register.jsx";
@@ -24,54 +31,54 @@ import ExistingProduct from "../pages/Business/Campaign/ExistingProduct.jsx";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <ProtectedRoute>
         <MainLayout />
       </ProtectedRoute>
     ),
     children: [
-      { path: '/', element: <DashboardHome /> },
-      { path: '/campaign', element: <CampaignPage /> },
-      { path: '/create-campaign', element: <CreateCampaign /> },
+      { path: "/", element: <DashboardHome /> },
+      { path: "/campaign", element: <CampaignPage /> },
+      { path: "/create-campaign", element: <CreateCampaign /> },
       {
-        path: '/create-campaign/existing-product',
+        path: "/create-campaign/existing-product",
         element: <ExistingProduct />,
       },
-      { path: '/sales', element: <SalesPage /> },
-      { path: '/product', element: <ProductPage /> },
-      { path: '/product/add-product', element: <AddProduct /> },
-      { path: '/settings', element: <SettingPage /> },
-      { path: '/campaign/single-campaign', element: <SingleCampaign /> },
-      { path: '/sales/single-order', element: <OrderDetails /> },
+      { path: "/sales", element: <SalesPage /> },
+      { path: "/product", element: <ProductPage /> },
+      { path: "/product/add-product", element: <AddProduct /> },
+      { path: "/settings", element: <SettingPage /> },
+      { path: "/campaign/single-campaign", element: <SingleCampaign /> },
+      { path: "/sales/single-order", element: <OrderDetails /> },
 
       // Ahsan Mahfuz
     ],
   },
 
   {
-    path: '/',
+    path: "/",
     element: <Navbar />,
-    children: [{ path: '/sampler', element: <SamplerHome /> }],
+    children: [{ path: "/sampler", element: <SamplerHome /> }],
   },
 
-  { path: '/otp', element: <Otp /> },
-  { path: '/login', element: <Login /> },
-  { path: '/register', element: <Register /> },
-  { path: '/user-info', element: <UserInfo /> },
-  { path: '/contact-info', element: <ContactInfo /> },
-  { path: '/compliance-info', element: <ComplianceInfo /> },
-  { path: '/reset-password', element: <ResetPassword /> },
-  { path: '/business-info', element: <BusinessInfoForm /> },
-  { path: '/forgot-password', element: <ForgetPassword /> },
+  { path: "/otp", element: <Otp /> },
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
+  { path: "/user-info", element: <UserInfo /> },
+  { path: "/contact-info", element: <ContactInfo /> },
+  { path: "/compliance-info", element: <ComplianceInfo /> },
+  { path: "/reset-password", element: <ResetPassword /> },
+  { path: "/business-info", element: <BusinessInfoForm /> },
+  { path: "/forgot-password", element: <ForgetPassword /> },
 
   // Ahsan Mahfuz
-  { path: '/choose-role', element: <ChooseRole /> },
-  { path: '/signup', element: <Signup /> },
-  { path: '/sign-up-otp', element: <SignUpOtp /> },
-  { path: '/sign-up-more-info', element: <SignUpMoreInformation /> },
-  { path: '/sign-up-select-all-categories', element: <AllCategories /> },
-])
+  { path: "/choose-role", element: <ChooseRole /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/sign-up-otp", element: <SignUpOtp /> },
+  { path: "/sign-up-more-info", element: <SignUpMoreInformation /> },
+  { path: "/sign-up-select-all-categories", element: <AllCategories /> },
+]);
 
 {
   /* <ProtectedRoute>
