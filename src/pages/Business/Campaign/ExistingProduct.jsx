@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import TargetAudienceForm from "../components/ui/TargetAudienceForm";
-import ProductSelection from "./ProductSelection";
-import planet1 from "../assets/Planet (1).png";
+import ProductSelection from "../Product/ProductSelection";
+import planet1 from "../../../assets/Planet (1).png";
 import { Button } from "antd";
-import ReviewLaunch from "../components/ui/ReviewLaunch";
+import ReviewLaunch from "../../../components/ui/ReviewLaunch";
+import TargetAudienceForm from "../../../components/ui/TargetAudienceForm";
 
 function ExistingProduct() {
   const [currentStep, setCurrentStep] = useState(0);

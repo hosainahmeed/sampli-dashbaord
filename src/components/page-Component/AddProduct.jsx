@@ -133,7 +133,7 @@ function AddProduct() {
             <FormWrapper
               form={form}
               onFinish={onFinish}
-              className="border-[0.2px] gap-2 grid grid-cols-2 border-[var(--neutral-300)] rounded-2xl !p-4"
+              className="border-[0.2px] border-[#eee] gap-2 grid grid-cols-2  rounded-2xl !p-4"
             >
               <InputField
                 label="Item Name"

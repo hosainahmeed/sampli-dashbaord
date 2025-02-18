@@ -6,7 +6,7 @@ const { Title, Text } = Typography;
 const PasswordChangeModal = ({ visible, onCancel, onContinue }) => {
   return (
     <Modal open={visible} onCancel={onCancel} footer={null} className="text-center">
-      <Title level={3}>Change Password</Title>
+      <Title level={3}>Enter password</Title>
       <Text>Enter your new password</Text>
       <Form requiredMark={false} layout="vertical" onFinish={onContinue}>
         <Form.Item

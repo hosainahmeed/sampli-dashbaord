@@ -10,6 +10,7 @@ import ChangePasswordModal from "../Security/ChangePasswordModal";
 import PasswordChangeEmailModal from "../Security/PasswordChangeEmailModal";
 import PasswordChangeOptModal from "../Security/PasswordChangeOptModal";
 import AccountAuthorization from "./AccountAuthorization";
+import NewEmainModal from "../Security/NewEmainModal";
 
 const { Title, Text } = Typography;
 
@@ -87,7 +88,7 @@ function Security() {
           setModalState({
             ...modalState,
             emailModal: false,
-            passwordModal: true,
+            newEmailModal: true,
           })
         }
       />
@@ -104,7 +105,7 @@ function Security() {
         }
       />
 
-      <EmailChangeModal
+      <NewEmainModal
         visible={modalState.newEmailModal}
         onCancel={() => setModalState({ ...modalState, newEmailModal: false })}
         onContinue={() =>

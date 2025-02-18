@@ -2,8 +2,8 @@ import React from "react";
 import { Button } from "antd";
 import { FaAngleLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import CampaignPerformanceChart from "../components/ui/CampaignPerformanceChart";
-import AllFeedCard from "../components/page-Component/AllFeedCard";
+import CampaignPerformanceChart from "../../components/ui/CampaignPerformanceChart";
+import AllFeedCard from "../../components/page-Component/AllFeedCard";
 
 function SingleCampaign() {
   const navigate = useNavigate();
