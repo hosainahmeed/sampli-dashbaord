@@ -11,6 +11,8 @@ function General() {
   const [form2] = Form.useForm();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
+  console.log(selectedState);
+  
   // console.log(Country.getAllCountries());
   // console.log(City.getAllCities());
   // console.log(State.getAllStates());

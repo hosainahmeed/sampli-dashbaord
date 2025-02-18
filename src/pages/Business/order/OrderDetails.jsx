@@ -1,4 +1,4 @@
-import { Button, Card, List, Timeline, Typography, Space } from "antd";
+import { Button, Card, Timeline, Typography, Space } from "antd";
 import React from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +66,9 @@ function OrderDetails() {
           <Button type="primary">Track Item</Button>
         </div>
       </div>
-          <Title className="!mt-4" level={4}>Order Item</Title>
+      <Title className="!mt-4" level={4}>
+        Order Item
+      </Title>
       <div className="flex !mt-12 justify-between items-start gap-4">
         <div className="flex-1">
           <div className="">

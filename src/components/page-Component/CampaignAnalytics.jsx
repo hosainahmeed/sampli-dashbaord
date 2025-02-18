@@ -1,13 +1,37 @@
 import React, { useState } from "react";
 import { Select, DatePicker } from "antd";
 import SalesCard from "../ui/SalesCard";
+import CampaignCard from "../ui/CampaignCard";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-function CampaignAnalytics() {
+function SalesAnalytics() {
   const [selectedOption, setSelectedOption] = useState("This Week");
   const [customDateRange, setCustomDateRange] = useState(null);
+
+  const datas = [
+    {
+      title: "TOTAL SPENT",
+      amount: "$3,434.00",
+      change: "-30%",
+      avgCostPerReview: "$25.00",
+      totalReview: "34,000",
+    },
+    {
+      title: "TOTAL CAMPAIGN",
+      count: 34,
+      change: "+30%",
+      activeCampaigns: 42,
+      pendingCampaigns: 128,
+    },
+    {
+      title: "TOTAL USERS",
+      count: 34,
+      change: "+30%",
+      activeUsers: 42,
+    },
+  ];
 
   const handleChange = (value) => {
     setSelectedOption(value);
@@ -20,7 +44,6 @@ function CampaignAnalytics() {
     setCustomDateRange(dates);
     console.log("Selected Date Range:", dates);
   };
-  console.log(customDateRange);
 
   return (
     <div className="w-full">
@@ -47,20 +70,12 @@ function CampaignAnalytics() {
       </div>
 
       <div className="w-full grid grid-cols-3 gap-4">
-        {Array.from({ length: 3 }, (_, index) => (
-          <SalesCard
-            className="card"
-            key={index}
-            title="Total Revenue"
-            totalAmount="1,500.00"
-            avgCost="10.00"
-            totalReviews="150"
-            percentageChange="+5%"
-          />
+        {datas.map((data) => (
+          <CampaignCard key={data.title} data={data} />
         ))}
       </div>
     </div>
   );
 }
 
-export default CampaignAnalytics;
+export default SalesAnalytics;

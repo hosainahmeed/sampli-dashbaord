@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row } from "antd";
-import CampaignAnalytics from "../components/page-Component/CampaignAnalytics";
-import SalesAnalytics from "../components/page-Component/SalesAnalytics";
+import CampaignAnalytics from "../../../components/page-Component/CampaignAnalytics";
+import SalesAnalytics from "../../../components/page-Component/SalesAnalytics";
 
 function DashboardHome() {
   return (

@@ -4,6 +4,7 @@ import { CiLogout, CiSettings } from "react-icons/ci";
 import { FcSalesPerformance } from "react-icons/fc";
 import { IoHome, IoPricetagOutline } from "react-icons/io5";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import order from "../../assets/logo/order.svg";
 // menus link
 const adminMenus = [
   {
@@ -22,8 +23,8 @@ const adminMenus = [
     path: "/product",
   },
   {
-    name: "Sales",
-    icon: <FcSalesPerformance className="text-xl" />,
+    name: "Order",
+    icon: <img src={order} alt="order"></img>,
     path: "/sales",
   },
   {

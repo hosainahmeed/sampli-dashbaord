@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 const { Title, Text } = Typography;
 
 const OtpModal = ({ visible, onCancel, onContinue, onResend, otp, setOtp }) => {
-  const [timeLeft, setTimeLeft] = useState(30); // Timer state
+  const [timeLeft, setTimeLeft] = useState(30); 
   const inputsRef = useRef([]);
 
-  // Timer logic
   useEffect(() => {
     if (visible && timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
@@ -16,10 +15,9 @@ const OtpModal = ({ visible, onCancel, onContinue, onResend, otp, setOtp }) => {
     }
   }, [visible, timeLeft]);
 
-  // Reset timer when modal is opened
   useEffect(() => {
     if (visible) {
-      setTimeLeft(30); // Reset timer to 30 seconds
+      setTimeLeft(30); 
     }
   }, [visible]);
 

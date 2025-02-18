@@ -5,14 +5,37 @@ import SalesCard from "../ui/SalesCard";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-function SalesAnalytics() {
+function CampaignAnalytics() {
   const [selectedOption, setSelectedOption] = useState("This Week");
   const [customDateRange, setCustomDateRange] = useState(null);
 
+  const datas = [
+    {
+      title: "Total Revenue",
+      value: "$3,434.00",
+      change: "+30%",
+      orders: 342,
+      avgOrderValue: "$340",
+    },
+    {
+      title: "Total View",
+      value: 334,
+      change: "+30%",
+      conversionRate: "2.76%",
+      avgTimeOnProfile: "4:32",
+    },
+    {
+      title: "Orders",
+      value: 34,
+      change: "+30%",
+      checkoutRate: "42%",
+      cartAbandonment: "42%",
+    },
+  ];
   const handleChange = (value) => {
     setSelectedOption(value);
     if (value !== "Custom Date Range") {
-      setCustomDateRange(null); // Reset custom date if another option is selected
+      setCustomDateRange(null);
     }
   };
 
@@ -22,8 +45,8 @@ function SalesAnalytics() {
   };
 
   return (
-    <div className="w-full ">
-      <div className="flex  p-2 rounded-md justify-between items-center gap-12">
+    <div className="w-full">
+      <div className="flex p-2 rounded-md justify-between items-center">
         <h1 className="text-2xl">Sales analytics</h1>
         <div className="flex items-center gap-4">
           <Select
@@ -46,20 +69,12 @@ function SalesAnalytics() {
       </div>
 
       <div className="w-full grid grid-cols-3 gap-4">
-        {Array.from({ length: 3 }, (_, index) => (
-          <SalesCard
-            className="card"
-            key={index}
-            title="Total Revenue"
-            totalAmount="1,500.00"
-            avgCost="10.00"
-            totalReviews="150"
-            percentageChange="+5%"
-          />
+        {datas.map((data) => (
+          <SalesCard key={data.title} data={data} />
         ))}
       </div>
     </div>
   );
 }
 
-export default SalesAnalytics;
+export default CampaignAnalytics;
