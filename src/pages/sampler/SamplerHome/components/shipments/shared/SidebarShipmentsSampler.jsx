@@ -29,8 +29,8 @@ const SidebarShipmentsSampler = () => {
   ]
   return (
     <div className="responsive-width">
-      <div className=" w-[250px] h-[96vh] border-r border-gray-200 px-3 bg-white  ">
-        <div className="text-center text-2xl mb-5">Shopping & Alerts</div>
+      <div className=" w-[250px] h-[96vh] px-3 bg-white  ">
+        <div className=" text-2xl mb-5">Shopping & Alerts</div>
         <ul className="space-y-2">
           {menuItems.map((item, index) => (
             <NavLink
