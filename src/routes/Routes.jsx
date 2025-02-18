@@ -24,38 +24,54 @@ import ExistingProduct from "../pages/Business/Campaign/ExistingProduct.jsx";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: (
       <ProtectedRoute>
         <MainLayout />
       </ProtectedRoute>
     ),
     children: [
-      { path: "/", element: <DashboardHome /> },
-      { path: "/campaign", element: <CampaignPage /> },
-      { path: "/create-campaign", element: <CreateCampaign /> },
+      { path: '/', element: <DashboardHome /> },
+      { path: '/campaign', element: <CampaignPage /> },
+      { path: '/create-campaign', element: <CreateCampaign /> },
       {
-        path: "/create-campaign/existing-product",
+        path: '/create-campaign/existing-product',
         element: <ExistingProduct />,
       },
-      { path: "/sales", element: <SalesPage /> },
-      { path: "/product", element: <ProductPage /> },
-      { path: "/product/add-product", element: <AddProduct /> },
-      { path: "/settings", element: <SettingPage /> },
-      { path: "/campaign/single-campaign", element: <SingleCampaign /> },
-      { path: "/sales/single-order", element: <OrderDetails /> },
+      { path: '/sales', element: <SalesPage /> },
+      { path: '/product', element: <ProductPage /> },
+      { path: '/product/add-product', element: <AddProduct /> },
+      { path: '/settings', element: <SettingPage /> },
+      { path: '/campaign/single-campaign', element: <SingleCampaign /> },
+      { path: '/sales/single-order', element: <OrderDetails /> },
+
+      // Ahsan Mahfuz
     ],
   },
-  { path: "/otp", element: <Otp /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  { path: "/user-info", element: <UserInfo /> },
-  { path: "/contact-info", element: <ContactInfo /> },
-  { path: "/compliance-info", element: <ComplianceInfo /> },
-  { path: "/reset-password", element: <ResetPassword /> },
-  { path: "/business-info", element: <BusinessInfoForm /> },
-  { path: "/forgot-password", element: <ForgetPassword /> },
-]);
+
+  {
+    path: '/',
+    element: <Navbar />,
+    children: [{ path: '/sampler', element: <SamplerHome /> }],
+  },
+
+  { path: '/otp', element: <Otp /> },
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
+  { path: '/user-info', element: <UserInfo /> },
+  { path: '/contact-info', element: <ContactInfo /> },
+  { path: '/compliance-info', element: <ComplianceInfo /> },
+  { path: '/reset-password', element: <ResetPassword /> },
+  { path: '/business-info', element: <BusinessInfoForm /> },
+  { path: '/forgot-password', element: <ForgetPassword /> },
+
+  // Ahsan Mahfuz
+  { path: '/choose-role', element: <ChooseRole /> },
+  { path: '/signup', element: <Signup /> },
+  { path: '/sign-up-otp', element: <SignUpOtp /> },
+  { path: '/sign-up-more-info', element: <SignUpMoreInformation /> },
+  { path: '/sign-up-select-all-categories', element: <AllCategories /> },
+])
 
 {
   /* <ProtectedRoute>
