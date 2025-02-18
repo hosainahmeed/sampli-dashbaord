@@ -26,13 +26,15 @@ import Signup from '../pages/sampler/signup/Signup.jsx'
 import SignUpOtp from '../pages/sampler/signup/SignUpOtp.jsx'
 import SignUpMoreInformation from '../pages/sampler/signup/SignUpMoreInformation.jsx'
 import SelectAllCategories from '../pages/sampler/signup/selectCategories/SelectAllCategories.jsx'
-import AllCategories from '../pages/sampler/signup/selectCategories/AllCategories.jsx'
-import Navbar from '../pages/sampler/navbar/Navbar.jsx'
 import SamplerHome from '../pages/sampler/SamplerHome/SamplerHome.jsx'
 import AllOfferSampler from '../pages/sampler/SamplerHome/components/offer/AllOfferSampler.jsx'
-import ShipmentsSampler from '../pages/sampler/SamplerHome/components/shipments/ShipmentsSampler.jsx'
 import EarningsSampler from '../pages/sampler/SamplerHome/components/reviewsAndEarnings/EarningsSampler.jsx'
-import TransactionHistory from '../pages/sampler/SamplerHome/components/reviewsAndEarnings/TransactionHistory.jsx'
+import TransactionHistorySampler from '../pages/sampler/SamplerHome/components/reviewsAndEarnings/TransactionHistorySampler.jsx'
+import ShipmentAndAlertSampler from '../pages/sampler/SamplerHome/components/shipments/ShipmentAndAlertSampler.jsx'
+import OfferShipmentsSampler from '../pages/sampler/SamplerHome/components/shipments/components/OfferShipmentsSampler.jsx'
+import MyPurchasesSampler from '../pages/sampler/SamplerHome/components/shipments/components/MyPurchasesSampler.jsx'
+import WishlistSampler from '../pages/sampler/SamplerHome/components/shipments/components/WishlistSampler.jsx'
+import NotificationsSampler from '../pages/sampler/SamplerHome/components/shipments/components/NotificationsSampler.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -80,7 +82,18 @@ export const router = createBrowserRouter([
   },
   {
     path: '/sampler/campaign/transaction-history',
-    element: <TransactionHistory />,
+    element: <TransactionHistorySampler />,
+  },
+
+  {
+    path: '/sampler/campaign/shipments',
+    element: <ShipmentAndAlertSampler />,
+    children: [
+      { path: 'offer-shipments', element: <OfferShipmentsSampler /> },
+      { path: 'my-purchases', element: <MyPurchasesSampler /> },
+      { path: 'wishlist', element: <WishlistSampler /> },
+      { path: 'notifications', element: <NotificationsSampler /> },
+    ],
   },
 
   // hossain
