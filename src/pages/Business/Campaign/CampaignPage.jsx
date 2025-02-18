@@ -1,6 +1,6 @@
 import React from "react";
-import StatsOverview from "../components/ui/StatsOverview";
-import CampaignTable from "../components/Tables/CampaignTable";
+import StatsOverview from "../../../components/ui/StatsOverview";
+import CampaignTable from "../../../components/Tables/CampaignTable";
 import { Button } from "antd";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";

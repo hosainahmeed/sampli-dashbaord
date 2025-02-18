@@ -2,13 +2,9 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../layout/MainLayout";
-import DashboardHome from "../pages/DashboardHome";
-import CampaignPage from "../pages/CampaignPage";
-import SingleCampaign from "../pages/SingleCampaign";
-import ProductPage from "../pages/ProductPage";
-import SalesPage from "../pages/SalesPage";
-import CreateCampaign from "../pages/CreateCampaign";
-import ExistingProduct from "../pages/ExistingProduct";
+import DashboardHome from "../pages/Business/home/DashboardHome.jsx";
+import SingleCampaign from "../pages/Business/SingleCampaign";
+import ProductPage from "../pages/Business/Product/ProductPage.jsx";
 import Login from "../pages/auth/Login.jsx";
 import Otp from "../pages/auth/Otp.jsx";
 import ResetPassword from "../pages/auth/ResetPassword.jsx";
@@ -19,8 +15,12 @@ import UserInfo from "../components/ui/UserInfo.jsx";
 import ContactInfo from "../components/ui/ContactInfo";
 import ComplianceInfo from "../components/ui/ComplianceInfo.jsx";
 import AddProduct from "../components/page-Component/AddProduct.jsx";
-import SettingPage from "../pages/SettingPage.jsx";
-import OrderDetails from "../pages/OrderDetails/OrderDetails.jsx";
+import SettingPage from "../pages/Business/setting/SettingPage.jsx";
+import SalesPage from "../pages/Business/order/SalesPage.jsx";
+import OrderDetails from "../pages/Business/order/OrderDetails.jsx";
+import CampaignPage from "../pages/Business/Campaign/CampaignPage.jsx";
+import CreateCampaign from "../pages/Business/Campaign/CreateCampaign.jsx";
+import ExistingProduct from "../pages/Business/Campaign/ExistingProduct.jsx";
 
 export const router = createBrowserRouter([
   {

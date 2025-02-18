@@ -2,9 +2,9 @@ import { Button, Tabs } from "antd";
 import React from "react";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import SalseState from "../components/ui/SalseState";
-import { FaDownLong } from "react-icons/fa6";
-import OrderTable from "../components/Tables/OrderTable";
+import SalseState from "../../../components/ui/SalseState";
+import OrderTable from "../../../components/Tables/OrderTable";
+import { IoArrowDown } from "react-icons/io5";
 
 function SalesPage() {
   const items = [
@@ -36,7 +36,7 @@ function SalesPage() {
         <h1 className="text-2xl font-bold">Order</h1>
         <div className="flex items-center gap-2">
           <Button className="flex items-center justify-center" type="default">
-            <FaDownLong />
+            <IoArrowDown />
             Export CSV
           </Button>
           <Link to="/product/add-product">

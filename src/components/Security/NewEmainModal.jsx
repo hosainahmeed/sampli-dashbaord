@@ -3,9 +3,10 @@ import { Modal, Form, Input, Button, Typography, message } from "antd";
 
 const { Title, Text } = Typography;
 
-const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
+const NewEmainModal = ({ visible, onCancel, onContinue }) => {
   const onFinish = (values) => {
     console.log("Success:", values);
+    localStorage.setItem("email", values.email);
     message.success("Form submitted successfully!");
     onContinue();
   };
@@ -16,11 +17,10 @@ const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
       footer={null}
       className="text-center"
     >
-      <Title level={3}>Email address</Title>
-      <Text>Re-enter your password to continue.</Text>
+      <Title level={3}>New Email address</Title>
       <Form requiredMark={false} layout="vertical" onFinish={onFinish}>
         <Form.Item
-          label="Email"
+          label="New Email"
           name="email"
           rules={[
             { required: true, message: "Please enter your email!" },
@@ -34,6 +34,7 @@ const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
           name="newPass"
           rules={[
             { required: true, message: "Please enter your new password!" },
+            { min: 8, message: "Password must be at least 8 characters" },
           ]}
         >
           <Input.Password
@@ -43,7 +44,7 @@ const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
         </Form.Item>
         <Form.Item className="flex items-center justify-end">
           <Button type="primary" htmlType="submit">
-            Continue
+            Submit
           </Button>
         </Form.Item>
       </Form>
@@ -51,4 +52,4 @@ const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
   );
 };
 
-export default EmailChangeModal;
+export default NewEmainModal;
