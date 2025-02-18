@@ -32,6 +32,7 @@ import SamplerHome from '../pages/sampler/SamplerHome/SamplerHome.jsx'
 import AllOfferSampler from '../pages/sampler/SamplerHome/components/offer/AllOfferSampler.jsx'
 import ShipmentsSampler from '../pages/sampler/SamplerHome/components/shipments/ShipmentsSampler.jsx'
 import EarningsSampler from '../pages/sampler/SamplerHome/components/reviewsAndEarnings/EarningsSampler.jsx'
+import TransactionHistory from '../pages/sampler/SamplerHome/components/reviewsAndEarnings/TransactionHistory.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
   {
     path: '/sampler/campaign/earnings',
     element: <EarningsSampler />,
+  },
+  {
+    path: '/sampler/campaign/transaction-history',
+    element: <TransactionHistory />,
   },
 
   // hossain
