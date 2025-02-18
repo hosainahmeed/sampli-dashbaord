@@ -77,8 +77,8 @@ const NotificationCard = ({ notification }) => {
               <div
                 className={` p-1 text-[14px] rounded-md ${
                   notification.category == 'Review program'
-                    ? 'bg-red-100 text-red-400'
-                    : 'bg-blue-100 text-blue-400'
+                    ? 'bg-red-50 text-red-400'
+                    : 'bg-blue-50 text-blue-400'
                 }`}
               >
                 {notification.category}
@@ -89,18 +89,32 @@ const NotificationCard = ({ notification }) => {
         </section>
 
         <div className="flex justify-between  items-start mt-3">
-          <section className="text-gray-500 max-w-[400px] w-full">
+          <section className="text-gray-500 max-w-[400px] w-full text-[14px]">
             {notification.message}
           </section>
-          {!notification.image && (
-            //   <img src={notification.image} alt={notification.category} />
-            <div className="border border-blue-500 text-blue-500 p-2 rounded-md">
+          {
+            !notification.image &&(
+              <div className="border border-blue-500 text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
+                {notification.button}
+              </div>
+            )
+          }
+        </div>
+        {notification.image && (
+          <div className="flex items-center justify-between border p-2 mt-3 border-gray-200 rounded-md">
+            <div className='flex items-center gap-2 '>
+              <img
+                src={notification.image}
+                className="w-16 h-16 border "
+                alt={notification.category}
+              />
+              <div>{notification.product} </div>
+            </div>
+            <div className="border border-blue-500 text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
               {notification.button}
             </div>
-          )}
-        </div>
-
-        <section></section>
+          </div>
+        )}
       </div>
     </div>
   )

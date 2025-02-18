@@ -10,10 +10,11 @@ export default [
       sourceType: 'module',
       globals: {
         console: 'readonly',
-        window: 'readonly', 
+        window: 'readonly',
         document: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        localStorage: 'readonly',
       },
     },
     rules: {
