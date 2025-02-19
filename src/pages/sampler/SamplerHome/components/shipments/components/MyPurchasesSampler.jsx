@@ -166,7 +166,7 @@ const MyPurchasesSampler = () => {
         <div
           type="link"
           className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
-          onClick={() => setIsClicked(true) }
+          onClick={() => setIsClicked(true)}
         >
           View
         </div>
@@ -232,7 +232,7 @@ const MyPurchasesSampler = () => {
       ) : (
         <div>
           <div className="flex justify-between items-center mb-5 ">
-            <div className="text-xl font-semibold">Offer Shipment</div>
+            <div className="text-xl font-semibold">My Purchases</div>
           </div>
           <Tabs
             defaultActiveKey="1"

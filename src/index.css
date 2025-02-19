@@ -17,8 +17,14 @@
   padding-inline: 10px;
 }
 
+
+
 * {
   font-family: "Inter", serif;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 body::-webkit-scrollbar {

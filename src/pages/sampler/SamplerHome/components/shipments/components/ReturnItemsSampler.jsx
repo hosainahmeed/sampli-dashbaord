@@ -218,7 +218,10 @@ const ReturnItemsSampler = () => {
                     <p className="text-gray-500">Return cost: {returnCost}</p>
                   </div>
                   <div className="mt-6 flex gap-3 flex-col">
-                    <button className="w-full py-2 cursor-pointer bg-blue-500 text-white rounded-lg hover:bg-blue-400">
+                    <button
+                      onClick={onNext}
+                      className="w-full py-2 cursor-pointer bg-blue-500 !text-white rounded-lg hover:bg-blue-400"
+                    >
                       Create return
                     </button>
                     <button
@@ -235,21 +238,83 @@ const ReturnItemsSampler = () => {
         )}
 
         {/* Step 3: Return Created */}
-        {current === 2 && confirmation && (
-          <div>
-            <h2 className="text-xl font-semibold">You are all set!</h2>
-            <p>A confirmation email has been sent to your email address.</p>
-            <p>
-              We need to receive your item(s) to process the return, and we'll
-              issue a refund, which usually takes 3-5 business days.
-            </p>
+        {current === 2 && (
+          <>
+            <h2 className=" font-semibold  !mt-10 !mb-5">Create return</h2>
+            <div className="  p-8 bg-white rounded-2xl border border-gray-200">
+              <div className="grid grid-cols-2 gap-5 mt-6">
+                {/* Left Panel */}
+                <div>
+                  <Card
+                    title={
+                      <div className="text-center pt-10">
+                        <div className="text-xl font-bold">You are all set</div>
+                        <p className="text-gray-500 text-[14px]">
+                          A confirmation email has been sent to
+                          Micheal@gmail.com
+                        </p>
+                        <p>How to get your item back to us</p>
+                        <p className='text-wrap text-[14px] text-gray-500 '>
+                          We need to recieve your item(s) to process the return.
+                          Then we'll issue a refund, which usually takes 3-5
+                          business days to post.
+                        </p>
+                      </div>
+                    }
+                    variant="borderless"
+                    style={{
+                      width: '100%',
+                    }}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex gap-3">
+                        <input
+                          type="radio"
+                          value="post"
+                          className="mr-2 cursor-pointer"
+                        />
+                        <label className="text-sm">
+                          <div>Schedule pick up </div>
+                          <div className="text-gray-500">
+                            Organize a pickup at your location
+                          </div>
+                        </label>
+                      </div>
+                      <div className="text-gray-500">From $6.00</div>
+                    </div>
+                  </Card>
+                </div>
 
-            <div className="mt-4">
-              <Button type="primary" onClick={onBack}>
-                Back to Purchases
-              </Button>
+                {/* Right Panel */}
+                <div className=" p-6 rounded-lg  border border-gray-200">
+                  <h4 className="font-semibold">You're returning:</h4>
+                  <p className="text-gray-500">1 item(s)</p>
+                  <Divider type="horizontal" />
+                  <div className="mt-4">
+                    <h4 className="font-semibold">Estimated return value:</h4>
+                    <p className="text-gray-500">Master card ***5637: $40.00</p>
+                  </div>
+                  <Divider type="horizontal" />
+
+                  <div className="mt-4">
+                    <h4 className="font-semibold">Summary of returns:</h4>
+                    <p className="text-gray-500">Return cost: {returnCost}</p>
+                  </div>
+                  <div className="mt-6 flex gap-3 flex-col">
+                    <button className="w-full py-2 cursor-pointer bg-blue-500 !text-white rounded-lg hover:bg-blue-400">
+                      Create return
+                    </button>
+                    <button
+                      className="w-full cursor-pointer py-2 mt-2  text-gray-700 rounded-lg hover:bg-gray-200"
+                      onClick={onBack}
+                    >
+                      Back
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>
