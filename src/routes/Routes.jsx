@@ -35,6 +35,9 @@ import OfferShipmentsSampler from "../pages/sampler/SamplerHome/components/shipm
 import MyPurchasesSampler from "../pages/sampler/SamplerHome/components/shipments/components/MyPurchasesSampler.jsx";
 import WishlistSampler from "../pages/sampler/SamplerHome/components/shipments/components/WishlistSampler.jsx";
 import NotificationsSampler from "../pages/sampler/SamplerHome/components/shipments/components/NotificationsSampler.jsx";
+import ReturnItemsSampler from "../pages/sampler/SamplerHome/components/shipments/components/ReturnItemsSampler.jsx";
+import StoreProfile from "../pages/Business/store-profile/StoreProfile.jsx";
+import AllNotificationPage from "../pages/Business/NotificationPage/AllNotificationPage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -58,11 +61,12 @@ export const router = createBrowserRouter([
       { path: "/settings", element: <SettingPage /> },
       { path: "/campaign/single-campaign", element: <SingleCampaign /> },
       { path: "/sales/single-order", element: <OrderDetails /> },
+      { path: "/store-profile", element: <StoreProfile /> },
+      { path: "/all-notifications", element: <AllNotificationPage /> },
     ],
   },
 
   // Ahsan Mahfuz
-
   // campaign section
   {
     path: "/sampler/campaign",
@@ -94,6 +98,10 @@ export const router = createBrowserRouter([
       { path: "wishlist", element: <WishlistSampler /> },
       { path: "notifications", element: <NotificationsSampler /> },
     ],
+  },
+  {
+    path: "/sampler/campaign/return-items",
+    element: <ReturnItemsSampler />,
   },
 
   // hossain

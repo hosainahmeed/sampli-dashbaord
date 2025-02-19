@@ -1,5 +1,5 @@
-import React from "react";
-import ProductTable from "../../../components/Tables/ProductTable";
+import React from 'react';
+import ProductTable from '../../../components/Tables/ProductTable';
 
 function ProductPage() {
   return (
