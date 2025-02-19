@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Avatar, Badge } from 'antd';
+import { Avatar, Badge } from 'antd';
 import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '../../../components/ui/Logo';
@@ -8,7 +8,6 @@ import { AiOutlineShopping } from 'react-icons/ai';
 
 const Navbar = () => {
   const location = useLocation();
-
   return (
     <div className="flex justify-between items-center p-4 responsive-width">
       {/* Logo */}
@@ -22,7 +21,9 @@ const Navbar = () => {
           <Link
             to="/sampler/campaign"
             className={`flex items-center justify-center gap-1 px-7 py-2 ${
-              location.pathname === '/sampler/campaign' ? 'border-b-2 border-blue-600 font-semibold text-blue-600' : 'text-gray-500'
+              location.pathname === '/sampler/campaign'
+                ? 'border-b-2 border-blue-600 font-semibold text-blue-600'
+                : 'text-gray-500'
             }`}
           >
             <MdOutlineCampaign />
@@ -30,12 +31,13 @@ const Navbar = () => {
           </Link>
         </div>
 
-
         <div key="/feed">
           <Link
             to="/feed"
             className={`flex items-center justify-center gap-1 px-7 py-2 ${
-              location.pathname === '/feed' ? 'border-b-2 border-blue-600 font-semibold text-blue-600' : 'text-gray-500'
+              location.pathname === '/feed'
+                ? 'border-b-2 border-blue-600 font-semibold text-blue-600'
+                : 'text-gray-500'
             }`}
           >
             <MdRssFeed />
@@ -43,12 +45,13 @@ const Navbar = () => {
           </Link>
         </div>
 
-        
         <div key="/shop">
           <Link
             to="/shop"
             className={`flex items-center justify-center gap-1 px-7 py-2 ${
-              location.pathname === '/shop' ? 'border-b-2 border-blue-600 font-semibold text-blue-600' : 'text-gray-500'
+              location.pathname === '/shop'
+                ? 'border-b-2 border-blue-600 font-semibold text-blue-600'
+                : 'text-gray-500'
             }`}
           >
             <AiOutlineShopping />
@@ -65,7 +68,10 @@ const Navbar = () => {
         <Badge count={1}>
           <BellOutlined className="text-xl text-gray-500" />
         </Badge>
-        <Avatar src={`https://i.pravatar.cc/32?u=${Math.floor(Math.random() * 1000)}`} size={40} />
+        <Avatar
+          src={`https://i.pravatar.cc/32?u=${Math.floor(Math.random() * 1000)}`}
+          size={40}
+        />
       </div>
     </div>
   );

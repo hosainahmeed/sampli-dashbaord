@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useState } from "react";
 import {
   Upload,
@@ -29,11 +30,11 @@ const Media = () => {
   });
 
   const handleUpload = (file, imageType) => {
-    const isValidSize = file.size / 1024 / 1024 < 10; // File size must be less than 10MB
+    const isValidSize = file.size / 1024 / 1024 < 10;
     const img = new Image();
     img.src = URL.createObjectURL(file);
     img.onload = () => {
-      if (img.width < 1920 || img.height < 1080) {
+      if (img.width < 1920 || img.height < 1080 || !isValidSize) {
         message.warning(
           "Your cover image is less than 1920×1080 px and may not be used by some apps and channels"
         );

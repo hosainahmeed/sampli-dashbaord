@@ -1,5 +1,5 @@
-import pluginJs from '@eslint/js'
-import pluginReact from 'eslint-plugin-react'
+import pluginJs from '@eslint/js';
+import pluginReact from 'eslint-plugin-react';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
@@ -10,10 +10,11 @@ export default [
       sourceType: 'module',
       globals: {
         console: 'readonly',
-        window: 'readonly', 
+        window: 'readonly',
         document: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        localStorage: 'readonly',
       },
     },
     rules: {
@@ -22,4 +23,4 @@ export default [
   },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
-]
+];

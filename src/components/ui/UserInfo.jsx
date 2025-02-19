@@ -6,7 +6,7 @@ import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
 import { useNavigate } from "react-router-dom";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const UserInfo = () => {
   const router = useNavigate();

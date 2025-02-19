@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Button,
-  Upload,
-  Input,
-  Descriptions,
-  Card,
-  Collapse,
-} from "antd";
+import React, { useState } from 'react';
+import { Form, Button, Upload, Input, Card, Collapse } from 'antd';
 import {
   UploadOutlined,
   DeleteOutlined,
   EditOutlined,
-} from "@ant-design/icons";
-import FormWrapper from "../ui/FormWrapper";
-import InputField from "../ui/InputField";
-import SelectField from "./SelectField";
-import TextArea from "antd/es/input/TextArea";
-import { useNavigate } from "react-router-dom";
-import { FaAngleLeft } from "react-icons/fa";
+} from '@ant-design/icons';
+import FormWrapper from '../ui/FormWrapper';
+import InputField from '../ui/InputField';
+import SelectField from './SelectField';
+import TextArea from 'antd/es/input/TextArea';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FaAngleLeft } from 'react-icons/fa';
 
 const { Panel } = Collapse;
 
@@ -31,6 +23,9 @@ function AddProduct() {
   const [variantFileList, setVariantFileList] = useState([]);
   const [editingVariant, setEditingVariant] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state;
+  console.log(state);
 
   const onFinish = (values) => {
     const data = {
@@ -39,20 +34,21 @@ function AddProduct() {
       category: values.category,
       product_images: productFileList.map((file) => file.originFileObj),
       variants: variants.map((variant) => ({
-        color: variant.color || "",
+        color: variant.color || '',
         images: variantFileList.map((file) => file.originFileObj),
         price: Number(variant.price) || 0,
-        size: variant.size || "",
-        sku: variant.sku || "",
+        size: variant.size || '',
+        sku: variant.sku || '',
         stock: Number(variant.stock) || 0,
-        weight: variant.weight || "",
+        weight: variant.weight || '',
       })),
       variant_images: variantFileList.map((file) => file.originFileObj),
     };
-
-    console.log("Formatted Data:", data);
-
+    console.log('Formatted Data:', data);
     form.resetFields();
+    if (state) {
+      navigate('/create-campaign/existing-product');
+    }
     setVariants([]);
     setProductFileList([]);
     setVariantFileList([]);
@@ -66,20 +62,20 @@ function AddProduct() {
     setVariantFileList(newFileList);
   };
 
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow.document.write(image.outerHTML);
-  };
+  // const onPreview = async (file) => {
+  //   let src = file.url;
+  //   if (!src) {
+  //     src = await new Promise((resolve) => {
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(file.originFileObj);
+  //       reader.onload = () => resolve(reader.result);
+  //     });
+  //   }
+  //   const image = new Image();
+  //   image.src = src;
+  //   const imgWindow = window.open(src);
+  //   imgWindow.document.write(image.outerHTML);
+  // };
 
   const handleVariantSubmit = (values) => {
     if (editingVariant) {
@@ -105,7 +101,6 @@ function AddProduct() {
     variantForm.setFieldsValue(variant);
   };
   console.log(variants);
-
   return (
     <div className="w-full">
       <div
@@ -121,7 +116,12 @@ function AddProduct() {
           <Button type="default" onClick={() => form.submit()}>
             Save as Draft
           </Button>
-          <Button type="primary" onClick={() => form.submit()}>
+          <Button
+            type="primary"
+            onClick={() => {
+              form.submit();
+            }}
+          >
             Publish
           </Button>
         </div>
@@ -138,7 +138,7 @@ function AddProduct() {
               <InputField
                 label="Item Name"
                 name="name"
-                rules={[{ required: true, message: "Please enter item name!" }]}
+                rules={[{ required: true, message: 'Please enter item name!' }]}
                 placeholder="Enter item name"
                 type="text"
                 className="col-span-2"
@@ -147,7 +147,7 @@ function AddProduct() {
                 label="Item Description"
                 name="description"
                 rules={[
-                  { required: true, message: "Please enter item description!" },
+                  { required: true, message: 'Please enter item description!' },
                 ]}
                 className="col-span-2"
               >
@@ -157,12 +157,12 @@ function AddProduct() {
                 label="Category"
                 name="category"
                 rules={[
-                  { required: true, message: "Please select a category!" },
+                  { required: true, message: 'Please select a category!' },
                 ]}
                 options={[
-                  { value: "Category 1", label: "Category 1" },
-                  { value: "Category 2", label: "Category 2" },
-                  { value: "Category 3", label: "Category 3" },
+                  { value: 'Category 1', label: 'Category 1' },
+                  { value: 'Category 2', label: 'Category 2' },
+                  { value: 'Category 3', label: 'Category 3' },
                 ]}
                 placeholder="Select category"
                 className="w-full"
@@ -225,7 +225,7 @@ function AddProduct() {
                             )}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )
                       }
                     >
@@ -246,7 +246,7 @@ function AddProduct() {
                 <Card className="flex items-center justify-center col-span-full p-8">
                   <div className="flex flex-col items-center">
                     <h1>No variants added</h1>
-                    <p>Click "Add Variant" to get started.</p>
+                    <p>Click Add Variant to get started.</p>
                   </div>
                 </Card>
               )}
@@ -273,7 +273,7 @@ function AddProduct() {
                   <Form.Item
                     name="sku"
                     label="SKU"
-                    rules={[{ required: true, message: "SKU is required!" }]}
+                    rules={[{ required: true, message: 'SKU is required!' }]}
                   >
                     <Input placeholder="Enter SKU" />
                   </Form.Item>
@@ -287,7 +287,7 @@ function AddProduct() {
                     <Input placeholder="Enter weight (optional)" />
                   </Form.Item>
                   <Form.Item
-                    rules={[{ required: true, message: "Price is required!" }]}
+                    rules={[{ required: true, message: 'Price is required!' }]}
                     name="price"
                     label="Price"
                   >
@@ -296,14 +296,14 @@ function AddProduct() {
                   <Form.Item name="stock" label="Stock">
                     <Input type="number" placeholder="Enter stock quantity" />
                   </Form.Item>
-                  <Form.Item name={"variant_images"} className="!w-full">
+                  <Form.Item name={'variant_images'} className="!w-full">
                     <Upload
                       multiple
                       listType="picture-card"
                       fileList={variantFileList}
                       beforeUpload={() => false}
                       onChange={handleVariantFileChange}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                     >
                       <div className="flex w-full items-center flex-col">
                         <UploadOutlined />
@@ -313,7 +313,7 @@ function AddProduct() {
                   </Form.Item>
                   <Form.Item className="col-span-2">
                     <Button type="primary" htmlType="submit">
-                      {editingVariant ? "Update Variant" : "Submit Variant"}
+                      {editingVariant ? 'Update Variant' : 'Submit Variant'}
                     </Button>
                     <Button
                       className="!ml-2"

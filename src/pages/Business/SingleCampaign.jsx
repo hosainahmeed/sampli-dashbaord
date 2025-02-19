@@ -1,16 +1,16 @@
-import React from "react";
-import { Button } from "antd";
-import { FaAngleLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import CampaignPerformanceChart from "../../components/ui/CampaignPerformanceChart";
-import AllFeedCard from "../../components/page-Component/AllFeedCard";
+import React from 'react';
+import { Button } from 'antd';
+import { FaAngleLeft } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import CampaignPerformanceChart from '../../components/ui/CampaignPerformanceChart';
+import AllFeedCard from '../../components/page-Component/AllFeedCard';
 
 function SingleCampaign() {
   const navigate = useNavigate();
   const statsData = {
-    timeline: "Mar 23, 2024 - Sep 30, 2024",
+    timeline: 'Mar 23, 2024 - Sep 30, 2024',
     budget: { spent: 25000, total: 100000 },
-    status: "Active",
+    status: 'Active',
     progress: { current: 10, total: 300 },
     reviewsCompleted: 32,
     totalSpent: 12450,
@@ -36,14 +36,18 @@ function SingleCampaign() {
         </div>
         <div className="flex items-center gap-3 mt-4 xl:mt-0">
           <Button>Edit Campaign</Button>
-          <Button style={{ color: "red" }}>Pause Campaign</Button>
+          <Button style={{ color: 'red' }}>Pause Campaign</Button>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-[#999Eab] rounded-3xl overflow-hidden">
         {/* Timeline */}
         <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs xl:text-sm text-gray-500">Timeline</h1>
-          <h1 className="text-xs xl:text-lg font-semibold">{statsData.timeline}</h1>
+          <h1 className="uppercase text-xs xl:text-sm text-gray-500">
+            Timeline
+          </h1>
+          <h1 className="text-xs xl:text-lg font-semibold">
+            {statsData.timeline}
+          </h1>
         </div>
 
         {/* Budget */}
@@ -65,7 +69,9 @@ function SingleCampaign() {
 
         {/* Progress */}
         <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Progress</h1>
+          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+            Progress
+          </h1>
           <div className="flex items-center space-x-2">
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
@@ -86,7 +92,9 @@ function SingleCampaign() {
 
         {/* Reviews Completed */}
         <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Reviews Completed</h1>
+          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+            Reviews Completed
+          </h1>
           <h1 className="text-xs xl:text-lg font-semibold">
             {statsData.reviewsCompleted}
           </h1>
@@ -94,7 +102,9 @@ function SingleCampaign() {
 
         {/* Total Spent */}
         <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Total Spent</h1>
+          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+            Total Spent
+          </h1>
           <h1 className="text-xs xl:text-lg font-semibold">
             ${statsData.totalSpent.toLocaleString()}
           </h1>
@@ -102,14 +112,22 @@ function SingleCampaign() {
 
         {/* Average Rating */}
         <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Average Rating</h1>
-          <h1 className="text-xs xl:text-lg font-semibold">{statsData.averageRating}</h1>
+          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+            Average Rating
+          </h1>
+          <h1 className="text-xs xl:text-lg font-semibold">
+            {statsData.averageRating}
+          </h1>
         </div>
 
         {/* Days Remaining */}
         <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Days Remaining</h1>
-          <h1 className="text-xs xl:text-lg font-semibold">{statsData.daysRemaining}</h1>
+          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+            Days Remaining
+          </h1>
+          <h1 className="text-xs xl:text-lg font-semibold">
+            {statsData.daysRemaining}
+          </h1>
         </div>
       </div>
       <CampaignPerformanceChart />
@@ -120,4 +138,3 @@ function SingleCampaign() {
 }
 
 export default SingleCampaign;
-

@@ -1,46 +1,41 @@
-import React from "react";
-import { AiOutlineProduct } from "react-icons/ai";
-import { CiLogout, CiSettings } from "react-icons/ci";
-import { FcSalesPerformance } from "react-icons/fc";
-import { IoHome, IoPricetagOutline } from "react-icons/io5";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import order from "../../assets/logo/order.svg";
+import React from 'react';
+import { AiOutlineProduct } from 'react-icons/ai';
+import { CiSettings } from 'react-icons/ci';
+import { IoHome, IoPricetagOutline } from 'react-icons/io5';
+import { NavLink, useLocation } from 'react-router-dom';
+import order from '../../assets/logo/order.svg';
 // menus link
 const adminMenus = [
   {
-    name: "Dashboard",
+    name: 'Dashboard',
     icon: <IoHome className="text-xl" />,
-    path: "/",
+    path: '/',
   },
   {
-    name: "Campaign",
+    name: 'Campaign',
     icon: <IoPricetagOutline className="text-xl" />,
-    path: "/campaign",
+    path: '/campaign',
   },
   {
-    name: "Product",
+    name: 'Product',
     icon: <AiOutlineProduct className="text-xl" />,
-    path: "/product",
+    path: '/product',
   },
   {
-    name: "Order",
+    name: 'Order',
     icon: <img src={order} alt="order"></img>,
-    path: "/sales",
+    path: '/sales',
   },
   {
-    name: "Settings",
+    name: 'Settings',
     icon: <CiSettings className="text-xl" />,
-    path: "/settings",
+    path: '/settings',
   },
 ];
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogOut = () => {
-    console.log("logout");
-  };
   return (
     <div className="scrollbar h-full overflow-y-scroll space-y-6 p-3">
       {adminMenus?.map((item) => (
@@ -48,21 +43,14 @@ const Sidebar = () => {
           key={item?.path}
           className={`${
             location?.pathname === item?.path
-              ? "sidebar-button-active"
-              : "sidebar-button"
+              ? 'sidebar-button-active'
+              : 'sidebar-button'
           } text-base  hover:scale-101 transition-all`}
           to={item?.path}
         >
           {item?.icon} {item?.name}
         </NavLink>
       ))}
-      {/* logout button */}
-      {/* <button
-        onClick={() => handleLogOut()}
-        className="sidebar-button border-[1px] border-[red] bg-red-500/20 cursor-pointer hover:scale-101 transition-all  w-full"
-      >
-        <CiLogout /> Logout
-      </button> */}
     </div>
   );
 };
