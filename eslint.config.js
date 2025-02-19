@@ -17,10 +17,16 @@ export default [
         localStorage: 'readonly',
       },
     },
-    rules: {
-      'react/prop-types': 'off',
-    },
   },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
+<<<<<<< HEAD
 ];
+=======
+  {
+    rules: {
+      'react/prop-types': 'off', // Disable prop validation
+    },
+  },
+]
+>>>>>>> b7992ed4008444c03c831fa3636f886913a7b6c9

@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ProductDetails from './ProductDetails'
 
 const OfferCardSampler = ({ product }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const showModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+  }
   return (
     <div className="w-full max-w-[235px] bg-white  rounded-md shadow-md overflow-hidden hover:shadow-2xl transition-shadow">
       {/* Product Image */}
@@ -33,6 +43,7 @@ const OfferCardSampler = ({ product }) => {
       {/* Offer Status Button */}
       <div className="border-t border-gray-100 cursor-pointer">
         <button
+          onClick={showModal}
           className={`w-full cursor-pointer font-medium text-sm py-4 ${
             product.status === 'Offer Accepted'
               ? '!text-blue-600 bg-blue-100'
@@ -43,6 +54,7 @@ const OfferCardSampler = ({ product }) => {
         >
           {product.status}
         </button>
+        <ProductDetails visible={isModalVisible} onCancel={handleCancel} />
       </div>
     </div>
   )
