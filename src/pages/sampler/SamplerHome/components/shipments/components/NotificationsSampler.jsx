@@ -1,5 +1,8 @@
 import React from 'react'
-import { FiCodesandbox } from 'react-icons/fi'
+import { FaRegComment, FaTruck } from 'react-icons/fa'
+import { FiDollarSign } from 'react-icons/fi'
+import { GrGift } from 'react-icons/gr'
+import { IoIosStarOutline } from 'react-icons/io'
 
 const notificationData = [
   {
@@ -64,10 +67,18 @@ const notificationData = [
   },
 ]
 
+const icons = {
+  'Review Product Shipped': <GrGift className=" w-5 mr-2 mt-1" />,
+  'Review Request': <IoIosStarOutline className=" w-5 mr-2 mt-1" />,
+  'Order Shipped': <FaTruck className=" w-5 mr-2 mt-1" />,
+  'Payment Received': <FiDollarSign className=" w-5 mr-2 mt-1" />,
+  'New Comment': <FaRegComment className=" w-5 mr-2 mt-1" />,
+}
+
 const NotificationCard = ({ notification }) => {
   return (
     <div className="flex justify-between  border border-gray-200 p-4 rounded-lg shadow-md mb-4">
-      <FiCodesandbox className=" w-5 mr-2 mt-1" />
+      {icons[notification.type] || null}
 
       <div className="flex-1">
         <section className="flex justify-between  ">
@@ -92,17 +103,15 @@ const NotificationCard = ({ notification }) => {
           <section className="text-gray-500 max-w-[400px] w-full text-[14px]">
             {notification.message}
           </section>
-          {
-            !notification.image &&(
-              <div className="border border-blue-500 text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
-                {notification.button}
-              </div>
-            )
-          }
+          {!notification.image && (
+            <div className="border border-blue-500 text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
+              {notification.button}
+            </div>
+          )}
         </div>
         {notification.image && (
           <div className="flex items-center justify-between border p-2 mt-3 border-gray-200 rounded-md">
-            <div className='flex items-center gap-2 '>
+            <div className="flex items-center gap-2 ">
               <img
                 src={notification.image}
                 className="w-16 h-16 border "
