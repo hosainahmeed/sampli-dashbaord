@@ -131,8 +131,8 @@ const NotificationCard = ({ notification }) => {
 
 const NotificationsSampler = () => {
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-semibold mb-6">Notifications</h1>
+    <div className="max-w-4xl ">
+      <h1 className="text-xl font-semibold mb-6">Notifications</h1>
       <div>
         {notificationData.map((notification) => (
           <NotificationCard key={notification.id} notification={notification} />
