@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { Modal, Button, Descriptions, Carousel, Form, Input } from 'antd'
+import toast from 'react-hot-toast'
 
 const ProductDetails = ({ visible, onCancel }) => {
   const images = Array.from({ length: 5 }, (_, index) => ({
@@ -36,9 +37,10 @@ const ProductDetails = ({ visible, onCancel }) => {
 
   const handleClick = () => {
     if (page === 2) {
-      onCancel() // Close the modal when page is 3
+      onCancel()
+      toast.success('Offer Accepted!')
     } else {
-      setPage((prev) => prev + 1) // Increment page otherwise
+      setPage((prev) => prev + 1)
     }
   }
 

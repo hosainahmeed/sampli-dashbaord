@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Table, Tabs, Tag } from 'antd'
+import OfferOrderDetails from '../../offer/components/OfferOrderDetails'
 
 const onChange = (key) => {
   console.log(key)
@@ -226,17 +227,21 @@ const OfferShipmentsSampler = () => {
 
   return (
     <div>
-      <div>
-        <div className="flex justify-between items-center mb-5 ">
-          <div className="text-xl font-semibold">Offer Shipment</div>
+      {isClicked ? (
+        <OfferOrderDetails setIsClicked={setIsClicked} />
+      ) : (
+        <div>
+          <div className="flex justify-between items-center mb-5 ">
+            <div className="text-xl font-semibold">Offer Shipment</div>
+          </div>
+          <Tabs
+            defaultActiveKey="1"
+            items={items}
+            onChange={onChange}
+            className="cursor-pointer"
+          />
         </div>
-        <Tabs
-          defaultActiveKey="1"
-          items={items}
-          onChange={onChange}
-          className="cursor-pointer"
-        />
-      </div>
+      )}
     </div>
   )
 }
