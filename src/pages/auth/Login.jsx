@@ -1,18 +1,22 @@
 import React from "react";
-import { Form, Input, Button, Typography, Divider } from "antd";
+import { Button, Typography, Divider } from "antd";
 import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
 import "antd/dist/reset.css";
 import Logo from "../../components/ui/Logo";
 import { TiSocialFacebook } from "react-icons/ti";
 import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const onFinish = (values) => {
     console.log("Success:", values);
+    if (values.email && values.password) {
+      navigate("/");
+    }
   };
 
   return (
@@ -99,7 +103,10 @@ const LoginForm = () => {
 
         <div className="mt-4 text-gray-500">
           New to Sampli?{" "}
-          <Link to="/register" className="text-blue-500 hover:underline transtion-all">
+          <Link
+            to="/register"
+            className="text-blue-500 hover:underline transtion-all"
+          >
             Get started
           </Link>
         </div>

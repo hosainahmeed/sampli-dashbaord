@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Card, Divider, Typography } from "antd";
 import { FaAngleRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import EmailChangeModal from "../Security/EmailChangeModal";
 import PasswordChangeModal from "../Security/PasswordChangeModal";
 import SuccessModal from "../Security/SuccessModal";
@@ -27,7 +26,6 @@ function Security() {
   });
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const router = useNavigate();
 
   const handleResend = () => {
     console.log("Resending OTP...");

@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Button, Tabs } from "antd";
-import Media from "../../../components/SettingComponents/Media.jsx";
-import Security from "../../../components/SettingComponents/Security.jsx";
-import Notification from "../../../components/SettingComponents/Notification.jsx";
-import BusinessInfo from "../../../components/SettingComponents/BusinessInfo.jsx";
-import General from "../../../components/SettingComponents/General.jsx";
-import { TbBrandGoogleHome } from "react-icons/tb";
-import { GoDatabase, GoFileMedia } from "react-icons/go";
-import { MdOutlineSecurity } from "react-icons/md";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import React from 'react';
+import { Tabs } from 'antd';
+import Media from '../../../components/SettingComponents/Media.jsx';
+import Security from '../../../components/SettingComponents/Security.jsx';
+import Notification from '../../../components/SettingComponents/Notification.jsx';
+import BusinessInfo from '../../../components/SettingComponents/BusinessInfo.jsx';
+import General from '../../../components/SettingComponents/General.jsx';
+import { TbBrandGoogleHome } from 'react-icons/tb';
+import { GoDatabase, GoFileMedia } from 'react-icons/go';
+import { MdOutlineSecurity } from 'react-icons/md';
+import { IoIosNotificationsOutline } from 'react-icons/io';
 
 const items = [
   {
@@ -18,7 +18,7 @@ const items = [
         General
       </div>
     ),
-    key: "general",
+    key: 'general',
     children: <General />,
     // children:  <Security />,
   },
@@ -30,7 +30,7 @@ const items = [
       </div>
     ),
 
-    key: "businessInfo",
+    key: 'businessInfo',
     children: <BusinessInfo />,
   },
   {
@@ -40,7 +40,7 @@ const items = [
         Media
       </div>
     ),
-    key: "media",
+    key: 'media',
     children: <Media />,
   },
   {
@@ -50,7 +50,7 @@ const items = [
         Security
       </div>
     ),
-    key: "security",
+    key: 'security',
     children: <Security />,
   },
   {
@@ -60,7 +60,7 @@ const items = [
         Notifications
       </div>
     ),
-    key: "notifications",
+    key: 'notifications',
     children: <Notification />,
   },
 ];

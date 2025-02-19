@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Avatar, Badge } from "antd";
+import { Avatar, Badge } from "antd";
 import { BellOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../../../components/ui/Logo";
@@ -8,7 +8,6 @@ import { AiOutlineShopping } from "react-icons/ai";
 
 const Navbar = () => {
   const location = useLocation();
-
   return (
     <div className="flex justify-between items-center p-4 responsive-width">
       {/* Logo */}

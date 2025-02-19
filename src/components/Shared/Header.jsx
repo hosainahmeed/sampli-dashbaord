@@ -1,25 +1,25 @@
-import React from "react";
-import { Avatar, Dropdown, Menu } from "antd";
-import { CiCircleQuestion } from "react-icons/ci";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import React from 'react';
+import { Avatar, Button, Dropdown, Menu } from 'antd';
+import { CiCircleQuestion } from 'react-icons/ci';
+import { IoMdNotificationsOutline } from 'react-icons/io';
 import {
   UserOutlined,
   SettingOutlined,
   WalletOutlined,
   LogoutOutlined,
-} from "@ant-design/icons";
-import brandlogo from "../../assets/logo/BrandLogo.svg";
-import { Link } from "react-router-dom";
+} from '@ant-design/icons';
+import brandlogo from '../../assets/logo/BrandLogo.svg';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const user = {
-    photoURL: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
-    displayName: "Micheal Scott",
-    username: "@Micheal46",
+    photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
+    displayName: 'Micheal Scott',
+    username: '@Micheal46',
   };
-//update
+  //update
   const handleSignOut = () => {
-    console.log("sign out");
+    console.log('sign out');
   };
 
   const menu = (
@@ -54,8 +54,12 @@ function Header() {
       <img src={brandlogo} alt="brand logo" />
       <div className="flex items-center gap-4 text-2xl">
         <CiCircleQuestion />
-        <IoMdNotificationsOutline />
-        <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
+        <Link to="/all-notifications">
+          <Button shape="circle">
+            <IoMdNotificationsOutline />
+          </Button>
+        </Link>
+        <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <Avatar size={40} src={user?.photoURL} className="cursor-pointer" />
         </Dropdown>
       </div>

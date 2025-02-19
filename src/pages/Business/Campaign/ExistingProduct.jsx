@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import ProductSelection from "../Product/ProductSelection";
-import planet1 from "../../../assets/Planet (1).png";
-import { Button } from "antd";
-import ReviewLaunch from "../../../components/ui/ReviewLaunch";
-import TargetAudienceForm from "../../../components/ui/TargetAudienceForm";
+import React, { useState } from 'react';
+import ProductSelection from '../Product/ProductSelection';
+import planet1 from '../../../assets/Planet (1).png';
+import { Button } from 'antd';
+import ReviewLaunch from '../../../components/ui/ReviewLaunch';
+import TargetAudienceForm from '../../../components/ui/TargetAudienceForm';
 
 function ExistingProduct() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -20,7 +20,10 @@ function ExistingProduct() {
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
   return (
-    <div className="bg-transparent" style={{ backgroundImage: `url(${planet1})` }}>
+    <div
+      className="bg-transparent"
+      style={{ backgroundImage: `url(${planet1})` }}
+    >
       <div className="w-full h-[70vh] max-h-[70vh] scrollbar overflow-y-scroll mt-12">
         {steps[currentStep].component}
       </div>
@@ -38,7 +41,7 @@ function ExistingProduct() {
           onClick={nextStep}
           className="px-4 py-2 bg-blue-600 text-white rounded-md"
         >
-          {currentStep < steps.length - 1 ? "Next" : "Confirm & Publish"}
+          {currentStep < steps.length - 1 ? 'Next' : 'Confirm & Publish'}
         </Button>
       </div>
     </div>
