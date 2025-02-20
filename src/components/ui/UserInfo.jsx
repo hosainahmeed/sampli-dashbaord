@@ -1,19 +1,20 @@
-import React from "react";
-import { Button, Typography, message } from "antd";
-import "antd/dist/reset.css";
-import Logo from "../../components/ui/Logo";
-import InputField from "../../components/ui/InputField";
-import FormWrapper from "../../components/ui/FormWrapper";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { Button, Typography, message } from 'antd';
+import 'antd/dist/reset.css';
+import Logo from '../../components/ui/Logo';
+import InputField from '../../components/ui/InputField';
+import FormWrapper from '../../components/ui/FormWrapper';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const { Title } = Typography;
 
 const UserInfo = () => {
   const router = useNavigate();
   const onFinish = (values) => {
-    console.log("Success:", values);
-    message.success("Form submitted successfully!");
-    router("/login");
+    console.log('Success:', values);
+    toast.success('Form submitted successfully!');
+    router('/contact-info');
   };
 
   return (
@@ -38,7 +39,7 @@ const UserInfo = () => {
             label="Phone Number"
             name="phone"
             rules={[
-              { required: true, message: "Please enter your phone number!" },
+              { required: true, message: 'Please enter your phone number!' },
             ]}
             placeholder="Phone number"
           />
@@ -46,14 +47,14 @@ const UserInfo = () => {
             className="text-start"
             label="Website"
             name="website"
-            rules={[{ required: true, message: "Please enter your website!" }]}
+            rules={[{ required: true, message: 'Please enter your website!' }]}
             placeholder="Website URL"
           />
           <InputField
             className="text-start"
             label="Tax Identification number"
             name="taxId"
-            rules={[{ required: true, message: "Please enter your tax ID!" }]}
+            rules={[{ required: true, message: 'Please enter your tax ID!' }]}
             placeholder="Tax Identification number"
           />
 

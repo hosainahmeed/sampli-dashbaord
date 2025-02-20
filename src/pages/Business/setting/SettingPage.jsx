@@ -9,6 +9,7 @@ import { TbBrandGoogleHome } from 'react-icons/tb';
 import { GoDatabase, GoFileMedia } from 'react-icons/go';
 import { MdOutlineSecurity } from 'react-icons/md';
 import { IoIosNotificationsOutline } from 'react-icons/io';
+import { useLocation } from 'react-router-dom';
 
 const items = [
   {
@@ -20,7 +21,6 @@ const items = [
     ),
     key: 'general',
     children: <General />,
-    // children:  <Security />,
   },
   {
     label: (
@@ -66,9 +66,12 @@ const items = [
 ];
 
 function SettingPage() {
+  const location = useLocation();
+  const state = location.state;
+  const notificationTab = state?.tab;
   return (
     <>
-      <Tabs items={items} />
+      <Tabs items={items} defaultActiveKey={notificationTab || 'general'} />
     </>
   );
 }

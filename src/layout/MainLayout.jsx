@@ -9,7 +9,6 @@ const MainLayout = () => {
   const path = location.pathname;
   const currentPath =
     path === '/store-profile' || path === '/all-notifications';
-  console.log(currentPath);
   if (currentPath) {
     return (
       <>

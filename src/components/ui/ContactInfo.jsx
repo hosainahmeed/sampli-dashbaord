@@ -1,19 +1,20 @@
-import React from "react";
-import { Button, Typography, message } from "antd";
-import "antd/dist/reset.css";
-import Logo from "../../components/ui/Logo";
-import InputField from "../../components/ui/InputField";
-import FormWrapper from "../../components/ui/FormWrapper";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { Button, Typography, message } from 'antd';
+import 'antd/dist/reset.css';
+import Logo from '../../components/ui/Logo';
+import InputField from '../../components/ui/InputField';
+import FormWrapper from '../../components/ui/FormWrapper';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const ContactInfo = () => {
   const router = useNavigate();
   const onFinish = (values) => {
-    console.log("Success:", values);
-    message.success("Form submitted successfully!");
-    router("/login");
+    console.log('Success:', values);
+    toast.success('Form submitted successfully!');
+    router('/compliance-info');
   };
 
   return (
@@ -37,14 +38,14 @@ const ContactInfo = () => {
             className="text-start"
             label="Contact Name"
             name="contactName"
-            rules={[{ required: true, message: "Please enter your name!" }]}
+            rules={[{ required: true, message: 'Please enter your name!' }]}
             placeholder="Contact Name"
           />
           <InputField
             className="text-start"
             label="Contact role"
             name="contactRole"
-            rules={[{ required: true, message: "Please enter your role!" }]}
+            rules={[{ required: true, message: 'Please enter your role!' }]}
             placeholder="Contact role"
           />
           <InputField
@@ -53,7 +54,7 @@ const ContactInfo = () => {
             label="Phone Number"
             name="phone"
             rules={[
-              { required: true, message: "Please enter your phone number!" },
+              { required: true, message: 'Please enter your phone number!' },
             ]}
             placeholder="Phone number"
           />
@@ -67,7 +68,6 @@ const ContactInfo = () => {
           </Button>
         </FormWrapper>
       </div>
-      
     </div>
   );
 };

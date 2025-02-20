@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Card, Switch, notification } from 'antd';
+import { Card, Switch, Typography, notification } from 'antd';
 import { toast } from 'react-hot-toast';
 
 function Notification() {
   const [isBrowserNotification, setIsBrowserNotification] = useState(false);
   const [isCustomerNotification, setIsCustomerNotification] = useState(false);
   const [isNewOrderNotification, setIsNewOrderNotification] = useState(false);
-
+  const { Title } = Typography;
   const handleBrowserNotification = (checked) => {
     setIsBrowserNotification(checked);
     if (checked) {
@@ -42,7 +42,9 @@ function Notification() {
 
   return (
     <div className="flex flex-col gap-4 ">
-      <h1 className="text-2xl">Notifications</h1>
+      <Title level={3} className="text-2xl">
+        Notifications
+      </Title>
       <Card
         className="shadow-sm"
         title="General"

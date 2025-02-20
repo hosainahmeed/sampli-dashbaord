@@ -1,264 +1,236 @@
-/* eslint-disable no-undef */
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { Card, Typography, Upload, Button, Form, Input, Row, Col } from 'antd';
 import {
-  Upload,
-  message,
-  Button,
-  Typography,
-  Input,
-  Row,
-  Col,
-  Form,
-  Card,
-} from "antd";
-import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+  DeleteOutlined,
+  EditOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
+import { RiImageAddLine } from 'react-icons/ri';
+import toast from 'react-hot-toast';
 
+const { Titile, Text } = Typography;
 const { Dragger } = Upload;
-const { Text } = Typography;
+import './Media.css';
 
 const Media = () => {
-  const [coverImageUrl, setCoverImageUrl] = useState(null);
-  const [logoImageUrl, setLogoImageUrl] = useState(null);
-  const [file, setFile] = useState(null);
-  const [socialLinks, setSocialLinks] = useState({
-    facebook: "",
-    twitter: "",
-    tiktok: "",
-    instagram: "",
-    website: "",
-    linkedin: "",
+  const [images, setImages] = useState({
+    cover: null,
+    logo: null,
   });
 
-  const handleUpload = (file, imageType) => {
-    const isValidSize = file.size / 1024 / 1024 < 10;
+  const [form] = Form.useForm();
+
+  const imageRequirements = {
+    cover: {
+      minWidth: 1920,
+      minHeight: 1080,
+      title: 'Cover Image',
+      description: 'Showcase promotional banners to grab attention!',
+    },
+    logo: {
+      minWidth: 512,
+      minHeight: 512,
+      title: 'Logo',
+      description: 'Add your brand logo',
+    },
+  };
+
+  const handleImageUpload = (file, type) => {
+    // Validate file type
+    const validTypes = [
+      'image/heic',
+      'image/webp',
+      'image/svg+xml',
+      'image/png',
+      'image/jpeg',
+    ];
+    if (!validTypes.includes(file.type)) {
+      toast.error('Please upload HEIC, WEBP, SVG, PNG, or JPG files only.');
+      return false;
+    }
+
+    // Validate file size
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('File size should be less than 10MB');
+      return false;
+    }
+
     const img = new Image();
-    img.src = URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(file);
+
     img.onload = () => {
-      if (img.width < 1920 || img.height < 1080 || !isValidSize) {
-        message.warning(
-          "Your cover image is less than 1920×1080 px and may not be used by some apps and channels"
+      const requirements = imageRequirements[type];
+
+      // Show warning if image doesn't meet size requirements, but still allow upload
+      if (
+        img.width < requirements.minWidth ||
+        img.height < requirements.minHeight
+      ) {
+        toast.success(
+          `Warning: ${requirements.title} is smaller than the recommended size of ${requirements.minWidth}×${requirements.minHeight} pixels. This might affect quality.`,
+          { duration: 5000 }
         );
       }
-      if (imageType === "cover") {
-        setCoverImageUrl(img.src);
-      } else {
-        setLogoImageUrl(img.src);
-      }
-      setFile(file);
-      console.log("Uploaded File:", file);
+
+      setImages((prev) => ({
+        ...prev,
+        [type]: {
+          file,
+          preview: objectUrl,
+        },
+      }));
+      toast.success(`${requirements.title} uploaded successfully!`);
     };
+
+    img.src = objectUrl;
     return false;
   };
 
-  const handleRemove = (imageType) => {
-    if (imageType === "cover") {
-      setCoverImageUrl(null);
-    } else {
-      setLogoImageUrl(null);
+  const handleRemoveImage = (type) => {
+    if (images[type]?.preview) {
+      URL.revokeObjectURL(images[type].preview);
     }
+    setImages((prev) => ({
+      ...prev,
+      [type]: null,
+    }));
+    toast.success(`${imageRequirements[type].title} removed successfully!`);
   };
 
-  const handleSocialLinkChange = (e) => {
-    const { name, value } = e.target;
-    setSocialLinks((prev) => ({ ...prev, [name]: value }));
+  const handleSocialLinksSubmit = (values) => {
+    console.log('Social Links Submitted:', values);
+    toast.success('Social links saved successfully!');
   };
 
-  return (
-    <Card>
-      <h2 className="text-2xl mb-4">Cover Image</h2>
-      <p className="text-base mb-4">
-        You can showcase promotional banners to grab attention and highlight key
-        offers!
-      </p>
+  const renderImageUpload = (type) => {
+    const { title, description } = imageRequirements[type];
+    const image = images[type];
 
-      {/* Upload Cover Image Section */}
-      <div style={{ textAlign: "center", marginBottom: 20 }}>
-        {!coverImageUrl ? (
-          <Dragger
-            beforeUpload={(file) => handleUpload(file, "cover")}
-            showUploadList={false}
-          >
-            <p className="ant-upload-drag-icon">
-              <PlusOutlined style={{ fontSize: 32 }} />
-            </p>
-            <p className="ant-upload-text">Add Cover Image</p>
-            <p className="ant-upload-hint">
-              HEIC, WEBP, SVG, PNG, or JPG. Recommended: 1920×1080 pixels
-              minimum.
-            </p>
-          </Dragger>
-        ) : (
-          <div
-            style={{ position: "relative", textAlign: "center", marginTop: 20 }}
-          >
-            <img
-              src={coverImageUrl}
-              alt="Cover"
-              style={{
-                width: "100%",
-                maxHeight: 200,
-                borderRadius: 8,
-                objectFit: "cover",
-              }}
-            />
-            <div style={{ marginTop: 10 }}>
-              <Button
-                icon={<EditOutlined />}
-                onClick={() => setCoverImageUrl(null)}
-              >
-                Edit
-              </Button>
-              <Button
-                icon={<DeleteOutlined />}
-                danger
-                onClick={() => handleRemove("cover")}
-                style={{ marginLeft: 10 }}
-              >
-                Remove
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {file && file.size && (file.width < 1920 || file.height < 1080) && (
-        <Text type="warning">
-          Your cover image is less than 1920×1080 px and may not be used by some
-          apps and channels.
+    return (
+      <div style={{ marginBottom: 24 }}>
+        <h3 style={{ fontSize: 18, marginBottom: 8 }}>{title}</h3>
+        <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+          {description}
         </Text>
-      )}
 
-      {/* Logo Section */}
-      <div className="mt-6">
-        <h3 className="text-xl mb-2">Logo</h3>
-        <p>Add your brand logo</p>
-        <div style={{ textAlign: "center", marginBottom: 20 }}>
-          {!logoImageUrl ? (
-            <Dragger
-              beforeUpload={(file) => handleUpload(file, "logo")}
-              showUploadList={false}
-            >
-              <p className="ant-upload-drag-icon">
-                <PlusOutlined style={{ fontSize: 32 }} />
-              </p>
-              <p className="ant-upload-text">Add a logo</p>
-              <p className="ant-upload-hint">
-                HEIC, WEBP, SVG, PNG, or JPG. Recommended: 512×512 pixels
-                minimum.
-              </p>
-            </Dragger>
-          ) : (
-            <div
-              style={{
-                position: "relative",
-                textAlign: "center",
-                marginTop: 20,
-              }}
-            >
-              <img
-                src={logoImageUrl}
-                alt="Logo"
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-              />
-              <div style={{ marginTop: 10 }}>
+        <div className="border border-gray-300 rounded-lg p-4">
+          {image ? (
+            <div className="flex items-center justify-center flex-col !w-full">
+              <div className={type === 'logo' ? 'logoImage' : 'coverImage'}>
+                <img
+                  src={image.preview}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="mt-6">
                 <Button
                   icon={<EditOutlined />}
-                  onClick={() => setLogoImageUrl(null)}
+                  onClick={() =>
+                    document.getElementById(`${type}-upload`).click()
+                  }
+                  style={{ marginRight: 8 }}
                 >
-                  Edit
+                  Change
                 </Button>
                 <Button
-                  icon={<DeleteOutlined />}
                   danger
-                  onClick={() => handleRemove("logo")}
-                  style={{ marginLeft: 10 }}
+                  icon={<DeleteOutlined />}
+                  onClick={() => handleRemoveImage(type)}
                 >
                   Remove
                 </Button>
               </div>
             </div>
+          ) : (
+            <Dragger
+              showUploadList={false}
+              beforeUpload={(file) => handleImageUpload(file, type)}
+              accept=".heic,.webp,.svg,.png,.jpg,.jpeg"
+              style={{ padding: 24 }}
+            >
+              <p className="ant-upload-drag-icon flex justify-center items-center">
+                <RiImageAddLine style={{ fontSize: 48, color: '#40a9ff' }} />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to upload {title}
+              </p>
+              <p className="ant-upload-hint">
+                HEIC, WEBP, SVG, PNG, or JPG
+                <br />
+                Recommended: {imageRequirements[type].minWidth}×
+                {imageRequirements[type].minHeight} pixels
+              </p>
+            </Dragger>
           )}
+          <input
+            id={`${type}-upload`}
+            type="file"
+            style={{ display: 'none' }}
+            accept=".heic,.webp,.svg,.png,.jpg,.jpeg"
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                handleImageUpload(e.target.files[0], type);
+              }
+            }}
+          />
         </div>
       </div>
+    );
+  };
 
-      {/* Social Links Section */}
-      <div className="mt-6">
-        <h3 className="text-xl mb-2">Socials Link</h3>
-        <p>Promote your brand by adding your social links</p>
+  const renderSocialLinks = () => (
+    <div style={{ marginBottom: 24 }}>
+      <h3 style={{ fontSize: 18, marginBottom: 8 }}>Social Links</h3>
+      <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+        Connect with your audience across platforms
+      </Text>
 
-        <Form layout="vertical">
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="Facebook">
-                <Input
-                  name="facebook"
-                  value={socialLinks.facebook}
-                  onChange={handleSocialLinkChange}
-                />
+      <Form
+        form={form}
+        onFinish={handleSocialLinksSubmit}
+        layout="vertical"
+        initialValues={{
+          facebook: '',
+          twitter: '',
+          tiktok: '',
+          instagram: '',
+          website: '',
+          linkedin: '',
+        }}
+      >
+        <Row gutter={16}>
+          {[
+            'facebook',
+            'twitter',
+            'tiktok',
+            'instagram',
+            'website',
+            'linkedin',
+          ].map((platform) => (
+            <Col span={12} key={platform}>
+              <Form.Item
+                name={platform}
+                label={platform.charAt(0).toUpperCase() + platform.slice(1)}
+                style={{ marginBottom: 16 }}
+              >
+                <Input placeholder={`Enter your ${platform} URL`} />
               </Form.Item>
             </Col>
-            <Col span={12}>
-              <Form.Item label="Twitter">
-                <Input
-                  name="twitter"
-                  value={socialLinks.twitter}
-                  onChange={handleSocialLinkChange}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+          ))}
+        </Row>
+        <Button htmlType="submit" type="primary" icon={<UploadOutlined />}>
+          Save Social Links
+        </Button>
+      </Form>
+    </div>
+  );
 
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="Tiktok">
-                <Input
-                  name="tiktok"
-                  value={socialLinks.tiktok}
-                  onChange={handleSocialLinkChange}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Instagram">
-                <Input
-                  name="instagram"
-                  value={socialLinks.instagram}
-                  onChange={handleSocialLinkChange}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="Website">
-                <Input
-                  name="website"
-                  value={socialLinks.website}
-                  onChange={handleSocialLinkChange}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="LinkedIn">
-                <Input
-                  name="linkedin"
-                  value={socialLinks.linkedin}
-                  onChange={handleSocialLinkChange}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Button type="primary" htmlType="submit">
-            Save
-          </Button>
-        </Form>
-      </div>
+  return (
+    <Card style={{ margin: '0 auto' }}>
+      {renderImageUpload('cover')}
+      {renderImageUpload('logo')}
+      {renderSocialLinks()}
     </Card>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Form,
   Input,
@@ -6,47 +6,47 @@ import {
   Select,
   Typography,
   Divider,
-  message,
-} from "antd";
-import { Link, useNavigate } from "react-router-dom";
-import FormWrapper from "./FormWrapper";
-import InputField from "./InputField";
-import SelectField from "../page-Component/SelectField";
-import Logo from "./Logo";
+} from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import FormWrapper from './FormWrapper';
+import InputField from './InputField';
+import SelectField from '../page-Component/SelectField';
+import Logo from './Logo';
+import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 const BusinessInfoForm = () => {
   const options = [
-    { value: "sole_proprietorship", label: "Sole Proprietorship" },
-    { value: "private_limited_company", label: "Private Limited Company" },
-    { value: "partnership", label: "Partnership" },
-    { value: "llp", label: "Limited Liability Partnership (LLP)" },
-    { value: "corporation", label: "Corporation" },
-    { value: "sme", label: "Small Business Enterprise (SME)" },
-    { value: "startup", label: "Startup" },
-    { value: "online_retailer", label: "Online Retailer/E-commerce" },
-    { value: "manufacturing_company", label: "Manufacturing Company" },
+    { value: 'sole_proprietorship', label: 'Sole Proprietorship' },
+    { value: 'private_limited_company', label: 'Private Limited Company' },
+    { value: 'partnership', label: 'Partnership' },
+    { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
+    { value: 'corporation', label: 'Corporation' },
+    { value: 'sme', label: 'Small Business Enterprise (SME)' },
+    { value: 'startup', label: 'Startup' },
+    { value: 'online_retailer', label: 'Online Retailer/E-commerce' },
+    { value: 'manufacturing_company', label: 'Manufacturing Company' },
   ];
   const SectorOptions = [
-    { value: "beauty", label: "Beauty" },
-    { value: "apparel", label: "Apparel" },
-    { value: "footwear", label: "Footwear" },
-    { value: "personal_care", label: "Personal Care" },
-    { value: "home_appliances", label: "Home Appliances" },
-    { value: "food_beverage", label: "Food & Beverage" },
-    { value: "pets", label: "Pets" },
-    { value: "kids_baby", label: "Kids & Baby" },
-    { value: "jewelry", label: "Jewelry" },
-    { value: "women", label: "Women" },
-    { value: "men", label: "Men" },
+    { value: 'beauty', label: 'Beauty' },
+    { value: 'apparel', label: 'Apparel' },
+    { value: 'footwear', label: 'Footwear' },
+    { value: 'personal_care', label: 'Personal Care' },
+    { value: 'home_appliances', label: 'Home Appliances' },
+    { value: 'food_beverage', label: 'Food & Beverage' },
+    { value: 'pets', label: 'Pets' },
+    { value: 'kids_baby', label: 'Kids & Baby' },
+    { value: 'jewelry', label: 'Jewelry' },
+    { value: 'women', label: 'Women' },
+    { value: 'men', label: 'Men' },
   ];
   const router = useNavigate();
   const onFinish = (values) => {
-    console.log("Success:", values);
-    message.success("Form submitted successfully!");
-    router("/user-info");
+    console.log('Success:', values);
+    toast.success('Form submitted successfully!');
+    router('/user-info');
   };
 
   return (
@@ -63,19 +63,19 @@ const BusinessInfoForm = () => {
         </div>
         <FormWrapper onFinish={onFinish}>
           <InputField
-            label={"Legal Business name"}
+            label={'Legal Business name'}
             name="legalBusinessName"
             rules={[
               {
                 required: true,
-                message: "Please enter your legal business name!",
+                message: 'Please enter your legal business name!',
               },
             ]}
             placeholder="Enter your legal business name"
             className="text-start"
           ></InputField>
           <InputField
-            label={"Trade name (Optional)"}
+            label={'Trade name (Optional)'}
             name="tradeName"
             placeholder="Enter your trade name"
           ></InputField>
@@ -84,36 +84,36 @@ const BusinessInfoForm = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please select the type of business!",
+                  message: 'Please select the type of business!',
                 },
               ]}
               name="businessType"
-              label={"Business Type"}
+              label={'Business Type'}
               options={options}
               className="w-full text-start"
-              placeholder={"Select type of business"}
+              placeholder={'Select type of business'}
             />
             <SelectField
               rules={[
                 {
                   required: true,
-                  message: "Please select the type of business!",
+                  message: 'Please select the type of business!',
                 },
               ]}
               name="businessSector"
-              label={"Business Sector"}
+              label={'Business Sector'}
               options={SectorOptions}
               className="w-full text-start"
-              placeholder={"Select type of business"}
+              placeholder={'Select type of business'}
             />
           </div>
           <InputField
-            label={"Business address"}
+            label={'Business address'}
             name="businessAddress"
             rules={[
               {
                 required: true,
-                message: "Please enter your business address!",
+                message: 'Please enter your business address!',
               },
             ]}
             placeholder="Enter your business address"

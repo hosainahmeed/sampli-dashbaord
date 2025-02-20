@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function StatsOverview() {
   const statsData = {
@@ -16,7 +16,14 @@ function StatsOverview() {
         >
           <h1 className="uppercase text-xs xl:text-sm">{key}</h1>
           <h1 className="sm:text-xl xl:text-4xl font-semibold">
-            {statsData.totalSpent ? "$" + statsData[key] : statsData[key]}
+            {key === 'totalSpent' ? (
+              <span>
+                $
+                {statsData[key].toLocaleString('en-US')}
+              </span>
+            ) : (
+              statsData[key]
+            )}
           </h1>
         </div>
       ))}
@@ -25,4 +32,3 @@ function StatsOverview() {
 }
 
 export default StatsOverview;
-

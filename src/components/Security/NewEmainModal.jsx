@@ -1,13 +1,14 @@
 import React from "react";
-import { Modal, Form, Input, Button, Typography, message } from "antd";
+import { Modal, Form, Input, Button, Typography } from "antd";
+import toast from "react-hot-toast";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const NewEmainModal = ({ visible, onCancel, onContinue }) => {
   const onFinish = (values) => {
     console.log("Success:", values);
     localStorage.setItem("email", values.email);
-    message.success("Form submitted successfully!");
+    toast.success("Form submitted successfully!");
     onContinue();
   };
   return (

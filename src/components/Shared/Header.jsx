@@ -9,9 +9,11 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import brandlogo from '../../assets/logo/BrandLogo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function Header() {
+  const navigate = useNavigate();
   const user = {
     photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
     displayName: 'Micheal Scott',
@@ -19,6 +21,8 @@ function Header() {
   };
   //update
   const handleSignOut = () => {
+    toast.success('sigh out successfully!');
+    navigate('/login');
     console.log('sign out');
   };
 
@@ -39,7 +43,7 @@ function Header() {
         <Link to="/settings">Settings</Link>
       </Menu.Item>
       <Menu.Item key="3" icon={<WalletOutlined />}>
-        <Link to="/balance">Balance</Link>
+        <Link to="/sampler/campaign/transaction-history">Balance</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="4" icon={<LogoutOutlined />} onClick={handleSignOut}>
@@ -51,7 +55,9 @@ function Header() {
 
   return (
     <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
-      <img src={brandlogo} alt="brand logo" />
+      <Link to={'/'}>
+        <img src={brandlogo} alt="brand logo" />
+      </Link>
       <div className="flex items-center gap-4 text-2xl">
         <CiCircleQuestion />
         <Link to="/all-notifications">

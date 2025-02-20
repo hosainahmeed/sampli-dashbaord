@@ -1,11 +1,12 @@
-import React from "react";
-import { Card, Avatar, Typography, Rate, Tag, Button } from "antd";
+import React from 'react';
+import { Card, Avatar, Typography, Rate, Tag, Button } from 'antd';
 import {
   PlayCircleOutlined,
   CommentOutlined,
   ShareAltOutlined,
-} from "@ant-design/icons";
-import { BsThreeDots } from "react-icons/bs";
+} from '@ant-design/icons';
+import { BsThreeDots } from 'react-icons/bs';
+import { CiHeart } from 'react-icons/ci';
 
 const { Title, Text } = Typography;
 
@@ -22,7 +23,7 @@ const FeedCard = () => {
             <Title level={5} style={{ margin: 0 }}>
               Micheal Scott <Text type="secondary">@Mike67 • 23mins ago</Text>
             </Title>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <Rate
                 disabled
                 defaultValue={2}
@@ -32,7 +33,7 @@ const FeedCard = () => {
               <Tag color="blue" style={{ marginLeft: 10 }}>
                 Natural Glow Serum
               </Tag>
-              <Text strong style={{ color: "green", marginLeft: 5 }}>
+              <Text strong style={{ color: 'green', marginLeft: 5 }}>
                 $25.00
               </Text>
               <Text type="secondary" style={{ marginLeft: 10 }}>
@@ -48,7 +49,7 @@ const FeedCard = () => {
         skin looks more radiant and the texture has improved significantly.
         Totally worth the price!
       </Text>
-      <div style={{ position: "relative" }}>
+      <div style={{ position: 'relative' }}>
         <video
           src="/path-to-video.mp4"
           controls
@@ -57,12 +58,14 @@ const FeedCard = () => {
       </div>
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: 'flex',
+          justifyContent: 'space-between',
           marginTop: 10,
         }}
       >
-        <Text type="secondary">23</Text>
+        <Button type="text" icon={<CiHeart />}>
+          <Text type="secondary">23</Text>
+        </Button>
         <Button type="text" icon={<CommentOutlined />}>
           6 comments
         </Button>
