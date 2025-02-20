@@ -21,14 +21,16 @@ const ChooseRole = () => {
   };
 
   return (
-    <div className="flex justify-center items-center  min-h-screen bg-gray-100 p-4">
-      <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-xl ">
+    <div className="flex justify-center items-center  min-h-screen bg-gray-100 p-4 gradient-container  ">
+      <div className="gradient-ellipse"></div>
+
+      <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-xl relative">
         <Title level={3} className="text-blue-500">
           <Logo />
         </Title>
         <div className="flex flex-col mb-6 items-start  ">
           <Title level={2}>Get Started</Title>
-          <h1 className="text-[var(--body-text)] leading-1  text-start">
+          <h1 className="text-[var(--body-text)]   ">
             Are you here to review products or to get your products reviewed?
           </h1>
         </div>
@@ -87,8 +89,7 @@ const ChooseRole = () => {
         >
           Continue
         </Button>
-
-        <div className="mt-4 text-gray-500 text-center">
+        <div className="mt-4 text-gray-500 text-center ">
           Already have an account?{' '}
           <Link
             to="/login"
