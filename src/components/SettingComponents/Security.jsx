@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { Button, Card, Divider, Typography } from "antd";
-import { FaAngleRight } from "react-icons/fa";
-import EmailChangeModal from "../Security/EmailChangeModal";
-import PasswordChangeModal from "../Security/PasswordChangeModal";
-import SuccessModal from "../Security/SuccessModal";
-import OtpModal from "../Security/OtpModal";
-import ChangePasswordModal from "../Security/ChangePasswordModal";
-import PasswordChangeEmailModal from "../Security/PasswordChangeEmailModal";
-import PasswordChangeOptModal from "../Security/PasswordChangeOptModal";
-import AccountAuthorization from "./AccountAuthorization";
-import NewEmainModal from "../Security/NewEmainModal";
+import React, { useState } from 'react';
+import { Button, Card, Divider, Typography } from 'antd';
+import { FaAngleRight } from 'react-icons/fa';
+import EmailChangeModal from '../Security/EmailChangeModal';
+import PasswordChangeModal from '../Security/PasswordChangeModal';
+import SuccessModal from '../Security/SuccessModal';
+import OtpModal from '../Security/OtpModal';
+import ChangePasswordModal from '../Security/ChangePasswordModal';
+import PasswordChangeEmailModal from '../Security/PasswordChangeEmailModal';
+import PasswordChangeOptModal from '../Security/PasswordChangeOptModal';
+import AccountAuthorization from './AccountAuthorization';
+import NewEmainModal from '../Security/NewEmainModal';
+import DeleteAccountCard from '../Security/DeleteAccountCard';
 
 const { Title, Text } = Typography;
 
@@ -25,19 +26,19 @@ function Security() {
     changePassModal: false,
   });
 
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
   const handleResend = () => {
-    console.log("Resending OTP...");
+    console.log('Resending OTP...');
     // Add your OTP resend logic here
   };
 
   const handleContinue = () => {
-    console.log("OTP:", otp.join(""));
+    console.log('OTP:', otp.join(''));
     setModalState({ ...modalState, otpModal: false, successModal: true });
   };
   const handleContinuePassOtp = () => {
-    console.log("OTP:", otp.join(""));
+    console.log('OTP:', otp.join(''));
     setModalState({
       ...modalState,
       passwordEmailOtp: false,
@@ -47,8 +48,8 @@ function Security() {
 
   return (
     <div>
-      <Title level={2}>Security</Title>
-      <Card>
+      <Title level={3}>Security</Title>
+      <Card className="!mb-4">
         <Title level={3}>General</Title>
         <div className="flex-center-between">
           <div>
@@ -79,6 +80,9 @@ function Security() {
         </div>
       </Card>
       <AccountAuthorization />
+      <div className="!mt-4">
+        <DeleteAccountCard />
+      </div>
       <EmailChangeModal
         visible={modalState.emailModal}
         onCancel={() => setModalState({ ...modalState, emailModal: false })}
@@ -164,7 +168,7 @@ function Security() {
               });
             }
           } catch (error) {
-            console.log("Error changing password:", error);
+            console.log('Error changing password:', error);
           }
         }}
       />

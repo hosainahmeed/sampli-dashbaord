@@ -1,24 +1,24 @@
-import React, { useState } from 'react'
-import { Typography, Radio, Card, Button } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
-import Logo from '../../../components/ui/Logo'
+import React, { useState } from 'react';
+import { Typography, Radio, Card, Button } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import Logo from '../../../components/ui/Logo';
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 const ChooseRole = () => {
   const onFinish = (values) => {
-    console.log('Success:', values)
-  }
+    console.log('Success:', values);
+  };
 
-  const [selectedOption, setSelectedOption] = useState('')
-  const router = useNavigate()
+  const [selectedOption, setSelectedOption] = useState('');
+  const router = useNavigate();
   const handleNext = () => {
     if (selectedOption === 'existing') {
-      return router('/signup/reviewer')
+      return router('/signup/reviewer');
     } else if (selectedOption === 'new') {
-      return router('/signup/business')
+      return router('/signup/business');
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center  min-h-screen bg-gray-100 p-4">
@@ -37,7 +37,6 @@ const ChooseRole = () => {
           value={selectedOption}
           onChange={(e) => setSelectedOption(e.target.value)}
           style={{ width: '100%' }}
-          
         >
           <Card
             onClick={() => setSelectedOption('existing')}
@@ -83,7 +82,7 @@ const ChooseRole = () => {
         <Button
           type="primary"
           onClick={handleNext}
-          disabled={selectedOption === ''} 
+          disabled={selectedOption === ''}
           className="btn-primary w-full cursor-pointer mt-6 px-4 py-2 bg-[var(--baseColor)] hover:bg-blue-600 text-center transition-all duration-150"
         >
           Continue
@@ -112,7 +111,7 @@ const ChooseRole = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChooseRole
+export default ChooseRole;

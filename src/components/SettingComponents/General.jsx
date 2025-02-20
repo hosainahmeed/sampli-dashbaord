@@ -1,32 +1,32 @@
-import React, { useState } from "react";
-import FormWrapper from "../ui/FormWrapper";
-import InputField from "../ui/InputField";
-import TextArea from "antd/es/input/TextArea";
-import { Button, Card, Form, message } from "antd";
-import SelectField from "../page-Component/SelectField";
-import { Country, State, City } from "country-state-city";
-
+import React, { useState } from 'react';
+import FormWrapper from '../ui/FormWrapper';
+import InputField from '../ui/InputField';
+import TextArea from 'antd/es/input/TextArea';
+import { Button, Card, Form, Typography } from 'antd';
+import SelectField from '../page-Component/SelectField';
+import { Country, State, City } from 'country-state-city';
+import toast from 'react-hot-toast';
+const { Title } = Typography;
 function General() {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
-  console.log(selectedState);
-  
+
   // console.log(Country.getAllCountries());
   // console.log(City.getAllCities());
   // console.log(State.getAllStates());
   // console.log(selectedCountry);
 
   const onFinishForm1 = () => {
-    message.success("First form submitted successfully!");
+    toast.success('First form submitted successfully!');
     form1.resetFields();
   };
 
   const onFinishForm2 = () => {
     console.log(form2.getFieldsValue());
 
-    message.success("Second form submitted successfully!");
+    toast.success('Second form submitted successfully!');
     form2.resetFields();
   };
 
@@ -34,7 +34,7 @@ function General() {
     <>
       <div className="flex items-start xl:flex-row sm:flex-col justify-between gap-4">
         <div className="flex-1 w-full">
-          <h1>General</h1>
+          <Title level={3}>General</Title>
           <Card className="w-full flex-1">
             <FormWrapper
               form={form1}
@@ -45,7 +45,7 @@ function General() {
                 label="Store Name"
                 name="storeName"
                 rules={[
-                  { required: true, message: "Please enter your store name!" },
+                  { required: true, message: 'Please enter your store name!' },
                 ]}
                 placeholder="Enter your store name"
               />
@@ -53,7 +53,7 @@ function General() {
                 label="Store Phone"
                 name="storePhone"
                 rules={[
-                  { required: true, message: "Please enter your store phone!" },
+                  { required: true, message: 'Please enter your store phone!' },
                 ]}
                 placeholder="Enter your store phone"
               />
@@ -61,7 +61,7 @@ function General() {
                 label="Store Email"
                 name="storeEmail"
                 rules={[
-                  { required: true, message: "Please enter your store email!" },
+                  { required: true, message: 'Please enter your store email!' },
                 ]}
                 placeholder="Enter your store email"
               />
@@ -71,7 +71,7 @@ function General() {
                 rules={[
                   {
                     required: true,
-                    message: "Please enter your store tagline!",
+                    message: 'Please enter your store tagline!',
                   },
                 ]}
                 placeholder="Enter your store tagline"
@@ -82,7 +82,7 @@ function General() {
                 rules={[
                   {
                     required: true,
-                    message: "Please enter store description!",
+                    message: 'Please enter store description!',
                   },
                 ]}
                 className="col-span-2"
@@ -112,7 +112,7 @@ function General() {
                 rules={[
                   {
                     required: true,
-                    message: "Please enter your legal business name!",
+                    message: 'Please enter your legal business name!',
                   },
                 ]}
                 placeholder="Enter your legal business name"
@@ -121,7 +121,7 @@ function General() {
                 label="Address"
                 name="address"
                 rules={[
-                  { required: true, message: "Please enter your address!" },
+                  { required: true, message: 'Please enter your address!' },
                 ]}
                 placeholder="Enter your address"
               />
@@ -130,7 +130,7 @@ function General() {
                 name="country"
                 placeholder="Select your country"
                 rules={[
-                  { required: true, message: "Please select your country!" },
+                  { required: true, message: 'Please select your country!' },
                 ]}
                 options={Country.getAllCountries().map((c) => ({
                   value: c.isoCode,

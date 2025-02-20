@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Modal, Input, Button, Typography } from "antd";
-import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 

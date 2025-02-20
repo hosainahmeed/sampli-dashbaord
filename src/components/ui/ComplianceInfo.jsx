@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Button, Typography, message, Upload, Form, Input } from "antd";
-import "antd/dist/reset.css";
-import Logo from "../../components/ui/Logo";
-import { useNavigate } from "react-router-dom";
-import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
-import InputField from "./InputField";
+import React, { useState } from 'react';
+import { Button, Typography, message, Upload, Form, Input } from 'antd';
+import 'antd/dist/reset.css';
+import Logo from '../../components/ui/Logo';
+import { useNavigate } from 'react-router-dom';
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import InputField from './InputField';
+import toast from 'react-hot-toast';
 
 const { Title } = Typography;
 
@@ -15,7 +16,7 @@ const ComplianceInfo = () => {
   const [licenseFileList, setLicenseFileList] = useState([]);
 
   // Allowed file types
-  const allowedTypes = ["application/pdf", "image/jpeg"];
+  const allowedTypes = ['application/pdf', 'image/jpeg'];
 
   const handleFileChange =
     (setFileList) =>
@@ -25,7 +26,7 @@ const ComplianceInfo = () => {
       );
 
       if (filteredFiles.length !== fileList.length) {
-        message.error("Only PDF and JPG files are allowed!");
+        toast.error('Only PDF and JPG files are allowed!');
       }
 
       setFileList(filteredFiles);
@@ -62,25 +63,26 @@ const ComplianceInfo = () => {
     try {
       const values = await form.validateFields();
       const formData = new FormData();
-      formData.append("ein", values.ein);
+      formData.append('ein', values.ein);
 
       if (certificateFileList.length > 0) {
-        formData.append("certificate", certificateFileList[0].originFileObj);
+        formData.append('certificate', certificateFileList[0].originFileObj);
       }
       if (licenseFileList.length > 0) {
-        formData.append("license", licenseFileList[0].originFileObj);
+        formData.append('license', licenseFileList[0].originFileObj);
       }
 
-      console.log("Form Data:", {
+      console.log('Form Data:', {
         EIN: values.ein,
         Certificate: certificateFileList[0]?.originFileObj,
         License: licenseFileList[0]?.originFileObj,
       });
 
       // Simulating a server request
-      message.success("Form submitted successfully!");
+      toast.success('Register Success!');
+      navigate('/');
     } catch (error) {
-      message.error("Please fill out all fields correctly.");
+      toast.error('Please fill out all fields correctly.');
     }
   };
 
@@ -110,7 +112,7 @@ const ComplianceInfo = () => {
               className="text-start"
               label="EIN *"
               name="ein"
-              rules={[{ required: true, message: "Please enter your EIN!" }]}
+              rules={[{ required: true, message: 'Please enter your EIN!' }]}
               placeholder="EIN number"
               type="number"
             />
@@ -125,8 +127,8 @@ const ComplianceInfo = () => {
                   <div className="flex items-center gap-2">
                     <img
                       src={
-                        certificateFileList[0].type === "application/pdf"
-                          ? "https://img.icons8.com/fluency/48/000000/pdf.png"
+                        certificateFileList[0].type === 'application/pdf'
+                          ? 'https://img.icons8.com/fluency/48/000000/pdf.png'
                           : URL.createObjectURL(
                               certificateFileList[0].originFileObj
                             )
@@ -187,8 +189,8 @@ const ComplianceInfo = () => {
                   <div className="flex items-center gap-2">
                     <img
                       src={
-                        licenseFileList[0].type === "application/pdf"
-                          ? "https://img.icons8.com/fluency/48/000000/pdf.png"
+                        licenseFileList[0].type === 'application/pdf'
+                          ? 'https://img.icons8.com/fluency/48/000000/pdf.png'
                           : URL.createObjectURL(
                               licenseFileList[0].originFileObj
                             )

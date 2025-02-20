@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import { Card } from "antd";
+import React from 'react';
+import { Card } from 'antd';
 
 function CampaignCard({ data }) {
   console.log(data);
@@ -19,9 +19,9 @@ function CampaignCard({ data }) {
         )}
         <p
           className={`text-xs ml-2 p-1 rounded-md ${
-            data?.change.includes("-")
-              ? "bg-red-100 text-red-500"
-              : "bg-green-100 text-green-500"
+            data?.change.includes('-')
+              ? 'bg-red-100 text-red-500'
+              : 'bg-green-100 text-green-500'
           }`}
         >
           {data?.change}

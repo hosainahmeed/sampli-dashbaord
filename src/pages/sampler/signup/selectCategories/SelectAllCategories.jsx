@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Steps,
   Button,
@@ -8,24 +8,25 @@ import {
   Select,
   Upload,
   message,
-} from 'antd'
-import { Country } from 'country-state-city'
+} from 'antd';
+import { Country } from 'country-state-city';
 import {
   AiFillInstagram,
   AiFillTwitterCircle,
   AiFillYoutube,
-} from 'react-icons/ai'
-import { FaTiktok } from 'react-icons/fa'
-import image1 from '/public/randomImage/118.png'
-import image2 from '/public/randomImage/120.png'
-import image3 from '/public/randomImage/121.png'
-import image4 from '/public/randomImage/123.png'
-import image5 from '/public/randomImage/125.png'
+} from 'react-icons/ai';
+import { FaTiktok } from 'react-icons/fa';
+import image1 from '/public/randomImage/118.png';
+import image2 from '/public/randomImage/120.png';
+import image3 from '/public/randomImage/121.png';
+import image4 from '/public/randomImage/123.png';
+import image5 from '/public/randomImage/125.png';
+import toast from 'react-hot-toast';
 
-const images = [image1, image2, image3, image4, image5]
+const images = [image1, image2, image3, image4, image5];
 
-const { Step } = Steps
-const { Option } = Select
+const { Step } = Steps;
+const { Option } = Select;
 
 const SelectAllCategories = () => {
   const [formData, setFormData] = useState({
@@ -35,53 +36,53 @@ const SelectAllCategories = () => {
     contactInfo: {},
     socialInfo: {},
     profileDetails: {},
-  })
-  const [current, setCurrent] = useState(0)
-  const [fileList, setFileList] = useState([])
+  });
+  const [current, setCurrent] = useState(0);
+  const [fileList, setFileList] = useState([]);
 
-  const next = () => setCurrent((prev) => prev + 1)
-  const prev = () => setCurrent((prev) => prev - 1)
+  const next = () => setCurrent((prev) => prev + 1);
+  const prev = () => setCurrent((prev) => prev - 1);
 
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => {
       const updatedField = checked
         ? [...prev[field], value]
-        : prev[field].filter((item) => item !== value)
-      return { ...prev, [field]: updatedField }
-    })
-  }
+        : prev[field].filter((item) => item !== value);
+      return { ...prev, [field]: updatedField };
+    });
+  };
 
   const handleFormSubmit = (values) => {
-    setFormData((prev) => ({ ...prev, contactInfo: values }))
-    console.log('Final Form Data:', { ...formData, contactInfo: values })
-  }
+    setFormData((prev) => ({ ...prev, contactInfo: values }));
+    console.log('Final Form Data:', { ...formData, contactInfo: values });
+  };
 
   const beforeUpload = (file) => {
-    const isLt500KB = file.size / 1024 < 500
+    const isLt500KB = file.size / 1024 < 500;
     if (!isLt500KB) {
-      message.error('Avatar image must be under 500KB')
+      toast.error('Avatar image must be under 500KB');
     }
-    return isLt500KB
-  }
+    return isLt500KB;
+  };
 
   const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList)
-  }
+    setFileList(newFileList);
+  };
 
   const onPreview = async (file) => {
-    let src = file.url
+    let src = file.url;
     if (!src) {
       src = await new Promise((resolve) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file.originFileObj)
-        reader.onload = () => resolve(reader.result)
-      })
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
     }
-    const image = new Image()
-    image.src = src
-    const imgWindow = window.open(src)
-    imgWindow?.document.write(image.outerHTML)
-  }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
 
   const steps = [
     // Step 1 All Categories
@@ -513,7 +514,7 @@ const SelectAllCategories = () => {
         </Form>
       ),
     },
-  ]
+  ];
   // const isNextEnabled = () => {
   //   if (current === 0) return formData.products.length > 0
   //   if (current === 1) return formData.reviewPlatforms.length > 0
@@ -555,7 +556,7 @@ const SelectAllCategories = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SelectAllCategories
+export default SelectAllCategories;

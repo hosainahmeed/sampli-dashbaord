@@ -1,21 +1,22 @@
-import React from "react";
-import { Form, Input, Button, Typography, Divider, message } from "antd";
-import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
-import "antd/dist/reset.css";
-import Logo from "../../components/ui/Logo";
-import { TiSocialFacebook } from "react-icons/ti";
-import InputField from "../../components/ui/InputField";
-import FormWrapper from "../../components/ui/FormWrapper";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Form, Input, Button, Typography, Divider, message } from 'antd';
+import { AppleOutlined, GoogleOutlined } from '@ant-design/icons';
+import 'antd/dist/reset.css';
+import Logo from '../../components/ui/Logo';
+import { TiSocialFacebook } from 'react-icons/ti';
+import InputField from '../../components/ui/InputField';
+import FormWrapper from '../../components/ui/FormWrapper';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
 
 const Register = () => {
   const router = useNavigate();
   const onFinish = (values) => {
-    console.log("Success:", values);
-    router("/business-info");
-    message.success("Form submitted successfully!");
+    console.log('Success:', values);
+    router('/business-info');
+    toast.success('Form submitted successfully!');
   };
 
   return (
@@ -50,16 +51,16 @@ const Register = () => {
             label="Email address"
             name="email"
             rules={[
-              { required: true, message: "Only company email is required!" },
-              { type: "email", message: "Enter a valid email address!" },
+              { required: true, message: 'Only company email is required!' },
+              { type: 'email', message: 'Enter a valid email address!' },
             ]}
             placeholder="MichealScott@gmail.com"
             type="email"
             style={{
-              width: "100%",
+              width: '100%',
               marginTop: 10,
               marginBottom: 10,
-              textAlign: "start",
+              textAlign: 'start',
             }}
           />
 
@@ -74,8 +75,11 @@ const Register = () => {
         </FormWrapper>
 
         <div className="mt-4 text-gray-500">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline transtion-all">
+          Already have an account?{' '}
+          <Link
+            to="/login"
+            className="text-blue-500 hover:underline transtion-all"
+          >
             Login
           </Link>
         </div>
@@ -86,10 +90,12 @@ const Register = () => {
           <Link to="/privacy" className="mr-3 hover:underline transtion-all">
             Privacy
           </Link>
-          <Link to="/terms" className="mr-3 hover:underline transtion-all">Terms</Link>
+          <Link to="/terms" className="mr-3 hover:underline transtion-all">
+            Terms
+          </Link>
         </div>
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <h1 className="text-[var(--body-text)] font-extralight text-sm">
             By joining Sampli, you agree to our
             <Link>
@@ -110,7 +116,7 @@ const Register = () => {
               </span>
             </Link>
           </h1>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,54 +1,54 @@
-import React, { useState } from "react";
-import { Table, Tag, Input, Button, Select, Modal, Pagination } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
-import { BsThreeDots } from "react-icons/bs";
-import { FiPlus } from "react-icons/fi";
-import UploadCsv from "../page-Component/UploadCsv";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Table, Tag, Input, Button, Select, Modal, Pagination } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { BsThreeDots } from 'react-icons/bs';
+import { FiPlus } from 'react-icons/fi';
+import UploadCsv from '../page-Component/UploadCsv';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
 const { Option } = Select;
 
 const ProductTable = () => {
-  const [searchText, setSearchText] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [searchText, setSearchText] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const [sortKey, setSortKey] = useState(null);
   const [openCsv, setOpenCsv] = useState(false);
   const navigate = useNavigate();
   const campaigns = [
     {
-      key: "1",
+      key: '1',
       id: 1,
-      name: "Summer Collection Review Group 1",
-      createdAt: "2023-03-23",
-      status: "Active",
+      name: 'Summer Collection Review Group 1',
+      createdAt: '2023-03-23',
+      status: 'Active',
       progress: 10,
       total: 300,
       salse: 40,
-      budget: "$25,000 of $100,000",
+      budget: '$25,000 of $100,000',
       image:
-        "https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg",
+        'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
     },
   ];
 
   const statusColors = {
-    Active: "orange",
-    Pending: "purple",
-    Completed: "green",
-    Paused: "gray",
+    Active: 'orange',
+    Pending: 'purple',
+    Completed: 'green',
+    Paused: 'gray',
   };
 
   const filteredCampaigns = campaigns
     .filter(
       (campaign) =>
         campaign.name.toLowerCase().includes(searchText.toLowerCase()) &&
-        (statusFilter === "All" || campaign.status === statusFilter)
+        (statusFilter === 'All' || campaign.status === statusFilter)
     )
     .sort((a, b) => {
       if (!sortKey) return 0;
-      if (sortKey === "name") {
+      if (sortKey === 'name') {
         return a.name.localeCompare(b.name);
-      } else if (sortKey === "date") {
+      } else if (sortKey === 'date') {
         return new Date(a.createdAt) - new Date(b.createdAt);
       }
       return 0;
@@ -57,8 +57,8 @@ const ProductTable = () => {
   const columns = [
     {
       title: <span className="text-xs xl:text-lg">Name</span>,
-      dataIndex: "name",
-      key: "name",
+      dataIndex: 'name',
+      key: 'name',
       render: (text, record) => (
         <span className="flex gap-2 item-center">
           {record.image && (
@@ -77,33 +77,33 @@ const ProductTable = () => {
     },
     {
       title: <span className="text-xs xl:text-lg">Price</span>,
-      dataIndex: "budget",
-      key: "budget",
+      dataIndex: 'budget',
+      key: 'budget',
     },
     {
       title: <span className="text-xs xl:text-lg">Status</span>,
-      dataIndex: "status",
-      key: "status",
+      dataIndex: 'status',
+      key: 'status',
       render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
     },
     {
       title: <span className="text-xs xl:text-lg">In Stocks</span>,
-      dataIndex: "total",
-      key: "total",
+      dataIndex: 'total',
+      key: 'total',
     },
     {
       title: <span className="text-xs xl:text-lg">Total Sales</span>,
-      dataIndex: "salse",
-      key: "salse",
+      dataIndex: 'salse',
+      key: 'salse',
     },
     {
       title: <span className="text-xs xl:text-lg">Date created</span>,
-      dataIndex: "createdAt",
-      key: "createdAt",
+      dataIndex: 'createdAt',
+      key: 'createdAt',
     },
     {
       title: <span className="text-xs xl:text-lg">Action</span>,
-      key: "action",
+      key: 'action',
       render: (text, record) => (
         <Button
           type="default"
@@ -173,8 +173,8 @@ const ProductTable = () => {
         columns={columns}
         dataSource={filteredCampaigns}
         locale={{
-          filterConfirm: "Confirm",
-          filterReset: "Reset",
+          filterConfirm: 'Confirm',
+          filterReset: 'Reset',
           emptyText: (
             <div className="flex items-center justify-center flex-col py-28 text-center">
               <p className="text-2xl">No result found</p>
@@ -186,23 +186,23 @@ const ProductTable = () => {
           showSizeChanger: false,
           defaultPageSize: 5,
           defaultCurrent: 1,
-          position: ["bottomCenter"],
+          position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
-            if (type === "prev") {
+            if (type === 'prev') {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
                 </Button>
               );
             }
-            if (type === "next") {
+            if (type === 'next') {
               return (
                 <Button className="!border-none ">
                   <FaAngleRight />
                 </Button>
               );
             }
-            if (type === "page") {
+            if (type === 'page') {
               return current;
             }
             return originalElement;
@@ -216,7 +216,7 @@ const ProductTable = () => {
         open={openCsv}
         onCancel={() => setOpenCsv(false)}
         title="Upload CSV File"
-        height={400}
+        width={'fit-content'}
       >
         <UploadCsv setOpenCsv={setOpenCsv} />
       </Modal>

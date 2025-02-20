@@ -1,21 +1,23 @@
-import React from "react";
-import { Button, Typography, Divider } from "antd";
-import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
-import "antd/dist/reset.css";
-import Logo from "../../components/ui/Logo";
-import { TiSocialFacebook } from "react-icons/ti";
-import InputField from "../../components/ui/InputField";
-import FormWrapper from "../../components/ui/FormWrapper";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Button, Typography, Divider } from 'antd';
+import { AppleOutlined, GoogleOutlined } from '@ant-design/icons';
+import 'antd/dist/reset.css';
+import Logo from '../../components/ui/Logo';
+import { TiSocialFacebook } from 'react-icons/ti';
+import InputField from '../../components/ui/InputField';
+import FormWrapper from '../../components/ui/FormWrapper';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const { Title } = Typography;
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
-    console.log("Success:", values);
+    console.log('Success:', values);
     if (values.email && values.password) {
-      navigate("/");
+      toast.success('Welcome to your website, sir!');
+      navigate('/');
     }
   };
 
@@ -37,16 +39,16 @@ const LoginForm = () => {
             label="Email address"
             name="email"
             rules={[
-              { required: true, message: "Please enter your email!" },
-              { type: "email", message: "Enter a valid email address!" },
+              { required: true, message: 'Please enter your email!' },
+              { type: 'email', message: 'Enter a valid email address!' },
             ]}
             placeholder="MichealScott@gmail.com"
             type="email"
             style={{
-              width: "100%",
+              width: '100%',
               marginTop: 10,
               marginBottom: 10,
-              textAlign: "start",
+              textAlign: 'start',
             }}
           />
           <InputField
@@ -54,22 +56,22 @@ const LoginForm = () => {
             name="password"
             type="password"
             rules={[
-              { required: true, message: "Please confirm your password" },
+              { required: true, message: 'Please confirm your password' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error("Passwords do not match!"));
+                  return Promise.reject(new Error('Passwords do not match!'));
                 },
               }),
             ]}
             placeholder="Password"
             style={{
-              width: "100%",
+              width: '100%',
               marginTop: 10,
               marginBottom: 10,
-              textAlign: "start",
+              textAlign: 'start',
             }}
           />
 
@@ -102,7 +104,7 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-4 text-gray-500">
-          New to Sampli?{" "}
+          New to Sampli?{' '}
           <Link
             to="/register"
             className="text-blue-500 hover:underline transtion-all"
