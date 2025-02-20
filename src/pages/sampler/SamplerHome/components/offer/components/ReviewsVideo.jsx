@@ -8,12 +8,14 @@ import {
 import { CiHeart, CiMaximize1, CiSettings } from 'react-icons/ci'
 import { RiPauseCircleLine } from 'react-icons/ri'
 
-const ReviewsVideo = () => {
+const ReviewsVideo = ({ showModal }) => {
   return (
     <div className=" mx-auto bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Uploaded reviews</h2>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+        <h2 className="text-xl font-semibold">
+          Uploaded reviews
+        </h2>
+        <button className="bg-blue-500 text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer"  onClick={showModal}>
           Upload New review
         </button>
       </div>

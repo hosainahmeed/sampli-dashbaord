@@ -171,7 +171,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
     {
       key: '2',
       label: 'Reviews',
-      children: <ReviewsVideo />,
+      children: <ReviewsVideo showModal={showModal} />,
     },
   ]
 

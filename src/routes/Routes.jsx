@@ -36,6 +36,11 @@ import MyPurchasesSampler from '../pages/sampler/SamplerHome/components/shipment
 import WishlistSampler from '../pages/sampler/SamplerHome/components/shipments/components/WishlistSampler.jsx'
 import NotificationsSampler from '../pages/sampler/SamplerHome/components/shipments/components/NotificationsSampler.jsx'
 import ReturnItemsSampler from '../pages/sampler/SamplerHome/components/shipments/components/ReturnItemsSampler.jsx'
+import SettingsSampler from '../pages/sampler/settings/SettingsSampler.jsx'
+import BasicDetailsSettingsSampler from '../pages/sampler/settings/components/basicdetails/BasicDetailsSettingsSampler.jsx'
+import PreferencesSettingsSampler from '../pages/sampler/settings/components/preferences/PreferencesSettingsSampler.jsx'
+import SecuritySettingsSampler from '../pages/sampler/settings/components/security/SecuritySettingsSampler.jsx'
+import NotificationsSettingsSampler from '../pages/sampler/settings/components/notifications/NotificationsSettingsSampler.jsx'
 
 export const router = createBrowserRouter([
   {
@@ -98,6 +103,28 @@ export const router = createBrowserRouter([
   {
     path: '/sampler/campaign/return-items',
     element: <ReturnItemsSampler />,
+  },
+  {
+    path: '/sampler/settings',
+    element: <SettingsSampler />,
+    children: [
+      {
+        path: 'basic-details-settings-sampler',
+        element: <BasicDetailsSettingsSampler />,
+      },
+      {
+        path: 'preferences-settings-sampler',
+        element: <PreferencesSettingsSampler />,
+      },
+      {
+        path: 'security-settings-sampler',
+        element: <SecuritySettingsSampler />,
+      },
+      {
+        path: 'notifications-settings-sampler',
+        element: <NotificationsSettingsSampler />,
+      },
+    ],
   },
 
   // hossain
