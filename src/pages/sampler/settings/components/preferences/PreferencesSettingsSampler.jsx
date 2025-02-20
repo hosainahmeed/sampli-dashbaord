@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Checkbox, Input } from 'antd'
 import { Edit2 } from 'lucide-react'
-
+import { FaTwitter, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa'
 const PreferencesSettingsSampler = () => {
   const [openModal, setOpenModal] = useState('')
 
@@ -44,10 +44,10 @@ const PreferencesSettingsSampler = () => {
   const frequencies = ['Weekly', 'Bi-Weekly', 'Monthly', 'Quarterly']
 
   const socialPlatforms = [
-    { key: 'instagram', label: 'Instagram username' },
-    { key: 'twitter', label: 'Twitter username' },
-    { key: 'youtube', label: 'YouTube Channel' },
-    { key: 'tiktok', label: 'TikTok Username' },
+    { key: 'instagram', label: <FaInstagram /> },
+    { key: 'twitter', label: <FaTwitter /> },
+    { key: 'youtube', label: <FaYoutube /> },
+    { key: 'tiktok', label: <FaTiktok /> },
   ]
 
   const handleModalSave = (type) => {
@@ -262,20 +262,23 @@ const PreferencesSettingsSampler = () => {
         <div className="space-y-4">
           {socialPlatforms.map((platform) => (
             <div key={platform.key} className="space-y-1">
-              <label className="text-sm text-gray-600">{platform.label}</label>
-              <Input
-                value={tempPreferences.socialAccounts[platform.key]}
-                onChange={(e) => {
-                  setTempPreferences({
-                    ...tempPreferences,
-                    socialAccounts: {
-                      ...tempPreferences.socialAccounts,
-                      [platform.key]: e.target.value,
-                    },
-                  })
-                }}
-                placeholder={`Enter your ${platform.key} username`}
-              />
+              <div className="flex gap-2 items-center justify-center">
+                <div> {platform.label}</div>
+                <Input
+                  value={tempPreferences.socialAccounts[platform.key]}
+                  className="h-[40px]"
+                  onChange={(e) => {
+                    setTempPreferences({
+                      ...tempPreferences,
+                      socialAccounts: {
+                        ...tempPreferences.socialAccounts,
+                        [platform.key]: e.target.value,
+                      },
+                    })
+                  }}
+                  placeholder={`Enter your ${platform.key} username`}
+                />
+              </div>
             </div>
           ))}
         </div>
