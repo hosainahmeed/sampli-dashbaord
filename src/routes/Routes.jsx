@@ -41,8 +41,9 @@ import BasicDetailsSettingsSampler from '../pages/sampler/settings/components/ba
 import PreferencesSettingsSampler from '../pages/sampler/settings/components/preferences/PreferencesSettingsSampler.jsx'
 import SecuritySettingsSampler from '../pages/sampler/settings/components/security/SecuritySettingsSampler.jsx'
 import NotificationsSettingsSampler from '../pages/sampler/settings/components/notifications/NotificationsSettingsSampler.jsx'
-import StoreProfile from '../pages/Business/store-profile/StoreProfile.jsx';
-import AllNotificationPage from '../pages/Business/NotificationPage/AllNotificationPage.jsx';
+import StoreProfile from '../pages/Business/store-profile/StoreProfile.jsx'
+import AllNotificationPage from '../pages/Business/NotificationPage/AllNotificationPage.jsx'
+import MyProfileSampler from '../pages/sampler/profile/MyProfileSampler.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -129,6 +130,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/sampler/my-profile',
+    element: <MyProfileSampler />,
+  },
 
   // hossain
   { path: '/otp', element: <Otp /> },
@@ -147,7 +152,7 @@ export const router = createBrowserRouter([
   { path: '/sign-up-otp', element: <SignUpOtp /> },
   { path: '/sign-up-more-info', element: <SignUpMoreInformation /> },
   { path: '/sign-up-select-all-categories', element: <SelectAllCategories /> },
-]);
+])
 
 {
   /* <ProtectedRoute>
