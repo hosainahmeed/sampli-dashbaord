@@ -47,6 +47,7 @@ import MyProfileSampler from '../pages/sampler/profile/MyProfileSampler.jsx'
 import ShopHeroPage from '../pages/sampler/shop/shopHeroPage/ShopHeroPage.jsx'
 import ServiceWithCategory from '../pages/sampler/shop/serviceWithCategory/ServiceWithCategory.jsx'
 import ServiceWithCategoryProductDetails from '../pages/sampler/shop/serviceWithCategoryProductDetails/ServiceWithCategoryProductDetails.jsx'
+import SamplerFeed from '../pages/sampler/samplerFeed/SamplerFeed.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -145,6 +146,10 @@ export const router = createBrowserRouter([
   {
     path: `/sampler/shop/:name/:id`,
     element: <ServiceWithCategoryProductDetails />,
+  },
+  {
+    path: `/sampler/feed`,
+    element: <SamplerFeed />,
   },
 
   // hossain
