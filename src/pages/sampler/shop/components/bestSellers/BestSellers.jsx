@@ -109,7 +109,9 @@ function BestSellers() {
         ]}
       >
         {items.map((item, index) => (
-          <CardComponent key={index} item={item} />
+          <div className='ml-7' key={index}>
+            <CardComponent item={item} />
+          </div>
         ))}
       </Carousel>
     </div>
@@ -121,7 +123,7 @@ export default BestSellers
 const CardComponent = ({ item }) => {
   const navigate = useNavigate()
   return (
-    <Card 
+    <Card
       className=" border  cursor-pointer border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
       onClick={() => {
         navigate(`/sampler/shop/${item.title}/${item.id}`)

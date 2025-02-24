@@ -105,7 +105,9 @@ function FlashSales() {
         ]}
       >
         {items.map((item, index) => (
-          <CardComponent key={index} item={item} />
+          <div key={index} className="ml-7">
+            <CardComponent item={item} />
+          </div>
         ))}
       </Carousel>
     </div>

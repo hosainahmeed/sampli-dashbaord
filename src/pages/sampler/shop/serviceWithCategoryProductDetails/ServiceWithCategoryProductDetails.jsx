@@ -191,7 +191,9 @@ const ServiceWithCategoryProductDetails = () => {
           ]}
         >
           {items.map((item, index) => (
-            <CardComponent key={index} item={item} />
+            <div className="ml-7" key={index}>
+              <CardComponent item={item} />
+            </div>
           ))}
         </Carousel>
       </section>
@@ -248,7 +250,9 @@ const ServiceWithCategoryProductDetails = () => {
           ]}
         >
           {items.map((item, index) => (
-            <CardComponent key={index} item={item} />
+            <div className="ml-7" key={index}>
+              <CardComponent item={item} />
+            </div>
           ))}
         </Carousel>
       </section>
