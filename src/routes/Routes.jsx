@@ -44,6 +44,9 @@ import NotificationsSettingsSampler from '../pages/sampler/settings/components/n
 import StoreProfile from '../pages/Business/store-profile/StoreProfile.jsx'
 import AllNotificationPage from '../pages/Business/NotificationPage/AllNotificationPage.jsx'
 import MyProfileSampler from '../pages/sampler/profile/MyProfileSampler.jsx'
+import ShopHeroPage from '../pages/sampler/shop/shopHeroPage/ShopHeroPage.jsx'
+import ServiceWithCategory from '../pages/sampler/shop/serviceWithCategory/ServiceWithCategory.jsx'
+import ServiceWithCategoryProductDetails from '../pages/sampler/shop/serviceWithCategoryProductDetails/ServiceWithCategoryProductDetails.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -81,10 +84,7 @@ export const router = createBrowserRouter([
     path: '/sampler/campaign/all-offer',
     element: <AllOfferSampler />,
   },
-  {
-    path: '/sampler/campaign/all-offer',
-    element: <AllOfferSampler />,
-  },
+
   {
     path: '/sampler/campaign/earnings',
     element: <EarningsSampler />,
@@ -133,6 +133,18 @@ export const router = createBrowserRouter([
   {
     path: '/sampler/my-profile',
     element: <MyProfileSampler />,
+  },
+  {
+    path: '/sampler/shop',
+    element: <ShopHeroPage />,
+  },
+  {
+    path: `/sampler/shop/:name`,
+    element: <ServiceWithCategory />,
+  },
+  {
+    path: `/sampler/shop/:name/:id`,
+    element: <ServiceWithCategoryProductDetails />,
   },
 
   // hossain

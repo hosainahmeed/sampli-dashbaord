@@ -51,7 +51,7 @@ const MyProfileSampler = () => {
           />
           <FaTiktok
             onClick={() => {}}
-            className="hover:text-blue-500 cursor-pointer"
+            className="hover:text-black cursor-pointer"
           />
         </div>
         <ProfileReviewsVideo />
