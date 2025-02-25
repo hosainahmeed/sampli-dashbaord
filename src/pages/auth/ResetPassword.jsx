@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Typography } from "antd";
+import {  Button, Typography } from "antd";
 import "antd/dist/reset.css";
 import Logo from "../../components/ui/Logo";
 import InputField from "../../components/ui/InputField";
@@ -23,7 +23,8 @@ const ResetPassword = () => {
   const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
+      <div className="gradient-ellipse "></div>
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
         <Title level={3} className="text-blue-500">
           <Logo />

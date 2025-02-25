@@ -12,7 +12,7 @@ const AllCategories = ({ next }) => {
   }
 
   return (
-    <div>
+    <div >
       <p className="pb-5 text-2xl text-center font-semibold">
         Select all categories that apply
       </p>
@@ -23,7 +23,7 @@ const AllCategories = ({ next }) => {
         className="p-6"
         requiredMark={false}
       >
-        <div className="flex flex-col justify-between h-[430px]">
+        <div className="flex flex-col justify-between  h-[425px]">
           <div>
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item

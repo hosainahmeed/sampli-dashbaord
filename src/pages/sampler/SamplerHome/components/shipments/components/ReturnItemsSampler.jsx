@@ -11,13 +11,12 @@ import {
 } from 'antd'
 import { Option } from 'antd/es/mentions'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 const { Step } = Steps
 
 const ReturnItemsSampler = () => {
   const [current, setCurrent] = useState(0)
-  const [form] = Form.useForm()
-  const [returnMethod, setReturnMethod] = useState('post')
   const [reason, setReason] = useState('Too small')
   const [confirmation, setConfirmation] = useState(false)
 
@@ -53,7 +52,7 @@ const ReturnItemsSampler = () => {
     setReturnCost(selectedMethod === 'post' ? 'Free' : 'From $6.00')
   }
   return (
-    <div className="responsive-width">
+    <div className="responsive-width h-screen !mt-5">
       <div className="text-2xl font-semibold mb-5">Return item</div>
       <div>
         {/* Steps Component */}
@@ -234,6 +233,11 @@ const ReturnItemsSampler = () => {
                 </div>
               </div>
             </div>
+            <div className="!mt-4 !flex !justify-end ">
+              <Button type="primary" onClick={onNext}>
+                Next
+              </Button>
+            </div>
           </>
         )}
 
@@ -254,7 +258,7 @@ const ReturnItemsSampler = () => {
                           Micheal@gmail.com
                         </p>
                         <p>How to get your item back to us</p>
-                        <p className='text-wrap text-[14px] text-gray-500 '>
+                        <p className="text-wrap text-[14px] text-gray-500 ">
                           We need to recieve your item(s) to process the return.
                           Then we'll issue a refund, which usually takes 3-5
                           business days to post.
@@ -313,6 +317,14 @@ const ReturnItemsSampler = () => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="!mt-4 !flex !justify-end ">
+              <Button
+                type="primary"
+                onClick={() => toast.success('Successfully Return Item')}
+              >
+                Done
+              </Button>
             </div>
           </>
         )}

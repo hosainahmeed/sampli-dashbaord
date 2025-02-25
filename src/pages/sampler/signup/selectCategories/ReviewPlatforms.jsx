@@ -32,7 +32,7 @@ const ReviewPlatforms = ({ prev, next }) => {
             (platform) => (
               <div
                 key={platform}
-                className="p-5 border border-gray-100 cursor-pointer"
+                className="p-5 border border-gray-500 cursor-pointer"
               >
                 <Checkbox value={platform} onChange={handleCheckboxChange} />
                 <span className="ml-2">{platform}</span>

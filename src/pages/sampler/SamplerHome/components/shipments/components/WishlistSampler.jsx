@@ -84,7 +84,7 @@ const columns = [
 
 const WishlistSampler = () => {
   return (
-    <div>
+    <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">
       <div className="flex justify-between items-center mb-5">
         <div className="text-xl font-semibold">Wishlist</div>
       </div>

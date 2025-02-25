@@ -153,7 +153,7 @@ const ServiceWithCategoryProductDetails = () => {
   const carouselRef = useRef(null)
 
   return (
-    <div className="responsive-width ">
+    <div className="responsive-width !mb-32">
       {/* product details */}
       <section>
         <SCProductDetails />

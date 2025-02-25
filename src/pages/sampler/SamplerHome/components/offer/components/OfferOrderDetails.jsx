@@ -188,7 +188,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
 
       <Modal
-        title=<div className="text-xl">Submit review</div>
+        title={<div className="text-xl">Submit review</div>}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

@@ -2,24 +2,24 @@ import React, { useState } from 'react'
 import { Steps, Button, Divider, Modal } from 'antd'
 import { ShoppingCartOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { MdArrowBack } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 const { Step } = Steps
 
 const OrderDetails = ({ setIsClicked }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const Navigate = useNavigate()
   const showModal = () => {
     setIsModalOpen(true)
   }
   const handleOk = () => {
     setIsModalOpen(false)
-    toast.success('Order cancelled successfully!')
+    Navigate('/sampler/campaign/return-items')
   }
 
   const handleCancel = () => {
     setIsModalOpen(false)
-
   }
   return (
     <div className="pb-10">

@@ -158,7 +158,7 @@ const SamplerFeed = () => {
     }))
   }
 
-  const handleShare = (post) => {
+  const handleShare = () => {
     setShowShareModal(true)
   }
 
@@ -169,9 +169,9 @@ const SamplerFeed = () => {
   ]
 
   return (
-    <div className="responsive-width">
+    <div className="responsive-width !mt-2 !mb-20">
       <div className=" bg-white">
-        <div className="p-4 border-b">
+        <div className="p-4 ">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
               <Avatar
@@ -180,41 +180,41 @@ const SamplerFeed = () => {
                   Math.random() * 70
                 )}`}
               />
-              <div>
+              <div className="mt-3">
                 <h2 className="text-lg font-semibold">Micheal Scott</h2>
                 <p className="text-gray-500 text-sm">@BestBossAliveDunder</p>
               </div>
             </div>
-            <Link to={'/sampler/my-profile'} >
+            <Link to={'/sampler/my-profile'}>
               <Button type="default">My Profile</Button>
             </Link>
           </div>
 
           <div className="flex justify-between text-center">
             <div>
-              <div className="font-semibold text-xl">142</div>
-              <div className="text-gray-500 text-lg">Reviews</div>
+              <div className="font-semibold ">142</div>
+              <div className="text-gray-500 ">Reviews</div>
             </div>
             <div>
-              <div className="font-semibold  text-xl">12.4k</div>
-              <div className="text-gray-500 text-lg">Followers</div>
+              <div className="font-semibold  ">12.4k</div>
+              <div className="text-gray-500 ">Followers</div>
             </div>
             <div>
-              <div className="font-semibold  text-xl">12.4k</div>
-              <div className="text-gray-500 text-lg">Referrals</div>
+              <div className="font-semibold  ">12.4k</div>
+              <div className="text-gray-500 ">Referrals</div>
             </div>
           </div>
         </div>
 
         {/* Feed Tabs */}
-        <Tabs activeKey={activeTab} onChange={setActiveTab} className="px-4">
+        <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
           <TabPane tab="Popular" key="popular" />
           <TabPane tab="New" key="new" />
           <TabPane tab="Following" key="following" />
         </Tabs>
 
         {/* Category Pills */}
-        <div className="flex gap-2 py-4 overflow-x-auto">
+        <div className="flex gap-2 py-4 overflow-x-auto mb-3">
           {['all', 'electronics', 'beauty', 'home', 'fashion', 'gaming'].map(
             (category) => (
               <Button
@@ -232,7 +232,7 @@ const SamplerFeed = () => {
         {/* Feed Posts */}
         <div className="space-y-4">
           {posts.map((post) => (
-            <div key={post.id} className=" border-b">
+            <div key={post.id} className=" border border-gray-200 p-5">
               <div className="flex justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Avatar src={post.author.avatar} />
@@ -273,7 +273,7 @@ const SamplerFeed = () => {
                 </div>
               </div>
 
-              <p className="mb-4">{post.content}</p>
+              <p className="!my-5 text-gray-700 ">{post.content}</p>
 
               {post.hasVideo && (
                 <div
@@ -281,16 +281,15 @@ const SamplerFeed = () => {
                   style={{ paddingTop: '56.25%' }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src="/api/placeholder/640/360"
-                      alt="Video thumbnail"
-                      className="w-full h-full object-cover"
-                    />
+                    <video
+                      src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
+                      controls
+                    ></video>
                   </div>
                 </div>
               )}
 
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 text-gray-500">
                 <div className="flex items-center gap-4">
                   <button
                     className="flex items-center gap-1 text-gray-500"
@@ -336,23 +335,23 @@ const SamplerFeed = () => {
                             {comment.timeAgo}
                           </span>
                         </div>
-                        <p className="text-sm">{comment.content}</p>
+                        <p className="text-sm text-gray-600">{comment.content}</p>
                         <div className="flex items-center gap-4 mt-1">
                           <button
-                            className="text-xs text-gray-500"
+                            className="!text-xs !text-gray-500"
                             onClick={() =>
                               handleCommentLike(post.id, comment.id)
                             }
                           >
                             {comment.liked ? (
-                              <HeartFilled className="text-red-500" />
+                              <HeartFilled className="!text-red-500 !text-sm" />
                             ) : (
-                              <HeartOutlined />
+                              <HeartOutlined  />
                             )}
                             {comment.likes}
                           </button>
                           <button
-                            className="text-xs text-gray-500"
+                            className="!text-xs !text-gray-500 "
                             onClick={() => setReplyingTo(comment.id)}
                           >
                             Reply
@@ -405,8 +404,9 @@ const SamplerFeed = () => {
           open={showShareModal}
           onCancel={() => setShowShareModal(false)}
           footer={null}
+          centered
         >
-          <div className="space-y-4">
+          <div className="!space-y-4">
             <Button block icon={<ShareAltOutlined />}>
               Share to Feed
             </Button>

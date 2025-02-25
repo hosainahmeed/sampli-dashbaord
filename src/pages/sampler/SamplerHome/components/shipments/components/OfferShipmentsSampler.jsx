@@ -226,7 +226,7 @@ const OfferShipmentsSampler = () => {
   ]
 
   return (
-    <div>
+    <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">
       {isClicked ? (
         <OfferOrderDetails setIsClicked={setIsClicked} />
       ) : (

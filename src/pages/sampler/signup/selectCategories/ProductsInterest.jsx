@@ -36,7 +36,7 @@ const ProductsInterest = ({ prev, next }) => {
           ].map((item) => (
             <div
               key={item}
-              className="p-5 border border-gray-100 cursor-pointer"
+              className="p-5 border border-gray-500 cursor-pointer"
             >
               <Checkbox value={item} onChange={handleCheckboxChange} />
               <span className="ml-2">{item}</span>
