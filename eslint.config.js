@@ -1,5 +1,5 @@
-import pluginJs from '@eslint/js';
-import pluginReact from 'eslint-plugin-react';
+import pluginJs from '@eslint/js'
+import pluginReact from 'eslint-plugin-react'
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
@@ -20,13 +20,9 @@ export default [
   },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
-<<<<<<< HEAD
-];
-=======
   {
     rules: {
-      'react/prop-types': 'off', // Disable prop validation
+      'react/prop-types': 'off',
     },
   },
 ]
->>>>>>> b7992ed4008444c03c831fa3636f886913a7b6c9

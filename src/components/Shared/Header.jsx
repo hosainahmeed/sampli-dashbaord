@@ -43,7 +43,7 @@ function Header() {
         <Link to="/settings">Settings</Link>
       </Menu.Item>
       <Menu.Item key="3" icon={<WalletOutlined />}>
-        <Link to="/sampler/campaign/transaction-history">Balance</Link>
+        <Link to="/business/transaction-balance">Balance</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="4" icon={<LogoutOutlined />} onClick={handleSignOut}>

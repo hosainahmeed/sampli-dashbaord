@@ -21,16 +21,6 @@ const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
       <Text>Re-enter your password to continue.</Text>
       <Form requiredMark={false} layout="vertical" onFinish={onFinish}>
         <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            { required: true, message: "Please enter your email!" },
-            { type: "email", message: "Enter a valid email address!" },
-          ]}
-        >
-          <Input placeholder="Enter your email" />
-        </Form.Item>
-        <Form.Item
           label="Password"
           name="newPass"
           rules={[

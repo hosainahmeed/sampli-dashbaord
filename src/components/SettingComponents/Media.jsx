@@ -8,7 +8,7 @@ import {
 import { RiImageAddLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 
-const { Titile, Text } = Typography;
+const { Title, Text } = Typography;
 const { Dragger } = Upload;
 import './Media.css';
 
@@ -17,7 +17,10 @@ const Media = () => {
     cover: null,
     logo: null,
   });
-
+  const [warnings, setWarnings] = useState({
+    cover: null,
+    logo: null,
+  });
   const [form] = Form.useForm();
 
   const imageRequirements = {
@@ -36,7 +39,6 @@ const Media = () => {
   };
 
   const handleImageUpload = (file, type) => {
-    // Validate file type
     const validTypes = [
       'image/heic',
       'image/webp',
@@ -49,7 +51,6 @@ const Media = () => {
       return false;
     }
 
-    // Validate file size
     if (file.size > 10 * 1024 * 1024) {
       toast.error('File size should be less than 10MB');
       return false;
@@ -61,15 +62,20 @@ const Media = () => {
     img.onload = () => {
       const requirements = imageRequirements[type];
 
-      // Show warning if image doesn't meet size requirements, but still allow upload
       if (
         img.width < requirements.minWidth ||
         img.height < requirements.minHeight
       ) {
-        toast.success(
-          `Warning: ${requirements.title} is smaller than the recommended size of ${requirements.minWidth}×${requirements.minHeight} pixels. This might affect quality.`,
-          { duration: 5000 }
-        );
+        const warn = `Warning: ${requirements.title} is smaller than the recommended size of ${requirements.minWidth}×${requirements.minHeight} pixels. This might affect quality.`;
+        setWarnings((prev) => ({
+          ...prev,
+          [type]: warn,
+        }));
+      } else {
+        setWarnings((prev) => ({
+          ...prev,
+          [type]: null,
+        }));
       }
 
       setImages((prev) => ({
@@ -91,6 +97,10 @@ const Media = () => {
       URL.revokeObjectURL(images[type].preview);
     }
     setImages((prev) => ({
+      ...prev,
+      [type]: null,
+    }));
+    setWarnings((prev) => ({
       ...prev,
       [type]: null,
     }));
@@ -123,23 +133,27 @@ const Media = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="mt-6">
-                <Button
-                  icon={<EditOutlined />}
-                  onClick={() =>
-                    document.getElementById(`${type}-upload`).click()
-                  }
-                  style={{ marginRight: 8 }}
-                >
-                  Change
-                </Button>
-                <Button
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => handleRemoveImage(type)}
-                >
-                  Remove
-                </Button>
+              <div className="mt-6 flex items-center flex-col">
+                <div>
+                  <Button
+                    icon={<EditOutlined />}
+                    onClick={() =>
+                      document.getElementById(`${type}-upload`).click()
+                    }
+                    style={{ marginRight: 8 }}
+                  >
+                    Change
+                  </Button>
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => handleRemoveImage(type)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+
+                <Text type="warning">{warnings[type]}</Text>
               </div>
             </div>
           ) : (

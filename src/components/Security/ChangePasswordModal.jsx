@@ -27,7 +27,7 @@ const ChangePasswordModal = ({ visible, onCancel, onOk }) => {
       footer={null}
     >
       <Form requiredMark={false} form={form} layout="vertical" onFinish={handleSubmit}>
-        <Form.Item
+        {/* <Form.Item
           label="Current Password"
           name="currentPassword"
           rules={[
@@ -35,7 +35,7 @@ const ChangePasswordModal = ({ visible, onCancel, onOk }) => {
           ]}
         >
           <Input.Password placeholder="Enter password" />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label="New Password"

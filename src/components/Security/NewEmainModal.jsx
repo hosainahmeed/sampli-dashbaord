@@ -30,19 +30,6 @@ const NewEmainModal = ({ visible, onCancel, onContinue }) => {
         >
           <Input placeholder="Enter your email" />
         </Form.Item>
-        <Form.Item
-          label="Password"
-          name="newPass"
-          rules={[
-            { required: true, message: "Please enter your new password!" },
-            { min: 8, message: "Password must be at least 8 characters" },
-          ]}
-        >
-          <Input.Password
-            className="h-8"
-            placeholder="Enter your new password"
-          />
-        </Form.Item>
         <Form.Item className="flex items-center justify-end">
           <Button type="primary" htmlType="submit">
             Submit
