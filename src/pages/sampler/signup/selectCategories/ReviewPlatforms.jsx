@@ -1,0 +1,63 @@
+import { Checkbox } from 'antd'
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+
+const ReviewPlatforms = ({ prev, next }) => {
+  const [selectedReviews, setSelectedReviews] = useState([])
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target
+    setSelectedReviews((prev) =>
+      checked ? [...prev, value] : prev.filter((item) => item !== value)
+    )
+  }
+
+  const handleSubmit = () => {
+    if (selectedReviews.length === 0) {
+      toast.error('Please select at least one platform before proceeding.')
+      return
+    }
+    console.log('Selected Review Platforms:', selectedReviews)
+    next()
+  }
+
+  return (
+    <div className="">
+      <p className="pb-4 text-2xl text-center font-semibold">
+        Where do you currently share reviews?
+      </p>
+      <div className="flex flex-col justify-between h-[425px]">
+        <div className="grid grid-cols-2 gap-4">
+          {['Youtube', 'TikTok', 'Instagram', 'Blog', 'WhatsApp'].map(
+            (platform) => (
+              <div
+                key={platform}
+                className="p-5 border border-gray-100 cursor-pointer"
+              >
+                <Checkbox value={platform} onChange={handleCheckboxChange} />
+                <span className="ml-2">{platform}</span>
+              </div>
+            )
+          )}
+        </div>
+        <div className="flex justify-between">
+          <button
+            onClick={prev}
+            className="cursor-pointer hover:!text-blue-500"
+          >
+            Back
+          </button>
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="cursor-pointer hover:!text-blue-500"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ReviewPlatforms
