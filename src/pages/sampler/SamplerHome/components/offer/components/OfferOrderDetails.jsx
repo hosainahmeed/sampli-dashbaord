@@ -1,53 +1,53 @@
-import React, { useState } from 'react'
-import { Steps, Button, Modal, Rate, Tabs } from 'antd'
+import React, { useState } from 'react';
+import { Steps, Button, Modal, Rate, Tabs } from 'antd';
 import {
   ShoppingCartOutlined,
   CheckCircleOutlined,
   InboxOutlined,
-} from '@ant-design/icons'
-import { MdArrowBack } from 'react-icons/md'
-import { Link } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import Dragger from 'antd/es/upload/Dragger'
-import ReviewsVideo from './ReviewsVideo'
+} from '@ant-design/icons';
+import { MdArrowBack } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import Dragger from 'antd/es/upload/Dragger';
+import ReviewsVideo from './ReviewsVideo';
 
-const { Step } = Steps
+const { Step } = Steps;
 
 const OfferOrderDetails = ({ setIsClicked }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
   const handleOk = () => {
-    setIsModalOpen(false)
-    toast.success('Review submitted successfully!')
-  }
+    setIsModalOpen(false);
+    toast.success('Review submitted successfully!');
+  };
   const handleCancel = () => {
-    setIsModalOpen(false)
-  }
+    setIsModalOpen(false);
+  };
 
   const props = {
     name: 'file',
     multiple: true,
     action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
     onChange(info) {
-      const { status } = info.file
+      const { status } = info.file;
       if (status !== 'uploading') {
-        console.log(info.file, info.fileList)
+        console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        toast.success(`${info.file.name} file uploaded successfully.`)
+        toast.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === 'error') {
-        toast.error(`${info.file.name} file upload failed.`)
+        toast.error(`${info.file.name} file upload failed.`);
       }
     },
     onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files)
+      console.log('Dropped files', e.dataTransfer.files);
     },
-  }
+  };
   const onChange = (key) => {
-    console.log(key)
-  }
+    console.log(key);
+  };
 
   const items = [
     {
@@ -173,7 +173,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
       label: 'Reviews',
       children: <ReviewsVideo showModal={showModal} />,
     },
-  ]
+  ];
 
   return (
     <div className="pb-10">
@@ -238,7 +238,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
         ></textarea>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default OfferOrderDetails
+export default OfferOrderDetails;

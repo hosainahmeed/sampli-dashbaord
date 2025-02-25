@@ -1,20 +1,36 @@
 import React, { useState } from 'react';
-import { Table, Tag, Input, Button, Select, Modal, Pagination } from 'antd';
+import {
+  Table,
+  Tag,
+  Input,
+  Button,
+  Select,
+  Modal,
+  Dropdown,
+  Space,
+  Tooltip,
+} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
 import { FiPlus } from 'react-icons/fi';
 import UploadCsv from '../page-Component/UploadCsv';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import {
+  FaAngleLeft,
+  FaAngleRight,
+  FaEdit,
+  FaEye,
+  FaTrash,
+} from 'react-icons/fa';
 
 const { Option } = Select;
 
-const ProductTable = () => {
+const ProductTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortKey, setSortKey] = useState(null);
   const [openCsv, setOpenCsv] = useState(false);
-  const navigate = useNavigate();
+
   const campaigns = [
     {
       key: '1',
@@ -53,7 +69,35 @@ const ProductTable = () => {
       }
       return 0;
     });
-
+  const items = [
+    {
+      key: '1',
+      label: (
+        <Button className="w-full  !bg-transparent !justify-start !shadow-none !border-none">
+          <FaEye /> View Product
+        </Button>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Button className="w-full !border-none !bg-transparent !justify-start hover:!text-red-500 !shadow-none ">
+          <FaTrash /> Delete Product
+        </Button>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <Link className="w-full" to="/">
+          <Button className="w-full !bg-transparent !justify-start hover:!text-blue-500 !shadow-none !border-none">
+            <FaEdit />
+            Edit Product
+          </Button>
+        </Link>
+      ),
+    },
+  ];
   const columns = [
     {
       title: <span className="text-xs xl:text-lg">Name</span>,
@@ -105,21 +149,44 @@ const ProductTable = () => {
       title: <span className="text-xs xl:text-lg">Action</span>,
       key: 'action',
       render: (text, record) => (
-        <Button
-          type="default"
-          onClick={() => {
-            navigate(`single-campaign`, { state: { id: record.id } });
+        <Dropdown
+          menu={{
+            items,
+            align: {
+              points: ['bl', 'tl'],
+              offset: [0, -4],
+            },
           }}
-          className="!border-none "
+          placement="bottomLeft"
+          arrow
         >
-          <BsThreeDots />
-        </Button>
+          <Button type="default" className="!border-none ">
+            <BsThreeDots />
+          </Button>
+        </Dropdown>
+        // <Space size="middle">
+        //   <Tooltip title="View" placement="top">
+        //     <Button type="default" className="!border-none ">
+        //       <FaEye />
+        //     </Button>
+        //   </Tooltip>
+        //   <Tooltip title="Delete" placement="top">
+        //     <Button type="default" className="!border-none ">
+        //       <FaTrash />
+        //     </Button>
+        //   </Tooltip>
+        //   <Tooltip title="Edit" placement="top">
+        //     <Button type="default" className="!border-none ">
+        //       <FaEdit />
+        //     </Button>
+        //   </Tooltip>
+        // </Space>
       ),
     },
   ];
 
   return (
-    <div className="py-12">
+    <div className="pb-12">
       <div className="flex-center-between">
         <h2 className="my-3 text-2xl">Product</h2>
         <div className="flex-center-center gap-2">
@@ -146,7 +213,7 @@ const ProductTable = () => {
             placeholder="Search"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 200, marginBottom: 16, marginRight: 16 }}
+            style={{ width: 300, marginBottom: 16, marginRight: 16 }}
           />
         </div>
         <div className="flex-center-center gap-2">

@@ -51,7 +51,7 @@ const FeedCard = () => {
       </Text>
       <div style={{ position: 'relative' }}>
         <video
-          src="/path-to-video.mp4"
+          src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
           controls
           className="w-full rounded-3xl mt-4 overflow-hidden"
         />

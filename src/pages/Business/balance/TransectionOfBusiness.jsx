@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
-import { Table, Select, Button, DatePicker, Card } from 'antd';
+import {
+  Table,
+  Select,
+  Button,
+  DatePicker,
+  Card,
+  Modal,
+  Typography,
+  Badge,
+  Tooltip,
+} from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaAngleLeft } from 'react-icons/fa';
 import bank from '../../../assets/bank.svg';
 import { BsExclamationOctagon } from 'react-icons/bs';
+import { PiWarningCircleDuotone } from 'react-icons/pi';
 const { Option } = Select;
-
+const { Text, Title } = Typography;
 const TransectionOfBusiness = () => {
   const [filters, setFilters] = useState({
     dateRange: '',
@@ -16,6 +27,7 @@ const TransectionOfBusiness = () => {
   const balance = 200;
   const pending = 0;
   const [selectedDateRange, setSelectedDateRange] = useState([]);
+  const [paymentModal, showPaymentModal] = useState(false);
   const navigate = useNavigate();
   const handleDateChange = (dates, dateStrings) => {
     setSelectedDateRange(dateStrings);
@@ -142,14 +154,13 @@ const TransectionOfBusiness = () => {
             </div>
           </div>
           <div>
-            <Link to="/create-campaign">
-              <Button
-                className="flex items-center justify-center"
-                type="primary"
-              >
-                Get paid now
-              </Button>
-            </Link>
+            <Button
+              onClick={() => showPaymentModal(!paymentModal)}
+              className="flex items-center justify-center"
+              type="primary"
+            >
+              Get paid now
+            </Button>
           </div>
         </div>
       </Card>
@@ -251,6 +262,31 @@ const TransectionOfBusiness = () => {
           pagination={false}
         />
       </div>
+      <Modal
+        width={600}
+        visible={paymentModal}
+        onCancel={() => showPaymentModal(!paymentModal)}
+        footer={null}
+      >
+        <Text className="flex items-center gap-2">
+          <PiWarningCircleDuotone className="!text-2xl" />
+          The name on your withdrawal method and the name on your Sampli account
+          need to match exactly to avoid payment failures or delays.
+        </Text>
+        <Card>
+          <div className="flex items-center gap-2">
+            <Title level={5}>Paypal account</Title>
+            <Badge status="success" text="Recommended" />
+          </div>
+          <div>
+            
+            <ul className="list-disc pl-4">
+              <li>Up to 1 business day</li>
+              <li>Fees may apply</li>
+            </ul>
+          </div>
+        </Card>
+      </Modal>
     </div>
   );
 };

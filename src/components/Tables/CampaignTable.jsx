@@ -23,6 +23,114 @@ const CampaignTable = () => {
       image:
         "https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg",
     },
+    {
+      key: "2",
+      id: 2,
+      name: "Summer Collection Review Group 2",
+      createdAt: "2023-06-02",
+      status: "Active",
+      progress: 20,
+      total: 500,
+      budget: "$50,000 of $200,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg",
+    },
+    {
+      key: "3",
+      id: 3,
+      name: "Summer Collection Review Group 3",
+      createdAt: "2023-06-03",
+      status: "Active",
+      progress: 30,
+      total: 1000,
+      budget: "$100,000 of $500,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg",
+    },
+    {
+      key: "4",
+      id: 4,
+      name: "Summer Collection Review Group 4",
+      createdAt: "2023-06-04",
+      status: "Active",
+      progress: 40,
+      total: 2000,
+      budget: "$200,000 of $1,000,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-background-with-palm-trees-and-flamingos_23-2148443420.jpg",
+    },
+    {
+      key: "5",
+      id: 5,
+      name: "Summer Collection Review Group 5",
+      createdAt: "2023-06-05",
+      status: "Active",
+      progress: 50,
+      total: 3000,
+      budget: "$300,000 of $1,500,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-party-invitation-with-flamingos_23-2148443421.jpg",
+    },
+    {
+      key: "6",
+      id: 6,
+      name: "Summer Collection Review Group 6",
+      createdAt: "2023-06-06",
+      status: "Active",
+      progress: 60,
+      total: 4000,
+      budget: "$400,000 of $2,000,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-elements-collection-with-palm-trees_23-2148443422.jpg",
+    },
+    {
+      key: "7",
+      id: 7,
+      name: "Summer Collection Review Group 7",
+      createdAt: "2023-06-07",
+      status: "Active",
+      progress: 70,
+      total: 5000,
+      budget: "$500,000 of $2,500,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-party-with-palm-trees-and-flamingos_23-2148443423.jpg",
+    },
+    {
+      key: "8",
+      id: 8,
+      name: "Summer Collection Review Group 8",
+      createdAt: "2023-06-08",
+      status: "Active",
+      progress: 80,
+      total: 6000,
+      budget: "$600,000 of $3,000,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos_23-2148443424.jpg",
+    },
+    {
+      key: "9",
+      id: 9,
+      name: "Summer Collection Review Group 9",
+      createdAt: "2023-06-09",
+      status: "Active",
+      progress: 90,
+      total: 7000,
+      budget: "$700,000 of $3,500,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-party-with-flamingos-and-palm-trees_23-2148443425.jpg",
+    },
+    {
+      key: "10",
+      id: 10,
+      name: "Summer Collection Review Group 10",
+      createdAt: "2023-06-10",
+      status: "Active",
+      progress: 100,
+      total: 8000,
+      budget: "$800,000 of $4,000,000",
+      image:
+        "https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos-and-palm-trees_23-2148443426.jpg",
+    },
   ];
 
   const statusColors = {
@@ -108,7 +216,7 @@ const CampaignTable = () => {
             placeholder="Search"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 200, marginBottom: 16, marginRight: 16 }}
+            style={{ width: 300, marginBottom: 16, marginRight: 16 }}
           />
         </div>
         <Select
