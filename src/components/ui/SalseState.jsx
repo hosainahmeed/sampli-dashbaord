@@ -1,12 +1,17 @@
 import React from 'react';
 import { Button, Card } from 'antd';
+import { Link } from 'react-router-dom';
 
 function SalseState() {
   const data = [
     {
       title: 'Available balance',
       number: '$12450',
-      btn: <Button>See Balance</Button>,
+      btn: (
+        <Link to={'/business/transaction-balance'}>
+          <Button>See Balance</Button>
+        </Link>
+      ),
     },
     {
       title: 'Total Orders',

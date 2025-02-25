@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { Modal, Checkbox, Input } from 'antd'
-import { Edit2 } from 'lucide-react'
-import { FaTwitter, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa'
+import React, { useState } from 'react';
+import { Modal, Checkbox, Input } from 'antd';
+import { Edit2 } from 'lucide-react';
+import { FaTwitter, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa';
 const PreferencesSettingsSampler = () => {
-  const [openModal, setOpenModal] = useState('')
+  const [openModal, setOpenModal] = useState('');
 
   const [preferences, setPreferences] = useState({
     products: ['Tech & Electronics', 'Home & Kitchen'],
@@ -17,9 +17,9 @@ const PreferencesSettingsSampler = () => {
       blog: '',
       facebook: '',
     },
-  })
+  });
 
-  const [tempPreferences, setTempPreferences] = useState(preferences)
+  const [tempPreferences, setTempPreferences] = useState(preferences);
 
   const productCategories = [
     'Tech & Electronics',
@@ -30,7 +30,7 @@ const PreferencesSettingsSampler = () => {
     'Sports & Fitness',
     'Home & Kitchen',
     'Toys & Games',
-  ]
+  ];
 
   const priceRanges = [
     'Under $25',
@@ -39,26 +39,26 @@ const PreferencesSettingsSampler = () => {
     '$100-$250',
     '$250-$500',
     '$500+',
-  ]
+  ];
 
-  const frequencies = ['Weekly', 'Bi-Weekly', 'Monthly', 'Quarterly']
+  const frequencies = ['Weekly', 'Bi-Weekly', 'Monthly', 'Quarterly'];
 
   const socialPlatforms = [
     { key: 'instagram', label: <FaInstagram /> },
     { key: 'twitter', label: <FaTwitter /> },
     { key: 'youtube', label: <FaYoutube /> },
     { key: 'tiktok', label: <FaTiktok /> },
-  ]
+  ];
 
   const handleModalSave = (type) => {
-    setPreferences(tempPreferences)
-    setOpenModal('')
-  }
+    setPreferences(tempPreferences);
+    setOpenModal('');
+  };
 
   const handleModalCancel = () => {
-    setTempPreferences(preferences)
-    setOpenModal('')
-  }
+    setTempPreferences(preferences);
+    setOpenModal('');
+  };
 
   const PreferenceSection = ({ title, items, type }) => (
     <section className="border border-gray-200 p-4 rounded-lg shadow-sm mb-4">
@@ -66,8 +66,8 @@ const PreferencesSettingsSampler = () => {
         <h3 className="font-medium text-lg">{title}</h3>
         <button
           onClick={() => {
-            setTempPreferences(preferences)
-            setOpenModal(type)
+            setTempPreferences(preferences);
+            setOpenModal(type);
           }}
           className="!text-blue-500 hover:!text-blue-800 flex items-center gap-2 cursor-pointer "
         >
@@ -86,7 +86,7 @@ const PreferencesSettingsSampler = () => {
         ))}
       </div>
     </section>
-  )
+  );
 
   return (
     <div className="">
@@ -172,11 +172,11 @@ const PreferencesSettingsSampler = () => {
                 onChange={(e) => {
                   const newProducts = e.target.checked
                     ? [...tempPreferences.products, category]
-                    : tempPreferences.products.filter((p) => p !== category)
+                    : tempPreferences.products.filter((p) => p !== category);
                   setTempPreferences({
                     ...tempPreferences,
                     products: newProducts,
-                  })
+                  });
                 }}
               >
                 {category}
@@ -206,11 +206,11 @@ const PreferencesSettingsSampler = () => {
                 onChange={(e) => {
                   const newRanges = e.target.checked
                     ? [...tempPreferences.priceRanges, range]
-                    : tempPreferences.priceRanges.filter((p) => p !== range)
+                    : tempPreferences.priceRanges.filter((p) => p !== range);
                   setTempPreferences({
                     ...tempPreferences,
                     priceRanges: newRanges,
-                  })
+                  });
                 }}
               >
                 {range}
@@ -239,7 +239,7 @@ const PreferencesSettingsSampler = () => {
                 checked={tempPreferences.frequency === freq}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    setTempPreferences({ ...tempPreferences, frequency: freq })
+                    setTempPreferences({ ...tempPreferences, frequency: freq });
                   }
                 }}
               >
@@ -274,7 +274,7 @@ const PreferencesSettingsSampler = () => {
                         ...tempPreferences.socialAccounts,
                         [platform.key]: e.target.value,
                       },
-                    })
+                    });
                   }}
                   placeholder={`Enter your ${platform.key} username`}
                 />
@@ -284,7 +284,7 @@ const PreferencesSettingsSampler = () => {
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default PreferencesSettingsSampler
+export default PreferencesSettingsSampler;

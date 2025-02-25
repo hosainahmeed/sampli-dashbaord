@@ -1,5 +1,5 @@
-import React from "react";
-import { Modal, Form, Input, Button, Typography } from "antd";
+import React from 'react';
+import { Modal, Form, Input, Button, Typography } from 'antd';
 
 const { Title, Text } = Typography;
 
@@ -11,10 +11,10 @@ const PasswordChangeEmailModal = ({ visible, onCancel, onContinue }) => {
       footer={null}
       className="text-center"
     >
-      <Title level={3}>Enter your Email</Title>
-      <Text>Enter your valid Email and continue.</Text>
+      {/* <Title level={3}>Enter your Email</Title>
+      <Text>Enter your valid Email and continue.</Text> */}
       <Form requiredMark={false} layout="vertical" onFinish={onContinue}>
-        <Form.Item
+        {/* <Form.Item
           label="Email"
           name="email"
           rules={[
@@ -23,6 +23,15 @@ const PasswordChangeEmailModal = ({ visible, onCancel, onContinue }) => {
           ]}
         >
           <Input placeholder="Enter your email" />
+        </Form.Item> */}
+        <Form.Item
+          label="Current Password"
+          name="currentPassword"
+          rules={[
+            { required: true, message: 'Please enter your current password' },
+          ]}
+        >
+          <Input.Password placeholder="Enter password" />
         </Form.Item>
         <Form.Item className="flex items-center justify-end">
           <Button type="primary" htmlType="submit">
