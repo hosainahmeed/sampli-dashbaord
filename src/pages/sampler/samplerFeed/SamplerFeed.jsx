@@ -11,6 +11,7 @@ import {
   EllipsisOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import EmojiPicker from 'emoji-picker-react'
 
 const { TabPane } = Tabs
 
@@ -168,6 +169,9 @@ const SamplerFeed = () => {
     { key: 'mute', label: 'Mute User' },
   ]
 
+  const [showPicker, setShowPicker] = useState(false)
+  const [selectedEmoji, setSelectedEmoji] = useState('')
+
   return (
     <div className="responsive-width !mt-2 !mb-20">
       <div className=" bg-white flex justify-between gap-10">
@@ -185,7 +189,7 @@ const SamplerFeed = () => {
                 <p className="text-gray-500 text-sm">@BestBossAliveDunder</p>
               </div>
             </div>
-            <Link to={'/sampler/my-profile'} className='mb-5'>
+            <Link to={'/sampler/my-profile'} className="mb-5">
               <Button type="default">My Profile</Button>
             </Link>
           </div>
@@ -206,7 +210,7 @@ const SamplerFeed = () => {
           </div>
         </div>
 
-        <div className='w-2/3'>
+        <div className="w-2/3">
           {/* Feed Tabs */}
           <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
             <TabPane tab="Popular" key="popular" />
@@ -391,7 +395,8 @@ const SamplerFeed = () => {
                     onChange={(e) => setCommentText(e.target.value)}
                     suffix={
                       <div className="flex items-center gap-2">
-                        <SmileOutlined className="text-gray-400 cursor-pointer" />
+                        {/* <EmojiPicker /> */}
+                        {/* <SmileOutlined className="text-gray-400 cursor-pointer" /> */}
                         <SendOutlined
                           className="text-blue-500 cursor-pointer"
                           onClick={() => handleComment(post.id)}

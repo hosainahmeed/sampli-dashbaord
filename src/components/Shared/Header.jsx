@@ -169,7 +169,7 @@ function Header() {
               <LuShoppingCart className="hover:text-black text-gray-500 transition-all" />
             </Link>
             <Link
-              to="/sampler/all-notifications"
+              to="/sampler/campaign/shipments/notifications"
               className="hover:scale-120 transition-all"
             >
               <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />

@@ -171,10 +171,7 @@ export const router = createBrowserRouter([
         path: `/sampler/feed`,
         element: <SamplerFeed />,
       },
-      {
-        path: `/sampler/all-notifications`,
-        element: <AllNotificationsSampler />,
-      },
+
       {
         path: `/sampler/checkout`,
         element: <ProductListCheckoutSampler />,
