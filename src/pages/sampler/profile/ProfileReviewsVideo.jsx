@@ -1,20 +1,14 @@
 import React from 'react'
-import {
-  FiMessageCircle,
-  FiMoreHorizontal,
-  FiShare2,
-  FiVolume2,
-} from 'react-icons/fi'
-import { CiHeart, CiMaximize1, CiSettings } from 'react-icons/ci'
-import { RiPauseCircleLine } from 'react-icons/ri'
+import { FiMessageCircle, FiMoreHorizontal, FiShare2 } from 'react-icons/fi'
+import { CiHeart } from 'react-icons/ci'
 
 const ProfileReviewsVideo = () => {
   return (
     <div>
       <div className="flex justify-between items-center mt-10">
         <h2 className="text-xl font-semibold">My Reviews</h2>
-        <select className="outline-none border border-gray-200 hover:bg-gray-100 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer">
-          <option value="">Sort by : New</option>
+        <select className="outline-none border border-gray-200 hover:bg-gray-100 px-2 py-2 rounded-lg !text-sm cursor-pointer">
+          <option value="">New</option>
           <option value="uploadReview">Highest views</option>
           <option value="editProfile">Highest Referrals</option>
         </select>

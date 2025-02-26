@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Avatar, Button, Dropdown, Menu } from 'antd'
-import { CiCircleQuestion, CiHeart, CiStar } from 'react-icons/ci'
+import { CiHeart, CiStar } from 'react-icons/ci'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import {
   UserOutlined,
@@ -97,15 +97,18 @@ function Header() {
   )
 
   return (
-    <div>
+    <div className='max-w-[1920px] mx-auto'>
       {userType == 'business' ? (
         <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
           <Link to={'/'}>
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex items-center gap-4 text-2xl">
-            <CiCircleQuestion />
-            <Link to="/all-notifications">
+            {/* <CiCircleQuestion /> */}
+            <Link
+              to="/all-notifications"
+              className="hover:scale-120 transition-all  "
+            >
               <Button shape="circle">
                 <IoMdNotificationsOutline />
               </Button>
@@ -118,7 +121,7 @@ function Header() {
               <Avatar
                 size={40}
                 src={user?.photoURL}
-                className="cursor-pointer"
+                className="cursor-pointer hover:scale-110 transition-all"
               />
             </Dropdown>
           </div>
@@ -131,7 +134,7 @@ function Header() {
           <div className="flex gap-20 text-gray-600">
             <Link
               to={'/sampler/campaign'}
-              className="hover:text-black transition-all"
+              className="hover:text-black transition-all  "
             >
               <div className="flex gap-2">
                 <MdOutlineCampaign className="text-[19px]" />
@@ -140,7 +143,7 @@ function Header() {
             </Link>
             <Link
               to={'/sampler/feed'}
-              className="hover:text-black transition-all"
+              className="hover:text-black transition-all  "
             >
               <div className="flex gap-2">
                 <MdRssFeed />
@@ -149,7 +152,7 @@ function Header() {
             </Link>
             <Link
               to={'/sampler/shop'}
-              className="hover:text-black transition-all"
+              className="hover:text-black transition-all  "
             >
               <div className="flex gap-2">
                 <LuShoppingCart />
@@ -159,11 +162,17 @@ function Header() {
           </div>
           <div className="flex items-center gap-6 text-2xl">
             {/* <CiCircleQuestion /> */}
-            <Link to="/all-notifications">
-              <LuShoppingCart className='hover:text-black text-gray-500 transition-all' />
+            <Link
+              to="/sampler/checkout"
+              className="hover:scale-120 transition-all"
+            >
+              <LuShoppingCart className="hover:text-black text-gray-500 transition-all" />
             </Link>
-            <Link to="/all-notifications">
-              <IoMdNotificationsOutline  className='hover:text-black text-gray-600 transition-all' />
+            <Link
+              to="/sampler/all-notifications"
+              className="hover:scale-120 transition-all"
+            >
+              <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />
             </Link>
             <Dropdown
               overlay={menuSampler}
@@ -173,7 +182,7 @@ function Header() {
               <Avatar
                 size={40}
                 src={user?.photoURL}
-                className="cursor-pointer"
+                className="cursor-pointer hover:scale-110 transition-all"
               />
             </Dropdown>
           </div>

@@ -6,6 +6,7 @@ import {
   PhoneOutlined,
   MailOutlined,
 } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 const StoreProfileSampler = () => {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -37,9 +38,11 @@ const StoreProfileSampler = () => {
           <Button className="text-gray-600 border-gray-300">
             Follow store
           </Button>
-          <Button type="primary" className="bg-blue-500">
-            Visit Store
-          </Button>
+          <Link to={'/store-profile'}>
+            <Button type="primary" className="bg-blue-500">
+              Visit Store
+            </Button>
+          </Link>
         </div>
       </div>
 

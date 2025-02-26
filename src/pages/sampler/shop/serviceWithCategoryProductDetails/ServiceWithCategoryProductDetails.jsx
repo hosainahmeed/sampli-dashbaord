@@ -1,11 +1,12 @@
-import { Carousel } from 'antd'
-import React, { useRef } from 'react'
+import { Button, Carousel, Pagination } from 'antd'
+import React, { useRef, useState } from 'react'
 import CardComponent from '../components/cardComponent/CardComponent'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import SCProductDetails from './SCProductDetails'
 import ReviewRatingSampler from './ReviewRatingSampler'
 import ReviewCardSampler from './ReviewCardSampler'
 import StoreProfileSampler from './StoreProfileSampler'
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
 const items = [
   {
@@ -152,6 +153,13 @@ const reviewData = [
 const ServiceWithCategoryProductDetails = () => {
   const carouselRef = useRef(null)
 
+  const [reviewPage, setReviewPage] = useState(1)
+  const reviewsPerPage = 5
+
+  const onReviewPageChange = (page) => {
+    setReviewPage(page)
+  }
+
   return (
     <div className="responsive-width !mb-32">
       {/* product details */}
@@ -214,6 +222,34 @@ const ServiceWithCategoryProductDetails = () => {
             {reviewData.map((review, index) => (
               <ReviewCardSampler key={index} review={review} />
             ))}
+            <Pagination
+              current={reviewPage}
+              total={reviewData.length}
+              pageSize={reviewsPerPage}
+              onChange={onReviewPageChange}
+              className="!my-12 flex items-center justify-center"
+              showSizeChanger={false}
+              itemRender={(current, type, originalElement) => {
+                if (type === 'prev') {
+                  return (
+                    <Button className="!border-none ">
+                      <FaAngleLeft />
+                    </Button>
+                  )
+                }
+                if (type === 'next') {
+                  return (
+                    <Button className="!border-none ">
+                      <FaAngleRight />
+                    </Button>
+                  )
+                }
+                if (type === 'page') {
+                  return current
+                }
+                return originalElement
+              }}
+            />
           </div>
         </div>
       </div>

@@ -50,6 +50,11 @@ import ServiceWithCategoryProductDetails from '../pages/sampler/shop/serviceWith
 import SamplerFeed from '../pages/sampler/samplerFeed/SamplerFeed.jsx'
 import TransectionOfBusiness from '../pages/Business/balance/TransectionOfBusiness.jsx'
 import SamplerLayout from '../pages/sampler/samplerLayout/SamplerLayout.jsx'
+import TermsAndConditions from '../pages/termsAndConditions/TermsAndConditions.jsx'
+import ContactUs from '../pages/contactUs/ContactUs.jsx'
+import PrivacyPolicy from '../pages/privacyPolicy/PrivacyPolicy.jsx'
+import AllNotificationsSampler from '../pages/sampler/allNotificationsSampler/AllNotificationsSampler.jsx'
+import ProductListCheckoutSampler from '../pages/sampler/productListCheckoutSampler/ProductListCheckoutSampler.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -166,6 +171,17 @@ export const router = createBrowserRouter([
         path: `/sampler/feed`,
         element: <SamplerFeed />,
       },
+      {
+        path: `/sampler/all-notifications`,
+        element: <AllNotificationsSampler />,
+      },
+      {
+        path: `/sampler/checkout`,
+        element: <ProductListCheckoutSampler />,
+      },
+      { path: '/terms-and-conditions', element: <TermsAndConditions /> },
+      { path: '/contact-us', element: <ContactUs /> },
+      { path: '/privacy-policy', element: <PrivacyPolicy /> },
     ],
   },
 
@@ -187,9 +203,3 @@ export const router = createBrowserRouter([
   { path: '/sign-up-more-info', element: <SignUpMoreInformation /> },
   { path: '/sign-up-select-all-categories', element: <SelectAllCategories /> },
 ])
-
-{
-  /* <ProtectedRoute>
-        
-      </ProtectedRoute> */
-}

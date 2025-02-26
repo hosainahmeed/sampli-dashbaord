@@ -163,7 +163,7 @@ const ShipmentsSampler = () => {
           <div className="  text-xl font-semibold">Shipments</div>
           <div
             onClick={() => Navigate('/sampler/campaign/all-offer')}
-            className="border border-gray-400 px-3 py-2 cursor-pointer rounded-md hover:bg-gray-100"
+            className="border border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
           >
             See all
           </div>

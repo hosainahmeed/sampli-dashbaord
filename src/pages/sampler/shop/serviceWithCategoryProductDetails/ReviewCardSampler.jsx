@@ -62,6 +62,7 @@ const ReviewCardSampler = ({ review }) => {
         padding: '15px',
         borderBottom: '1px solid #e0e0e0',
         marginBottom: '15px',
+        color: 'gray',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>

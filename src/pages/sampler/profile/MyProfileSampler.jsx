@@ -24,7 +24,7 @@ const MyProfileSampler = () => {
           </div>
           <Link
             to={'/sampler/settings/basic-details-settings-sampler'}
-            className="border border-gray-200 hover:bg-gray-100 cursor-pointer   px-4 py-2 rounded-lg "
+            className="border border-gray-200 !text-sm hover:bg-gray-100 cursor-pointer   px-4 py-2 rounded-lg "
           >
             Edit Profile
           </Link>

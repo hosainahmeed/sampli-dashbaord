@@ -55,8 +55,12 @@ const OverviewSampler = () => {
     <div className="bg-white  rounded-xl ">
       {/* Header Section */}
       <div className="flex justify-between items-center mt-14">
-        <h2 className="text-xl font-semibold ">Overview</h2>
-        <Dropdown className='border border-gray-200 cursor-pointer' overlay={menu} trigger={['click']}>
+        <h2 className="text-xl !font-semibold !mb-5">Overview</h2>
+        <Dropdown
+          className="border border-gray-300 !px-3 !py-2 !text-sm !text-gray-700  !cursor-pointer !rounded-md hover:bg-gray-100"
+          overlay={menu}
+          trigger={['click']}
+        >
           <button className="border px-3 py-1 rounded-lg flex items-center gap-2 text-gray-600 hover:bg-gray-100">
             <FilterOutlined />
             {selectedFilter} <DownOutlined />
