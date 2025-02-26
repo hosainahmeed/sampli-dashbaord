@@ -8,10 +8,7 @@ const CardComponent = ({ item }) => {
   const navigate = useNavigate()
   return (
     <Card
-      onClick={() => {
-        navigate(`/sampler/shop/${item.title}/${item.id}`)
-      }}
-      className=" border  cursor-pointer border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
+      className=" border  border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
       cover={
         <div>
           <CiHeart
@@ -27,6 +24,10 @@ const CardComponent = ({ item }) => {
       }
     >
       <Meta
+        onClick={() => {
+          navigate(`/sampler/shop/${item.title}/${item.id}`)
+        }}
+        className="cursor-pointer"
         title={item.title}
         description={
           <div className="flex justify-between flex-col  h-[100px]">

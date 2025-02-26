@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Typography,  Form, Select } from 'antd'
+import { Button, Typography, Form, Select } from 'antd'
 import Logo from '../../../components/ui/Logo'
 import InputField from '../../../components/ui/InputField'
 import FormWrapper from '../../../components/ui/FormWrapper'
@@ -18,7 +18,8 @@ const SignUpMoreInformation = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
+      <div className="gradient-ellipse"></div>
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
         <Title level={3} className="text-blue-500">
           <Logo />
@@ -102,7 +103,7 @@ const SignUpMoreInformation = () => {
               textAlign: 'start',
             }}
           >
-            <Select placeholder="Select your age">
+            <Select showSearch placeholder="Select your age">
               {Array.from({ length: 150 }).map((_, i) => (
                 <Select.Option key={i + 1} value={i + 1}>
                   {i + 1}

@@ -7,7 +7,7 @@ import FeaturedBrands from '../components/featuredBrands/FeaturedBrands'
 
 const ShopHeroPage = () => {
   return (
-    <div className="responsive-width">
+    <div className="responsive-width !mt-5 !mb-20">
       <HeroPageImage />
       <ShopCategory />
       <BestSellers />

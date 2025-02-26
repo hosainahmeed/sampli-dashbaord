@@ -120,7 +120,7 @@ const OrderTable = ({ filterStatus }) => {
   ];
 
   return (
-    <div className="py-12">
+    <div className="pb-12">
       <div className="flex items-center gap-12 mb-4">
         <Input
           placeholder="Search by Order ID, Product, or Customer"

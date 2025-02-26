@@ -115,7 +115,7 @@ const TransactionHistorySampler = () => {
   ]
 
   return (
-    <div className="responsive-width">
+    <div className="responsive-width h-screen !mt-5">
       <div className="text-2xl font-semibold">Transaction History</div>
 
       <div className="mt-7">

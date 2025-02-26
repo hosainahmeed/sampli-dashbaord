@@ -77,7 +77,7 @@ const icons = {
 
 const NotificationCard = ({ notification }) => {
   return (
-    <div className="flex justify-between  border border-gray-200 p-4 rounded-lg shadow-md mb-4">
+    <div className="flex justify-between  border border-gray-200 p-4 rounded-lg mb-4 text-gray-700">
       {icons[notification.type] || null}
 
       <div className="flex-1">
@@ -104,7 +104,7 @@ const NotificationCard = ({ notification }) => {
             {notification.message}
           </section>
           {!notification.image && (
-            <div className="border border-blue-500 text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
+            <div className="border border-blue-500 w-[120px] flex items-center justify-center text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
               {notification.button}
             </div>
           )}
@@ -119,7 +119,7 @@ const NotificationCard = ({ notification }) => {
               />
               <div>{notification.product} </div>
             </div>
-            <div className="border border-blue-500 text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
+            <div className="border flex items-center justify-center border-blue-500 w-[120px] text-blue-500 p-2 rounded-md text-[14px] cursor-pointer hover:bg-gray-100">
               {notification.button}
             </div>
           </div>
@@ -131,7 +131,7 @@ const NotificationCard = ({ notification }) => {
 
 const NotificationsSampler = () => {
   return (
-    <div className="max-w-4xl ">
+    <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">
       <h1 className="text-xl font-semibold mb-6">Notifications</h1>
       <div>
         {notificationData.map((notification) => (

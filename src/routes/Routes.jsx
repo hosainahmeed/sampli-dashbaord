@@ -49,6 +49,11 @@ import ServiceWithCategory from "../pages/sampler/shop/serviceWithCategory/Servi
 import ServiceWithCategoryProductDetails from "../pages/sampler/shop/serviceWithCategoryProductDetails/ServiceWithCategoryProductDetails.jsx";
 import SamplerFeed from "../pages/sampler/samplerFeed/SamplerFeed.jsx";
 import TransectionOfBusiness from "../pages/Business/balance/TransectionOfBusiness.jsx";
+import SamplerLayout from "../pages/sampler/samplerLayout/SamplerLayout.jsx";
+import TermsAndConditions from "../pages/termsAndConditions/TermsAndConditions.jsx";
+import ContactUs from "../pages/contactUs/ContactUs.jsx";
+import PrivacyPolicy from "../pages/privacyPolicy/PrivacyPolicy.jsx";
+import ProductListCheckoutSampler from "../pages/sampler/productListCheckoutSampler/ProductListCheckoutSampler.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -82,79 +87,98 @@ export const router = createBrowserRouter([
 
   // Ahsan Mahfuz
   // campaign section
-  {
-    path: "/sampler/campaign",
-    element: <SamplerHome />,
-  },
-  {
-    path: "/sampler/campaign/all-offer",
-    element: <AllOfferSampler />,
-  },
 
   {
-    path: "/sampler/campaign/earnings",
-    element: <EarningsSampler />,
-  },
-  {
-    path: "/sampler/campaign/transaction-history",
-    element: <TransactionHistorySampler />,
-  },
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <SamplerLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: "/sampler/campaign",
+        element: <SamplerHome />,
+      },
+      {
+        path: "/sampler/campaign/all-offer",
+        element: <AllOfferSampler />,
+      },
 
-  {
-    path: "/sampler/campaign/shipments",
-    element: <ShipmentAndAlertSampler />,
-    children: [
-      { path: "offer-shipments", element: <OfferShipmentsSampler /> },
-      { path: "my-purchases", element: <MyPurchasesSampler /> },
-      { path: "wishlist", element: <WishlistSampler /> },
-      { path: "notifications", element: <NotificationsSampler /> },
+      {
+        path: "/sampler/campaign/earnings",
+        element: <EarningsSampler />,
+      },
+      {
+        path: "/sampler/campaign/transaction-history",
+        element: <TransactionHistorySampler />,
+      },
+
+      {
+        path: "/sampler/campaign/shipments",
+        element: <ShipmentAndAlertSampler />,
+        children: [
+          { path: "offer-shipments", element: <OfferShipmentsSampler /> },
+          { path: "my-purchases", element: <MyPurchasesSampler /> },
+          { path: "wishlist", element: <WishlistSampler /> },
+          { path: "notifications", element: <NotificationsSampler /> },
+        ],
+      },
+      {
+        path: "/sampler/campaign/return-items",
+        element: <ReturnItemsSampler />,
+      },
+      {
+        path: "/sampler/settings",
+        element: <SettingsSampler />,
+        children: [
+          {
+            path: "basic-details-settings-sampler",
+            element: <BasicDetailsSettingsSampler />,
+          },
+          {
+            path: "preferences-settings-sampler",
+            element: <PreferencesSettingsSampler />,
+          },
+          {
+            path: "security-settings-sampler",
+            element: <SecuritySettingsSampler />,
+          },
+          {
+            path: "notifications-settings-sampler",
+            element: <NotificationsSettingsSampler />,
+          },
+        ],
+      },
+      {
+        path: "/sampler/my-profile",
+        element: <MyProfileSampler />,
+      },
+      {
+        path: "/sampler/shop",
+        element: <ShopHeroPage />,
+      },
+      {
+        path: `/sampler/shop/:name`,
+        element: <ServiceWithCategory />,
+      },
+      {
+        path: `/sampler/shop/:name/:id`,
+        element: <ServiceWithCategoryProductDetails />,
+      },
+      {
+        path: `/sampler/feed`,
+        element: <SamplerFeed />,
+      },
+
+      {
+        path: `/sampler/checkout`,
+        element: <ProductListCheckoutSampler />,
+      },
+      { path: "/terms-and-conditions", element: <TermsAndConditions /> },
+      { path: "/contact-us", element: <ContactUs /> },
+      { path: "/privacy-policy", element: <PrivacyPolicy /> },
     ],
-  },
-  {
-    path: "/sampler/campaign/return-items",
-    element: <ReturnItemsSampler />,
-  },
-  {
-    path: "/sampler/settings",
-    element: <SettingsSampler />,
-    children: [
-      {
-        path: "basic-details-settings-sampler",
-        element: <BasicDetailsSettingsSampler />,
-      },
-      {
-        path: "preferences-settings-sampler",
-        element: <PreferencesSettingsSampler />,
-      },
-      {
-        path: "security-settings-sampler",
-        element: <SecuritySettingsSampler />,
-      },
-      {
-        path: "notifications-settings-sampler",
-        element: <NotificationsSettingsSampler />,
-      },
-    ],
-  },
-  {
-    path: "/sampler/my-profile",
-    element: <MyProfileSampler />,
-  },
-  {
-    path: "/sampler/shop",
-    element: <ShopHeroPage />,
-  },
-  {
-    path: `/sampler/shop/:name`,
-    element: <ServiceWithCategory />,
-  },
-  {
-    path: `/sampler/shop/:name/:id`,
-    element: <ServiceWithCategoryProductDetails />,
-  },
-  {
-    path: `/sampler/feed`,
-    element: <SamplerFeed />,
   },
 
   // hossain
@@ -175,9 +199,3 @@ export const router = createBrowserRouter([
   { path: "/sign-up-more-info", element: <SignUpMoreInformation /> },
   { path: "/sign-up-select-all-categories", element: <SelectAllCategories /> },
 ]);
-
-{
-  /* <ProtectedRoute>
-        
-      </ProtectedRoute> */
-}

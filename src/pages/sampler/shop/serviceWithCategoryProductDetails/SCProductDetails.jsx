@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Rate, Modal, InputNumber, Collapse } from 'antd'
+import { Button, Rate, Modal,  Collapse } from 'antd'
 import {
   HeartOutlined,
   HeartFilled,
@@ -11,7 +11,6 @@ import AddToCartItem from './AddToCartItem'
 const { Panel } = Collapse
 const SCProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState('8')
-  const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [previewVisible, setPreviewVisible] = useState(false)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
@@ -70,9 +69,7 @@ const SCProductDetails = () => {
   const showModal = () => {
     setIsModalOpen(true)
   }
-  const handleOk = () => {
-    setIsModalOpen(false)
-  }
+  
   const handleCancel = () => {
     setIsModalOpen(false)
   }
@@ -106,7 +103,9 @@ const SCProductDetails = () => {
         </div>
 
         <div className="md:w-1/2">
-          <h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
+          <h1 className="text-2xl font-semibold mb-2 text-gray-500">
+            {product.name}
+          </h1>
           <p className="text-gray-600 mb-4">{product.description}</p>
 
           <div className="mb-6">
@@ -152,12 +151,6 @@ const SCProductDetails = () => {
           </div>
 
           <div className="flex gap-4 items-center mb-6">
-            <InputNumber
-              min={1}
-              value={quantity}
-              onChange={setQuantity}
-              className="w-20"
-            />
             <Button
               type="primary"
               size="large"

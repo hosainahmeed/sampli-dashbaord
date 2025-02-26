@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
-import { Button, Typography, message, Upload, Form, Input } from 'antd';
-import 'antd/dist/reset.css';
-import Logo from '../../components/ui/Logo';
-import { useNavigate } from 'react-router-dom';
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
-import InputField from './InputField';
-import toast from 'react-hot-toast';
+import React, { useState } from 'react'
+import { Button, Typography, message, Upload, Form, Input } from 'antd'
+import 'antd/dist/reset.css'
+import Logo from '../../components/ui/Logo'
+import { useNavigate } from 'react-router-dom'
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
+import InputField from './InputField'
+import toast from 'react-hot-toast'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const ComplianceInfo = () => {
-  const navigate = useNavigate();
-  const [form] = Form.useForm();
-  const [certificateFileList, setCertificateFileList] = useState([]);
-  const [licenseFileList, setLicenseFileList] = useState([]);
+  const navigate = useNavigate()
+  const [form] = Form.useForm()
+  const [certificateFileList, setCertificateFileList] = useState([])
+  const [licenseFileList, setLicenseFileList] = useState([])
 
   // Allowed file types
-  const allowedTypes = ['application/pdf', 'image/jpeg'];
+  const allowedTypes = ['application/pdf', 'image/jpeg']
 
   const handleFileChange =
     (setFileList) =>
     ({ fileList }) => {
       const filteredFiles = fileList.filter((file) =>
         allowedTypes.includes(file.type)
-      );
+      )
 
       if (filteredFiles.length !== fileList.length) {
-        toast.error('Only PDF and JPG files are allowed!');
+        toast.error('Only PDF and JPG files are allowed!')
       }
 
-      setFileList(filteredFiles);
-    };
+      setFileList(filteredFiles)
+    }
 
   const handleFileRemove = (setFileList) => () => {
-    setFileList([]);
-  };
+    setFileList([])
+  }
 
   // const handleSubmit = async () => {
   //   try {
@@ -61,33 +61,34 @@ const ComplianceInfo = () => {
   // };
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields();
-      const formData = new FormData();
-      formData.append('ein', values.ein);
+      const values = await form.validateFields()
+      const formData = new FormData()
+      formData.append('ein', values.ein)
 
       if (certificateFileList.length > 0) {
-        formData.append('certificate', certificateFileList[0].originFileObj);
+        formData.append('certificate', certificateFileList[0].originFileObj)
       }
       if (licenseFileList.length > 0) {
-        formData.append('license', licenseFileList[0].originFileObj);
+        formData.append('license', licenseFileList[0].originFileObj)
       }
 
       console.log('Form Data:', {
         EIN: values.ein,
         Certificate: certificateFileList[0]?.originFileObj,
         License: licenseFileList[0]?.originFileObj,
-      });
+      })
 
       // Simulating a server request
-      toast.success('Register Success!');
-      navigate('/');
+      toast.success('Register Success!')
+      navigate('/')
     } catch (error) {
-      toast.error('Please fill out all fields correctly.');
+      toast.error('Please fill out all fields correctly.')
     }
-  };
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
+      <div className="gradient-ellipse "></div>
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg">
         <Title level={3} className="text-blue-500">
           <Logo />
@@ -256,7 +257,7 @@ const ComplianceInfo = () => {
         </Form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ComplianceInfo;
+export default ComplianceInfo

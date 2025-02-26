@@ -20,7 +20,7 @@ const ReviewRatingSampler = () => {
   }
 
   return (
-    <div>
+    <div className='!text-gray-500'>
       <div>
         <span className="text-4xl">{reviews.averageRating}</span>
         <span>⭐</span>

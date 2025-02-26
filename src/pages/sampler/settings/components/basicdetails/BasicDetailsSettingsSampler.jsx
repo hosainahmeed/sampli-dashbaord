@@ -75,9 +75,9 @@ const BasicDetailsSettingsSampler = () => {
   }
 
   return (
-    <div className="!pb-20">
+    <div className="!pb-20 h-[96vh] overflow-auto scroll-y-auto scrollbar-none">
       {/* Basic Details Section */}
-      <div className="bg-white rounded-lg">
+      <div className=" rounded-lg">
         <div className="flex justify-between mt-1 border-b border-gray-200 pb-2">
           <h2 className="text-2xl font-medium">Basic details</h2>
           <div className="flex flex-col items-center">
@@ -166,7 +166,7 @@ const BasicDetailsSettingsSampler = () => {
       </div>
 
       {/* Contact & Shipping Information */}
-      <div className="border border-gray-200 p-5 mt-5">
+      <div className="border border-gray-200 p-5 mt-5 ">
         <div className=" border-b border-gray-200">
           <h2 className="text-lg font-medium">
             Contact & Shipping Information
