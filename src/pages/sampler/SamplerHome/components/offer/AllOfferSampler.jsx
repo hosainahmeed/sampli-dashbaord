@@ -7,78 +7,78 @@ const onChange = (key) => {
 }
 
 const productData = [
-    {
-      id: 1,
-      image: `https://picsum.photos/seed/${Math.random()}/150`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 5 days',
-      status: 'Offer Accepted',
-    },
-    {
-      id: 2,
-      image: `https://picsum.photos/seed/${Math.random()}/151`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 4 days',
-      status: 'Offer Expired',
-    },
-    {
-      id: 3,
-      image: `https://picsum.photos/seed/${Math.random()}/152`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 3 days',
-      status: 'Accept Offer',
-    },
-    {
-      id: 4,
-      image: `https://picsum.photos/seed/${Math.random()}/153`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 2 days',
-      status: 'Accept Offer',
-    },
-    {
-      id: 5,
-      image: `https://picsum.photos/seed/${Math.random()}/154`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 1 days',
-      status: 'Accept Offer',
-    },
-    {
-      id: 6,
-      image: `https://picsum.photos/seed/${Math.random()}/154`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 1 days',
-      status: 'Completed Offer',
-    },
-    {
-      id: 7,
-      image: `https://picsum.photos/seed/${Math.random()}/154`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 1 days',
-      status: 'Completed Offer',
-    },
-    {
-      id: 8,
-      image: `https://picsum.photos/seed/${Math.random()}/154`,
-      title: 'Mini Portable Refillable Spray...',
-      description: 'We are a factory direct sales store...',
-      rewards: 5,
-      due: '- 1 days',
-      status: 'Completed Offer',
-    },
+  {
+    id: 1,
+    image: `https://picsum.photos/seed/${Math.random()}/150`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 5 days',
+    status: 'Offer Accepted',
+  },
+  {
+    id: 2,
+    image: `https://picsum.photos/seed/${Math.random()}/151`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 4 days',
+    status: 'Offer Expired',
+  },
+  {
+    id: 3,
+    image: `https://picsum.photos/seed/${Math.random()}/152`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 3 days',
+    status: 'Accept Offer',
+  },
+  {
+    id: 4,
+    image: `https://picsum.photos/seed/${Math.random()}/153`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 2 days',
+    status: 'Accept Offer',
+  },
+  {
+    id: 5,
+    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 1 days',
+    status: 'Accept Offer',
+  },
+  {
+    id: 6,
+    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 1 days',
+    status: 'Completed Offer',
+  },
+  {
+    id: 7,
+    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 1 days',
+    status: 'Completed Offer',
+  },
+  {
+    id: 8,
+    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    title: 'Mini Portable Refillable Spray...',
+    description: 'We are a factory direct sales store...',
+    rewards: 5,
+    due: '- 1 days',
+    status: 'Completed Offer',
+  },
 ]
 
 const items = [
@@ -198,8 +198,8 @@ const items = [
           <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[60vh]">
             <p className="font-bold text-xl">No Expired Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don't have any expired offers at the moment. Check
-              back soon!
+              Looks like you don&apos;t have any expired offers at the moment.
+              Check back soon!
             </p>
           </div>
         )}
@@ -209,8 +209,7 @@ const items = [
 ]
 const AllOfferSampler = () => {
   return (
-    <div className="responsive-width">
-      <Breadcrumbs />
+    <div className="responsive-width !mt-5 h-screen">
       <div className="text-2xl font-semibold">Offers</div>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
     </div>

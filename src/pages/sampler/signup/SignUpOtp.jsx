@@ -47,7 +47,8 @@ const SignUpOtp = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
+      <div className="gradient-ellipse"></div>
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
         <Title level={3} className="text-blue-500">
           <Logo />

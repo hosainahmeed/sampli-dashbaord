@@ -140,6 +140,7 @@ function Security() {
             // changePassModal: true,
           })
         }
+        
       />
       <PasswordChangeOptModal
         visible={modalState.passwordEmailOtp}
@@ -150,6 +151,7 @@ function Security() {
         onResend={handleResend}
         otp={otp}
         setOtp={setOtp}
+        
       />
       <ChangePasswordModal
         visible={modalState.changePassModal}

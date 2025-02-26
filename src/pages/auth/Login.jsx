@@ -1,28 +1,29 @@
-import React from 'react';
-import { Button, Typography, Divider } from 'antd';
-import { AppleOutlined, GoogleOutlined } from '@ant-design/icons';
-import 'antd/dist/reset.css';
-import Logo from '../../components/ui/Logo';
-import { TiSocialFacebook } from 'react-icons/ti';
-import InputField from '../../components/ui/InputField';
-import FormWrapper from '../../components/ui/FormWrapper';
-import { Link, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import React from 'react'
+import { Button, Typography, Divider } from 'antd'
+import { AppleOutlined, GoogleOutlined } from '@ant-design/icons'
+import 'antd/dist/reset.css'
+import Logo from '../../components/ui/Logo'
+import { TiSocialFacebook } from 'react-icons/ti'
+import InputField from '../../components/ui/InputField'
+import FormWrapper from '../../components/ui/FormWrapper'
+import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const LoginForm = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log('Success:', values)
     if (values.email && values.password) {
-      toast.success('Welcome to your website, sir!');
-      navigate('/');
+      toast.success('Welcome to your website, sir!')
+      navigate('/')
     }
-  };
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
+      <div className="gradient-ellipse "></div>
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
         <Title level={3} className="text-blue-500">
           <Logo />
@@ -60,9 +61,9 @@ const LoginForm = () => {
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
+                    return Promise.resolve()
                   }
-                  return Promise.reject(new Error('Passwords do not match!'));
+                  return Promise.reject(new Error('Passwords do not match!'))
                 },
               }),
             ]}
@@ -114,7 +115,7 @@ const LoginForm = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

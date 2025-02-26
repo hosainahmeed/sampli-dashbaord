@@ -82,7 +82,7 @@ body::-webkit-scrollbar {
   background-image:
     repeating-linear-gradient(to right, rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5) 1px, transparent 1px, transparent 20px),
     repeating-linear-gradient(to bottom, rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5) 1px, transparent 1px, transparent 20px);
-
+  z-index: 1;
 
 }
 
@@ -94,6 +94,7 @@ body::-webkit-scrollbar {
   transform: translate(-50%, -50%);
   width: 60%;
   height: 70%;
+  z-index: -1;
 
   background: linear-gradient(90deg,
       rgba(255, 150, 150, 0.7) 0%,

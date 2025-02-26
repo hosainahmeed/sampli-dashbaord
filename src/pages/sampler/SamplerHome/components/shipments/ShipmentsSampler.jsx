@@ -1,6 +1,6 @@
 import React from 'react'
-import {  Table, Tabs, Tag } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { Table, Tabs, Tag } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
 const onChange = (key) => {
   console.log(key)
 }
@@ -71,12 +71,14 @@ const columns = [
     title: '',
     key: 'action',
     render: (_, record) => (
-      <div
-        type="link"
-        className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
-      >
-        View
-      </div>
+      <Link to={`/sampler/campaign/shipments/my-purchases`}>
+        <div
+          type="link"
+          className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
+        >
+          View
+        </div>
+      </Link>
     ),
   },
 ]
@@ -161,7 +163,7 @@ const ShipmentsSampler = () => {
           <div className="  text-xl font-semibold">Shipments</div>
           <div
             onClick={() => Navigate('/sampler/campaign/all-offer')}
-            className="border border-gray-400 px-3 py-2 cursor-pointer rounded-md hover:bg-gray-100"
+            className="border border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
           >
             See all
           </div>

@@ -12,10 +12,11 @@ const ReviewsVideo = ({ showModal }) => {
   return (
     <div className=" mx-auto bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">
-          Uploaded reviews
-        </h2>
-        <button className="bg-blue-500 text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer"  onClick={showModal}>
+        <h2 className="text-xl font-semibold">Uploaded reviews</h2>
+        <button
+          className="bg-blue-500 text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer"
+          onClick={showModal}
+        >
           Upload New review
         </button>
       </div>
@@ -66,12 +67,11 @@ const ReviewsVideo = ({ showModal }) => {
 
         <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">
           <div className="aspect-video bg-gray-200 flex items-center justify-center">
-            <img
-              src={`https://picsum.photos/seed/${Math.random()}/400/300`}
-              alt="Product review video thumbnail showing AirPods Pro"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/30 to-transparent h-12">
+            <video
+              controls
+              src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
+            ></video>
+            {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/30 to-transparent h-12">
               <div className="flex items-center justify-between px-3 py-2">
                 <div className="flex items-center gap-2">
                   <button>
@@ -106,7 +106,7 @@ const ReviewsVideo = ({ showModal }) => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

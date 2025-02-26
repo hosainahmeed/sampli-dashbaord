@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Card, Input, Select, Typography, Badge } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
-import ReviewCard from '../../../../components/store-profile-component/ReviewCard'
-import ReviewRating from '../../../../components/store-profile-component/ReviewRating'
 import { useNavigate } from 'react-router-dom'
 
 const { Search } = Input
@@ -82,14 +80,14 @@ const ServiceWithCategory = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="responsive-width mx-auto px-4 !mt-5 !mb-32">
       <div className="flex justify-between items-center mb-6">
         <Title level={2}>Electronics</Title>
       </div>
 
       <div className="flex gap-6 mb-6 overflow-x-auto pb-4">
         {categories.map((category) => (
-          <div key={category} className=" ">
+          <div key={category} className="px-2 ">
             <Badge className="!mt-2" dot={selectedCategory === category}>
               <Card
                 hoverable

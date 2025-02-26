@@ -33,7 +33,7 @@ const EarningsSampler = () => {
     setIsGetPaidModalVisible(false)
   }
   return (
-    <div className="responsive-width">
+    <div className="responsive-width h-screen !mt-5">
       <div>
         <div className="text-3xl  font-semibold mb-10">Earnings</div>
 

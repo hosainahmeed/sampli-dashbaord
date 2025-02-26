@@ -1,26 +1,27 @@
-import React from 'react';
-import { Form, Input, Button, Typography, Divider, message } from 'antd';
-import { AppleOutlined, GoogleOutlined } from '@ant-design/icons';
-import 'antd/dist/reset.css';
-import Logo from '../../components/ui/Logo';
-import { TiSocialFacebook } from 'react-icons/ti';
-import InputField from '../../components/ui/InputField';
-import FormWrapper from '../../components/ui/FormWrapper';
-import { Link, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import React from 'react'
+import { Form, Input, Button, Typography, Divider, message } from 'antd'
+import { AppleOutlined, GoogleOutlined } from '@ant-design/icons'
+import 'antd/dist/reset.css'
+import Logo from '../../components/ui/Logo'
+import { TiSocialFacebook } from 'react-icons/ti'
+import InputField from '../../components/ui/InputField'
+import FormWrapper from '../../components/ui/FormWrapper'
+import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 const Register = () => {
-  const router = useNavigate();
+  const router = useNavigate()
   const onFinish = (values) => {
-    console.log('Success:', values);
-    router('/business-info');
-    toast.success('Form submitted successfully!');
-  };
+    console.log('Success:', values)
+    router('/business-info')
+    toast.success('Form submitted successfully!')
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
+      <div className="gradient-ellipse "></div>
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
         <Title level={3} className="text-blue-500">
           <Logo />
@@ -119,7 +120,7 @@ const Register = () => {
         </div> */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
