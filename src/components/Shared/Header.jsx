@@ -9,7 +9,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import brandlogo from '../../assets/logo/BrandLogo.svg'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { GrNotes } from 'react-icons/gr'
 import {
@@ -18,6 +18,7 @@ import {
   MdRssFeed,
 } from 'react-icons/md'
 import { LuShoppingCart } from 'react-icons/lu'
+import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler'
 
 function Header() {
   const navigate = useNavigate()
@@ -96,8 +97,11 @@ function Header() {
     </Menu>
   )
 
+  const location = useLocation()
+  const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
+
   return (
-    <div className='max-w-[1920px] mx-auto'>
+    <div>
       {userType == 'business' ? (
         <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
           <Link to={'/'}>
@@ -127,14 +131,16 @@ function Header() {
           </div>
         </div>
       ) : (
-        <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
+        <div className=" px-10 border-b-[1px] border-[#eee]   h-16 flex justify-between items-center  ">
           <Link to={'/sampler/campaign'}>
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex gap-20 text-gray-600">
             <Link
               to={'/sampler/campaign'}
-              className="hover:text-black transition-all  "
+              className={`hover:text-black transition-all  ${getLinkClass(
+                '/sampler/campaign'
+              )}`}
             >
               <div className="flex gap-2">
                 <MdOutlineCampaign className="text-[19px]" />
@@ -143,7 +149,9 @@ function Header() {
             </Link>
             <Link
               to={'/sampler/feed'}
-              className="hover:text-black transition-all  "
+              className={`hover:text-black transition-all  ${getLinkClass(
+                '/sampler/feed'
+              )} `}
             >
               <div className="flex gap-2">
                 <MdRssFeed />
@@ -152,7 +160,9 @@ function Header() {
             </Link>
             <Link
               to={'/sampler/shop'}
-              className="hover:text-black transition-all  "
+              className={`hover:text-black transition-all  ${getLinkClass(
+                '/sampler/shop'
+              )} `}
             >
               <div className="flex gap-2">
                 <LuShoppingCart />
@@ -161,16 +171,15 @@ function Header() {
             </Link>
           </div>
           <div className="flex items-center gap-6 text-2xl">
-            {/* <CiCircleQuestion /> */}
             <Link
               to="/sampler/checkout"
-              className="hover:scale-120 transition-all"
+              className="hover:scale-110 transition-all"
             >
-              <LuShoppingCart className="hover:text-black text-gray-500 transition-all" />
+              <ShoppingCartSampler />
             </Link>
             <Link
               to="/sampler/campaign/shipments/notifications"
-              className="hover:scale-120 transition-all"
+              className="hover:scale-110 transition-all"
             >
               <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />
             </Link>

@@ -7,8 +7,6 @@ const SoloStoveCart = () => {
     {
       id: 1,
       name: 'Pi Pizza Oven',
-      details: '(Estimated Ship Date: June 6th)',
-      note: 'Fuel Source: Wood Only',
       quantity: 1,
       price: 100,
       img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
@@ -16,8 +14,6 @@ const SoloStoveCart = () => {
     {
       id: 2,
       name: 'Grill Ultimate Bundle',
-      details: 'Add accident protection for $29.99',
-      note: '',
       quantity: 1,
       price: 200.5,
       img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
@@ -25,8 +21,6 @@ const SoloStoveCart = () => {
     {
       id: 3,
       name: 'Starters',
-      details: '(4 pack)',
-      note: '',
       quantity: 1,
       price: 10.55,
       img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
@@ -34,8 +28,6 @@ const SoloStoveCart = () => {
     {
       id: 4,
       name: 'Charcoal Grill Pack',
-      details: '',
-      note: '',
       quantity: 1,
       price: 1.5,
       img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
@@ -94,47 +86,7 @@ const SoloStoveCart = () => {
                       className="w-16 h-16 mr-4 object-contain"
                     />
                     <div>
-                      {item.id === 1 && (
-                        <div className="font-medium">Pi Pizza Oven</div>
-                      )}
-                      {item.id === 2 && (
-                        <>
-                          <div className="text-sm text-gray-600">
-                            Solo Stove
-                          </div>
-                          <div className="font-medium">
-                            Grill Ultimate Bundle
-                          </div>
-                        </>
-                      )}
-                      {item.id === 3 && (
-                        <>
-                          <div className="text-sm text-gray-600">
-                            Solo Stove
-                          </div>
-                          <div className="font-medium">Starters</div>
-                        </>
-                      )}
-                      {item.id === 4 && (
-                        <>
-                          <div className="text-sm text-gray-600">
-                            Solo Stove
-                          </div>
-                          <div className="font-medium">Charcoal Grill Pack</div>
-                        </>
-                      )}
-                      {item.details && (
-                        <div className="text-orange-500">{item.details}</div>
-                      )}
-                      {item.note && <div className="text-sm">{item.note}</div>}
-                      {item.id === 1 && (
-                        <div className="text-blue-500 text-sm mt-1">Change</div>
-                      )}
-                      {item.id === 2 && (
-                        <div className="text-xs bg-orange-100 text-orange-800 p-1 mt-1 inline-block">
-                          Add accident protection for $29.99
-                        </div>
-                      )}
+                      <div className="font-medium mt-2">{item.name}</div>
                     </div>
                   </div>
                   <div className="col-span-2 text-center">
@@ -187,7 +139,7 @@ const SoloStoveCart = () => {
           <div className="mt-4">
             <button
               onClick={() => toast.success('Checkout Successfully!')}
-              className="w-full bg-white !text-black !border transition-all   hover:!bg-black  cursor-pointer hover:!text-white py-3 font-medium"
+              className="w-full bg-white !text-black !border !border-gray-200  transition-all   hover:!bg-black  cursor-pointer hover:!text-white py-3 font-medium"
             >
               Check out
             </button>
@@ -210,24 +162,12 @@ const SoloStoveCart = () => {
             <div className="w-16 h-1 bg-orange-500 mx-auto mb-6"></div>
 
             <p className="text-gray-600 mb-8">
-              Looks like you havent added any items to your cart yet.
+              Looks like you haven&apos;t added any items to your cart yet.
             </p>
-
-            <div className="flex justify-center mb-4 space-x-4">
-              <div className="p-4 border border-gray-200 rounded-lg w-24 h-24 flex items-center justify-center bg-gray-50">
-                <span className="text-4xl">🔥</span>
-              </div>
-              <div className="p-4 border border-gray-200 rounded-lg w-24 h-24 flex items-center justify-center bg-gray-50">
-                <span className="text-4xl">🍕</span>
-              </div>
-              <div className="p-4 border border-gray-200 rounded-lg w-24 h-24 flex items-center justify-center bg-gray-50">
-                <span className="text-4xl">🥩</span>
-              </div>
-            </div>
           </div>
 
-          <Link to={'/sampler/shop'}>
-            <button className="bg-green-200 hover:bg-green-300 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg">
+          <Link to={'/sampler/shop'} className="cursor-pointer">
+            <button className="bg-green-200 cursor-pointer hover:bg-green-300 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg">
               Start Shopping
             </button>
           </Link>

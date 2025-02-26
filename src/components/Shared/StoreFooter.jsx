@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 
 function StoreFooter() {
   return (
-    <div className="border-t-[1px] border-[#eee] text-gray-700 max-w-[1920px] mx-auto">
+    <div className="border-t-[1px] border-[#eee] text-gray-700 ">
       <div className="mx-auto px-10 pt-5 flex justify-between items-center">
         <ul className="flex justify-center gap-4">
           <li>
