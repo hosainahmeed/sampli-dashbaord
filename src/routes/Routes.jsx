@@ -53,11 +53,12 @@ import SamplerLayout from '../pages/sampler/samplerLayout/SamplerLayout.jsx'
 import TermsAndConditions from '../pages/termsAndConditions/TermsAndConditions.jsx'
 import ContactUs from '../pages/contactUs/ContactUs.jsx'
 import PrivacyPolicy from '../pages/privacyPolicy/PrivacyPolicy.jsx'
-import AllNotificationsSampler from '../pages/sampler/allNotificationsSampler/AllNotificationsSampler.jsx'
 import ProductListCheckoutSampler from '../pages/sampler/productListCheckoutSampler/ProductListCheckoutSampler.jsx'
+import PageNotFound from '../pages/pageNotFound/PageNotFound.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
+    errorElement: <PageNotFound />,
     element: (
       <ProtectedRoute>
         <MainLayout />
@@ -91,6 +92,7 @@ export const router = createBrowserRouter([
 
   {
     path: '/',
+    errorElement: <PageNotFound />,
     element: (
       <ProtectedRoute>
         <SamplerLayout />
