@@ -5,10 +5,10 @@ const PageNotFound = () => {
   const Navigate = useNavigate()
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-gray-900 text-black">
-      <h1 className="text-9xl font-extrabold tracking-widest animate-bounce">
+      <h1 className="!text-9xl !font-extrabold  tracking-widest animate-bounce">
         404
       </h1>
-      <p className="text-lg mt-4 text-gray-300">
+      <p className="text-lg mt-4 text-black">
         Oops! The page you’re looking for doesn’t exist.
       </p>
 
