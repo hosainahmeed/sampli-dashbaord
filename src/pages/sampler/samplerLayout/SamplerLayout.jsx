@@ -7,7 +7,9 @@ const SamplerLayout = () => {
   return (
     <div>
       <Header />
-      <Outlet />
+      <div className="pt-16">
+        <Outlet />
+      </div>
       <StoreFooter />
     </div>
   )

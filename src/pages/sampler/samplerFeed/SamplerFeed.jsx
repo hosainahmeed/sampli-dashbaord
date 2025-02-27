@@ -176,7 +176,7 @@ const SamplerFeed = () => {
     <div className="responsive-width !mt-2 !mb-20">
       <div className=" bg-white flex justify-between items-start gap-10">
         {/* left side */}
-        <div className="p-4 w-1/3 sticky top-4 ">
+        <div className="p-4 w-1/3 sticky top-10 ">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4 ">
               <Avatar
