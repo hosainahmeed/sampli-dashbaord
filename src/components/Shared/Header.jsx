@@ -1,39 +1,39 @@
-import React, { useState } from 'react'
-import { Avatar, Button, Dropdown, Menu } from 'antd'
-import { CiHeart, CiStar } from 'react-icons/ci'
-import { IoMdNotificationsOutline } from 'react-icons/io'
+import React, { useState } from 'react';
+import { Avatar, Button, Dropdown, Menu } from 'antd';
+import { CiHeart, CiStar } from 'react-icons/ci';
+import { IoMdNotificationsOutline } from 'react-icons/io';
 import {
   UserOutlined,
   SettingOutlined,
   WalletOutlined,
   LogoutOutlined,
-} from '@ant-design/icons'
-import brandlogo from '../../assets/logo/BrandLogo.svg'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { GrNotes } from 'react-icons/gr'
+} from '@ant-design/icons';
+import brandlogo from '../../assets/logo/BrandLogo.svg';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { GrNotes } from 'react-icons/gr';
 import {
   MdOutlineAttachMoney,
   MdOutlineCampaign,
   MdRssFeed,
-} from 'react-icons/md'
-import { LuShoppingCart } from 'react-icons/lu'
-import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler'
+} from 'react-icons/md';
+import { LuShoppingCart } from 'react-icons/lu';
+import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler';
 
 function Header() {
-  const navigate = useNavigate()
-  const [userType, setUserType] = useState('sampler') // sampler, business
+  const navigate = useNavigate();
+  const [userType, setUserType] = useState('business');
   const user = {
     photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
     displayName: 'Micheal Scott',
     username: '@Micheal46',
-  }
+  };
   //update
   const handleSignOut = () => {
-    toast.success('sigh out successfully!')
-    navigate('/login')
-    console.log('sign out')
-  }
+    toast.success('sigh out successfully!');
+    navigate('/login');
+    console.log('sign out');
+  };
 
   const menu = (
     <Menu className="w-56 rounded-xl shadow-lg">
@@ -60,7 +60,7 @@ function Header() {
       </Menu.Item>
       <div className="text-center text-gray-400 text-sm p-2">v1.10</div>
     </Menu>
-  )
+  );
   const menuSampler = (
     <Menu className="w-56 rounded-xl shadow-lg">
       <div className="p-4 flex items-center gap-3">
@@ -95,10 +95,10 @@ function Header() {
         Log out
       </Menu.Item>
     </Menu>
-  )
+  );
 
-  const location = useLocation()
-  const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
+  const location = useLocation();
+  const getLinkClass = (path) => location.pathname === path && 'text-blue-600';
 
   return (
     <div>
@@ -198,7 +198,7 @@ function Header() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;
