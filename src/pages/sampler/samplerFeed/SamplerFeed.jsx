@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { Avatar, Button, Input, Tabs, Rate, Modal, Dropdown } from 'antd'
+import {
+  Avatar,
+  Button,
+  Input,
+  Tabs,
+  Rate,
+  Modal,
+  Dropdown,
+  Tooltip,
+} from 'antd'
 import {
   ShareAltOutlined,
   HeartOutlined,
@@ -163,6 +172,79 @@ const SamplerFeed = () => {
     setShowShareModal(true)
   }
 
+  const users = [
+    {
+      id: 1,
+      src: 'https://randomuser.me/api/portraits/women/1.jpg',
+      name: 'Chance Westervelt',
+      username: '@Chance23',
+      reviews: 23,
+    },
+    {
+      id: 2,
+      src: 'https://randomuser.me/api/portraits/women/2.jpg',
+      name: 'Lola Patel',
+      username: '@LolaP',
+      reviews: 42,
+    },
+    {
+      id: 3,
+      src: 'https://randomuser.me/api/portraits/men/3.jpg',
+      name: 'Elianore Quintero',
+      username: '@ElianoreQ',
+      reviews: 87,
+    },
+    {
+      id: 4,
+      src: 'https://randomuser.me/api/portraits/women/4.jpg',
+      name: 'Luna Chen',
+      username: '@LunaC',
+      reviews: 13,
+    },
+    {
+      id: 5,
+      src: 'https://randomuser.me/api/portraits/men/5.jpg',
+      name: 'Caelum Ortega',
+      username: '@CaelumO',
+      reviews: 25,
+    },
+    {
+      id: 6,
+      src: 'https://randomuser.me/api/portraits/men/6.jpg',
+      name: 'Kaito Santos',
+      username: '@KaitoS',
+      reviews: 67,
+    },
+    {
+      id: 7,
+      src: 'https://randomuser.me/api/portraits/women/7.jpg',
+      name: 'Astrid Hall',
+      username: '@AstridH',
+      reviews: 91,
+    },
+    {
+      id: 8,
+      src: 'https://randomuser.me/api/portraits/men/8.jpg',
+      name: 'Sage Patel',
+      username: '@SageP',
+      reviews: 56,
+    },
+    {
+      id: 9,
+      src: 'https://randomuser.me/api/portraits/women/9.jpg',
+      name: 'Lylah Martin',
+      username: '@LylahM',
+      reviews: 32,
+    },
+    {
+      id: 10,
+      src: 'https://randomuser.me/api/portraits/men/10.jpg',
+      name: 'Caspian Lee',
+      username: '@CaspianL',
+      reviews: 19,
+    },
+  ]
+
   const moreOptions = [
     { key: 'save', label: 'Save Post' },
     { key: 'report', label: 'Report Post' },
@@ -171,6 +253,28 @@ const SamplerFeed = () => {
 
   const [showPicker, setShowPicker] = useState(false)
   const [selectedEmoji, setSelectedEmoji] = useState('')
+
+  const [isModalOpenLike, setIsModalOpenLike] = useState(false)
+  const showModalLike = () => {
+    setIsModalOpenLike(true)
+  }
+  const handleOkLike = () => {
+    setIsModalOpenLike(false)
+  }
+  const handleCancelLike = () => {
+    setIsModalOpenLike(false)
+  }
+
+  const [followStatus, setFollowStatus] = useState(
+    users.reduce((acc, user) => ({ ...acc, [user.id]: false }), {})
+  )
+
+  const toggleFollow = (userId) => {
+    setFollowStatus((prevStatus) => ({
+      ...prevStatus,
+      [userId]: !prevStatus[userId],
+    }))
+  }
 
   return (
     <div className="responsive-width !mt-2 !mb-20">
@@ -411,6 +515,7 @@ const SamplerFeed = () => {
               </div>
             ))}
           </div>
+
           <div className="space-y-4">
             {posts.map((post) => (
               <div key={post.id} className=" border border-gray-200 p-5">
@@ -500,6 +605,27 @@ const SamplerFeed = () => {
                     </button>
                   </div>
                   <Button type="primary">Add to cart</Button>
+                </div>
+
+                <div
+                  className="flex items-center space-x-2 mb-2 cursor-pointer"
+                  onClick={showModalLike}
+                >
+                  {users.slice(0, 8).map((user, index) => (
+                    <Tooltip key={index} title={user.name} placement="top">
+                      <div className="relative">
+                        <Avatar
+                          src={user.src}
+                          size={30}
+                          className="border-2 border-white"
+                        />
+                        <HeartFilled className="absolute bottom-0 right-0 !text-red-500 bg-white rounded-full text-[7px] p-1" />
+                      </div>
+                    </Tooltip>
+                  ))}
+                  <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full text-gray-600 font-semibold">
+                    +{users.length - 8}
+                  </div>
                 </div>
 
                 {/* Comments Section */}
@@ -601,6 +727,54 @@ const SamplerFeed = () => {
             </Button>
             <Button block>Copy Link</Button>
             <Button block>Share via Message</Button>
+          </div>
+        </Modal>
+
+        {/* like modal */}
+
+        <Modal
+          title={`Liked (${users.length})`}
+          open={isModalOpenLike}
+          onOk={handleOkLike}
+          onCancel={handleCancelLike}
+          okButtonProps={{ style: { display: 'none' } }}
+          cancelButtonProps={{ style: { display: 'none' } }}
+          centered
+        >
+          <div className="flex flex-col space-y-4 text-gray-500 scroll-y-auto overflow-auto h-[50vh] ">
+            {users.map((user) => (
+              <div
+                key={user.id}
+                className="flex justify-between items-center space-x-4"
+              >
+                <div className="flex items-center !space-x-3">
+                  <Avatar
+                    src={user.src}
+                    size={50}
+                    className="border-2 border-white"
+                  />
+                  <div>
+                    <div className="text-sm font-medium flex-grow">
+                      {user.name}
+                    </div>
+                    <div className="flex gap-3 justify-center items-center">
+                      <div className="text-sm font-medium flex-grow">
+                        {user.username}
+                      </div>
+                      <div className="text-sm font-medium flex-grow">
+                        {user.reviews} reviews
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  type={followStatus[user.id] ? 'default' : 'primary'}
+                  onClick={() => toggleFollow(user.id)}
+                >
+                  {followStatus[user.id] ? 'Following' : 'Follow'}
+                </Button>
+              </div>
+            ))}
           </div>
         </Modal>
       </div>

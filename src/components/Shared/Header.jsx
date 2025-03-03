@@ -106,7 +106,7 @@ function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY
-      console.log(currentScrollPos)
+
       setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10)
 
       setPrevScrollPos(currentScrollPos)
@@ -118,6 +118,7 @@ function Header() {
 
   return (
     <div>
+      {/* Hosain part */}
       {userType == 'business' ? (
         <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
           <Link to={'/'}>
@@ -147,6 +148,7 @@ function Header() {
           </div>
         </div>
       ) : (
+        // Ahsan Mahfuz part
         <div
           className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
             visible ? 'translate-y-0' : '-translate-y-full'
