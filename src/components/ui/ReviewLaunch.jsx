@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Card, Empty } from "antd";
+import React, { useState, useEffect } from 'react';
+import { Card, Empty } from 'antd';
 
 const ReviewLaunch = () => {
   const [campaignDetails, setCampaignDetails] = useState(() => {
-    return JSON.parse(localStorage.getItem("targetAudience")) || {};
+    return JSON.parse(localStorage.getItem('targetAudience')) || {};
   });
   console.log(campaignDetails);
 
   const selectedProducts =
-    JSON.parse(localStorage.getItem("selectedProducts")) || [];
+    JSON.parse(localStorage.getItem('selectedProducts')) || [];
 
   useEffect(() => {
-    localStorage.setItem("campaignDetails", JSON.stringify(campaignDetails));
+    localStorage.setItem('campaignDetails', JSON.stringify(campaignDetails));
   }, [campaignDetails]);
 
   return (
@@ -25,7 +25,7 @@ const ReviewLaunch = () => {
         <h2 className="text-lg font-semibold">Campaign Details</h2>
         <div className="grid grid-cols-2 gap-4 mt-2 text-gray-700">
           <p className="font-medium">Campaign name</p>
-          <p>{campaignDetails.name || "N/A"}</p>
+          <p>{campaignDetails.name || 'N/A'}</p>
           <p className="font-medium">Target audience size</p>
           <p>{campaignDetails.audienceSize} Reviewers</p>
           <p className="font-medium">Cost</p>
@@ -47,7 +47,11 @@ const ReviewLaunch = () => {
                 className="flex items-start space-x-4 mb-4 border-b pb-4"
               >
                 <div className="w-16 h-16 bg-gray-200 rounded-lg">
-                  {product?.image}
+                  <img
+                    className="w-full h-full object-cover"
+                    src={product?.image}
+                    alt="product_image"
+                  />
                 </div>
                 <div>
                   <h3 className="font-medium">{product?.name}</h3>
@@ -80,18 +84,18 @@ const ReviewLaunch = () => {
             <p>Platform Fee (10%)</p>
             <p>
               $
-              {campaignDetails.audienceSize *
+              {(campaignDetails.audienceSize *
                 campaignDetails.costPerReview *
-                0.1}
+                0.1).toFixed(2)}
             </p>
           </div>
           <div className="border-t pt-2 flex justify-between font-semibold">
             <p>Grand total</p>
             <p>
               $
-              {campaignDetails.audienceSize *
+              {(campaignDetails.audienceSize *
                 campaignDetails.costPerReview *
-                1.1}
+                1.1).toFixed(2)}
             </p>
           </div>
         </div>

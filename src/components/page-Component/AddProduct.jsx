@@ -25,8 +25,7 @@ function AddProduct() {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state;
-  console.log(state);
-
+  console.log(variantFileList);
   const onFinish = (values) => {
     const data = {
       name: values.name,

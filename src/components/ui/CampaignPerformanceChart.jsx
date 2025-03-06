@@ -62,7 +62,7 @@ function CampaignPerformanceChart() {
     } else if (option === "This Month") {
       filtered = data.slice(0, 30);
     } else if (option === "This Year") {
-      filtered = data.filter((entry, index) => index % 30 === 0);
+      filtered = data.filter((entry, index) => index % 10 === 0);
     }
     setFilteredData(filtered);
   };

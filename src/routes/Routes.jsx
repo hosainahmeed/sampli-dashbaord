@@ -54,6 +54,7 @@ import TermsAndConditions from "../pages/termsAndConditions/TermsAndConditions.j
 import ContactUs from "../pages/contactUs/ContactUs.jsx";
 import PrivacyPolicy from "../pages/privacyPolicy/PrivacyPolicy.jsx";
 import ProductListCheckoutSampler from "../pages/sampler/productListCheckoutSampler/ProductListCheckoutSampler.jsx";
+import EditCampaign from "../pages/Business/EditCampaign/EditCampaign.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
       { path: "/product/add-product", element: <AddProduct /> },
       { path: "/settings", element: <SettingPage /> },
       { path: "/campaign/single-campaign", element: <SingleCampaign /> },
+      { path: "/campaign/single-campaign/edit-campaign", element: <EditCampaign /> },
       { path: "/sales/single-order", element: <OrderDetails /> },
       { path: "/store-profile", element: <StoreProfile /> },
       { path: "/all-notifications", element: <AllNotificationPage /> },

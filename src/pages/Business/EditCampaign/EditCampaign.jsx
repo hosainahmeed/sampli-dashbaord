@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Select, DatePicker, Button } from 'antd';
-import InputField from './InputField';
-import FormWrapper from './FormWrapper';
+import InputField from '../../../components/ui/InputField';
+import FormWrapper from '../../../components/ui/FormWrapper';
+import { Button, DatePicker, Select } from 'antd';
 import toast from 'react-hot-toast';
-
 const { Option } = Select;
-
 const DynamicSelect = ({ label, options, placeholder, onChange, ...rest }) => (
   <div>
     {label && (
@@ -72,7 +70,7 @@ const genderOptions = [
   { label: 'Other', value: 'Other' },
 ];
 
-const TargetAudienceForm = () => {
+function EditCampaign() {
   const [formData, setFormData] = useState({
     name: '',
     costPerReview: '',
@@ -106,16 +104,8 @@ const TargetAudienceForm = () => {
     localStorage.setItem('targetAudience', JSON.stringify(finalData));
     toast.success('Data saved successfully!');
   };
-
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold text-center">
-        Target Your Audience and Set Timelines
-      </h2>
-      <p className="text-center text-gray-500 mb-6">
-        Define who should review your product and when
-      </p>
-
+    <div className="max-w-screen-lg mx-auto">
       <FormWrapper className="grid grid-cols-1 gap-4">
         <InputField
           label="Campaign Name"
@@ -195,6 +185,6 @@ const TargetAudienceForm = () => {
       </FormWrapper>
     </div>
   );
-};
+}
 
-export default React.memo(TargetAudienceForm);
+export default EditCampaign;

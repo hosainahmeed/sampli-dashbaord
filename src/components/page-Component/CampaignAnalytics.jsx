@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Select, DatePicker } from "antd";
-import SalesCard from "../ui/SalesCard";
 import CampaignCard from "../ui/CampaignCard";
 
 const { Option } = Select;
@@ -69,7 +68,7 @@ function SalesAnalytics() {
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-3 gap-4">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {datas.map((data) => (
           <CampaignCard key={data.title} data={data} />
         ))}

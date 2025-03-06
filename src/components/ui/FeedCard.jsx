@@ -1,23 +1,45 @@
-import React from 'react';
-import { Card, Avatar, Typography, Rate, Tag, Button } from 'antd';
-import {
-  PlayCircleOutlined,
-  CommentOutlined,
-  ShareAltOutlined,
-} from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Card, Avatar, Typography, Rate, Tag, Button, Modal } from 'antd';
+import { CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { BsThreeDots } from 'react-icons/bs';
 import { CiHeart } from 'react-icons/ci';
+import { ShareSocial } from 'react-share-social';
+import { FaHeart } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
 
 const FeedCard = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [like, setLike] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const style = {
+    header: {
+      borderLeft: `5px solid `,
+      borderRadius: 0,
+      paddingInlineStart: 5,
+    },
+    body: {
+      boxShadow: 'inset 0 0 5px #999',
+      borderRadius: 5,
+    },
+    mask: {
+      backdropFilter: 'blur(10px)',
+    },
+    footer: {
+      borderTop: '1px solid #333',
+    },
+    content: {
+      boxShadow: '0 0 30px #999',
+    },
+  };
   return (
     <Card className="w-full rounded-md shadow-xl">
       <div className="flex-center-between mb-10">
         <div className="flex">
           <Avatar
             size={40}
-            src="https://s3-alpha-sig.figma.com/img/7f36/c473/8c30b8c2cb4b1e422e50c8bfb0c3152a?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=tfqMTk4GvOi5dEvl1Ohb-GZJi7c7wVVA60Q6z6mzwHm-c2aWOoiVkwKTV0Xgg9eE4W47Y4~5lOZcOUAjp-ksjbj5VoSYnGmLunCg739HOOPnWT5rqpvdZmnYio7h-jrvCnyElpQR-aiI0Jaljd8Dnxr9hhjLcJKV9YrGFq7~CtRMI8mcNmyZ6ACx23oNv71R2uAKzF2bzxON~agPw738H1MdvOygvpzpye-X1qoF0yp6USLneUUBBCHtBR7zdM871cLzSulDDQyzW-Q71LQJpPGzaqKi7sqij8c80W-ASZTQeYQ9GNn5i~-vL0GoG8ObsyHClRq~pH6yaBORI87WIw__"
+            src="https://pbs.twimg.com/profile_images/1186757121024462848/IhsPGxGB_400x400.jpg"
           />
           <div style={{ marginLeft: 10 }}>
             <Title level={5} style={{ margin: 0 }}>
@@ -63,16 +85,93 @@ const FeedCard = () => {
           marginTop: 10,
         }}
       >
-        <Button type="text" icon={<CiHeart />}>
+        <Button
+          onClick={() => {
+            setLike(!like);
+            like ? toast.error('Unliked') : toast.success('Liked');
+          }}
+          type="text"
+          icon={like ? <FaHeart fill="red" /> : <CiHeart />}
+        >
           <Text type="secondary">23</Text>
         </Button>
-        <Button type="text" icon={<CommentOutlined />}>
+        <Button
+          onClick={() => {
+            setShowCommentModal(true);
+          }}
+          type="text"
+          icon={<CommentOutlined />}
+        >
           6 comments
         </Button>
-        <Button type="text" icon={<ShareAltOutlined />}>
+        <Button
+          onClick={() => setShowModal(!showModal)}
+          type="text"
+          icon={<ShareAltOutlined />}
+        >
           Share
         </Button>
+        <Modal
+          title="Share this post"
+          position="center"
+          visible={showModal}
+          onCancel={() => setShowModal(!showModal)}
+          footer={null}
+        >
+          <ShareSocial
+            url="url_to_share.com"
+            style={{
+              ...style,
+              copyContainer: {
+                border: 'none',
+              },
+            }}
+            socialTypes={[
+              'facebook',
+              'twitter',
+              'reddit',
+              'linkedin',
+              'whatsapp',
+              'email',
+            ]}
+            onSocialButtonClicked={(data) => console.log(data)}
+          />
+        </Modal>
       </div>
+      <Modal
+        title="Comments"
+        width={600}
+        position="center"
+        visible={showCommentModal}
+        onCancel={() => setShowCommentModal(false)}
+        footer={null}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ marginLeft: 10 }}>
+            <div className="flex items-start">
+              <div className="!w-[40px] bg-gray-400 !h-[20px] mr-2 rounded-full" />
+              <div>
+                <Title level={5} style={{ margin: 0 }}>
+                  Micheal Scott{' '}
+                  <Text type="secondary">@Mike67 • 23mins ago</Text>
+                </Title>
+                <Text>
+                  I've been using this serum for a month and the results are
+                  amazing! My skin looks more radiant and the texture has
+                  improved significantly. Totally worth the price!
+                </Text>
+              </div>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <video
+                src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
+                controls
+                className="w-full rounded-3xl mt-4 overflow-hidden"
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </Card>
   );
 };

@@ -22,7 +22,7 @@ import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/Shoppin
 
 function Header() {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState('business');
+  const [userType, setUserType] = useState('business'); // sampler, business
   const user = {
     photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
     displayName: 'Micheal Scott',
