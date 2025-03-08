@@ -134,23 +134,23 @@ const ProductDetails = ({ visible, onCancel }) => {
                 <ul className="list-disc pl-6 mt-2">
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                 </ul>
               </div>

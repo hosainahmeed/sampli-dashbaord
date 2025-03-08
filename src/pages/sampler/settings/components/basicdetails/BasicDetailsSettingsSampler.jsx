@@ -2,11 +2,7 @@ import React, { useState } from 'react'
 import { FaCircleChevronRight } from 'react-icons/fa6'
 import { Modal, Input, Button, Upload, message } from 'antd'
 import toast from 'react-hot-toast'
-import {
-  LoadingOutlined,
-  PlusOutlined,
-  UploadOutlined,
-} from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader()

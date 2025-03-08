@@ -6,7 +6,6 @@ import {
   InboxOutlined,
 } from '@ant-design/icons'
 import { MdArrowBack } from 'react-icons/md'
-import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import Dragger from 'antd/es/upload/Dragger'
 import ReviewsVideo from './ReviewsVideo'

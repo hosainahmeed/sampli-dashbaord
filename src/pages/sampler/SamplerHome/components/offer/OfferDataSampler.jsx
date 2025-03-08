@@ -71,7 +71,7 @@ const OfferDataSampler = () => {
           <div className="col-span-5 text-center  flex flex-col items-center justify-center py-10 w-full h-[30vh]">
             <p className="font-bold text-xl">No Active Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don't have any offers at the moment. Check back
+              Looks like you don&apos;t have any offers at the moment. Check back
               soon!
             </p>
           </div>
