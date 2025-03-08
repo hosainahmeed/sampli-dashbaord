@@ -68,7 +68,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
               <div>
                 <strong className="text-black text-sm">Status</strong>
                 <div>
-                  <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+                  <span className="px-2 py-1 bg-green-500 text-white text-xs rounded-full">
                     In progress
                   </span>
                 </div>
@@ -111,7 +111,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
                   Track Item
                 </button>
                 <Button
-                  className="!bg-blue-500 hover:!text-black"
+                  className="!bg-blue-500  !text-white"
                   onClick={showModal}
                 >
                   Upload Review
@@ -122,16 +122,16 @@ const OfferOrderDetails = ({ setIsClicked }) => {
 
           <div className="mt-6">
             <h4 className="font-semibold">Order History</h4>
-            <Steps current={1} direction="vertical" className="mt-4">
+            <Steps current={1} direction="vertical" className="mt-4 ">
               <Step
                 title="Order reviewing"
                 description="23, Oct 2023"
-                icon={<ShoppingCartOutlined />}
+                icon={<ShoppingCartOutlined className="!text-green-500" />}
               />
               <Step
                 title="Processing order"
                 description="Pending"
-                icon={<CheckCircleOutlined />}
+                icon={<CheckCircleOutlined className="!text-green-500" />}
               />
               <Step
                 title="Item shipped"

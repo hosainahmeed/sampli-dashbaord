@@ -79,7 +79,7 @@ const BasicDetailsSettingsSampler = () => {
       {/* Basic Details Section */}
       <div className=" rounded-lg">
         <div className="flex justify-between mt-1 border-b border-gray-200 pb-2">
-          <h2 className="text-2xl font-medium">Basic details</h2>
+          <h2 className="text-2xl font-medium">My Account</h2>
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-4">
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-gray-200">

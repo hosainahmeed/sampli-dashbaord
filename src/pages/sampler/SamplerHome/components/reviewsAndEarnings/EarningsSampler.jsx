@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { BiSolidOffer } from 'react-icons/bi'
 import { PiCodesandboxLogoBold } from 'react-icons/pi'
 import ReviewsAndEarningsSampler from './ReviewsAndEarningsSampler'
-import { Alert, Button, Input, Modal } from 'antd'
-import { FaCcStripe, FaPaypal } from 'react-icons/fa'
+import { Alert, Button, Card, Input, Modal } from 'antd'
+import { FaCcStripe, FaExternalLinkAlt, FaPaypal } from 'react-icons/fa'
 import { LuBadgeDollarSign } from 'react-icons/lu'
 import toast from 'react-hot-toast'
+import { IoIosAlert } from 'react-icons/io'
 import { Link } from 'react-router-dom'
+import paypalImage from '../../../../../assets/paypal.svg'
+import stripeImage from '../../../../../assets/stripe.svg'
 
 const EarningsSampler = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -94,39 +97,74 @@ const EarningsSampler = () => {
         centered
       >
         <Alert
-          message="The name on your withdrawal method and the name on your Sampli account need to match exactly to avoid payment failures or delays."
+          message={
+            <div className="flex items-start justify-start ">
+              <div>
+                <IoIosAlert className="text-xl text-orange-500 " />
+              </div>
+              <span className="ml-3">
+                The name on your withdrawal method and the name on your Sampli
+                account need to match exactly to avoid payment failures or
+                delays.
+              </span>
+            </div>
+          }
           type="warning"
-          showIcon
           style={{ marginBottom: '16px' }}
         />
 
-        <div className="flex justify-between items-center border-b pb-4 mb-4 ">
-          <div className="flex items-center">
-            <FaPaypal className="text-2xl " />
-            <span className="ml-3">Paypal account</span>
+        <Card>
+          <div className="flex justify-between items-center  ">
+            <section>
+              <div className="flex items-center">
+                <img src={paypalImage} alt="paypal" className="w-6" />
+                <span className="ml-3">Paypal account</span>
+              </div>
+              <div>
+                <ul className="list-disc ml-13 text-gray-500">
+                  <li>Up to 1 business day</li>
+                  <li>Fees may apply</li>
+                </ul>
+              </div>
+            </section>
+            <div className="flex gap-4">
+              <Button type="link" size="small">
+                Edit
+              </Button>
+              <Button type="link" size="small" danger>
+                Remove
+              </Button>
+            </div>
           </div>
-          <div className="flex gap-4">
-            <Button type="link" size="small">
-              Edit
-            </Button>
-            <Button type="link" size="small" danger>
-              Remove
-            </Button>
-          </div>
-        </div>
+        </Card>
 
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <FaCcStripe className="text-2xl" />
+        <Card className="!mt-5">
+          <div className="flex justify-between items-center ">
+            <section>
+              <div className="flex items-center">
+                <img src={stripeImage} alt="stripe" className="w-6" />
 
-            <span className="ml-3">Stripe account</span>
+                <span className="ml-3">Stripe account</span>
+              </div>
+              <div>
+                <ul className="list-disc ml-13 text-gray-500">
+                  <li>Up to 1 business day</li>
+                  <li>Fees may apply</li>
+                </ul>
+              </div>
+            </section>
+            <div>
+              <Button
+                type="primary"
+                onClick={showModalGetPaid}
+                className="!flex !items-center !justify-center gap-2"
+              >
+                Setup
+                <FaExternalLinkAlt />
+              </Button>
+            </div>
           </div>
-          <div>
-            <Button type="primary" onClick={showModalGetPaid}>
-              Setup
-            </Button>
-          </div>
-        </div>
+        </Card>
       </Modal>
 
       <Modal
