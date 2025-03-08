@@ -55,9 +55,11 @@ import ContactUs from "../pages/contactUs/ContactUs.jsx";
 import PrivacyPolicy from "../pages/privacyPolicy/PrivacyPolicy.jsx";
 import ProductListCheckoutSampler from "../pages/sampler/productListCheckoutSampler/ProductListCheckoutSampler.jsx";
 import EditCampaign from "../pages/Business/EditCampaign/EditCampaign.jsx";
+import PageNotFound from "../pages/pageNotFound/PageNotFound.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <PageNotFound />,
     element: (
       <ProtectedRoute>
         <MainLayout />
@@ -76,7 +78,10 @@ export const router = createBrowserRouter([
       { path: "/product/add-product", element: <AddProduct /> },
       { path: "/settings", element: <SettingPage /> },
       { path: "/campaign/single-campaign", element: <SingleCampaign /> },
-      { path: "/campaign/single-campaign/edit-campaign", element: <EditCampaign /> },
+      {
+        path: "/campaign/single-campaign/edit-campaign",
+        element: <EditCampaign />,
+      },
       { path: "/sales/single-order", element: <OrderDetails /> },
       { path: "/store-profile", element: <StoreProfile /> },
       { path: "/all-notifications", element: <AllNotificationPage /> },
@@ -92,6 +97,7 @@ export const router = createBrowserRouter([
 
   {
     path: "/",
+    errorElement: <PageNotFound />,
     element: (
       <ProtectedRoute>
         <SamplerLayout />

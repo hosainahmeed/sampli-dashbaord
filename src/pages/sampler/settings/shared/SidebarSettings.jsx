@@ -31,14 +31,14 @@ const SidebarSettings = () => {
   return (
     <div className="responsive-width">
       <div className=" max-w-[250px] w-full h-[96vh] px-3 bg-white  ">
-        <div className=" text-2xl mb-5">Shopping & Alerts</div>
+        <div className=" text-2xl mb-5 pl-6">Settings</div>
         <ul className="space-y-2">
           {menuItems.map((item, index) => (
             <NavLink
               to={item?.link}
               key={index}
               className={({ isActive }) =>
-                `flex items-center text-sm py-3 rounded-3xl my-1 pl-6 hover:bg-gray-500 cursor-pointer hover:text-white ${
+                `flex items-center  text-sm py-3 rounded-3xl my-1 pl-6 hover:bg-gray-500 cursor-pointer hover:text-white ${
                   isActive ? 'text-black' : 'text-gray-500'
                 }`
               }
