@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Steps, Button, Modal, Rate, Tabs } from 'antd';
+import React, { useState } from "react";
+import { Steps, Button, Modal, Rate, Tabs } from "antd";
 import {
   ShoppingCartOutlined,
   CheckCircleOutlined,
   InboxOutlined,
-} from '@ant-design/icons';
-import { MdArrowBack } from 'react-icons/md';
-import { Link } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import Dragger from 'antd/es/upload/Dragger';
-import ReviewsVideo from './ReviewsVideo';
+} from "@ant-design/icons";
+import { MdArrowBack } from "react-icons/md";
+import toast from "react-hot-toast";
+import Dragger from "antd/es/upload/Dragger";
+import ReviewsVideo from "./ReviewsVideo";
 
 const { Step } = Steps;
 
@@ -20,29 +19,29 @@ const OfferOrderDetails = ({ setIsClicked }) => {
   };
   const handleOk = () => {
     setIsModalOpen(false);
-    toast.success('Review submitted successfully!');
+    toast.success("Review submitted successfully!");
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   const props = {
-    name: 'file',
+    name: "file",
     multiple: true,
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
     onChange(info) {
       const { status } = info.file;
-      if (status !== 'uploading') {
+      if (status !== "uploading") {
         console.log(info.file, info.fileList);
       }
-      if (status === 'done') {
+      if (status === "done") {
         toast.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
+      } else if (status === "error") {
         toast.error(`${info.file.name} file upload failed.`);
       }
     },
     onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
+      console.log("Dropped files", e.dataTransfer.files);
     },
   };
   const onChange = (key) => {
@@ -51,8 +50,8 @@ const OfferOrderDetails = ({ setIsClicked }) => {
 
   const items = [
     {
-      key: '1',
-      label: 'Item Details',
+      key: "1",
+      label: "Item Details",
       children: (
         <div className="max-w-4xl p-8 bg-white rounded-lg shadow-lg border border-gray-200">
           <div>
@@ -68,7 +67,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
               <div>
                 <strong className="text-black text-sm">Status</strong>
                 <div>
-                  <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+                  <span className="px-2 py-1 bg-green-500 text-white text-xs rounded-full">
                     In progress
                   </span>
                 </div>
@@ -111,7 +110,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
                   Track Item
                 </button>
                 <Button
-                  className="!bg-blue-500 hover:!text-black"
+                  className="!bg-blue-500  !text-white"
                   onClick={showModal}
                 >
                   Upload Review
@@ -122,16 +121,16 @@ const OfferOrderDetails = ({ setIsClicked }) => {
 
           <div className="mt-6">
             <h4 className="font-semibold">Order History</h4>
-            <Steps current={1} direction="vertical" className="mt-4">
+            <Steps current={1} direction="vertical" className="mt-4 ">
               <Step
                 title="Order reviewing"
                 description="23, Oct 2023"
-                icon={<ShoppingCartOutlined />}
+                icon={<ShoppingCartOutlined className="!text-green-500" />}
               />
               <Step
                 title="Processing order"
                 description="Pending"
-                icon={<CheckCircleOutlined />}
+                icon={<CheckCircleOutlined className="!text-green-500" />}
               />
               <Step
                 title="Item shipped"
@@ -169,8 +168,8 @@ const OfferOrderDetails = ({ setIsClicked }) => {
       ),
     },
     {
-      key: '2',
-      label: 'Reviews',
+      key: "2",
+      label: "Reviews",
       children: <ReviewsVideo showModal={showModal} />,
     },
   ];
@@ -192,7 +191,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        cancelButtonProps={{ style: { display: 'none' } }}
+        cancelButtonProps={{ style: { display: "none" } }}
         centered
         okText={<div className="w-full">Submit Review</div>}
       >
@@ -210,7 +209,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
             defaultValue={0}
             style={{
               fontSize: 40,
-              borderColor: '#D9D9D9',
+              borderColor: "#D9D9D9",
             }}
           />
         </div>

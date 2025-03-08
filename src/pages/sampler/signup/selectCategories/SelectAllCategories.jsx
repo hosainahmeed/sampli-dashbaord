@@ -62,13 +62,16 @@ const SelectAllCategories = () => {
               <Step key={index} title={step.title} />
             ))}
           </Steps>
+
           <div className="flex-grow mt-14 px-10">
-            <div
-              className="text-end text-blue-600 -mb-6 cursor-pointer hover:text-blue-400"
-              onClick={next}
-            >
-              Skip
-            </div>
+            {current !== steps.length - 1 && current !== steps.length - 2 && (
+              <div
+                className="text-end text-blue-600 -mb-6 cursor-pointer hover:text-blue-400"
+                onClick={next}
+              >
+                Skip
+              </div>
+            )}
             {steps[current].content}
           </div>
         </div>

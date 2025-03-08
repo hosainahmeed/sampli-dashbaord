@@ -4,6 +4,7 @@ import { FaAngleLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import CampaignPerformanceChart from '../../components/ui/CampaignPerformanceChart';
 import AllFeedCard from '../../components/page-Component/AllFeedCard';
+import toast from 'react-hot-toast';
 
 function SingleCampaign() {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ function SingleCampaign() {
     totalSpent: 12450,
     averageRating: 4.3,
     daysRemaining: 12,
+  };
+
+  const handleCampaignEdit = () => {
+    navigate('/campaign/single-campaign/edit-campaign');
   };
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-8">
@@ -35,8 +40,15 @@ function SingleCampaign() {
           </p>
         </div>
         <div className="flex items-center gap-3 mt-4 xl:mt-0">
-          <Button>Edit Campaign</Button>
-          <Button style={{ color: 'red' }}>Pause Campaign</Button>
+          <Button onClick={() => handleCampaignEdit()}>Edit Campaign</Button>
+          <Button
+            onClick={() => {
+              toast.success('Campaign Paused');
+            }}
+            style={{ color: 'red' }}
+          >
+            Pause Campaign
+          </Button>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-[#999Eab] rounded-3xl overflow-hidden">

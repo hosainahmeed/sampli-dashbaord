@@ -1,14 +1,15 @@
-import React, { useState, useMemo, useCallback } from "react";
-import SelectField from "./SelectField";
-import FeedCard from "../ui/FeedCard";
-import { Pagination } from "antd";
+import React, { useState, useMemo, useCallback } from 'react';
+import SelectField from './SelectField';
+import FeedCard from '../ui/FeedCard';
+import { Pagination } from 'antd';
+import { ShareSocial } from 'react-share-social';
 
 function AllFeedCard() {
   const options = [
-    { label: "Newest", value: "Newest" },
-    { label: "Oldest", value: "Oldest" },
-    { label: "Highest Rated", value: "Highest Rated" },
-    { label: "Lowest Rated", value: "Lowest Rated" },
+    { label: 'Newest', value: 'Newest' },
+    { label: 'Oldest', value: 'Oldest' },
+    { label: 'Highest Rated', value: 'Highest Rated' },
+    { label: 'Lowest Rated', value: 'Lowest Rated' },
   ];
 
   const [selectedValue, setSelectedValue] = useState(null);
@@ -16,7 +17,7 @@ function AllFeedCard() {
   const cardsPerPage = 4;
 
   // Simulate data (replace this with actual data fetching logic)
-  const totalCards =120;
+  const totalCards = 120;
   const cards = Array.from({ length: totalCards }, (_, index) => ({
     id: index + 1,
     content: `Feed Card ${index + 1}`,
@@ -32,24 +33,24 @@ function AllFeedCard() {
 
   const handleSelectChange = useCallback((value) => {
     setSelectedValue(value);
-    console.log("Selected value:", value);
+    console.log('Selected value:', value);
   }, []);
 
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
   }, []);
 
-  const handleNextPage = useCallback(() => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  }, [currentPage, totalPages]);
+  // const handleNextPage = useCallback(() => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage((prev) => prev + 1);
+  //   }
+  // }, [currentPage, totalPages]);
 
-  const handlePreviousPage = useCallback(() => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  }, [currentPage]);
+  // const handlePreviousPage = useCallback(() => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage((prev) => prev - 1);
+  //   }
+  // }, [currentPage]);
 
   return (
     <div className="p-4">
@@ -71,7 +72,6 @@ function AllFeedCard() {
       {/* Feed Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-2 gap-6">
         {currentCards.length === 0 ? (
-          // No Results Found State
           <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
             <p className="text-2xl font-semibold mb-2">No Results Found</p>
             <p className="text-gray-600">
@@ -79,9 +79,10 @@ function AllFeedCard() {
             </p>
           </div>
         ) : (
-          // Render Feed Cards for the current page
           currentCards.map((card) => (
-            <FeedCard key={card.id} content={card.content} />
+            <>
+              <FeedCard key={card.id} content={card.content} />
+            </>
           ))
         )}
       </div>

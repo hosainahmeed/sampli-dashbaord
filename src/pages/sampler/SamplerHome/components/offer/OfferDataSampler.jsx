@@ -62,16 +62,16 @@ const OfferDataSampler = () => {
           See all
         </div>
       </div>
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
         {productData && productData.length > 0 ? (
           productData.map((product) => (
             <OfferCardSampler key={product.id} product={product} />
           ))
         ) : (
-          <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[30vh]">
+          <div className="col-span-5 text-center  flex flex-col items-center justify-center py-10 w-full h-[30vh]">
             <p className="font-bold text-xl">No Active Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don't have any offers at the moment. Check back
+              Looks like you don&apos;t have any offers at the moment. Check back
               soon!
             </p>
           </div>

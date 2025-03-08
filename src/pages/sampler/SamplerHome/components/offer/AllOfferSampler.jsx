@@ -1,5 +1,4 @@
 import React from 'react'
-import Breadcrumbs from '../../../../breadcrumbs/Breadcrumbs'
 import { Tabs } from 'antd'
 import OfferCardSampler from './OfferCardSampler'
 const onChange = (key) => {
@@ -105,8 +104,8 @@ const items = [
           <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[60vh]">
             <p className="font-bold text-xl">No Active Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don't have any offers at the moment. Check back
-              soon!
+              Looks like you don&apos;t have any offers at the moment. Check
+              back soon!
             </p>
           </div>
         )}
@@ -136,7 +135,7 @@ const items = [
           <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[60vh]">
             <p className="font-bold text-xl">No Processing Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don't have any offers that are currently being
+              Looks like you don&apos;t have any offers that are currently being
               processed. Check back soon!
             </p>
           </div>
@@ -167,7 +166,7 @@ const items = [
           <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[60vh]">
             <p className="font-bold text-xl">No Completed Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don't have any completed offers at the moment.
+              Looks like you don&apos;t have any completed offers at the moment.
               Check back soon!
             </p>
           </div>

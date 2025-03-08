@@ -1,156 +1,156 @@
-import React, { useState } from "react";
-import { Table, Tag, Progress, Input, Button, Select } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Table, Tag, Progress, Input, Button, Select } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
 const { Option } = Select;
 
 const CampaignTable = () => {
-  const [searchText, setSearchText] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [searchText, setSearchText] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const navigate = useNavigate();
   const campaigns = [
     {
-      key: "1",
+      key: '1',
       id: 1,
-      name: "Summer Collection Review Group 1",
-      createdAt: "2023-06-01",
-      status: "Active",
+      name: 'Summer Collection Review Group 1',
+      createdAt: '2023-06-01',
+      status: 'Active',
       progress: 10,
       total: 300,
-      budget: "$25,000 of $100,000",
+      budget: '$25,000 of $100,000',
       image:
-        "https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg",
+        'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
     },
     {
-      key: "2",
+      key: '2',
       id: 2,
-      name: "Summer Collection Review Group 2",
-      createdAt: "2023-06-02",
-      status: "Active",
+      name: 'Summer Collection Review Group 2',
+      createdAt: '2023-06-02',
+      status: 'Active',
       progress: 20,
       total: 500,
-      budget: "$50,000 of $200,000",
+      budget: '$50,000 of $200,000',
       image:
-        "https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg",
+        'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
     },
     {
-      key: "3",
+      key: '3',
       id: 3,
-      name: "Summer Collection Review Group 3",
-      createdAt: "2023-06-03",
-      status: "Active",
+      name: 'Summer Collection Review Group 3',
+      createdAt: '2023-06-03',
+      status: 'Active',
       progress: 30,
       total: 1000,
-      budget: "$100,000 of $500,000",
+      budget: '$100,000 of $500,000',
       image:
-        "https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg",
+        'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
     },
     {
-      key: "4",
+      key: '4',
       id: 4,
-      name: "Summer Collection Review Group 4",
-      createdAt: "2023-06-04",
-      status: "Active",
+      name: 'Summer Collection Review Group 4',
+      createdAt: '2023-06-04',
+      status: 'Active',
       progress: 40,
       total: 2000,
-      budget: "$200,000 of $1,000,000",
+      budget: '$200,000 of $1,000,000',
       image:
-        "https://img.freepik.com/free-vector/summer-background-with-palm-trees-and-flamingos_23-2148443420.jpg",
+        'https://img.freepik.com/free-vector/summer-background-with-palm-trees-and-flamingos_23-2148443420.jpg',
     },
     {
-      key: "5",
+      key: '5',
       id: 5,
-      name: "Summer Collection Review Group 5",
-      createdAt: "2023-06-05",
-      status: "Active",
+      name: 'Summer Collection Review Group 5',
+      createdAt: '2023-06-05',
+      status: 'Active',
       progress: 50,
       total: 3000,
-      budget: "$300,000 of $1,500,000",
+      budget: '$300,000 of $1,500,000',
       image:
-        "https://img.freepik.com/free-vector/summer-party-invitation-with-flamingos_23-2148443421.jpg",
+        'https://img.freepik.com/free-vector/summer-party-invitation-with-flamingos_23-2148443421.jpg',
     },
     {
-      key: "6",
+      key: '6',
       id: 6,
-      name: "Summer Collection Review Group 6",
-      createdAt: "2023-06-06",
-      status: "Active",
+      name: 'Summer Collection Review Group 6',
+      createdAt: '2023-06-06',
+      status: 'Active',
       progress: 60,
       total: 4000,
-      budget: "$400,000 of $2,000,000",
+      budget: '$400,000 of $2,000,000',
       image:
-        "https://img.freepik.com/free-vector/summer-elements-collection-with-palm-trees_23-2148443422.jpg",
+        'https://img.freepik.com/free-vector/summer-elements-collection-with-palm-trees_23-2148443422.jpg',
     },
     {
-      key: "7",
+      key: '7',
       id: 7,
-      name: "Summer Collection Review Group 7",
-      createdAt: "2023-06-07",
-      status: "Active",
+      name: 'Summer Collection Review Group 7',
+      createdAt: '2023-06-07',
+      status: 'Active',
       progress: 70,
       total: 5000,
-      budget: "$500,000 of $2,500,000",
+      budget: '$500,000 of $2,500,000',
       image:
-        "https://img.freepik.com/free-vector/summer-party-with-palm-trees-and-flamingos_23-2148443423.jpg",
+        'https://img.freepik.com/free-vector/summer-party-with-palm-trees-and-flamingos_23-2148443423.jpg',
     },
     {
-      key: "8",
+      key: '8',
       id: 8,
-      name: "Summer Collection Review Group 8",
-      createdAt: "2023-06-08",
-      status: "Active",
+      name: 'Summer Collection Review Group 8',
+      createdAt: '2023-06-08',
+      status: 'Active',
       progress: 80,
       total: 6000,
-      budget: "$600,000 of $3,000,000",
+      budget: '$600,000 of $3,000,000',
       image:
-        "https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos_23-2148443424.jpg",
+        'https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos_23-2148443424.jpg',
     },
     {
-      key: "9",
+      key: '9',
       id: 9,
-      name: "Summer Collection Review Group 9",
-      createdAt: "2023-06-09",
-      status: "Active",
+      name: 'Summer Collection Review Group 9',
+      createdAt: '2023-06-09',
+      status: 'Active',
       progress: 90,
       total: 7000,
-      budget: "$700,000 of $3,500,000",
+      budget: '$700,000 of $3,500,000',
       image:
-        "https://img.freepik.com/free-vector/summer-party-with-flamingos-and-palm-trees_23-2148443425.jpg",
+        'https://img.freepik.com/free-vector/summer-party-with-flamingos-and-palm-trees_23-2148443425.jpg',
     },
     {
-      key: "10",
+      key: '10',
       id: 10,
-      name: "Summer Collection Review Group 10",
-      createdAt: "2023-06-10",
-      status: "Active",
+      name: 'Summer Collection Review Group 10',
+      createdAt: '2023-06-10',
+      status: 'Active',
       progress: 100,
       total: 8000,
-      budget: "$800,000 of $4,000,000",
+      budget: '$800,000 of $4,000,000',
       image:
-        "https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos-and-palm-trees_23-2148443426.jpg",
+        'https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos-and-palm-trees_23-2148443426.jpg',
     },
   ];
 
   const statusColors = {
-    Active: "orange",
-    Pending: "purple",
-    Completed: "green",
-    Paused: "gray",
+    Active: 'orange',
+    Pending: 'purple',
+    Completed: 'green',
+    Paused: 'gray',
   };
 
   const filteredCampaigns = campaigns.filter(
     (campaign) =>
       campaign.name.toLowerCase().includes(searchText.toLowerCase()) &&
-      (statusFilter === "All" || campaign.status === statusFilter)
+      (statusFilter === 'All' || campaign.status === statusFilter)
   );
 
   const columns = [
     {
-      title: "Campaign Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Campaign Name',
+      dataIndex: 'name',
+      key: 'name',
       render: (text, record) => (
         <span className="flex gap-2 item-center">
           {record.image && (
@@ -168,15 +168,15 @@ const CampaignTable = () => {
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
       render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
     },
     {
-      title: "Progress",
-      dataIndex: "progress",
-      key: "progress",
+      title: 'Progress',
+      dataIndex: 'progress',
+      key: 'progress',
       render: (progress, record) => (
         <Progress
           className="xl:text-base text-xs"
@@ -186,14 +186,14 @@ const CampaignTable = () => {
       ),
     },
     {
-      title: "Budget",
-      dataIndex: "budget",
-      key: "budget",
+      title: 'Budget',
+      dataIndex: 'budget',
+      key: 'budget',
       render: (budget) => <p className="xl:text-sm text-xs">{budget}</p>,
     },
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       render: (text, record) => (
         <Button
           type="default"
@@ -236,8 +236,8 @@ const CampaignTable = () => {
         columns={columns}
         dataSource={filteredCampaigns}
         locale={{
-          filterConfirm: "Confirm",
-          filterReset: "Reset",
+          filterConfirm: 'Confirm',
+          filterReset: 'Reset',
           emptyText: (
             <div className=" flex items-center justify-center flex-col py-28 text-center">
               <p className="text-2xl">No result found</p>
@@ -250,23 +250,23 @@ const CampaignTable = () => {
           defaultPageSize: 5,
           defaultCurrent: 1,
           total: filteredCampaigns.length,
-          position: ["bottomCenter"],
+          position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
-            if (type === "prev") {
+            if (type === 'prev') {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
                 </Button>
               );
             }
-            if (type === "next") {
+            if (type === 'next') {
               return (
                 <Button className="!border-none ">
                   <FaAngleRight />
                 </Button>
               );
             }
-            if (type === "page") {
+            if (type === 'page') {
               return current;
             }
             return originalElement;

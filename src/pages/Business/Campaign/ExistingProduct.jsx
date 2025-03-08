@@ -14,11 +14,12 @@ function ExistingProduct() {
     { id: 2, component: <ReviewLaunch /> },
   ];
 
-  // Step navigation
   const nextStep = () =>
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
-
+  const submitProduct = () => {
+    console.log('Product Submitted');
+  };
   return (
     <div
       className="bg-transparent"
@@ -38,7 +39,9 @@ function ExistingProduct() {
         </Button>
 
         <Button
-          onClick={nextStep}
+          onClick={
+            currentStep < steps.length - 1 ? nextStep : () => submitProduct()
+          }
           className="px-4 py-2 bg-blue-600 text-white rounded-md"
         >
           {currentStep < steps.length - 1 ? 'Next' : 'Confirm & Publish'}

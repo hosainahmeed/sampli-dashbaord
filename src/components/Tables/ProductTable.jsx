@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Table,
-  Tag,
-  Input,
-  Button,
-  Select,
-  Modal,
-  Dropdown,
-  Space,
-  Tooltip,
-} from 'antd';
+import { Table, Tag, Input, Button, Select, Modal, Dropdown } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
-import { FiPlus } from 'react-icons/fi';
 import UploadCsv from '../page-Component/UploadCsv';
 import {
   FaAngleLeft,
@@ -30,7 +19,7 @@ const ProductTable = ({ filterStatus }) => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortKey, setSortKey] = useState(null);
   const [openCsv, setOpenCsv] = useState(false);
-
+  console.log(filterStatus);
   const campaigns = [
     {
       key: '1',
@@ -164,49 +153,12 @@ const ProductTable = ({ filterStatus }) => {
             <BsThreeDots />
           </Button>
         </Dropdown>
-        // <Space size="middle">
-        //   <Tooltip title="View" placement="top">
-        //     <Button type="default" className="!border-none ">
-        //       <FaEye />
-        //     </Button>
-        //   </Tooltip>
-        //   <Tooltip title="Delete" placement="top">
-        //     <Button type="default" className="!border-none ">
-        //       <FaTrash />
-        //     </Button>
-        //   </Tooltip>
-        //   <Tooltip title="Edit" placement="top">
-        //     <Button type="default" className="!border-none ">
-        //       <FaEdit />
-        //     </Button>
-        //   </Tooltip>
-        // </Space>
       ),
     },
   ];
 
   return (
     <div className="pb-12">
-      <div className="flex-center-between">
-        <h2 className="my-3 text-2xl">Product</h2>
-        <div className="flex-center-center gap-2">
-          <Button
-            onClick={() => {
-              setOpenCsv(true);
-            }}
-            type="default"
-            className="flex items-center justify-center"
-          >
-            Upload CSV
-          </Button>
-          <Link to="/product/add-product">
-            <Button className="flex items-center justify-center" type="primary">
-              <FiPlus />
-              Add products
-            </Button>
-          </Link>
-        </div>
-      </div>
       <div className="flex w-full mt-12 justify-between ">
         <div className="flex item-center gap-12">
           <Input

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import ProductDetails from './ProductDetails'
+import { Button } from 'antd'
 
 const OfferCardSampler = ({ product }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -12,7 +13,7 @@ const OfferCardSampler = ({ product }) => {
     setIsModalVisible(false)
   }
   return (
-    <div className="w-full max-w-[235px] bg-white  rounded-md shadow-md overflow-hidden hover:shadow-2xl transition-shadow">
+    <div className="w-full  bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow">
       {/* Product Image */}
       <div className=" flex justify-center w-full">
         <img
@@ -41,19 +42,19 @@ const OfferCardSampler = ({ product }) => {
       </div>
 
       {/* Offer Status Button */}
-      <div className="border-t border-gray-100 cursor-pointer">
-        <button
+      <div className=" cursor-pointer p-2">
+        <Button
           onClick={showModal}
-          className={`w-full cursor-pointer font-medium text-sm py-4 ${
+          className={` !w-full !cursor-pointer !font-medium !text-sm !py-4 ${
             product.status === 'Offer Accepted'
-              ? '!text-blue-600 bg-blue-100'
+              ? '!text-blue-600 !bg-blue-100'
               : product.status === 'Offer Expired'
-              ? '!text-red-600 bg-red-100'
-              : '!text-white bg-blue-500'
+              ? '!text-red-600 !bg-red-100'
+              : '!text-white !bg-blue-500'
           }`}
         >
           {product.status}
-        </button>
+        </Button>
         <ProductDetails visible={isModalVisible} onCancel={handleCancel} />
       </div>
     </div>

@@ -220,7 +220,7 @@ function StoreProfile() {
           <h2 className="text-3xl">Items</h2>
           {/* Your category and sorting select fields */}
         </div>
-        <div className="grid grid-cols-4 gap-6 mt-8">
+        <div className="grid grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
           {currentItems.map((item, index) => (
             <CardComponent key={index} item={item} />
           ))}

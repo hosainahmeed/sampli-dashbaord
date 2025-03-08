@@ -134,23 +134,23 @@ const ProductDetails = ({ visible, onCancel }) => {
                 <ul className="list-disc pl-6 mt-2">
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                   <li>
                     TrustRadius is a similar product review platform to G2 Crowd
-                    as it's also targeted toward B2B software businesses.
+                    as it&apos;s also targeted toward B2B software businesses.
                   </li>
                 </ul>
               </div>
@@ -159,20 +159,24 @@ const ProductDetails = ({ visible, onCancel }) => {
         )}
 
         {page === 2 && (
-          <div className="flex flex-col mt-10 h-screen w-full">
+          <div className="flex flex-col mt-10 h-screen w-full text-gray-500">
             <h2 className="text-xl font-semibold">Confirm delivery address</h2>
             <p className="text-gray-500 text-sm mb-6">
               High-quality wireless headphones with noise cancellation
             </p>
 
             {/* Form */}
-            <Form layout="vertical" requiredMark={false}>
-              <div className="grid grid-cols-2 gap-4 w-full">
+            <Form
+              layout="vertical"
+              requiredMark={false}
+              className="text-gray-500"
+            >
+              <div className="grid grid-cols-2 gap-4 w-full !text-gray-500">
                 {/* State */}
                 <Form.Item
-                  label="State"
+                  label={<div className="!text-gray-600">State</div>}
                   name="state"
-                  className="w-full"
+                  className="w-full "
                   rules={[{ required: true, message: 'State is required' }]}
                 >
                   <Input placeholder="Enter state" />
@@ -180,7 +184,7 @@ const ProductDetails = ({ visible, onCancel }) => {
 
                 {/* City */}
                 <Form.Item
-                  label="City"
+                  label={<div className="!text-gray-600">City</div>}
                   name="city"
                   className="w-full"
                   rules={[{ required: true, message: 'City is required' }]}
@@ -191,7 +195,7 @@ const ProductDetails = ({ visible, onCancel }) => {
 
               {/* Street Address */}
               <Form.Item
-                label="Street Address"
+                label={<div className="!text-gray-600">Street Address</div>}
                 name="street"
                 rules={[
                   { required: true, message: 'Street address is required' },
@@ -203,7 +207,7 @@ const ProductDetails = ({ visible, onCancel }) => {
               {/* Contact & Email */}
               <div className="grid grid-cols-2 gap-4">
                 <Form.Item
-                  label="Contact Number"
+                  label={<div className="!text-gray-600">Contact Number</div>}
                   name="contact"
                   rules={[
                     { required: true, message: 'Contact number is required' },
@@ -214,7 +218,7 @@ const ProductDetails = ({ visible, onCancel }) => {
                 </Form.Item>
 
                 <Form.Item
-                  label="Email Address"
+                  label={<div className="!text-gray-600">Email Address</div>}
                   name="email"
                   rules={[
                     { required: true, message: 'Email is required' },

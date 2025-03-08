@@ -2,11 +2,7 @@ import React, { useState } from 'react'
 import { FaCircleChevronRight } from 'react-icons/fa6'
 import { Modal, Input, Button, Upload, message } from 'antd'
 import toast from 'react-hot-toast'
-import {
-  LoadingOutlined,
-  PlusOutlined,
-  UploadOutlined,
-} from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader()
@@ -79,7 +75,7 @@ const BasicDetailsSettingsSampler = () => {
       {/* Basic Details Section */}
       <div className=" rounded-lg">
         <div className="flex justify-between mt-1 border-b border-gray-200 pb-2">
-          <h2 className="text-2xl font-medium">Basic details</h2>
+          <h2 className="text-2xl font-medium">My Account</h2>
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-4">
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-gray-200">
