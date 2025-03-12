@@ -49,15 +49,13 @@ const FeedCard = () => {
               <Rate
                 disabled
                 defaultValue={2}
-                style={{ fontSize: 14, marginRight: 5 }}
+                style={{ fontSize: 9, marginRight: 5 }}
               />
-              <Text strong>5.0</Text>
-              <Tag color="blue" style={{ marginLeft: 10 }}>
+              <Text level={5}>2.0</Text>•
+              <Text type="secondary" style={{ marginLeft: 10 }}>
                 Natural Glow Serum
-              </Tag>
-              <Text strong style={{ color: 'green', marginLeft: 5 }}>
-                $25.00
               </Text>
+              <Text style={{ color: 'green' }}>$25.00</Text>
               <Text type="secondary" style={{ marginLeft: 10 }}>
                 • Electronics
               </Text>

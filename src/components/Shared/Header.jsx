@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Dropdown, Menu } from "antd";
+import { Avatar, Button, Dropdown, Menu, Badge } from "antd";
 import { CiHeart, CiStar } from "react-icons/ci";
+import { BsQuestionLg } from "react-icons/bs";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import {
   UserOutlined,
@@ -20,10 +21,11 @@ import {
 } from "react-icons/md";
 import { LuShoppingCart } from "react-icons/lu";
 import ShoppingCartSampler from "../../pages/sampler/shoppingCartSampler/ShoppingCartSampler";
-
+import { IoMdArrowDropdown } from "react-icons/io";
 function Header() {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState("sampler"); // sampler, business
+  const [userType, setUserType] = useState("business"); // sampler, business
+  const [show, setShow] = useState(true);
   const user = {
     photoURL: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
     displayName: "Micheal Scott",
@@ -126,26 +128,33 @@ function Header() {
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex items-center gap-4 text-2xl">
-            {/* <CiCircleQuestion /> */}
+            <Button shape="circle" className="!p-0 !m-0">
+              <BsQuestionLg />
+            </Button>
             <Link
               to="/all-notifications"
               className="hover:scale-120 transition-all  "
             >
-              <Button shape="circle">
-                <IoMdNotificationsOutline />
-              </Button>
+              <Badge dot={show}>
+                <Button shape="circle">
+                  <IoMdNotificationsOutline />
+                </Button>
+              </Badge>
             </Link>
-            <Dropdown
-              overlay={menu}
-              trigger={["click"]}
-              placement="bottomRight"
-            >
-              <Avatar
-                size={40}
-                src={user?.photoURL}
-                className="cursor-pointer hover:scale-110 transition-all"
-              />
-            </Dropdown>
+            <div className="flex items-center">
+              <Dropdown
+                overlay={menu}
+                trigger={["click"]}
+                placement="bottomRight"
+              >
+                <Avatar
+                  size={40}
+                  src={user?.photoURL}
+                  className="cursor-pointer hover:scale-110 transition-all"
+                />
+              </Dropdown>
+              <IoMdArrowDropdown className="!text-[#6D7486B2]" />
+            </div>
           </div>
         </div>
       ) : (

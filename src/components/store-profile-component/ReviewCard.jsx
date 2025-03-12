@@ -1,6 +1,5 @@
 import { Button } from 'antd';
 import React, { useState } from 'react';
-import { BsReply } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import { useSpring, animated } from 'react-spring';
 
@@ -80,19 +79,6 @@ const ReviewCard = ({ review }) => {
           <div style={{ marginLeft: 'auto', color: '#888' }}>
             {new Date(date).toLocaleDateString()}
           </div>
-          <div style={{ marginTop: '10px' }}>
-            <Button
-              size="small"
-              shape="circle"
-              onClick={toggleReply}
-              style={{
-                background: isReplying ? 'red' : '#FFB400',
-                color: '#fff',
-              }}
-            >
-              {isReplying ? <RxCross2 /> : <BsReply />}
-            </Button>
-          </div>
         </div>
       </div>
       <p style={{ margin: '10px 0', color: '#555' }}>{description}</p>
@@ -112,34 +98,39 @@ const ReviewCard = ({ review }) => {
           <span>{productName}</span>
         </div>
       )}
-
+      <div style={{ marginTop: '10px' }}>
+        {isReplying ? (
+          <Button
+            size="small"
+            shape="circle"
+            onClick={toggleReply}
+            style={{
+              background: isReplying ? 'red' : '#FFB400',
+              color: '#fff',
+            }}
+          >
+            <RxCross2 />
+          </Button>
+        ) : (
+          <Button onClick={toggleReply}
+          className='!border-none !text-sm hover:!underline'
+          >Reply</Button>
+        )}
+      </div>
       {/* Animated reply input field */}
       <animated.div style={replyBoxAnimation}>
-        <div style={{ marginTop: '10px' }}>
+        <div className="flex items-end gap-2">
           <textarea
             value={reply}
             onChange={handleReplyChange}
-            placeholder="Write your reply..."
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              minHeight: '60px',
-              fontSize: '14px',
-            }}
+            placeholder="Reply to this review..."
+            className="w-full p-2 border border-gray-300 rounded-md min-h-[150px] text-sm"
           ></textarea>
           <button
             onClick={handleReplySubmit}
-            style={{
-              background: '#3475F1',
-              color: '#fff',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              marginTop: '10px',
-            }}
+            className="bg-[#2863fa89] !text-white px-3 py-2 rounded mt-2"
           >
-            Submit Reply
+            Reply
           </button>
         </div>
       </animated.div>

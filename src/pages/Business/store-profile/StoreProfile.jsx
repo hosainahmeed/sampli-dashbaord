@@ -117,7 +117,7 @@ function StoreProfile() {
     },
     {
       name: 'Adeyoka George',
-      rating: 2,
+      rating: 3,
       date: '2024-03-12',
       reviewerImage:
         'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
@@ -141,7 +141,7 @@ function StoreProfile() {
     },
     {
       name: 'Adeyoka George',
-      rating: 2,
+      rating: 5,
       date: '2024-03-12',
       reviewerImage:
         'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
@@ -259,25 +259,28 @@ function StoreProfile() {
           </div>
           <div className="mx-auto font-sans flex-1">
             <div className="w-full flex items-center gap-3 justify-between">
-              <SelectField
-                placeholder={'select all'}
-                className="!w-full"
-                options={[
-                  { label: 'Recommended', value: 'yes' },
-                  { label: 'Not Recommended', value: 'no' },
-                ]}
-              ></SelectField>
-              <SelectField
-                placeholder={'All stars'}
-                className="!w-full"
-                options={[
-                  { label: '1 star', value: '1' },
-                  { label: '2 stars', value: '2' },
-                  { label: '3 stars', value: '3' },
-                  { label: '4 stars', value: '4' },
-                  { label: '5 stars', value: '5' },
-                ]}
-              ></SelectField>
+              <div className="flex gap-2">
+                <SelectField
+                  placeholder={'Recommended'}
+                  className="!w-full reconmended-ant-select "
+                  options={[
+                    { label: 'Recommended', value: 'yes' },
+                    { label: 'Not Recommended', value: 'no' },
+                  ]}
+                ></SelectField>
+                <SelectField
+                  placeholder={'All stars'}
+                  className="!w-full"
+                  options={[
+                    { label: '1 star', value: '1' },
+                    { label: '2 stars', value: '2' },
+                    { label: '3 stars', value: '3' },
+                    { label: '4 stars', value: '4' },
+                    { label: '5 stars', value: '5' },
+                  ]}
+                ></SelectField>
+              </div>
+              <div></div>
             </div>
             {currentReviews.map((review, index) => (
               <ReviewCard key={index} review={review} />
