@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
-import {
-  Table,
-  Select,
-  Button,
-  DatePicker,
-  Card,
-  Modal,
-  Typography,
-  Badge,
-  Tooltip,
-} from 'antd';
+import { Table, Select, Button, DatePicker, Card, Modal, Alert, Input } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { FaAngleLeft } from 'react-icons/fa';
+import { FaAngleLeft, FaExternalLinkAlt } from 'react-icons/fa';
 import bank from '../../../assets/bank.svg';
 import { BsExclamationOctagon } from 'react-icons/bs';
-import { PiWarningCircleDuotone } from 'react-icons/pi';
+import paypalImage from '../../../assets/paypal.svg';
+import stripeImage from '../../../assets/stripe.svg';
+import { IoIosAlert } from 'react-icons/io';
+import { LuBadgeDollarSign } from 'react-icons/lu';
+import toast from 'react-hot-toast';
 const { Option } = Select;
-const { Text, Title } = Typography;
 const TransectionOfBusiness = () => {
   const [filters, setFilters] = useState({
     dateRange: '',
@@ -27,11 +20,23 @@ const TransectionOfBusiness = () => {
   const balance = 200;
   const pending = 0;
   const [selectedDateRange, setSelectedDateRange] = useState([]);
+    const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false)
   const [paymentModal, showPaymentModal] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState('')
+    // const [isModalVisible, setIsModalVisible] = useState(false)
   const navigate = useNavigate();
   const handleDateChange = (dates, dateStrings) => {
     setSelectedDateRange(dateStrings);
   };
+  const handleCancelGetPaid = () => {
+    setIsGetPaidModalVisible(false)
+  }
+
+  const handleWithdraw = () => {
+    toast.success(`Withdrawing $${withdrawAmount}`)
+    showPaymentModal(false)
+    setIsGetPaidModalVisible(false)
+  }
 
   const handleApply = () => {
     console.log('Selected Date Range: ', selectedDateRange);
@@ -262,30 +267,129 @@ const TransectionOfBusiness = () => {
           pagination={false}
         />
       </div>
+
       <Modal
-        width={600}
+        title="Add withdrawal method"
         visible={paymentModal}
         onCancel={() => showPaymentModal(!paymentModal)}
         footer={null}
+        width={500}
+        centered
       >
-        <Text className="flex items-center gap-2">
-          <PiWarningCircleDuotone className="!text-2xl" />
-          The name on your withdrawal method and the name on your Sampli account
-          need to match exactly to avoid payment failures or delays.
-        </Text>
+        <Alert
+          message={
+            <div className="flex items-start justify-start ">
+              <div>
+                <IoIosAlert className="text-xl text-orange-500 " />
+              </div>
+              <span className="ml-3">
+                The name on your withdrawal method and the name on your Sampli
+                account need to match exactly to avoid payment failures or
+                delays.
+              </span>
+            </div>
+          }
+          type="warning"
+          style={{ marginBottom: '16px' }}
+        />
+
         <Card>
-          <div className="flex items-center gap-2">
-            <Title level={5}>Paypal account</Title>
-            <Badge status="success" text="Recommended" />
-          </div>
-          <div>
-            
-            <ul className="list-disc pl-4">
-              <li>Up to 1 business day</li>
-              <li>Fees may apply</li>
-            </ul>
+          <div className="flex justify-between items-center  ">
+            <section>
+              <div className="flex items-center">
+                <img src={paypalImage} alt="paypal" className="w-6" />
+                <span className="ml-3">Paypal account</span>
+              </div>
+              <div>
+                <ul className="list-disc ml-13 text-gray-500">
+                  <li>Up to 1 business day</li>
+                  <li>Fees may apply</li>
+                </ul>
+              </div>
+            </section>
+            <div className="flex gap-4">
+              <Button type="link" size="small">
+                Edit
+              </Button>
+              <Button type="link" size="small" danger>
+                Remove
+              </Button>
+            </div>
           </div>
         </Card>
+
+        <Card className="!mt-5">
+          <div className="flex justify-between items-center ">
+            <section>
+              <div className="flex items-center">
+                <img src={stripeImage} alt="stripe" className="w-6" />
+
+                <span className="ml-3">Stripe account</span>
+              </div>
+              <div>
+                <ul className="list-disc ml-13 text-gray-500">
+                  <li>Up to 1 business day</li>
+                  <li>Fees may apply</li>
+                </ul>
+              </div>
+            </section>
+            <div>
+              <Button
+                type="primary"
+                // onClick={showModalGetPaid}
+                className="!flex !items-center !justify-center gap-2"
+              >
+                Setup
+                <FaExternalLinkAlt />
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </Modal>
+
+      <Modal
+        title="Get paid"
+        visible={isGetPaidModalVisible}
+        onCancel={handleCancelGetPaid}
+        footer={null}
+        width={500}
+        centered
+      >
+        <div className="flex flex-col items-center mb-4">
+          <LuBadgeDollarSign style={{ fontSize: 32, color: '#FF7A00' }} />
+          <div className="ml-3 mt-2 max-w-[300px] w-full">
+            <h3 className="text-gray-500 text-center">
+              Enter the amount you wish to withdraw from your total balance.
+            </h3>
+            <p className="text-center">
+              Available Balance:{' '}
+              <span className="font-bold text-x text-blue-500">$426.25</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Withdrawal Amount Input */}
+        <div className="mb-4">
+          <label htmlFor="withdrawAmount">Withdrawal Amount</label>
+          <Input
+            id="withdrawAmount"
+            prefix="$"
+            value={withdrawAmount}
+            onChange={(e) => setWithdrawAmount(e.target.value)}
+            style={{ width: '100%' }}
+          />
+        </div>
+
+        {/* Withdraw Button */}
+        <div className="flex justify-center">
+          <Button
+            type="primary"
+            onClick={handleWithdraw}
+            style={{ width: '100%', fontSize: '16px', fontWeight: '500' }}
+          >
+            Withdraw
+          </Button>
+        </div>
       </Modal>
     </div>
   );
