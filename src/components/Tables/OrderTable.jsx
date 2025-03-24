@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Table, Tag, Button, Input } from 'antd';
+import { Table, Tag, Button, Input, Select } from 'antd';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+const { Option } = Select;
 const OrderTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
 
   const allOrders = [
     {
@@ -122,12 +124,25 @@ const OrderTable = ({ filterStatus }) => {
   return (
     <div className="pb-12">
       <div className="flex items-center gap-12 mb-4">
-        <Input
-          placeholder="Search by Order ID, Product, or Customer"
-          prefix={<SearchOutlined />}
-          onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: 300 }}
-        />
+        <div className="w-full flex items-center justify-between">
+          <Input
+            className="!rounded-full"
+            placeholder="Search by Order ID, Product, or Customer"
+            prefix={<SearchOutlined />}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 300 }}
+          />
+          <Select
+            placeholder="Filter"
+            onChange={setStatusFilter}
+            style={{ width: 120, marginBottom: 16 }}
+          >
+            <Option value="delivered">Delivered</Option>
+            <Option value="processing">Processing</Option>
+            <Option value="cancelled">Cancelled</Option>
+            <Option value="shipping">Shipping</Option>
+          </Select>
+        </div>
       </div>
       <Table
         columns={columns}

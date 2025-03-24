@@ -120,3 +120,6 @@ body::-webkit-scrollbar {
 .ant-select-selection-placeholder {
   color: #6d7486 !important;
 }
+.ant-select-selector{
+  border-radius: 50px !important;
+}

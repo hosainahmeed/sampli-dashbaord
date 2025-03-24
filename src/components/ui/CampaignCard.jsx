@@ -64,9 +64,15 @@ function CampaignCard({ data }) {
           )}
 
         {data?.activeUsers !== undefined && (
-          <div className="text-base flex items-center justify-between">
-            <p className="text-gray-500">Active Users</p>
-            <p className="font-medium text-gray-700">{data?.activeUsers}</p>
+          <div>
+            <div className="text-base flex items-center justify-between">
+              <p className="text-gray-500">Active Users</p>
+              <p className="font-medium text-gray-700">{data?.activeUsers}</p>
+            </div>
+            <div className="text-base flex items-center justify-between">
+              <p className="text-gray-500">Retention Rate</p>
+              <p className="font-medium">{data?.retention_rate}</p>
+            </div>
           </div>
         )}
       </div>

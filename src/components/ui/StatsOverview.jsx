@@ -14,7 +14,7 @@ function StatsOverview() {
           key={key}
           className="flex p-8 border-r border-[#999Eab] flex-col items-start justify-center text-[#111] cursor-pointer transition-all"
         >
-          <h1 className="uppercase text-xs xl:text-sm">{key}</h1>
+          <h1 className="uppercase text-xs xl:text-sm text-[#6D7486]">{key}</h1>
           <h1 className="sm:text-xl xl:text-4xl font-semibold">
             {key === 'totalSpent' ? (
               <span>

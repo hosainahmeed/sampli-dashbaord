@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Table, Select, Button, DatePicker, Card, Modal, Alert, Input } from 'antd';
+import {
+  Table,
+  Select,
+  Button,
+  DatePicker,
+  Card,
+  Modal,
+  Alert,
+  Input,
+} from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { FaAngleLeft, FaExternalLinkAlt } from 'react-icons/fa';
@@ -20,23 +29,23 @@ const TransectionOfBusiness = () => {
   const balance = 200;
   const pending = 0;
   const [selectedDateRange, setSelectedDateRange] = useState([]);
-    const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false)
+  const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [paymentModal, showPaymentModal] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState('')
-    // const [isModalVisible, setIsModalVisible] = useState(false)
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  // const [isModalVisible, setIsModalVisible] = useState(false)
   const navigate = useNavigate();
   const handleDateChange = (dates, dateStrings) => {
     setSelectedDateRange(dateStrings);
   };
   const handleCancelGetPaid = () => {
-    setIsGetPaidModalVisible(false)
-  }
+    setIsGetPaidModalVisible(false);
+  };
 
   const handleWithdraw = () => {
-    toast.success(`Withdrawing $${withdrawAmount}`)
-    showPaymentModal(false)
-    setIsGetPaidModalVisible(false)
-  }
+    toast.success(`Withdrawing $${withdrawAmount}`);
+    showPaymentModal(false);
+    setIsGetPaidModalVisible(false);
+  };
 
   const handleApply = () => {
     console.log('Selected Date Range: ', selectedDateRange);
@@ -47,7 +56,7 @@ const TransectionOfBusiness = () => {
       key: '1',
       date: '23 Mar, 2024',
       item: 'Mini Portable Refillable Sprayer Atomizer',
-      amount: -5,
+      amount: 5,
       status: 'Successful',
       refId: '709692663',
     },
@@ -55,7 +64,7 @@ const TransectionOfBusiness = () => {
       key: '2',
       date: '23 Mar, 2024',
       item: 'Mini Portable Refillable Sprayer Atomizer',
-      amount: -5,
+      amount: 5,
       status: 'Successful',
       refId: '709692663',
     },
@@ -63,7 +72,7 @@ const TransectionOfBusiness = () => {
       key: '3',
       date: '23 Mar, 2024',
       item: 'Mini Portable Refillable Sprayer Atomizer',
-      amount: -5,
+      amount: 5,
       status: 'Processing',
       refId: '709692663',
     },
@@ -71,7 +80,7 @@ const TransectionOfBusiness = () => {
       key: '4',
       date: '23 Mar, 2024',
       item: 'Mini Portable Refillable Sprayer Atomizer',
-      amount: -5,
+      amount: 5,
       status: 'Successful',
       refId: '709692663',
     },
@@ -79,7 +88,7 @@ const TransectionOfBusiness = () => {
       key: '5',
       date: '23 Mar, 2024',
       item: 'Mini Portable Refillable Sprayer Atomizer',
-      amount: -5,
+      amount: 5,
       status: 'Cancelled',
       refId: '709692663',
     },
@@ -87,7 +96,7 @@ const TransectionOfBusiness = () => {
       key: '6',
       date: '23 Mar, 2024',
       item: 'Mini Portable Refillable Sprayer Atomizer',
-      amount: -5,
+      amount: 5,
       status: 'Cancelled',
       refId: '709692663',
     },
@@ -97,18 +106,20 @@ const TransectionOfBusiness = () => {
     {
       title: 'Date',
       dataIndex: 'date',
+      render: (date) => <span className="text-[#999Eab]">{date}</span>,
       key: 'date',
     },
     {
       title: 'Item',
       dataIndex: 'item',
+      render: (item) => <span className="text-[#111] underline">{item}</span>,
       key: 'item',
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `$${amount}`,
+      render: (amount) => ` - $${amount}`,
     },
     {
       title: 'Status',
@@ -118,10 +129,10 @@ const TransectionOfBusiness = () => {
         <span
           className={`${
             status === 'Successful'
-              ? 'bg-gray-100 text-green-700'
+              ? 'bg-gray-100 text-green-500'
               : status === 'Processing'
               ? 'bg-gray-100 text-purple-700'
-              : 'bg-gray-100 text-red-700'
+              : 'bg-gray-100 text-red-500'
           } p-1 rounded-md text-sm`}
         >
           {status}
@@ -254,7 +265,7 @@ const TransectionOfBusiness = () => {
           <Button
             type="primary"
             icon={<DownloadOutlined />}
-            className="ml-auto bg-blue-500 hover:bg-blue-600 text-white"
+            className="ml-auto !bg-transparent border !border-blue-500 !hover:bg-blue-600 !text-blue-500"
           >
             Download CSV
           </Button>

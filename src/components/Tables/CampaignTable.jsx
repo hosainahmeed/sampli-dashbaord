@@ -10,6 +10,8 @@ const CampaignTable = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const navigate = useNavigate();
+  const totalSpent = 1000;
+  const totalBudget = 2000;
   const campaigns = [
     {
       key: '1',
@@ -19,7 +21,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 10,
       total: 300,
-      budget: '$25,000 of $100,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
     },
@@ -31,7 +49,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 20,
       total: 500,
-      budget: '$50,000 of $200,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
     },
@@ -43,7 +77,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 30,
       total: 1000,
-      budget: '$100,000 of $500,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
     },
@@ -55,7 +105,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 40,
       total: 2000,
-      budget: '$200,000 of $1,000,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-background-with-palm-trees-and-flamingos_23-2148443420.jpg',
     },
@@ -67,7 +133,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 50,
       total: 3000,
-      budget: '$300,000 of $1,500,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-party-invitation-with-flamingos_23-2148443421.jpg',
     },
@@ -79,7 +161,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 60,
       total: 4000,
-      budget: '$400,000 of $2,000,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-elements-collection-with-palm-trees_23-2148443422.jpg',
     },
@@ -91,7 +189,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 70,
       total: 5000,
-      budget: '$500,000 of $2,500,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-party-with-palm-trees-and-flamingos_23-2148443423.jpg',
     },
@@ -103,7 +217,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 80,
       total: 6000,
-      budget: '$600,000 of $3,000,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos_23-2148443424.jpg',
     },
@@ -115,7 +245,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 90,
       total: 7000,
-      budget: '$700,000 of $3,500,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-party-with-flamingos-and-palm-trees_23-2148443425.jpg',
     },
@@ -127,7 +273,23 @@ const CampaignTable = () => {
       status: 'Active',
       progress: 100,
       total: 8000,
-      budget: '$800,000 of $4,000,000',
+      budget: (
+        <span>
+          $
+          {totalSpent.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          {' of '}
+          <span className="text-[#6D7486]">
+            ${' '}
+            {totalBudget.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        </span>
+      ),
       image:
         'https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos-and-palm-trees_23-2148443426.jpg',
     },
@@ -197,6 +359,7 @@ const CampaignTable = () => {
       render: (text, record) => (
         <Button
           type="default"
+          className='!border-blue-500 !text-blue-500 hover:bg-gray-100'
           onClick={() => {
             navigate(`single-campaign`, { state: { id: record.id } });
           }}
@@ -209,10 +372,11 @@ const CampaignTable = () => {
 
   return (
     <div className="py-12">
-      <h2 className="my-3 text-2xl">Campaign</h2>
+      <h2 className="my-3 text-2xl font-semibold">Campaign</h2>
       <div className="flex w-full justify-between ">
         <div className="flex item-center gap-12 ">
           <Input
+            className="!rounded-full"
             placeholder="Search"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}

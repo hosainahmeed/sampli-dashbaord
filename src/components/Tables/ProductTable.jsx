@@ -23,14 +23,16 @@ const ProductTable = ({ filterStatus }) => {
   const campaigns = [
     {
       key: '1',
+      item_id: '121321',
+      item_category: 'Shoes',
       id: 1,
       name: 'Summer Collection Review Group 1',
-      createdAt: '2023-03-23',
+      createdAt: <span className="text-[#6D7486]">2023-03-23</span>,
       status: 'Active',
       progress: 10,
-      total: 300,
-      salse: 40,
-      budget: '$25,000 of $100,000',
+      total: <span className="text-[#6D7486]">300</span>,
+      salse: <span className='text-[#6D7486]'>40</span>,
+      budget: <span className="text-[#6D7486]">$25,000 of $100,000</span>,
       image:
         'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
     },
@@ -89,7 +91,7 @@ const ProductTable = ({ filterStatus }) => {
   ];
   const columns = [
     {
-      title: <span className="text-xs xl:text-lg">Name</span>,
+      title: <span className="text-xs xl:text-lg">Item Name</span>,
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
@@ -103,7 +105,10 @@ const ProductTable = ({ filterStatus }) => {
           )}
           <div>
             <h1 className="text-xs xl:text-sm">{text}</h1>
-            <h1 className="text-xs xl:text-sm">{record.createdAt}</h1>
+            <div className="flex items-center text-[#6D7486] gap-2">
+              <span className="text-xs  xl:text-sm">#{record.item_id}</span>
+              <span>• {record.item_category}</span>
+            </div>
           </div>
         </span>
       ),

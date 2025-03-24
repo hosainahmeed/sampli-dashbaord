@@ -168,6 +168,7 @@ function StoreProfile() {
 
   // Pagination logic for items
   const [currentPage, setCurrentPage] = useState(1);
+  const storeName = 'Shoe Store';
   const itemsPerPage = 8;
   const currentItems = items.slice(
     (currentPage - 1) * itemsPerPage,
@@ -199,19 +200,25 @@ function StoreProfile() {
         <div className="w-48 h-48 rounded-full shadow-2xl flex items-center bg-white justify-center">
           <img src={logo} alt="sampli image logo" />
         </div>
-        <div className="mt-12 flex items-center gap-12 text-[#6D7486]">
-          <h1 className="flex items-center gap-2">
-            <CiCalendar />
-            Joined Feb 2002
+        <div>
+          <h1 className="text-3xl font-semibold !mt-8 text-[#111]">
+            {storeName}
           </h1>
-          <h1 className="flex items-center gap-2">
-            <CiStar />
-            99% positive feedback
-          </h1>
-          <h1 className="flex items-center gap-2">
-            <AiOutlineUser />
-            23 followers
-          </h1>
+
+          <div className=" flex items-center gap-12 text-[#6D7486]">
+            <h1 className="flex items-center gap-2">
+              <CiCalendar />
+              Joined Feb 2002
+            </h1>
+            <h1 className="flex items-center gap-2">
+              <CiStar />
+              99% positive feedback
+            </h1>
+            <h1 className="flex items-center gap-2">
+              <AiOutlineUser />
+              23 followers
+            </h1>
+          </div>
         </div>
         <p className="text-[#6D7486] text-sm xl:text-base leading-7">
           {description}

@@ -16,8 +16,8 @@ const ReviewLaunch = () => {
 
   return (
     <div className="max-w-3xl flex flex-col gap-2 mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-xl font-semibold mb-2">Review & Launch</h1>
-      <p className="text-gray-600 mb-4">
+      <h1 className="text-xl font-semibold mb-2 text-center">Review & Launch</h1>
+      <p className="text-gray-600 mb-4 text-center">
         Confirm and review your campaign details
       </p>
 

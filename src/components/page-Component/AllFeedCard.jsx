@@ -70,7 +70,7 @@ function AllFeedCard() {
       </div>
 
       {/* Feed Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1  2xl:grid-cols-2 gap-4">
         {currentCards.length === 0 ? (
           <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
             <p className="text-2xl font-semibold mb-2">No Results Found</p>

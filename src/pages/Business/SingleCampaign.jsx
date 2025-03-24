@@ -53,8 +53,8 @@ function SingleCampaign() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-[#999Eab] rounded-3xl overflow-hidden">
         {/* Timeline */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs xl:text-sm text-gray-500">
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs xl:text-sm text-gray-500">
             Timeline
           </h1>
           <h1 className="text-xs xl:text-lg font-semibold">
@@ -63,25 +63,26 @@ function SingleCampaign() {
         </div>
 
         {/* Budget */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Budget</h1>
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">Budget</h1>
           <h1 className="text-xs xl:text-lg font-semibold">
-            ${statsData.budget.spent.toLocaleString()} of $
+            <span className="text-[#6D7486]">$</span>
+            {statsData.budget.spent.toLocaleString()} of $
             {statsData.budget.total.toLocaleString()}
           </h1>
         </div>
 
         {/* Status */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">Status</h1>
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">Status</h1>
           <span className="px-2 py-1 text-xs sm:text-sm font-semibold bg-yellow-100 w-fit text-yellow-700 rounded">
             {statsData.status}
           </span>
         </div>
 
         {/* Progress */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">
             Progress
           </h1>
           <div className="flex items-center space-x-2">
@@ -103,8 +104,8 @@ function SingleCampaign() {
         </div>
 
         {/* Reviews Completed */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">
             Reviews Completed
           </h1>
           <h1 className="text-xs xl:text-lg font-semibold">
@@ -113,18 +114,19 @@ function SingleCampaign() {
         </div>
 
         {/* Total Spent */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">
             Total Spent
           </h1>
           <h1 className="text-xs xl:text-lg font-semibold">
-            ${statsData.totalSpent.toLocaleString()}
+            <span className="text-[#6D7486]">$</span>
+            {statsData.totalSpent.toLocaleString()}
           </h1>
         </div>
 
         {/* Average Rating */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">
             Average Rating
           </h1>
           <h1 className="text-xs xl:text-lg font-semibold">
@@ -133,8 +135,8 @@ function SingleCampaign() {
         </div>
 
         {/* Days Remaining */}
-        <div className="flex flex-col p-6 border border-[#999Eab]">
-          <h1 className="uppercase text-xs sm:text-sm text-gray-500">
+        <div className="flex flex-col p-6 gap-4 border border-[#999Eab]">
+          <h1 className="uppercase  text-xs sm:text-sm text-gray-500">
             Days Remaining
           </h1>
           <h1 className="text-xs xl:text-lg font-semibold">

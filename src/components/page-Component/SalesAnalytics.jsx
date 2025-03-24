@@ -8,11 +8,19 @@ const { RangePicker } = DatePicker;
 function CampaignAnalytics() {
   const [selectedOption, setSelectedOption] = useState('This Week');
   const [customDateRange, setCustomDateRange] = useState(null);
-
+  const number = 3434;
   const datas = [
     {
       title: 'Total Revenue',
-      value: '$3,434.00',
+      value: (
+        <>
+          <small className="text-[#6D7486]">$ </small>
+          {number.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+        </>
+      ),
       change: '+30%',
       orders: 342,
       avgOrderValue: '$340',

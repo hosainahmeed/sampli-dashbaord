@@ -73,7 +73,7 @@ function CampaignPerformanceChart() {
   return (
     <div className="border-[1px] border-[#ccc] p-4 rounded-md mt-12">
       <div className="flex p-2 rounded-md mb-2 justify-between items-center gap-12 py-4">
-        <h1 className="text-2xl">Campaign analytics</h1>
+        <h1 className="text-2xl">Campaign Performance</h1>
         <div className="flex items-center gap-4">
           <Select
             value={selectedOption}

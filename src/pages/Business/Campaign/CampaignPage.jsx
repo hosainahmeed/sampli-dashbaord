@@ -9,11 +9,11 @@ function CampaignPage() {
   return (
     <div>
       <div className=" flex-center-between mb-4">
-        <h1 className="text-2xl font-bold">Campaign</h1>
+        <h1 className="text-2xl font-semibold">Campaign</h1>
         <Link to="/create-campaign">
           <Button className="flex items-center justify-center" type="primary">
             <FiPlus />
-            Create Campaign
+            Create New campaign
           </Button>
         </Link>
       </div>
