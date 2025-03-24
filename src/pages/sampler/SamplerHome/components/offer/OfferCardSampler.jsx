@@ -31,11 +31,11 @@ const OfferCardSampler = ({ product }) => {
         {/* Rewards & Due */}
         <div className="flex justify-between items-center text-sm mt-2">
           <span className="text-gray-700">
-            <strong>Rewards:</strong>{' '}
+            <span className="text-gray-500 ">Rewards:</span>{' '}
             <span className="text-black">${product.rewards}</span>
           </span>
           <span className="text-gray-700">
-            <strong>Due:</strong>{' '}
+            <span className="text-gray-500 ">Due:</span>{' '}
             <span className="text-black">{product.due}</span>
           </span>
         </div>

@@ -1,22 +1,22 @@
-import { Button, Card, Typography } from 'antd';
-import React from 'react';
-import { FaAngleLeft } from 'react-icons/fa';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FiShoppingBag } from 'react-icons/fi';
-import { LuUserRound } from 'react-icons/lu';
-import TimeLineCard from '../../../components/business-product-details/TimeLineCard';
-import ContactInformationCustomer from '../../../components/business-product-details/ContactInformationCustomer';
-import ShippingAddressCustomer from '../../../components/business-product-details/ShippingAddressCustomer';
-import BillingAddressCustomer from '../../../components/business-product-details/BillingAddressCustomer';
+import { Button, Card, Typography } from 'antd'
+import React from 'react'
+import { FaAngleLeft } from 'react-icons/fa'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { FiShoppingBag } from 'react-icons/fi'
+import { LuUserRound } from 'react-icons/lu'
+import TimeLineCard from '../../../components/business-product-details/TimeLineCard'
+import ContactInformationCustomer from '../../../components/business-product-details/ContactInformationCustomer'
+import ShippingAddressCustomer from '../../../components/business-product-details/ShippingAddressCustomer'
+import BillingAddressCustomer from '../../../components/business-product-details/BillingAddressCustomer'
+import { GoLinkExternal } from 'react-icons/go'
 
-const { Text, Title } = Typography;
+const { Text, Title } = Typography
 
 function OrderDetails() {
-  const location = useLocation();
-  const orderDetails = location.state;
-  console.log(orderDetails);
-  const { amount, customer, date, orderId, product, status } =
-    orderDetails;
+  const location = useLocation()
+  const orderDetails = location.state
+  console.log(orderDetails)
+  const { amount, customer, date, orderId, product, status } = orderDetails
   const order = {
     id: orderId,
     status: status,
@@ -44,8 +44,8 @@ function OrderDetails() {
       address: 'rampura dhaka bangladesh',
       phone: '+16278847',
     },
-  };
-  const navigate = useNavigate();
+  }
+  const navigate = useNavigate()
   return (
     <div className=" p-6">
       <div
@@ -69,7 +69,10 @@ function OrderDetails() {
         </div>
         <div className="flex gap-2">
           <Button>Go to item</Button>
-          <Button type="primary">Track Item</Button>
+          <Button type="primary" className='flex items-center'>
+            Track Item
+            <GoLinkExternal className="text-blue-700" />
+          </Button>
         </div>
       </div>
       <Title className="!mt-4" level={4}>
@@ -104,7 +107,7 @@ function OrderDetails() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default OrderDetails;
+export default OrderDetails

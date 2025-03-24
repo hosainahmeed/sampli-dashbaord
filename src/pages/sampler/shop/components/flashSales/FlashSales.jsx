@@ -76,7 +76,7 @@ function FlashSales() {
   return (
     <div className=" px-4  mt-24 relative">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">Flash Sales</h2>
+        <h2 className="text-xl font-semibold text-[24px]">Flash Sales</h2>
       </div>
 
       <button

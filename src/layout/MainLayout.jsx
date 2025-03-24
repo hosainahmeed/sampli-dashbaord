@@ -1,14 +1,13 @@
-import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import Sidebar from '../components/Shared/Sidebar.jsx';
-import Header from '../components/Shared/Header.jsx';
-import StoreFooter from '../components/Shared/StoreFooter.jsx';
+import React from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import Sidebar from '../components/Shared/Sidebar.jsx'
+import Header from '../components/Shared/Header.jsx'
+import StoreFooter from '../components/Shared/StoreFooter.jsx'
 
 const MainLayout = () => {
-  const location = useLocation();
-  const path = location.pathname;
-  const currentPath =
-    path === '/store-profile' || path === '/all-notifications';
+  const location = useLocation()
+  const path = location.pathname
+  const currentPath = path === '/store-profile' || path === '/all-notifications'
   if (currentPath) {
     return (
       <>
@@ -18,7 +17,7 @@ const MainLayout = () => {
         </div>
         <StoreFooter />
       </>
-    );
+    )
   }
   return (
     <div className="h-screen">
@@ -36,7 +35,7 @@ const MainLayout = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout

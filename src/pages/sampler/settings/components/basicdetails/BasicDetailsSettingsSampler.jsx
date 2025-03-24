@@ -25,7 +25,7 @@ const BasicDetailsSettingsSampler = () => {
   const [showPhotoModal, setShowPhotoModal] = useState(false)
   const [username, setUsername] = useState('ahsan')
   const [selectedPhoto, setSelectedPhoto] = useState(
-    `https://picsum.photos/seed/10/200`
+    `https://img.freepik.com/free-photo/abstract-luxury-plain-blur-grey-black-gradient-used-as-background-studio-wall-display-your-products_1258-101806.jpg?t=st=1742792384~exp=1742795984~hmac=8373bcf22d114c8bc7cdd1a5f36680d730f4b600f07e304ba865f3870717be5f&w=740`
   )
   const [tempUsername, setTempUsername] = useState(username)
 
@@ -93,13 +93,13 @@ const BasicDetailsSettingsSampler = () => {
                   />
                 )}
               </div>
-              <Button
+              <button
                 onClick={() => setShowPhotoModal(true)}
                 type="primary"
-                className="!text-sm !font-medium border border-blue-500 px-4 py-2 rounded-lg"
+                className="!text-sm cursor-pointer !font-medium border !text-black  !bg-white !border-gray-200 px-4 py-2 rounded-lg"
               >
                 Upload photo
-              </Button>
+              </button>
             </div>
             <p className="text-xs text-gray-500">Recommended size 400×400px</p>
           </div>

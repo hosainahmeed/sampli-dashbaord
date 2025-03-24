@@ -160,7 +160,7 @@ const ProductDetails = ({ visible, onCancel }) => {
 
         {page === 2 && (
           <div className="flex flex-col mt-10 h-screen w-full text-gray-500">
-            <h2 className="text-xl font-semibold">Confirm delivery address</h2>
+            <h2 className="text-xl font-semibold text-black">Confirm delivery address</h2>
             <p className="text-gray-500 text-sm mb-6">
               High-quality wireless headphones with noise cancellation
             </p>

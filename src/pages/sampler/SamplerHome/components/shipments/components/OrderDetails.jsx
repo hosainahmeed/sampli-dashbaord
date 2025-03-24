@@ -4,6 +4,7 @@ import { ShoppingCartOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { MdArrowBack } from 'react-icons/md'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { GoLinkExternal } from 'react-icons/go'
 
 const { Step } = Steps
 
@@ -72,8 +73,9 @@ const OrderDetails = ({ setIsClicked }) => {
           <div>
             <div className="flex gap-2">
               <Button onClick={showModal}>Cancel Order</Button>
-              <button className="border text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
+              <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
                 Track Item
+                <GoLinkExternal className="text-blue-700" />
               </button>
             </div>
           </div>

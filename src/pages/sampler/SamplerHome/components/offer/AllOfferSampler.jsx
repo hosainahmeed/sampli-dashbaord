@@ -92,7 +92,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>
@@ -123,7 +123,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>
@@ -154,7 +154,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>
@@ -185,7 +185,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4  gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>

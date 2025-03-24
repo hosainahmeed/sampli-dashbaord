@@ -79,7 +79,7 @@ const columns = [
           }}
           className="!text-blue-500 border border-blue-500 hover:bg-gray-100 cursor-pointer rounded px-3 py-2"
         >
-          Add to cart
+          Buy now
         </button>
       </div>
     ),

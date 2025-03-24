@@ -103,7 +103,7 @@ const SCProductDetails = () => {
         </div>
 
         <div className="md:w-1/2">
-          <h1 className="text-2xl font-semibold mb-2 text-gray-500">
+          <h1 className="text-3xl font-semibold mb-2 ">
             {product.name}
           </h1>
           <p className="text-gray-600 mb-4">{product.description}</p>

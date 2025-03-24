@@ -107,7 +107,7 @@ const LoginForm = () => {
         <div className="mt-4 text-gray-500">
           New to Sampli?{' '}
           <Link
-            to="/register"
+            to="/choose-role"
             className="text-blue-500 hover:underline transtion-all"
           >
             Get started

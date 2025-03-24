@@ -56,6 +56,7 @@ const columns = [
     title: 'Date',
     dataIndex: 'date',
     key: 'date',
+    render: (_, text) => <p className="text-gray-500">{text.date}</p>,
   },
   {
     title: 'Status',

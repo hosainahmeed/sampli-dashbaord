@@ -15,12 +15,16 @@ import {
   HeartFilled,
   MessageOutlined,
   MoreOutlined,
-  SmileOutlined,
   SendOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import EmojiPicker from 'emoji-picker-react'
+import followingInactiveLogo from '../../../assets/feedLogo/following.svg'
+import followingActiveLogo from '../../../assets/feedLogo/followingActive.svg'
+import newLogo from '../../../assets/feedLogo/new.svg'
+import newActiveLogo from '../../../assets/feedLogo/newActive.svg'
+import popularActiveLogo from '../../../assets/feedLogo/popularActive.svg'
+import popularInActiveLogo from '../../../assets/feedLogo/popularInactive.svg'
 
 const { TabPane } = Tabs
 
@@ -319,19 +323,37 @@ const SamplerFeed = () => {
         <div className="w-2/3">
           {/* Feed Tabs */}
           <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
-            <TabPane tab="Popular" key="popular" />
-            <TabPane tab="New" key="new" />
-            <TabPane tab="Following" key="following" />
+            <TabPane
+              tab=<div className="flex gap-2 ">
+                <img src={followingInactiveLogo} alt="following" />
+                <span>Following</span>
+              </div>
+              key="following"
+            />
+            <TabPane
+              tab=<div className="flex gap-2 ">
+                <img src={newLogo} alt="new" />
+                <span>New</span>
+              </div>
+              key="new"
+            />
+            <TabPane
+              tab=<div className="flex gap-2 ">
+                <img src={popularInActiveLogo} alt="new" />
+                <span>popular</span>
+              </div>
+              key="popular"
+            />
           </Tabs>
 
           {/* Category Pills */}
-          <div className="flex gap-2 py-4 overflow-x-auto mb-3">
+          <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
             {['all', 'electronics', 'beauty', 'home', 'fashion', 'gaming'].map(
               (category) => (
                 <Button
                   key={category}
                   type={activeCategory === category ? 'primary' : 'default'}
-                  className="rounded-full"
+                  className="!rounded-full !py-5"
                   onClick={() => setActiveCategory(category)}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -341,7 +363,6 @@ const SamplerFeed = () => {
           </div>
 
           {/* Feed Posts */}
-          
 
           <div className="space-y-4">
             {posts.map((post) => (
@@ -363,14 +384,16 @@ const SamplerFeed = () => {
                         <Rate
                           disabled
                           defaultValue={post.rating}
-                          className="text-sm"
+                          className="!text-[16px] !text-[#FD8240]"
                         />
                         <span className="text-gray-500">{post.rating}</span>
-                        <span className="text-gray-700">
+                        <span className=" underline underline-offset-4 cursor-pointer">
                           {post.productName}
                         </span>
                         <span className="text-green-500">{post.price}</span>
-                        <span className="text-gray-500">/{post.category}</span>
+                        <span className=" underline underline-offset-4 cursor-pointer">
+                          /{post.category}
+                        </span>
                       </div>
                     </div>
                   </div>

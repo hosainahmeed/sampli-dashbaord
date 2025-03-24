@@ -4,11 +4,15 @@ import { SiFuturelearn } from 'react-icons/si'
 import { VscPreview } from 'react-icons/vsc'
 import { Dropdown, Menu } from 'antd'
 import { DownOutlined, FilterOutlined } from '@ant-design/icons'
+import itemsInShipment from '../../../../assets/items-in-shipment.svg'
+import totalReviews from '../../../../assets/total-reviews.svg'
+import totalEarnings from '../../../../assets/total-earnings.svg'
 
 const data = [
   {
     id: 1,
-    icon: <SiFuturelearn className="text-blue-500 text-xl" />,
+    // icon: <SiFuturelearn className="text-blue-500 text-xl" />,
+    icon: totalEarnings,
     name: 'Total Earnings',
     earn: 2398.0,
     currency: '$',
@@ -18,7 +22,8 @@ const data = [
   },
   {
     id: 2,
-    icon: <VscPreview className="text-blue-500 text-xl" />,
+    // icon: <VscPreview className="text-blue-500 text-xl" />,
+    icon: totalReviews,
     name: 'Total Reviews',
     earn: 2398,
     percentage: '40%',
@@ -27,7 +32,8 @@ const data = [
   },
   {
     id: 3,
-    icon: <LiaShippingFastSolid className="text-blue-500 text-xl" />,
+    // icon: <LiaShippingFastSolid className="text-blue-500 text-xl" />,
+    icon: itemsInShipment,
     name: 'Items in shipment',
     earn: 34,
     percentage: '40%',
@@ -47,6 +53,8 @@ const OverviewSampler = () => {
         { key: 'This week', label: 'This week' },
         { key: 'Last week', label: 'Last week' },
         { key: 'This month', label: 'This month' },
+        { key: 'Last 6 Month', label: 'Last 6 Month' },
+        { key: 'This Year', label: 'This Year' },
       ]}
     />
   )
@@ -75,7 +83,9 @@ const OverviewSampler = () => {
             <div className="flex items-center gap-2">
               <div>
                 <div className="flex  gap-2 ">
-                  <div>{item.icon}</div>
+                  <div>
+                    <img src={item.icon} alt="icon" />
+                  </div>
                   <p className="text-gray-500 ">{item.name}</p>
                 </div>
               </div>

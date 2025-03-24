@@ -63,19 +63,26 @@ const columns = [
     ),
   },
   {
-    title: 'Date',
+    title: <div className="text-gray-500">Date</div>,
     dataIndex: 'date',
     key: 'date',
+    render: (_, text) => <p className="text-gray-500">{text.date}</p>,
   },
   {
-    title: 'Review Earnings',
+    title: <div className="text-gray-500 text-center">Review Earnings</div>,
     dataIndex: 'ReviewEarnings',
     key: 'reviewEarnings',
+    render: (_, text) => (
+      <p className="text-gray-500 text-center">{text.ReviewEarnings}</p>
+    ),
   },
   {
-    title: 'Commission',
+    title: <div className="text-gray-500 text-center">Commission</div>,
     dataIndex: 'Commission',
     key: 'commission',
+    render: (_, text) => (
+      <p className="text-gray-500 text-center">{text.Commission}</p>
+    ),
   },
   {
     title: 'Total',

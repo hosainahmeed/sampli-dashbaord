@@ -1,20 +1,20 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { BiSolidOffer, BiSolidPurchaseTag } from 'react-icons/bi'
-import { GrFavorite } from 'react-icons/gr'
-import { IoIosNotifications } from 'react-icons/io'
+import { GrDocumentText, GrFavorite } from 'react-icons/gr'
+import { IoMdNotificationsOutline } from 'react-icons/io'
+import { MdOutlineLocalOffer } from 'react-icons/md'
 
 const SidebarShipmentsSampler = () => {
   const menuItems = [
     {
       name: 'Offer shipments',
       link: '/sampler/campaign/shipments/offer-shipments',
-      icon: <BiSolidOffer />,
+      icon: <MdOutlineLocalOffer className="transform scale-x-[-1]" />,
     },
     {
       name: 'My purchases',
       link: '/sampler/campaign/shipments/my-purchases',
-      icon: <BiSolidPurchaseTag />,
+      icon: <GrDocumentText />,
     },
     {
       name: 'Wishlist',
@@ -24,13 +24,13 @@ const SidebarShipmentsSampler = () => {
     {
       name: 'Notifications',
       link: '/sampler/campaign/shipments/notifications',
-      icon: <IoIosNotifications />,
+      icon: <IoMdNotificationsOutline />,
     },
   ]
   return (
     <div className="responsive-width">
       <div className=" max-w-[250px] w-full h-[96vh] px-3 bg-white  ">
-        <div className=" text-2xl mb-5">Shopping & Alerts</div>
+        <div className=" text-xl mb-5 pl-6">Shopping & Alerts</div>
         <ul className="space-y-2">
           {menuItems.map((item, index) => (
             <NavLink
@@ -38,11 +38,11 @@ const SidebarShipmentsSampler = () => {
               key={index}
               className={({ isActive }) =>
                 `flex items-center text-sm py-3 rounded-3xl my-1 pl-6 hover:bg-gray-500 cursor-pointer hover:text-white ${
-                  isActive ? 'text-black' : 'text-gray-500'
+                  isActive ? 'text-blue-600' : 'text-gray-500'
                 }`
               }
             >
-              <span className="mr-4 text-xl">{item.icon}</span>
+              <span className={`mr-4 text-xl `}>{item.icon}</span>
               <span>{item.name}</span>
             </NavLink>
           ))}

@@ -39,7 +39,7 @@ const SidebarSettings = () => {
               key={index}
               className={({ isActive }) =>
                 `flex items-center  text-sm py-3 rounded-3xl my-1 pl-6 hover:bg-gray-500 cursor-pointer hover:text-white ${
-                  isActive ? 'text-black' : 'text-gray-500'
+                  isActive ? 'text-blue-600' : 'text-gray-500'
                 }`
               }
             >

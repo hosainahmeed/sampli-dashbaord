@@ -34,8 +34,10 @@ const images = [
 ]
 const FeaturedBrands = () => {
   return (
-    <div className="responsive-width">
-      <div className="text-xl font-semibold mt-10 p-2">Featured brands</div>
+    <div className="responsive-width !mt-10">
+      <div className="text-xl font-semibold p-2 text-[24px] ">
+        Featured brands
+      </div>
       <div className="flex gap-2 justify-between items-center mt-5">
         {images.map((image) => (
           <div

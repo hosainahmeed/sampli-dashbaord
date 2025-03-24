@@ -13,6 +13,7 @@ const notificationData = [
       'Your free review product (Apple Watch Series 9) has been shipped! Expected delivery: Dec 16',
     product: 'BENGOO G9000 Stereo Gaming Headset',
     qty: 2,
+    image: `https://picsum.photos/seed/${Math.random() * 1000}/150`,
     action: 'See details',
     time: '1 hour ago',
     button: 'See details',
@@ -38,6 +39,8 @@ const notificationData = [
       'Your order #45678 (Wireless Charger) has been shipped! Expected delivery: Dec 15',
     product: 'BENGOO G9000 Stereo Gaming Headset',
     qty: 2,
+    image: `https://picsum.photos/seed/${Math.random() * 1000}/150`,
+
     action: 'Submit review',
     time: '1 hour ago',
     button: 'Submit review',

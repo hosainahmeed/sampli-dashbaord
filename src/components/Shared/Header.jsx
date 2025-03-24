@@ -19,6 +19,10 @@ import {
 } from 'react-icons/md'
 import { LuShoppingCart } from 'react-icons/lu'
 import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler'
+import campaignIcon from '../../assets/campaign.svg'
+import campaignInActive from '../../assets/campaignInActive.svg'
+import shopIcon from '../../assets/shopIcon.png'
+import shopInActive from '../../assets/shopInActive.svg'
 
 function Header() {
   const navigate = useNavigate()
@@ -154,7 +158,7 @@ function Header() {
             visible ? 'translate-y-0' : '-translate-y-full'
           }`}
         >
-          <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white">
+          <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
             <Link to={'/sampler/campaign'}>
               <img src={brandlogo} alt="brand logo" />
             </Link>
@@ -166,7 +170,20 @@ function Header() {
                 )}`}
               >
                 <div className="flex gap-2">
-                  <MdOutlineCampaign className="text-[19px]" />
+                  {/* <MdOutlineCampaign className="text-[19px]" /> */}
+                  {location.pathname === '/sampler/campaign' ? (
+                    <img
+                      src={campaignIcon}
+                      alt="campaignActive"
+                      className="w-[17px]"
+                    />
+                  ) : (
+                    <img
+                      src={campaignInActive}
+                      alt="campaignInActive"
+                      className="w-[17px]"
+                    />
+                  )}
                   Campaign
                 </div>
               </Link>
@@ -188,7 +205,16 @@ function Header() {
                 )}`}
               >
                 <div className="flex gap-2">
-                  <LuShoppingCart />
+                  {/* <LuShoppingCart /> */}
+                  {location.pathname === '/sampler/shop' ? (
+                    <img src={shopIcon} alt="shopActive" className="w-[17px]" />
+                  ) : (
+                    <img
+                      src={shopInActive}
+                      alt="shopInActive"
+                      className="w-[17px]"
+                    />
+                  )}
                   Shop
                 </div>
               </Link>

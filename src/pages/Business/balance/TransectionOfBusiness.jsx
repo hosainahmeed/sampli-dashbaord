@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { Table, Select, Button, DatePicker, Card } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaAngleLeft } from 'react-icons/fa';
-import bank from '../../../assets/bank.svg';
-import { BsExclamationOctagon } from 'react-icons/bs';
-const { Option } = Select;
+import React, { useState } from 'react'
+import { Table, Select, Button, DatePicker, Card } from 'antd'
+import { DownloadOutlined } from '@ant-design/icons'
+import { Link, useNavigate } from 'react-router-dom'
+import { FaAngleLeft } from 'react-icons/fa'
+import bank from '../../../assets/bank.svg'
+import { BsExclamationOctagon } from 'react-icons/bs'
+const { Option } = Select
 
 const TransectionOfBusiness = () => {
   const [filters, setFilters] = useState({
     dateRange: '',
     category: '',
     status: '',
-  });
-  const balance = 200;
-  const pending = 0;
-  const [selectedDateRange, setSelectedDateRange] = useState([]);
-  const navigate = useNavigate();
+  })
+  const balance = 200
+  const pending = 0
+  const [selectedDateRange, setSelectedDateRange] = useState([])
+  const navigate = useNavigate()
   const handleDateChange = (dates, dateStrings) => {
-    setSelectedDateRange(dateStrings);
-  };
+    setSelectedDateRange(dateStrings)
+  }
 
   const handleApply = () => {
-    console.log('Selected Date Range: ', selectedDateRange);
-  };
+    console.log('Selected Date Range: ', selectedDateRange)
+  }
 
   const transactionData = [
     {
@@ -74,13 +74,16 @@ const TransectionOfBusiness = () => {
       status: 'Cancelled',
       refId: '709692663',
     },
-  ];
+  ]
 
   const columns = [
     {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+      render: (_, text) => (
+        <p className="text-gray-500 text-center">{text.date}</p>
+      ),
     },
     {
       title: 'Item',
@@ -116,7 +119,7 @@ const TransectionOfBusiness = () => {
       dataIndex: 'refId',
       key: 'refId',
     },
-  ];
+  ]
 
   return (
     <div className="">
@@ -252,7 +255,7 @@ const TransectionOfBusiness = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TransectionOfBusiness;
+export default TransectionOfBusiness

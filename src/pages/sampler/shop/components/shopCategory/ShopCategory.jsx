@@ -16,7 +16,7 @@ const CategoryCarousel = () => {
 
   return (
     <div className=" my-8 relative">
-      <h2 className="text-xl font-semibold mb-4 p-2">Shop by Category</h2>
+      <h2 className="text-[24px] font-bold mb-4 p-2 ">Shop by Category</h2>
 
       <button
         className="absolute left-0 top-1/2 transform cursor-pointer -translate-y-1/2 bg-gray-900  text-white p-3 !mt-5 rounded-full shadow-md hover:bg-gray-700 transition z-10"
