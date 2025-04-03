@@ -11,7 +11,7 @@ import activeSales from '../../assets/icons/active/activeSales.svg';
 import activeSetting from '../../assets/icons/active/activeSetting.svg';
 import settingIcon from '../../assets/icons/setting.svg';
 
-const Sidebar = () => {
+const Bottombar = () => {
   const location = useLocation();
   const adminMenus = [
     {
@@ -66,7 +66,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="scrollbar h-full overflow-y-scroll space-y-6 p-3">
+    <div className="fixed bottom-0 left-0 right-0 flex xl:hidden justify-around items-center bg-[#f8f8fa] p-4 border-t border-gray-200 z-50">
       {adminMenus?.map((item) => (
         <NavLink
           key={item?.path}
@@ -77,11 +77,11 @@ const Sidebar = () => {
           } text-base  hover:scale-101 transition-all`}
           to={item?.path}
         >
-          {item?.icon} <span className=''>{item?.name}</span>
+          {item?.icon}
         </NavLink>
       ))}
     </div>
   );
 };
 
-export default Sidebar;
+export default Bottombar;

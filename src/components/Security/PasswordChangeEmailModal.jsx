@@ -33,7 +33,7 @@ const PasswordChangeEmailModal = ({ visible, onCancel, onContinue }) => {
         >
           <Input.Password placeholder="Enter password" />
         </Form.Item>
-        <Form.Item className="flex items-center justify-end">
+        <Form.Item className="flex items-center justify-start">
           <Button type="primary" htmlType="submit">
             Continue
           </Button>

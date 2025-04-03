@@ -44,11 +44,11 @@ body::-webkit-scrollbar {
 }
 
 .sidebar-button {
-  @apply flex items-center gap-3 px-3 py-2 rounded-md;
+  @apply flex items-center gap-3 px-3 py-2 text-[#6D7486] rounded-md;
 }
 
 .sidebar-button-active {
-  @apply flex items-center gap-3 px-3 py-2 text-[#3674f4] rounded-md bg-white;
+  @apply flex items-center gap-3 px-3 py-2 text-[#111] rounded-md bg-white;
 }
 
 .ant-pagination-item {
