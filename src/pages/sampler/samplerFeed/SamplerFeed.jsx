@@ -340,7 +340,7 @@ const SamplerFeed = () => {
             <TabPane
               tab=<div className="flex gap-2 ">
                 <img src={popularInActiveLogo} alt="new" />
-                <span>popular</span>
+                <span>Popular</span>
               </div>
               key="popular"
             />
