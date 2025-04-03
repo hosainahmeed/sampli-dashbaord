@@ -55,8 +55,8 @@ const NotificationsSettingsSampler = () => {
   )
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Notifications</h2>
+    <div className='!h-[95vh] overflow-y-auto scrollbar-none  '>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 ">Notifications</h2>
 
       <NotificationSection
         title="General"
