@@ -101,11 +101,16 @@ function DeleteAccountCard() {
               checked={check}
               onChange={handleCheck}
             >
-              I understand that deleted accounts aren't recoverable
+              I understand that deleted accounts aren&apos;t recoverable
             </Checkbox>
           </Form.Item>
           <div className="flex items-center justify-center w-full gap-3">
-            <Button className='!w-full' type="primary" onClick={handleDelete} disabled={!check}>
+            <Button
+              className="!w-full"
+              type="primary"
+              onClick={handleDelete}
+              disabled={!check}
+            >
               Continue
             </Button>
           </div>
