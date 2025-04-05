@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom'
 
 function StoreFooter() {
   return (
-    <div className="border-t-[1px] border-[#eee] text-gray-700 ">
-      <div className="mx-auto px-10 pt-5 flex justify-between items-center">
+    <div className="border-t-[1px] border-[#eee] text-gray-700 !mt-12">
+      <div className="mx-auto px-10 pt-5 flex justify-between items-center ">
         <ul className="flex justify-center gap-4">
           <li>
             <Link to="/privacy-policy" className='hover:text-black transition-all'>Privacy Policy</Link>
@@ -30,7 +30,7 @@ function StoreFooter() {
         <p>© {new Date().getFullYear()} Sampli. All Rights Reserved.</p>
       </div>
 
-      <div className="flex items-center justify-center pb-5 text-[#BBC9C8] gap-7  text-2xl transition-all ">
+      <div className="flex items-center justify-center pb-5 text-[#BBC9C8] gap-7  text-2xl transition-all= ">
         <FaFacebook className="hover:text-blue-600 cursor-pointer transition-all" />
         <FaInstagram className="hover:text-pink-500 cursor-pointer transition-all" />
         <FaLinkedin className="hover:text-blue-700 cursor-pointer transition-all" />

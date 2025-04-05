@@ -15,7 +15,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#783838',
       date: '23rd Mar, 2023',
       customer: 'Adele Singer',
-      amount: '$50.00',
+      amount: '50.00',
       status: 'Processing',
     },
     {
@@ -24,7 +24,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#123456',
       date: '15th Feb, 2023',
       customer: 'John Doe',
-      amount: '$80.00',
+      amount: '80.00',
       status: 'Delivered',
     },
     {
@@ -33,7 +33,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#654321',
       date: '10th Jan, 2023',
       customer: 'Jane Smith',
-      amount: '$200.00',
+      amount: '200.00',
       status: 'Cancelled',
     },
     {
@@ -42,7 +42,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#987654',
       date: '1st Apr, 2023',
       customer: 'Mike Johnson',
-      amount: '$500.00',
+      amount: '500.00',
       status: 'Processing',
     },
     {
@@ -51,7 +51,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#456789',
       date: '7th Mar, 2023',
       customer: 'Sarah Connor',
-      amount: '$300.00',
+      amount: '300.00',
       status: 'Delivered',
     },
   ];
@@ -103,6 +103,7 @@ const OrderTable = ({ filterStatus }) => {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
+      render: (amount) => <span>${amount}</span>,
     },
     {
       title: 'Fulfillment',
@@ -153,7 +154,7 @@ const OrderTable = ({ filterStatus }) => {
           defaultCurrent: 1,
           position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
-            if (type === 'prev') {
+            if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -161,11 +162,7 @@ const OrderTable = ({ filterStatus }) => {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;

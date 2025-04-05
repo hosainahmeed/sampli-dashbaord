@@ -119,7 +119,7 @@ const TransectionOfBusiness = () => {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => ` - $${amount}`,
+      render: (amount) => <p className="text-[#6D7486]">{` - $${amount}`}</p>,
     },
     {
       title: 'Status',
@@ -155,7 +155,7 @@ const TransectionOfBusiness = () => {
         <FaAngleLeft />
         <h1 className="!mt-2">Back</h1>
       </div>
-      <div className="text-2xl font-semibold">Transaction History</div>
+
       <Card>
         <div className="flex items-center justify-between">
           <div>
@@ -187,6 +187,7 @@ const TransectionOfBusiness = () => {
           passed through the 7 days security period.
         </h1>
       </div>
+      <div className="text-2xl font-semibold !my-6">Transaction History</div>
       <div className="mt-7">
         <div className="flex justify-between gap-6">
           <div className="flex gap-6 mb-6">

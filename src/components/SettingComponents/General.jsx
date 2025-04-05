@@ -32,10 +32,10 @@ function General() {
 
   return (
     <>
-      <div className="flex items-start xl:flex-row sm:flex-col justify-between gap-4">
-        <div className="flex-1 w-full">
+      <div className="max-w-screen-lg  flex flex-col gap-4">
+        <div className=" w-full">
           <Title level={3}>General</Title>
-          <Card className="w-full flex-1">
+          <Card className="w-full ">
             <FormWrapper
               form={form1}
               onFinish={onFinishForm1}
@@ -91,7 +91,7 @@ function General() {
               </Form.Item>
               <Form.Item className="col-span-2">
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Save
                 </Button>
               </Form.Item>
             </FormWrapper>
@@ -99,8 +99,8 @@ function General() {
         </div>
 
         <div className="w-full flex-1">
-          <h1>Store Information</h1>
           <Card>
+            <h1>Store Information</h1>
             <FormWrapper
               form={form2}
               onFinish={onFinishForm2}
@@ -183,7 +183,7 @@ function General() {
               />
               <Form.Item className="col-span-2">
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Save
                 </Button>
               </Form.Item>
             </FormWrapper>

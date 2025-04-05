@@ -211,8 +211,8 @@ const ProductTable = ({ filterStatus }) => {
           defaultPageSize: 5,
           defaultCurrent: 1,
           position: ['bottomCenter'],
-          itemRender: (current, type, originalElement) => {
-            if (type === 'prev') {
+          itemRender:(current, type, originalElement) => {
+            if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -220,11 +220,7 @@ const ProductTable = ({ filterStatus }) => {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className='text-[#2E78E9]'>Next Page</h1>;
             }
             if (type === 'page') {
               return current;
@@ -233,7 +229,6 @@ const ProductTable = ({ filterStatus }) => {
           },
         }}
       />
-
       <Modal
         centered
         footer={null}

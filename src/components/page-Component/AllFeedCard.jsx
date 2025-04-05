@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import SelectField from './SelectField';
 import FeedCard from '../ui/FeedCard';
-import { Pagination } from 'antd';
+import { Card, Pagination } from 'antd';
 
 function AllFeedCard() {
   const options = [
@@ -17,7 +17,7 @@ function AllFeedCard() {
   const cardsPerPage = 4;
 
   // Simulate data (replace this with actual data fetching logic)
-  const totalCards = 120;
+  const totalCards = 6;
   const cards = Array.from({ length: totalCards }, (_, index) => ({
     id: index + 1,
     content: `Feed Card ${index + 1}`,
@@ -56,9 +56,7 @@ function AllFeedCard() {
     <div className="p-4">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold mb-4 md:mb-0">
-          Campaign Analytics
-        </h1>
+        <h1 className="text-2xl font-semibold mb-4 md:mb-0">Reviews</h1>
         <SelectField
           className="w-full md:w-40"
           name="feed"
@@ -70,20 +68,24 @@ function AllFeedCard() {
       </div>
 
       {/* Feed Cards Grid */}
-      <div className="grid grid-cols-1  2xl:grid-cols-2 gap-4">
+      <div>
         {currentCards.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-2xl font-semibold mb-2">No Results Found</p>
-            <p className="text-gray-600">
-              Looks like you don't have any reviews on this product yet.
-            </p>
-          </div>
+          <Card>
+            <div className="!w-full col-span-2 flex flex-col items-center justify-center py-20 text-center">
+              <p className="text-2xl font-semibold mb-2">No reviews yet</p>
+              <p className="text-base text-[#6D7486]">
+                Looks like you don't have any reviews on this product yet.
+              </p>
+            </div>
+          </Card>
         ) : (
-          currentCards.map((card) => (
-            <>
-              <FeedCard key={card.id} content={card.content} />
-            </>
-          ))
+          <div className="grid grid-cols-1  2xl:grid-cols-2 gap-4">
+            {currentCards.map((card) => (
+              <div key={card.id}>
+                <FeedCard content={card.content} />
+              </div>
+            ))}
+          </div>
         )}
       </div>
 
@@ -96,6 +98,26 @@ function AllFeedCard() {
             pageSize={cardsPerPage}
             onChange={handlePageChange}
             showSizeChanger={false}
+            itemRender={(current, type, originalElement) => {
+              if (type === 'prev' && current > 1) {
+                return (
+                  <button className="!border-none ">
+                    <span className="text-[#2E78E9]">Previous</span>
+                  </button>
+                );
+              }
+              if (type === 'next') {
+                return (
+                  <button className="!border-none ">
+                    <span className="text-[#2E78E9]">Next Page</span>
+                  </button>
+                );
+              }
+              if (type === 'page') {
+                return current;
+              }
+              return originalElement;
+            }}
           />
         </div>
       )}

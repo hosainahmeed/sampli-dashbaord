@@ -145,7 +145,7 @@ function SingleCampaign() {
         </div>
       </div>
       <CampaignPerformanceChart />
-      <h1 className="mt-8 text-lg xl:text-xl">Reviews</h1>
+
       <AllFeedCard />
     </div>
   );

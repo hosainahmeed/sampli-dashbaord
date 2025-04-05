@@ -240,7 +240,7 @@ function StoreProfile() {
           className="!my-12 flex items-center justify-center"
           showSizeChanger={false}
           itemRender={(current, type, originalElement) => {
-            if (type === 'prev') {
+            if (type === 'prev'  && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -248,11 +248,7 @@ function StoreProfile() {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;
@@ -300,7 +296,7 @@ function StoreProfile() {
               className="!my-12 flex items-center justify-center"
               showSizeChanger={false}
               itemRender={(current, type, originalElement) => {
-                if (type === 'prev') {
+                if (type === 'prev' && current > 1) {
                   return (
                     <Button className="!border-none ">
                       <FaAngleLeft />
@@ -308,11 +304,7 @@ function StoreProfile() {
                   );
                 }
                 if (type === 'next') {
-                  return (
-                    <Button className="!border-none ">
-                      <FaAngleRight />
-                    </Button>
-                  );
+                  return <h1 className="text-[#2E78E9]">Next Page</h1>;
                 }
                 if (type === 'page') {
                   return current;

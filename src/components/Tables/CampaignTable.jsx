@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Tag, Progress, Input, Button, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 
 const { Option } = Select;
 
@@ -17,7 +17,8 @@ const CampaignTable = () => {
       key: '1',
       id: 1,
       name: 'Summer Collection Review Group 1',
-      createdAt: '2023-06-01',
+      startAt: '2023-06-01',
+      endAt: '2023-06-01',
       status: 'Active',
       progress: 10,
       total: 300,
@@ -29,7 +30,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -45,8 +46,9 @@ const CampaignTable = () => {
       key: '2',
       id: 2,
       name: 'Summer Collection Review Group 2',
-      createdAt: '2023-06-02',
-      status: 'Active',
+      startAt: '2023-06-02',
+      endAt: '2023-06-02',
+      status: 'Scheduled',
       progress: 20,
       total: 500,
       budget: (
@@ -57,7 +59,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -73,8 +75,9 @@ const CampaignTable = () => {
       key: '3',
       id: 3,
       name: 'Summer Collection Review Group 3',
-      createdAt: '2023-06-03',
-      status: 'Active',
+      startAt: '2023-06-03',
+      endAt: '2023-06-03',
+      status: 'Completed',
       progress: 30,
       total: 1000,
       budget: (
@@ -85,7 +88,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -98,13 +101,14 @@ const CampaignTable = () => {
         'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
     },
     {
-      key: '4',
-      id: 4,
-      name: 'Summer Collection Review Group 4',
-      createdAt: '2023-06-04',
-      status: 'Active',
-      progress: 40,
-      total: 2000,
+      key: '2',
+      id: 2,
+      name: 'Summer Collection Review Group 2',
+      startAt: '2023-06-02',
+      endAt: '2023-06-02',
+      status: 'Scheduled',
+      progress: 20,
+      total: 500,
       budget: (
         <span>
           $
@@ -113,7 +117,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -123,16 +127,17 @@ const CampaignTable = () => {
         </span>
       ),
       image:
-        'https://img.freepik.com/free-vector/summer-background-with-palm-trees-and-flamingos_23-2148443420.jpg',
+        'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
     },
     {
-      key: '5',
-      id: 5,
-      name: 'Summer Collection Review Group 5',
-      createdAt: '2023-06-05',
-      status: 'Active',
-      progress: 50,
-      total: 3000,
+      key: '3',
+      id: 3,
+      name: 'Summer Collection Review Group 3',
+      startAt: '2023-06-03',
+      endAt: '2023-06-03',
+      status: 'Completed',
+      progress: 30,
+      total: 1000,
       budget: (
         <span>
           $
@@ -141,7 +146,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -151,16 +156,17 @@ const CampaignTable = () => {
         </span>
       ),
       image:
-        'https://img.freepik.com/free-vector/summer-party-invitation-with-flamingos_23-2148443421.jpg',
+        'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
     },
     {
-      key: '6',
-      id: 6,
-      name: 'Summer Collection Review Group 6',
-      createdAt: '2023-06-06',
-      status: 'Active',
-      progress: 60,
-      total: 4000,
+      key: '2',
+      id: 2,
+      name: 'Summer Collection Review Group 2',
+      startAt: '2023-06-02',
+      endAt: '2023-06-02',
+      status: 'Scheduled',
+      progress: 20,
+      total: 500,
       budget: (
         <span>
           $
@@ -169,7 +175,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -179,16 +185,17 @@ const CampaignTable = () => {
         </span>
       ),
       image:
-        'https://img.freepik.com/free-vector/summer-elements-collection-with-palm-trees_23-2148443422.jpg',
+        'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
     },
     {
-      key: '7',
-      id: 7,
-      name: 'Summer Collection Review Group 7',
-      createdAt: '2023-06-07',
-      status: 'Active',
-      progress: 70,
-      total: 5000,
+      key: '3',
+      id: 3,
+      name: 'Summer Collection Review Group 3',
+      startAt: '2023-06-03',
+      endAt: '2023-06-03',
+      status: 'Completed',
+      progress: 30,
+      total: 1000,
       budget: (
         <span>
           $
@@ -197,7 +204,7 @@ const CampaignTable = () => {
             maximumFractionDigits: 2,
           })}
           {' of '}
-          <span className="text-[#6D7486]">
+          <span>
             ${' '}
             {totalBudget.toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -207,92 +214,9 @@ const CampaignTable = () => {
         </span>
       ),
       image:
-        'https://img.freepik.com/free-vector/summer-party-with-palm-trees-and-flamingos_23-2148443423.jpg',
+        'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
     },
-    {
-      key: '8',
-      id: 8,
-      name: 'Summer Collection Review Group 8',
-      createdAt: '2023-06-08',
-      status: 'Active',
-      progress: 80,
-      total: 6000,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span className="text-[#6D7486]">
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos_23-2148443424.jpg',
-    },
-    {
-      key: '9',
-      id: 9,
-      name: 'Summer Collection Review Group 9',
-      createdAt: '2023-06-09',
-      status: 'Active',
-      progress: 90,
-      total: 7000,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span className="text-[#6D7486]">
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-party-with-flamingos-and-palm-trees_23-2148443425.jpg',
-    },
-    {
-      key: '10',
-      id: 10,
-      name: 'Summer Collection Review Group 10',
-      createdAt: '2023-06-10',
-      status: 'Active',
-      progress: 100,
-      total: 8000,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span className="text-[#6D7486]">
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-elements-collection-with-flamingos-and-palm-trees_23-2148443426.jpg',
-    },
+   
   ];
 
   const statusColors = {
@@ -324,7 +248,20 @@ const CampaignTable = () => {
           )}
           <div>
             <h1 className="xl:text-sm text-xs">{text}</h1>
-            <h1 className="text-xs">{record.createdAt}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xs text-[#6D7486]">
+                {new Date(record.startAt).toLocaleString('default', {
+                  month: 'short',
+                  day: 'numeric',
+                })}{' '}
+                -{' '}
+                {new Date(record.endAt).toLocaleString('default', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </h1>
+            </div>
           </div>
         </span>
       ),
@@ -359,7 +296,7 @@ const CampaignTable = () => {
       render: (text, record) => (
         <Button
           type="default"
-          className='!border-blue-500 !text-blue-500 hover:bg-gray-100'
+          className="!border-blue-500 !text-blue-500 hover:bg-gray-100"
           onClick={() => {
             navigate(`single-campaign`, { state: { id: record.id } });
           }}
@@ -390,7 +327,7 @@ const CampaignTable = () => {
         >
           <Option value="All">All</Option>
           <Option value="Active">Active</Option>
-          <Option value="Pending">Scheduled</Option>
+          <Option value="Scheduled">Scheduled</Option>
           <Option value="Completed">Completed</Option>
           <Option value="Paused">Paused</Option>
           <Option value="Cancelled">Cancelled</Option>
@@ -416,7 +353,7 @@ const CampaignTable = () => {
           total: filteredCampaigns.length,
           position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
-            if (type === 'prev') {
+            if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -424,11 +361,7 @@ const CampaignTable = () => {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className='text-[#2E78E9]'>Next Page</h1>;
             }
             if (type === 'page') {
               return current;

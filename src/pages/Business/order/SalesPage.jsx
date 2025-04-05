@@ -33,7 +33,7 @@ function SalesPage() {
   return (
     <div>
       <div className="flex-center-between mb-4">
-        <h1 className="text-2xl font-bold">Order</h1>
+        <h1 className="text-2xl !font-semibold">Order</h1>
         <div className="flex items-center gap-2">
           <Button className="flex items-center justify-center" type="default">
             <IoArrowDown />

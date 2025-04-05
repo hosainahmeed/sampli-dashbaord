@@ -77,7 +77,7 @@ const Sidebar = () => {
           } text-base  hover:scale-101 transition-all`}
           to={item?.path}
         >
-          {item?.icon} <span className=''>{item?.name}</span>
+          {item?.icon} <span className="">{item?.name}</span>
         </NavLink>
       ))}
     </div>

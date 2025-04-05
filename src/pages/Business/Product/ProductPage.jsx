@@ -32,7 +32,7 @@ function ProductPage() {
   return (
     <div>
        <div className="flex-center-between">
-        <h2 className="my-3 text-2xl">Product</h2>
+        <h2 className="my-3 text-2xl !font-semibold">Product</h2>
         <div className="flex-center-center gap-2">
           <Button
             onClick={() => {
