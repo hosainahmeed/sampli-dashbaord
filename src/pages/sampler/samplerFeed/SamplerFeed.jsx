@@ -324,27 +324,47 @@ const SamplerFeed = () => {
           {/* Feed Tabs */}
           <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
             <TabPane
-              tab=<div className="flex gap-2 ">
-                <img src={followingInactiveLogo} alt="following" />
-                <span>Following</span>
-              </div>
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === "following" ? (
+                    <img src={followingActiveLogo} alt="following active" />
+                  ) : (
+                    <img src={followingInactiveLogo} alt="following inactive" />
+                  )}
+                  <span>Following</span>
+                </div>
+              }
               key="following"
             />
+
             <TabPane
-              tab=<div className="flex gap-2 ">
-                <img src={newLogo} alt="new" />
-                <span>New</span>
-              </div>
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === "new" ? (
+                    <img src={newActiveLogo} alt="new active" />
+                  ) : (
+                    <img src={newLogo} alt="new inactive" />
+                  )}
+                  <span>New</span>
+                </div>
+              }
               key="new"
             />
             <TabPane
-              tab=<div className="flex gap-2 ">
-                <img src={popularInActiveLogo} alt="new" />
-                <span>Popular</span>
-              </div>
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === "popular" ? (
+                    <img src={popularActiveLogo} alt="popular active" />
+                  ) : (
+                    <img src={popularInActiveLogo} alt="popular inactive" />
+                  )}
+                  <span>Popular</span>
+                </div>
+              }
               key="popular"
             />
           </Tabs>
+
 
           {/* Category Pills */}
           <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
