@@ -10,6 +10,8 @@ import { IoIosAlert } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import paypalImage from '../../../../../assets/paypal.svg'
 import stripeImage from '../../../../../assets/stripe.svg'
+import gift from '../../../../../assets/gift-02.svg'
+import sale from '../../../../../assets/sale-03.svg'
 
 const EarningsSampler = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -65,7 +67,7 @@ const EarningsSampler = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
           <div className="flex flex-col  justify-between bg-white border border-gray-100 shadow-md rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
-              <PiCodesandboxLogoBold className="text-yellow-800 text-2xl" />
+              <img src={gift} alt="gift" />
               <span className="text-lg font-semibold">Review rewards</span>
             </div>
             <div className="flex justify-between items-center">
@@ -76,7 +78,8 @@ const EarningsSampler = () => {
 
           <div className="flex flex-col  justify-between bg-white border border-gray-100 shadow-md rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
-              <BiSolidOffer className="text-green-400 text-2xl" />
+              <img src={sale} alt="gift" />
+
               <span className="text-lg font-semibold">Sales Commissions</span>
             </div>
             <div className="flex justify-between items-center">

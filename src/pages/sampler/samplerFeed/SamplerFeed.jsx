@@ -326,7 +326,7 @@ const SamplerFeed = () => {
             <TabPane
               tab={
                 <div className="flex gap-2">
-                  {activeTab === "following" ? (
+                  {activeTab === 'following' ? (
                     <img src={followingActiveLogo} alt="following active" />
                   ) : (
                     <img src={followingInactiveLogo} alt="following inactive" />
@@ -340,7 +340,7 @@ const SamplerFeed = () => {
             <TabPane
               tab={
                 <div className="flex gap-2">
-                  {activeTab === "new" ? (
+                  {activeTab === 'new' ? (
                     <img src={newActiveLogo} alt="new active" />
                   ) : (
                     <img src={newLogo} alt="new inactive" />
@@ -353,7 +353,7 @@ const SamplerFeed = () => {
             <TabPane
               tab={
                 <div className="flex gap-2">
-                  {activeTab === "popular" ? (
+                  {activeTab === 'popular' ? (
                     <img src={popularActiveLogo} alt="popular active" />
                   ) : (
                     <img src={popularInActiveLogo} alt="popular inactive" />
@@ -364,7 +364,6 @@ const SamplerFeed = () => {
               key="popular"
             />
           </Tabs>
-
 
           {/* Category Pills */}
           <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
@@ -407,9 +406,11 @@ const SamplerFeed = () => {
                           className="!text-[16px] !text-[#FD8240]"
                         />
                         <span className="text-gray-500">{post.rating}</span>
+                        <span className="text-gray-500">•</span>
                         <span className=" underline underline-offset-4 cursor-pointer">
                           {post.productName}
                         </span>
+                        <span className="text-gray-500">•</span>
                         <span className="text-green-500">{post.price}</span>
                         <span className=" underline underline-offset-4 cursor-pointer">
                           /{post.category}
