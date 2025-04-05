@@ -75,34 +75,45 @@ function Header() {
         </div>
       </div>
       <Menu.Divider />
-      <Menu.Item key="1" icon={<UserOutlined />}>
+      <Menu.Item key="1" icon={<UserOutlined />} className="!text-gray-500">
         <Link to="/sampler/my-profile">My Profile</Link>
       </Menu.Item>
-      <Menu.Item key="2" icon={<SettingOutlined />}>
+      <Menu.Item key="2" icon={<SettingOutlined />} className="!text-gray-500">
         <Link to="/sampler/settings/basic-details-settings-sampler">
           Settings
         </Link>
       </Menu.Item>
-      <Menu.Item key="3" icon={<GrNotes />}>
+      <Menu.Item key="3" icon={<GrNotes />} className="!text-gray-500">
         <Link to="/sampler/campaign/shipments/offer-shipments">My orders</Link>
       </Menu.Item>
-      <Menu.Item key="4" icon={<CiHeart />}>
+      <Menu.Item key="4" icon={<CiHeart />} className="!text-gray-500">
         <Link to="/sampler/campaign/shipments/wishlist">Wishlist</Link>
       </Menu.Item>
-      <Menu.Item key="5" icon={<CiStar />}>
+      <Menu.Item key="5" icon={<CiStar />} className="!text-gray-500">
         <Link to="/sampler/my-profile">My Reviews</Link>
       </Menu.Item>
-      <Menu.Item key="6" icon={<MdOutlineAttachMoney />}>
+      <Menu.Item
+        key="6"
+        icon={<MdOutlineAttachMoney />}
+        className="!text-gray-500"
+      >
         <Link to="/sampler/campaign/earnings">My earnings</Link>
       </Menu.Item>
-      <Menu.Item key="7" icon={<LogoutOutlined />} onClick={handleSignOut}>
+      <Menu.Item
+        key="7"
+        icon={<LogoutOutlined />}
+        onClick={handleSignOut}
+        className="!text-gray-500"
+      >
         Log out
       </Menu.Item>
     </Menu>
   )
 
   const location = useLocation()
-  const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
+  // const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
+  const getLinkClass = (path) =>
+    location.pathname.startsWith(path) ? 'text-blue-600' : 'text-black'
 
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
@@ -206,7 +217,7 @@ function Header() {
               >
                 <div className="flex gap-2">
                   {/* <LuShoppingCart /> */}
-                  {location.pathname === '/sampler/shop' ? (
+                  {location.pathname.startsWith('/sampler/shop') ? (
                     <img src={shopIcon} alt="shopActive" className="w-[17px]" />
                   ) : (
                     <img

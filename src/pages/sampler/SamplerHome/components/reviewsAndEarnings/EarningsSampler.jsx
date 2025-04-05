@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { BiSolidOffer } from 'react-icons/bi'
-import { PiCodesandboxLogoBold } from 'react-icons/pi'
 import ReviewsAndEarningsSampler from './ReviewsAndEarningsSampler'
 import { Alert, Button, Card, Input, Modal } from 'antd'
 import { FaExternalLinkAlt } from 'react-icons/fa'

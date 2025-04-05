@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Card, Input, Select, Typography, Badge } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import Breadcrumbs from '../../../breadcrumbs/Breadcrumbs'
 
 const { Search } = Input
 const { Title, Text } = Typography
@@ -36,8 +37,6 @@ const initialProducts = [
     category: 'Headphones',
   },
 ]
-
-
 
 const categories = [
   'TVs',
@@ -81,6 +80,7 @@ const ServiceWithCategory = () => {
 
   return (
     <div className="responsive-width mx-auto px-4 !mt-5 !mb-32">
+      <Breadcrumbs />
       <div className="flex justify-between items-center mb-6">
         <Title level={2}>Electronics</Title>
       </div>
@@ -149,7 +149,7 @@ const ServiceWithCategory = () => {
                       e.stopPropagation()
                       toggleWishlist(product.id)
                     }}
-                    className="cursor-pointer absolute top-2 right-2 text-4xl font-bold bg-white rounded-full p-1 hover:!text-red-500"
+                    className="cursor-pointer absolute top-2 right-2 text-4xl !text-gray-600 rounded-full p-1 hover:!text-red-500"
                   />
                 )}
                 <img
@@ -181,8 +181,6 @@ const ServiceWithCategory = () => {
           </Card>
         ))}
       </div>
-
-      
     </div>
   )
 }
