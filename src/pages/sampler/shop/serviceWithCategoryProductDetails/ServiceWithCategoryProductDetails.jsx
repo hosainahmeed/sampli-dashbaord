@@ -7,11 +7,12 @@ import ReviewRatingSampler from './ReviewRatingSampler'
 import ReviewCardSampler from './ReviewCardSampler'
 import StoreProfileSampler from './StoreProfileSampler'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import productImage from '/public/product_image.svg'
 
 const items = [
   {
     id: 1,
-    image: 'https://picsum.photos/100',
+    image: productImage,
     title: 'BENGOO G9000 Stereo Gaming Headset',
     description: 'High-quality wireless headphones with noise cancellation',
     price: '$5.00',
@@ -19,7 +20,7 @@ const items = [
   },
   {
     id: 2,
-    image: 'https://picsum.photos/600',
+    image: productImage,
     title: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
     description: 'Compact and portable sprayer for your favorite fragrance',
     price: '$3.00',
@@ -27,7 +28,7 @@ const items = [
   },
   {
     id: 3,
-    image: 'https://picsum.photos/200',
+    image: productImage,
     title: 'Ox 18 Inches Standing Plus Fan',
     description: 'Powerful fan to keep you cool during hot days',
     price: '$10.00',
@@ -35,7 +36,7 @@ const items = [
   },
   {
     id: 4,
-    image: 'https://picsum.photos/900',
+    image: productImage,
     title: 'Gaming Headset',
     description: 'Immersive sound experience for gamers',
     price: '$7.00',
@@ -43,7 +44,7 @@ const items = [
   },
   {
     id: 5,
-    image: 'https://picsum.photos/620',
+    image: productImage,
     title: 'Portable Speaker',
     description: 'Compact speaker with high-quality sound',
     price: '$15.00',
@@ -51,7 +52,7 @@ const items = [
   },
   {
     id: 6,
-    image: 'https://picsum.photos/720',
+    image: productImage,
     title: 'Smartwatch',
     description: 'Feature-rich smartwatch with multiple health tracking',
     price: '$25.00',
@@ -59,7 +60,7 @@ const items = [
   },
   {
     id: 7,
-    image: 'https://picsum.photos/820',
+    image: productImage,
     title: 'Wireless Bluetooth Earbuds',
     description: 'Comfortable earbuds with superior sound quality',
     price: '$30.00',
@@ -67,7 +68,7 @@ const items = [
   },
   {
     id: 8,
-    image: 'https://picsum.photos/920',
+    image: productImage,
     title: 'Digital Camera',
     description: 'Capture high-resolution photos and videos',
     price: '$200.00',
@@ -84,8 +85,7 @@ const reviewData = [
       'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
     description:
       'This is the description of the product the customer wants to buy.',
-    productImage:
-      'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
+    productImage: productImage,
     productName: 'High-quality wireless headphones with noise cancellation',
   },
   {
@@ -96,8 +96,7 @@ const reviewData = [
       'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
     description:
       'This is the description of the product the customer wants to buy.',
-    productImage:
-      'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
+    productImage: productImage,
     productName: 'High-quality wireless headphones with noise cancellation',
   },
   {
@@ -108,8 +107,7 @@ const reviewData = [
       'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
     description:
       'This is the description of the product the customer wants to buy.',
-    productImage:
-      'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
+    productImage: productImage,
     productName: 'High-quality wireless headphones with noise cancellation',
   },
   {
@@ -120,8 +118,7 @@ const reviewData = [
       'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
     description:
       'This is the description of the product the customer wants to buy.',
-    productImage:
-      'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
+    productImage: productImage,
     productName: 'High-quality wireless headphones with noise cancellation',
   },
   {
@@ -132,8 +129,7 @@ const reviewData = [
       'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
     description:
       'This is the description of the product the customer wants to buy.',
-    productImage:
-      'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
+    productImage: productImage,
     productName: 'High-quality wireless headphones with noise cancellation',
   },
   {
@@ -144,8 +140,7 @@ const reviewData = [
       'https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png',
     description:
       'This is the description of the product the customer wants to buy.',
-    productImage:
-      'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg',
+    productImage: productImage,
     productName: 'High-quality wireless headphones with noise cancellation',
   },
   // Add more reviews here...

@@ -1,42 +1,43 @@
 import React from 'react'
 import { Table, Button } from 'antd'
 import toast from 'react-hot-toast'
+import productImage from '/public/product_image.svg'
 
 const productData = [
   {
     id: 1,
     name: 'BENGOO G9000 Stereo Gaming Headset',
-    image: 'https://picsum.photos/seed/1/100',
+    image: productImage,
     price: '$5.00',
   },
   {
     id: 2,
     name: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
-    image: 'https://picsum.photos/seed/2/100',
+    image: productImage,
     price: '$3.00',
   },
   {
     id: 3,
     name: 'Ox 18 Inches Standing Plus Fan',
-    image: 'https://picsum.photos/seed/3/100',
+    image: productImage,
     price: '$10.00',
   },
   {
     id: 4,
     name: 'Gaming Headset',
-    image: 'https://picsum.photos/seed/4/100',
+    image: productImage,
     price: '$7.00',
   },
   {
     id: 5,
     name: 'Portable Speaker',
-    image: 'https://picsum.photos/seed/5/100',
+    image: productImage,
     price: '$15.00',
   },
   {
     id: 6,
     name: 'Smartwatch',
-    image: 'https://picsum.photos/seed/6/100',
+    image: productImage,
     price: '$25.00',
   },
 ]

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, Tag } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
 
 const productData = [
   {
@@ -10,7 +11,7 @@ const productData = [
     ReviewEarnings: '$5',
     Commission: '$5',
     Total: '$10',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 2,
@@ -19,7 +20,7 @@ const productData = [
     ReviewEarnings: '$3',
     Commission: '$2',
     Total: '$5',
-    image: `https://picsum.photos/seed/${Math.random()}/155`,
+    image: productImage,
   },
   {
     id: 3,
@@ -28,7 +29,7 @@ const productData = [
     ReviewEarnings: '$4',
     Commission: '$3',
     Total: '$7',
-    image: `https://picsum.photos/seed/${Math.random()}/156`,
+    image: productImage,
   },
   {
     id: 4,
@@ -37,7 +38,7 @@ const productData = [
     ReviewEarnings: '$6',
     Commission: '$4',
     Total: '$10',
-    image: `https://picsum.photos/seed/${Math.random()}/157`,
+    image: productImage,
   },
   {
     id: 5,
@@ -46,7 +47,7 @@ const productData = [
     ReviewEarnings: '$7',
     Commission: '$3',
     Total: '$10',
-    image: `https://picsum.photos/seed/${Math.random()}/158`,
+    image: productImage,
   },
 ]
 

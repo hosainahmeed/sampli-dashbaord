@@ -19,7 +19,7 @@ const OfferCardSampler = ({ product }) => {
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-32 object-cover object-center"
+          className="w-full h-32 object-contain object-center"
         />
       </div>
 

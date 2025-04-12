@@ -136,21 +136,20 @@ function Header() {
   const navItems = [
     {
       to: '/sampler/campaign',
-      icon:
-        location.pathname === '/sampler/campaign' ? (
-          <img src={campaignIcon} alt="campaignActive" className="w-5 h-5" />
-        ) : (
-          <img
-            src={campaignInActive}
-            alt="campaignInActive"
-            className="w-5 h-5"
-          />
-        ),
+      icon: location.pathname.startsWith('/sampler/campaign') ? (
+        <img src={campaignIcon} alt="campaignActive" className="w-5 h-5" />
+      ) : (
+        <img
+          src={campaignInActive}
+          alt="campaignInActive"
+          className="w-5 h-5"
+        />
+      ),
       text: 'Campaign',
     },
     {
       to: '/sampler/feed',
-      icon: <MdRssFeed className="w-5 h-5 text-gray-400" />,
+      icon: <MdRssFeed className="w-5 h-5 " />,
       text: 'Feed',
     },
     {
@@ -216,7 +215,7 @@ function Header() {
                   )}`}
                 >
                   <div className="flex gap-2">
-                    {location.pathname === '/sampler/campaign' ? (
+                    {location.pathname.startsWith('/sampler/campaign') ? (
                       <img
                         src={campaignIcon}
                         alt="campaignActive"
@@ -239,7 +238,7 @@ function Header() {
                   )}`}
                 >
                   <div className="flex gap-2">
-                    <MdRssFeed   />
+                    <MdRssFeed />
                     Feed
                   </div>
                 </Link>

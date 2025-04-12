@@ -1,6 +1,8 @@
 import React from 'react'
 import { Table, Tabs, Tag } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
+
 const onChange = (key) => {
   console.log(key)
 }
@@ -12,7 +14,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Shipped',
     statusColor: 'purple',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 2,
@@ -20,7 +22,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Waiting to be Shipped',
     statusColor: 'orange',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 3,
@@ -28,7 +30,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Cancelled',
     statusColor: 'gray',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 4,
@@ -36,7 +38,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Delivered',
     statusColor: 'green',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
 ]
 

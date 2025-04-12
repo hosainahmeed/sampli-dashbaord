@@ -13,6 +13,8 @@ import { GoLinkExternal } from 'react-icons/go'
 import phone from '../../../../../../assets/phone.svg'
 import contact from '../../../../../../assets/contact.svg'
 import shipping from '../../../../../../assets/shipping.svg'
+import productImage from '/public/product_image.svg'
+
 
 const { Step } = Steps
 
@@ -92,7 +94,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
           <div className="mt-10 flex items-start justify-between">
             <div className="flex gap-2">
               <img
-                src={`https://picsum.photos/seed/${Math.random()}/200`}
+                src={productImage}
                 alt="Product"
                 className="w-24 h-24 object-cover"
               />

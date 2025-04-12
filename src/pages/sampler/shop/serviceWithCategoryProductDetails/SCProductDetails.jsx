@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Rate, Modal,  Collapse } from 'antd'
+import { Button, Rate, Modal, Collapse } from 'antd'
 import {
   HeartOutlined,
   HeartFilled,
@@ -7,6 +7,7 @@ import {
   PhoneOutlined,
 } from '@ant-design/icons'
 import AddToCartItem from './AddToCartItem'
+import productImage from '/public/product_image.svg'
 
 const { Panel } = Collapse
 const SCProductDetails = () => {
@@ -23,11 +24,7 @@ const SCProductDetails = () => {
     rating: 2,
     totalReviews: 42,
     sizes: ['8', '8.5', '9'],
-    images: [
-      `https://picsum.photos/seed/100/400`,
-      'https://picsum.photos/seed/200/300',
-      'https://picsum.photos/seed/300/500',
-    ],
+    images: [productImage, productImage, productImage],
     seller: {
       name: 'menique',
       location: 'London',
@@ -69,7 +66,7 @@ const SCProductDetails = () => {
   const showModal = () => {
     setIsModalOpen(true)
   }
-  
+
   const handleCancel = () => {
     setIsModalOpen(false)
   }
@@ -92,20 +89,20 @@ const SCProductDetails = () => {
                   <HeartOutlined className="text-2xl text-gray-600" />
                 )}
               </button>
-              <img
-                src={product.images[selectedImageIndex]}
-                alt={product.name}
-                className="w-full rounded-lg cursor-pointer"
-                onClick={() => setPreviewVisible(true)}
-              />
+              <div className='border border-gray-200 rounded-xl'>
+                <img
+                  src={product.images[selectedImageIndex]}
+                  alt={product.name}
+                  className="w-full rounded-lg cursor-pointer border "
+                  onClick={() => setPreviewVisible(true)}
+                />
+              </div>
             </div>
           </div>
         </div>
 
         <div className="md:w-1/2">
-          <h1 className="text-3xl font-semibold mb-2 ">
-            {product.name}
-          </h1>
+          <h1 className="text-3xl font-semibold mb-2 ">{product.name}</h1>
           <p className="text-gray-600 mb-4">{product.description}</p>
 
           <div className="mb-6">

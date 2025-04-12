@@ -5,6 +5,7 @@ import { MdArrowBack } from 'react-icons/md'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { GoLinkExternal } from 'react-icons/go'
+import productImage from '/public/product_image.svg'
 
 const { Step } = Steps
 
@@ -54,7 +55,7 @@ const OrderDetails = ({ setIsClicked }) => {
         <div className="mt-10 flex items-start justify-between">
           <div className="flex gap-2">
             <img
-              src={`https://picsum.photos/seed/${Math.random()}/200`}
+              src={productImage}
               alt="Product"
               className="w-24 h-24 object-cover"
             />
