@@ -119,7 +119,6 @@ function Header() {
 
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
-  const [bottomMenuOpen, setBottomMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,7 +150,7 @@ function Header() {
     },
     {
       to: '/sampler/feed',
-      icon: <MdRssFeed className="w-5 h-5" />,
+      icon: <MdRssFeed className="w-5 h-5 text-gray-400" />,
       text: 'Feed',
     },
     {
@@ -240,7 +239,7 @@ function Header() {
                   )}`}
                 >
                   <div className="flex gap-2">
-                    <MdRssFeed />
+                    <MdRssFeed className="text-gray-400" />
                     Feed
                   </div>
                 </Link>
@@ -296,7 +295,7 @@ function Header() {
             </div>
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 flex md:hidden justify-around items-center bg-white shadow-md border-t border-gray-200 z-50 py-3">
+          <div className="fixed bottom-0 left-0 right-0 flex md:hidden justify-around items-center bg-white shadow-md border-t border-gray-200 z-50 py-3 ">
             {navItems.map((item) => (
               <Link
                 key={item.to}

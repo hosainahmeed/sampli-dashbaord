@@ -89,6 +89,63 @@ const SamplerFeed = () => {
       hasVideo: true,
       comments: [],
     },
+    {
+      id: 1,
+      author: {
+        name: 'Gustavo',
+        handle: '@GustavoLubin',
+        avatar: `https://i.pravatar.cc/150?img=${Math.floor(
+          Math.random() * 70
+        )}`,
+      },
+      rating: 5.0,
+      productName: 'Natural Glow Serum',
+      price: '$25.00',
+      category: 'Electronics',
+      timeAgo: '24mins ago',
+      content:
+        "I've been using this serum for a month and the results are amazing! My skin looks more radiant and the texture has improved significantly. Totally worth the price!",
+      likes: 23,
+      liked: false,
+      comments: [
+        {
+          id: 1,
+          author: {
+            name: 'Bassey',
+            handle: '@Bator',
+            avatar: `https://i.pravatar.cc/150?img=${Math.floor(
+              Math.random() * 70
+            )}`,
+          },
+          content: 'AirPods offer efficient sound quality and connectivity.',
+          timeAgo: '23m',
+          likes: 21,
+          liked: false,
+          replies: [],
+        },
+      ],
+    },
+    {
+      id: 2,
+      author: {
+        name: 'Chance',
+        handle: '@ChanceWestervelt',
+        avatar: `https://i.pravatar.cc/150?img=${Math.floor(
+          Math.random() * 70
+        )}`,
+      },
+      rating: 5.0,
+      productName: 'WH-Portable Be...',
+      price: '$70.00',
+      category: 'Electronics',
+      timeAgo: '23mins ago',
+      content:
+        "These headphones are absolutely incredible! The noise-canceling is top-notch and battery life is amazing. Been using them for a week now and I'm impressed with the sound quality. Great for both music and calls.",
+      likes: 23,
+      liked: false,
+      hasVideo: true,
+      comments: [],
+    },
   ])
 
   const [commentText, setCommentText] = useState('')
