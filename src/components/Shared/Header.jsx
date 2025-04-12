@@ -239,7 +239,7 @@ function Header() {
                   )}`}
                 >
                   <div className="flex gap-2">
-                    <MdRssFeed className="text-gray-400" />
+                    <MdRssFeed   />
                     Feed
                   </div>
                 </Link>
