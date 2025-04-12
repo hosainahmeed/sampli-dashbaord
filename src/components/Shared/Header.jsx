@@ -13,8 +13,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { GrNotes } from 'react-icons/gr'
 import {
+  MdKeyboardArrowDown,
   MdOutlineAttachMoney,
   MdOutlineCampaign,
+  MdOutlineKeyboardArrowUp,
   MdRssFeed,
 } from 'react-icons/md'
 import { LuShoppingCart } from 'react-icons/lu'
@@ -117,6 +119,7 @@ function Header() {
 
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
+  const [bottomMenuOpen, setBottomMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -130,6 +133,37 @@ function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [prevScrollPos])
+
+  const navItems = [
+    {
+      to: '/sampler/campaign',
+      icon:
+        location.pathname === '/sampler/campaign' ? (
+          <img src={campaignIcon} alt="campaignActive" className="w-5 h-5" />
+        ) : (
+          <img
+            src={campaignInActive}
+            alt="campaignInActive"
+            className="w-5 h-5"
+          />
+        ),
+      text: 'Campaign',
+    },
+    {
+      to: '/sampler/feed',
+      icon: <MdRssFeed className="w-5 h-5" />,
+      text: 'Feed',
+    },
+    {
+      to: '/sampler/shop',
+      icon: location.pathname.startsWith('/sampler/shop') ? (
+        <img src={shopIcon} alt="shopActive" className="w-5 h-5" />
+      ) : (
+        <img src={shopInActive} alt="shopInActive" className="w-5 h-5" />
+      ),
+      text: 'Shop',
+    },
+  ]
 
   return (
     <div>
@@ -163,100 +197,124 @@ function Header() {
           </div>
         </div>
       ) : (
-        // Ahsan Mahfuz part
-        <div
-          className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
-            visible ? 'translate-y-0' : '-translate-y-full'
-          }`}
-        >
-          <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
-            <Link to={'/sampler/campaign'}>
-              <img src={brandlogo} alt="brand logo" />
-            </Link>
-            <div className="flex gap-20 text-gray-600">
-              <Link
-                to={'/sampler/campaign'}
-                className={`hover:text-black transition-all ${getLinkClass(
-                  '/sampler/campaign'
-                )}`}
-              >
-                <div className="flex gap-2">
-                  {/* <MdOutlineCampaign className="text-[19px]" /> */}
-                  {location.pathname === '/sampler/campaign' ? (
-                    <img
-                      src={campaignIcon}
-                      alt="campaignActive"
-                      className="w-[17px]"
-                    />
-                  ) : (
-                    <img
-                      src={campaignInActive}
-                      alt="campaignInActive"
-                      className="w-[17px]"
-                    />
-                  )}
-                  Campaign
-                </div>
+        <>
+          {/* Top navbar */}
+          <div
+            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
+              visible ? 'translate-y-0' : '-translate-y-full'
+            }`}
+          >
+            <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
+              <Link to={'/sampler/campaign'}>
+                <img src={brandlogo} alt="brand logo" />
               </Link>
-              <Link
-                to={'/sampler/feed'}
-                className={`hover:text-black transition-all ${getLinkClass(
-                  '/sampler/feed'
-                )}`}
-              >
-                <div className="flex gap-2">
-                  <MdRssFeed />
-                  Feed
-                </div>
-              </Link>
-              <Link
-                to={'/sampler/shop'}
-                className={`hover:text-black transition-all ${getLinkClass(
-                  '/sampler/shop'
-                )}`}
-              >
-                <div className="flex gap-2">
-                  {/* <LuShoppingCart /> */}
-                  {location.pathname.startsWith('/sampler/shop') ? (
-                    <img src={shopIcon} alt="shopActive" className="w-[17px]" />
-                  ) : (
-                    <img
-                      src={shopInActive}
-                      alt="shopInActive"
-                      className="w-[17px]"
-                    />
-                  )}
-                  Shop
-                </div>
-              </Link>
-            </div>
-            <div className="flex items-center gap-6 text-2xl">
-              <Link
-                to="/sampler/checkout"
-                className="hover:scale-110 transition-all"
-              >
-                <ShoppingCartSampler />
-              </Link>
-              <Link
-                to="/sampler/campaign/shipments/notifications"
-                className="hover:scale-110 transition-all"
-              >
-                <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />
-              </Link>
-              <Dropdown
-                overlay={menuSampler}
-                trigger={['click']}
-                placement="bottomRight"
-              >
-                <Avatar
-                  size={40}
-                  src={user?.photoURL}
-                  className="cursor-pointer hover:scale-110 transition-all"
-                />
-              </Dropdown>
+              {/* Navigation links - visible on screens larger than 48rem */}
+              <div className="hidden md:flex gap-20 text-gray-600">
+                <Link
+                  to={'/sampler/campaign'}
+                  className={`hover:text-black transition-all ${getLinkClass(
+                    '/sampler/campaign'
+                  )}`}
+                >
+                  <div className="flex gap-2">
+                    {location.pathname === '/sampler/campaign' ? (
+                      <img
+                        src={campaignIcon}
+                        alt="campaignActive"
+                        className="w-[17px]"
+                      />
+                    ) : (
+                      <img
+                        src={campaignInActive}
+                        alt="campaignInActive"
+                        className="w-[17px]"
+                      />
+                    )}
+                    Campaign
+                  </div>
+                </Link>
+                <Link
+                  to={'/sampler/feed'}
+                  className={`hover:text-black transition-all ${getLinkClass(
+                    '/sampler/feed'
+                  )}`}
+                >
+                  <div className="flex gap-2">
+                    <MdRssFeed />
+                    Feed
+                  </div>
+                </Link>
+                <Link
+                  to={'/sampler/shop'}
+                  className={`hover:text-black transition-all ${getLinkClass(
+                    '/sampler/shop'
+                  )}`}
+                >
+                  <div className="flex gap-2">
+                    {location.pathname.startsWith('/sampler/shop') ? (
+                      <img
+                        src={shopIcon}
+                        alt="shopActive"
+                        className="w-[17px]"
+                      />
+                    ) : (
+                      <img
+                        src={shopInActive}
+                        alt="shopInActive"
+                        className="w-[17px]"
+                      />
+                    )}
+                    Shop
+                  </div>
+                </Link>
+              </div>
+              <div className="flex items-center gap-6 text-2xl">
+                <Link
+                  to="/sampler/checkout"
+                  className="hover:scale-110 transition-all"
+                >
+                  <ShoppingCartSampler />
+                </Link>
+                <Link
+                  to="/sampler/campaign/shipments/notifications"
+                  className="hover:scale-110 transition-all"
+                >
+                  <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />
+                </Link>
+                <Dropdown
+                  overlay={menuSampler}
+                  trigger={['click']}
+                  placement="bottomRight"
+                >
+                  <Avatar
+                    size={40}
+                    src={user?.photoURL}
+                    className="cursor-pointer hover:scale-110 transition-all"
+                  />
+                </Dropdown>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="fixed bottom-0 left-0 right-0 flex md:hidden justify-around items-center bg-white shadow-md border-t border-gray-200 z-50 py-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                className={`flex flex-col items-center text-xs ${
+                  location.pathname.startsWith(item.to)
+                    ? 'text-blue-600'
+                    : 'text-gray-600'
+                }`}
+                to={item.to}
+              >
+                {item.icon}
+                <span className="mt-1">{item.text}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="md:hidden "></div>
+        </>
       )}
     </div>
   )

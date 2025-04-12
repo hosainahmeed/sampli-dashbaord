@@ -282,10 +282,10 @@ const SamplerFeed = () => {
 
   return (
     <div className="responsive-width !mt-2 !mb-20">
-      <div className=" bg-white flex justify-between items-start gap-10">
+      <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
-        <div className="p-4 w-1/3 sticky top-10 ">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-4 w-1/3  max-lg:w-full">
+          <div className="flex items-center justify-between ">
             <div className="flex items-center gap-4 ">
               <Avatar
                 size={64}
@@ -320,7 +320,7 @@ const SamplerFeed = () => {
         </div>
 
         {/* right side */}
-        <div className="w-2/3">
+        <div className="w-2/3 max-lg:w-full">
           {/* Feed Tabs */}
           <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
             <TabPane
