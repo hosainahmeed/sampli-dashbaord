@@ -12,41 +12,43 @@ function StoreFooter() {
   return (
     <div className="responsive-width ">
       <div className="border-t-[1px] border-[#eee] text-gray-700  max-md:pb-[70px]">
-        <div className="mx-auto px-10 pt-5 flex justify-between items-center">
-          <ul className="flex justify-center gap-4">
-            <li>
-              <Link
-                to="/privacy-policy"
-                className="hover:text-black transition-all "
-              >
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/terms-and-conditions"
-                className="hover:text-black transition-all"
-              >
-                Terms of Use
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/affiliate-program"
-                className="hover:text-black transition-all"
-              >
-                Affiliate program
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contact-us"
-                className="hover:text-black transition-all"
-              >
-                Contact Us
-              </Link>
-            </li>
-          </ul>
+        <div className="mx-auto px-10 pt-5 flex justify-between items-center max-sm:flex-col">
+          <div>
+            <ul className="flex justify-center gap-4 max-lg:flex-col">
+              <li>
+                <Link
+                  to="/privacy-policy"
+                  className="hover:text-black transition-all "
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/terms-and-conditions"
+                  className="hover:text-black transition-all"
+                >
+                  Terms of Use
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/affiliate-program"
+                  className="hover:text-black transition-all"
+                >
+                  Affiliate program
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact-us"
+                  className="hover:text-black transition-all"
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
 
           <p>© {new Date().getFullYear()} Sampli. All Rights Reserved.</p>
         </div>

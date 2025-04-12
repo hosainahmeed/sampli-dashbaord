@@ -37,6 +37,51 @@ const initialProducts = [
     image: productImage,
     category: 'Headphones',
   },
+  {
+    id: 3,
+    title: 'Mahfuz',
+    description: 'High-quality wireless headphones with noise cancellation',
+    price: 5.0,
+    originalPrice: 4.0,
+    image: productImage,
+    category: 'Headphones',
+  },
+  {
+    id: 3,
+    title: 'Mahfuz',
+    description: 'High-quality wireless headphones with noise cancellation',
+    price: 5.0,
+    originalPrice: 4.0,
+    image: productImage,
+    category: 'Headphones',
+  },
+  {
+    id: 3,
+    title: 'Mahfuz',
+    description: 'High-quality wireless headphones with noise cancellation',
+    price: 5.0,
+    originalPrice: 4.0,
+    image: productImage,
+    category: 'Headphones',
+  },
+  {
+    id: 3,
+    title: 'Mahfuz',
+    description: 'High-quality wireless headphones with noise cancellation',
+    price: 5.0,
+    originalPrice: 4.0,
+    image: productImage,
+    category: 'Headphones',
+  },
+  {
+    id: 3,
+    title: 'Mahfuz',
+    description: 'High-quality wireless headphones with noise cancellation',
+    price: 5.0,
+    originalPrice: 4.0,
+    image: productImage,
+    category: 'Headphones',
+  },
 ]
 
 const categories = [
@@ -81,7 +126,7 @@ const ServiceWithCategory = () => {
 
   return (
     <div className="responsive-width ">
-      <div className="h-screen mx-auto px-4 !mt-5 !mb-32">
+      <div className="h-[100vh]  mx-auto px-4 !mt-5   overflow-y-auto scrollbar-none mb-20 ">
         <Breadcrumbs />
         <div className="flex justify-between items-center mb-6">
           <Title level={2}>Electronics</Title>
@@ -140,7 +185,7 @@ const ServiceWithCategory = () => {
                 navigate(`/sampler/shop/${product.title}/${product.id}`)
               }}
               key={product.id}
-              className="shadow-md border hover:shadow-2xl cursor-pointer border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
+              className=" border  cursor-pointer border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
               cover={
                 <div className="relative">
                   {product.isWishlisted ? (
