@@ -77,7 +77,7 @@ const OverviewSampler = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4">
         {data.map((item) => (
           <div key={item.id} className="bg-white p-4 rounded-lg shadow-sm  ">
             <div className="flex items-center gap-2">

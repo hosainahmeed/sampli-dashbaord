@@ -197,6 +197,7 @@ const MyPurchasesSampler = () => {
             showSizeChanger: false,
             position: ['bottomCenter'],
           }}
+          scroll={{ x: 1200 }}
         />
       ),
     },
@@ -222,6 +223,7 @@ const MyPurchasesSampler = () => {
             position: ['bottomCenter'],
             showSizeChanger: false,
           }}
+          scroll={{ x: 1200 }}
         />
       ),
     },

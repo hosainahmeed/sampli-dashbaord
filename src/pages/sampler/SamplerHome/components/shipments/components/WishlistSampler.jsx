@@ -91,7 +91,7 @@ const WishlistSampler = () => {
   return (
     <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">
       <div className="flex justify-between items-center mb-5">
-        <div className="text-xl font-semibold">Wishlist</div>
+        <div className="text-xl font-semibold">Wishlistss</div>
       </div>
 
       <Table
@@ -103,6 +103,7 @@ const WishlistSampler = () => {
           showSizeChanger: false,
           position: ['bottomCenter'],
         }}
+        scroll={{ x: 1200 }}
       />
     </div>
   )

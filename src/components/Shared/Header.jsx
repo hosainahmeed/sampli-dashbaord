@@ -254,7 +254,7 @@ function Header() {
                         className="w-[17px]"
                       />
                     )}
-                    <div className='pt-0.5'>Feed</div>
+                    <div className="pt-0.5">Feed</div>
                   </div>
                 </Link>
                 <Link
@@ -286,13 +286,13 @@ function Header() {
                   to="/sampler/checkout"
                   className="hover:scale-110 transition-all"
                 >
-                  <ShoppingCartSampler />
+                  <ShoppingCartSampler className="hover:text-black  transition-all" />
                 </Link>
                 <Link
                   to="/sampler/campaign/shipments/notifications"
                   className="hover:scale-110 transition-all"
                 >
-                  <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />
+                  <IoMdNotificationsOutline className="hover:text-black text-gray-400 transition-all" />
                 </Link>
                 <Dropdown
                   overlay={menuSampler}

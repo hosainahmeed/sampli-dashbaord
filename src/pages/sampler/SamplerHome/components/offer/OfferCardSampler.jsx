@@ -13,7 +13,7 @@ const OfferCardSampler = ({ product }) => {
     setIsModalVisible(false)
   }
   return (
-    <div className="w-full  bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+    <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow">
       {/* Product Image */}
       <div className=" flex justify-center w-full">
         <img

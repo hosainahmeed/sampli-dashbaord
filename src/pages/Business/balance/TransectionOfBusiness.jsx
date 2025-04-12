@@ -252,6 +252,7 @@ const TransectionOfBusiness = () => {
           dataSource={transactionData}
           rowKey="key"
           pagination={false}
+          scroll={{ x: 1200 }}
         />
       </div>
     </div>

@@ -196,6 +196,7 @@ const OfferShipmentsSampler = () => {
             showSizeChanger: false,
             position: ['bottomCenter'],
           }}
+          scroll={{ x: 1200 }}
         />
       ),
     },
@@ -221,6 +222,7 @@ const OfferShipmentsSampler = () => {
             position: ['bottomCenter'],
             showSizeChanger: false,
           }}
+          scroll={{ x: 1200 }}
         />
       ),
     },
