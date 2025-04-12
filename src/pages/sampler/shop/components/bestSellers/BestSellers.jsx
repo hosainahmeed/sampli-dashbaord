@@ -4,13 +4,14 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { CiHeart } from 'react-icons/ci'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
 
 const { Meta } = Card
 
 const items = [
   {
     id: 1,
-    image: 'https://picsum.photos/100',
+    image: productImage,
     title: 'BENGOO G9000 Stereo Gaming Headset',
     description: 'High-quality wireless headphones with noise cancellation',
     price: '$5.00',
@@ -18,7 +19,7 @@ const items = [
   },
   {
     id: 2,
-    image: 'https://picsum.photos/600',
+    image: productImage,
     title: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
     description: 'Compact and portable sprayer for your favorite fragrance',
     price: '$3.00',
@@ -26,7 +27,7 @@ const items = [
   },
   {
     id: 3,
-    image: 'https://picsum.photos/200',
+    image: productImage,
     title: 'Ox 18 Inches Standing Plus Fan',
     description: 'Powerful fan to keep you cool during hot days',
     price: '$10.00',
@@ -34,7 +35,7 @@ const items = [
   },
   {
     id: 4,
-    image: 'https://picsum.photos/900',
+    image: productImage,
     title: 'Gaming Headset',
     description: 'Immersive sound experience for gamers',
     price: '$7.00',
@@ -42,7 +43,7 @@ const items = [
   },
   {
     id: 5,
-    image: 'https://picsum.photos/620',
+    image: productImage,
     title: 'Portable Speaker',
     description: 'Compact speaker with high-quality sound',
     price: '$15.00',
@@ -50,7 +51,7 @@ const items = [
   },
   {
     id: 6,
-    image: 'https://picsum.photos/720',
+    image: productImage,
     title: 'Smartwatch',
     description: 'Feature-rich smartwatch with multiple health tracking',
     price: '$25.00',
@@ -58,7 +59,7 @@ const items = [
   },
   {
     id: 7,
-    image: 'https://picsum.photos/820',
+    image: productImage,
     title: 'Wireless Bluetooth Earbuds',
     description: 'Comfortable earbuds with superior sound quality',
     price: '$30.00',
@@ -66,7 +67,7 @@ const items = [
   },
   {
     id: 8,
-    image: 'https://picsum.photos/920',
+    image: productImage,
     title: 'Digital Camera',
     description: 'Capture high-resolution photos and videos',
     price: '$200.00',

@@ -2,14 +2,15 @@ import React, { useRef } from 'react'
 import { Carousel } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
 
 const categories = [
-  { id: 1, name: 'Beauty', img: 'https://picsum.photos/200' },
-  { id: 2, name: 'Apparel', img: 'https://picsum.photos/300' },
-  { id: 3, name: 'Footwear', img: 'https://picsum.photos/400' },
-  { id: 4, name: 'Personal Care', img: 'https://picsum.photos/500' },
-  { id: 5, name: 'Home appliances', img: 'https://picsum.photos/600' },
-  { id: 6, name: 'Food & Beverage', img: 'https://picsum.photos/700' },
+  { id: 1, name: 'Beauty', img: productImage },
+  { id: 2, name: 'Apparel', img: productImage },
+  { id: 3, name: 'Footwear', img: productImage },
+  { id: 4, name: 'Personal Care', img: productImage },
+  { id: 5, name: 'Home appliances', img: productImage },
+  { id: 6, name: 'Food & Beverage', img: productImage },
 ]
 const CategoryCarousel = () => {
   const carouselRef = useRef(null)
@@ -48,13 +49,17 @@ const CategoryCarousel = () => {
             key={index}
             className="p-2"
           >
-            <div className="flex flex-col items-center  justify-center p-4 rounded-lg  cursor-pointer hover:shadow-lg transition">
-              <img
-                src={category.img}
-                alt={category.name}
-                className="w-28 h-28 rounded-full object-cover mb-2"
-              />
-              <p className="text-sm font-medium">{category.name}</p>
+            <div className='flex flex-col items-center'>
+              <div className="flex flex-col items-center  justify-center w-48 h-48 p-4 border-gray-300 rounded-full border cursor-pointer hover:shadow-lg transition">
+                <img
+                  src={category.img}
+                  alt={category.name}
+                  className="w-full object-cover object-center"
+                />
+              </div>
+              <p className="text-sm text-black font-medium !mt-5 text-center">
+                {category.name}
+              </p>
             </div>
           </Link>
         ))}

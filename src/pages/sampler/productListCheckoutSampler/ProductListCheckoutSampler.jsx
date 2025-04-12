@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
 
 const SoloStoveCart = () => {
   const [cart, setCart] = useState([
@@ -9,28 +10,28 @@ const SoloStoveCart = () => {
       name: 'Pi Pizza Oven',
       quantity: 1,
       price: 100,
-      img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
+      img: productImage,
     },
     {
       id: 2,
       name: 'Grill Ultimate Bundle',
       quantity: 1,
       price: 200.5,
-      img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
+      img: productImage,
     },
     {
       id: 3,
       name: 'Starters',
       quantity: 1,
       price: 10.55,
-      img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
+      img: productImage,
     },
     {
       id: 4,
       name: 'Charcoal Grill Pack',
       quantity: 1,
       price: 1.5,
-      img: `https://picsum.photos/seed/${Math.random() * 1000}/60/60`,
+      img: productImage,
     },
   ])
 
