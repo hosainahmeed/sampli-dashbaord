@@ -129,6 +129,7 @@ const ReviewsAndEarningsSampler = () => {
               dataSource={productData}
               rowKey="id"
               pagination={false}
+              scroll={{ x: 1200 }}
             />
           ) : (
             <div

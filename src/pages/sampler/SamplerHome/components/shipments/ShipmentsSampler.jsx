@@ -105,6 +105,7 @@ const items = [
           dataSource={productData}
           rowKey="id"
           pagination={false}
+          scroll={{ x: 1200 }}
         />
       ) : (
         <div
@@ -140,6 +141,7 @@ const items = [
           dataSource={productData}
           rowKey="id"
           pagination={false}
+          scroll={{ x: 1200 }}
         />
       ) : (
         <div

@@ -22,6 +22,8 @@ import {
 import { LuShoppingCart } from 'react-icons/lu'
 import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler'
 import campaignIcon from '../../assets/campaign.svg'
+import feedInactive from '../../assets/cam.svg'
+import feedActive from '../../assets/feedAc.svg'
 import campaignInActive from '../../assets/campaignInActive.svg'
 import shopIcon from '../../assets/shopIcon.png'
 import shopInActive from '../../assets/shopInActive.svg'
@@ -115,7 +117,7 @@ function Header() {
   const location = useLocation()
   // const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
   const getLinkClass = (path) =>
-    location.pathname.startsWith(path) ? 'text-blue-600' : 'text-black'
+    location.pathname.startsWith(path) ? 'text-blue-600' : 'text-gray-500'
 
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
@@ -195,6 +197,7 @@ function Header() {
           </div>
         </div>
       ) : (
+        // Ahsan Mahfuz part
         <>
           {/* Top navbar */}
           <div
@@ -237,9 +240,21 @@ function Header() {
                     '/sampler/feed'
                   )}`}
                 >
-                  <div className="flex gap-2">
-                    <MdRssFeed />
-                    Feed
+                  <div className="flex gap-2 items-center justify-center ">
+                    {location.pathname.startsWith('/sampler/feed') ? (
+                      <img
+                        src={feedActive}
+                        alt="feedActive"
+                        className="w-[17px]"
+                      />
+                    ) : (
+                      <img
+                        src={feedInactive}
+                        alt="feedInActive"
+                        className="w-[17px]"
+                      />
+                    )}
+                    <div className='pt-0.5'>Feed</div>
                   </div>
                 </Link>
                 <Link
