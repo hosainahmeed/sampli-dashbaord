@@ -35,7 +35,7 @@ function ProductPage() {
       <Helmet>
         <title>Sampli Business Portal || Product</title>
       </Helmet>
-      <div className="flex-center-between">
+      <div className="flex md:items-center items-start md:flex-row flex-col justify-between">
         <h2 className="my-3 text-2xl !font-semibold">Product</h2>
         <div className="flex-center-center gap-2">
           <Button

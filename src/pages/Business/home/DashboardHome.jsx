@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 
 function DashboardHome() {
   return (
-    <div className="scrollbar">
+    <div className="scrollbar px-2">
       <Helmet>
         <title>Sampli Business Portal || Home</title>
       </Helmet>

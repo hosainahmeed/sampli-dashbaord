@@ -216,7 +216,6 @@ const CampaignTable = () => {
       image:
         'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
     },
-   
   ];
 
   const statusColors = {
@@ -237,8 +236,9 @@ const CampaignTable = () => {
       title: 'Campaign Name',
       dataIndex: 'name',
       key: 'name',
+      width: 350,
       render: (text, record) => (
-        <span className="flex gap-2 item-center">
+        <span className="flex gap-2 items-center">
           {record.image && (
             <img
               className="w-8 xl:w-12 rounded-sm h-6 xl:h-8 object-cover"
@@ -270,17 +270,18 @@ const CampaignTable = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      width: 120,
       render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
     },
     {
       title: 'Progress',
       dataIndex: 'progress',
       key: 'progress',
+      width: 180,
       render: (progress, record) => (
         <Progress
           className="xl:text-base text-xs"
           percent={(progress / record.total) * 100}
-          // eslint-disable-next-line no-unused-vars
           format={(percent, successPercent) => `${progress}/${record.total}`}
         />
       ),
@@ -289,11 +290,15 @@ const CampaignTable = () => {
       title: 'Budget',
       dataIndex: 'budget',
       key: 'budget',
-      render: (budget) => <p className="xl:text-sm text-xs text-[#6D7486]">{budget}</p>,
+      width: 150,
+      render: (budget) => (
+        <p className="xl:text-sm text-xs text-[#6D7486]">{budget}</p>
+      ),
     },
     {
       title: 'Action',
       key: 'action',
+      width: 120,
       render: (text, record) => (
         <Button
           type="default"
@@ -314,11 +319,11 @@ const CampaignTable = () => {
       <div className="flex w-full justify-between ">
         <div className="flex item-center gap-12 ">
           <Input
-            className="!rounded-full"
+            className="!rounded-full !w-full md:!w-[300px]"
             placeholder="Search"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 300, marginBottom: 16, marginRight: 16 }}
+            style={{ marginBottom: 16, marginRight: 16 }}
           />
         </div>
         <Select
@@ -337,6 +342,7 @@ const CampaignTable = () => {
       <Table
         columns={columns}
         dataSource={filteredCampaigns}
+        scroll={{ x: 1200 }}
         locale={{
           filterConfirm: 'Confirm',
           filterReset: 'Reset',
@@ -362,7 +368,7 @@ const CampaignTable = () => {
               );
             }
             if (type === 'next') {
-              return <h1 className='text-[#2E78E9]'>Next Page</h1>;
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;

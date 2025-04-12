@@ -36,7 +36,7 @@ function SalesPage() {
       <Helmet>
         <title>Sampli Business Portal || Order</title>
       </Helmet>
-      <div className="flex-center-between mb-4">
+      <div className="flex md:items-center md:flex-row flex-col md:justify-between mb-4">
         <h1 className="text-2xl !font-semibold">Order</h1>
         <div className="flex items-center gap-2">
           <Button className="flex items-center justify-center" type="default">

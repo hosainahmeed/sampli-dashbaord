@@ -42,7 +42,8 @@ function General() {
               className="grid grid-cols-2 gap-x-2"
             >
               <InputField
-                label="Store Name"
+                className="col-span-2 md:col-span-1"
+                label="StoreName"
                 name="storeName"
                 rules={[
                   { required: true, message: 'Please enter your store name!' },
@@ -50,7 +51,8 @@ function General() {
                 placeholder="Enter your store name"
               />
               <InputField
-                label="Store Phone"
+                className="col-span-2 md:col-span-1"
+                label="StorePhone"
                 name="storePhone"
                 rules={[
                   { required: true, message: 'Please enter your store phone!' },
@@ -58,7 +60,8 @@ function General() {
                 placeholder="Enter your store phone"
               />
               <InputField
-                label="Store Email"
+                className="col-span-2 md:col-span-1"
+                label="StoreEmail"
                 name="storeEmail"
                 rules={[
                   { required: true, message: 'Please enter your store email!' },
@@ -66,7 +69,8 @@ function General() {
                 placeholder="Enter your store email"
               />
               <InputField
-                label="Store Tagline"
+                className="col-span-2 md:col-span-1"
+                label="StoreTagline"
                 name="storeTagline"
                 rules={[
                   {
@@ -107,6 +111,7 @@ function General() {
               className="grid grid-cols-2 gap-x-2"
             >
               <InputField
+                className="col-span-2 md:col-span-1"
                 label="Legal Business Name"
                 name="businessName"
                 rules={[
@@ -118,6 +123,7 @@ function General() {
                 placeholder="Enter your legal business name"
               />
               <InputField
+                className="col-span-2 md:col-span-1"
                 label="Address"
                 name="address"
                 rules={[
@@ -141,7 +147,7 @@ function General() {
                   setSelectedState(null);
                   form2.setFieldsValue({ state: undefined, city: undefined });
                 }}
-                className="w-full"
+                className="w-full col-span-2 md:col-span-1"
               />
               <SelectField
                 label="State"
@@ -160,7 +166,7 @@ function General() {
                   setSelectedState(val);
                   form2.setFieldsValue({ city: undefined });
                 }}
-                className="w-full"
+                className="w-full col-span-2 md:col-span-1"
               />
               <SelectField
                 label="City"
@@ -174,9 +180,10 @@ function General() {
                     : []
                 }
                 disabled={!selectedState}
-                className="w-full"
+                className="w-full col-span-2 md:col-span-1"
               />
               <InputField
+                className="col-span-2 md:col-span-1"
                 label="ZIP/Postal Code"
                 name="postalCode"
                 placeholder="Enter your ZIP/Postal Code"

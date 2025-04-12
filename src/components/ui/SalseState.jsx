@@ -24,7 +24,7 @@ function SalseState() {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
       {data.map((item, index) => (
         <Card key={index} className="p-4">
           <div className="flex xl:items-end flex-col xl:flex-row justify-between">

@@ -7,7 +7,7 @@ const { Option } = Select;
 const OrderTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-console.log(statusFilter)
+  console.log(statusFilter);
   const allOrders = [
     {
       key: '1',
@@ -125,13 +125,13 @@ console.log(statusFilter)
   return (
     <div className="pb-12">
       <div className="flex items-center gap-12 mb-4">
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex md:flex-row flex-col gap-2 md:items-center justify-between">
           <Input
-            className="!rounded-full"
+            className="!rounded-full !w-full md:!w-[300px]"
             placeholder="Search by Order ID, Product, or Customer"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 300 }}
+            
           />
           <Select
             placeholder="Filter"
@@ -148,6 +148,7 @@ console.log(statusFilter)
       <Table
         columns={columns}
         dataSource={filteredOrders}
+        scroll={{ x: 900}}
         pagination={{
           showSizeChanger: false,
           defaultPageSize: 5,

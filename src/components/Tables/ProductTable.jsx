@@ -4,12 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
 import UploadCsv from '../page-Component/UploadCsv';
-import {
-  FaAngleLeft,
-  FaEdit,
-  FaEye,
-  FaTrash,
-} from 'react-icons/fa';
+import { FaAngleLeft, FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 
 const { Option } = Select;
 
@@ -168,13 +163,14 @@ const ProductTable = ({ filterStatus }) => {
 
   return (
     <div className="pb-12">
-      <div className="flex w-full mt-12 justify-between ">
+      <div className="flex items-start flex-col md:flex-row md:item-center w-full mt-12 justify-between ">
         <div className="flex item-center gap-12">
           <Input
             placeholder="Search"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 300, marginBottom: 16, marginRight: 16 }}
+            style={{ marginBottom: 16, marginRight: 16 }}
+            className='md:!w-[300px] !w-full'
           />
         </div>
         <div className="flex-center-center gap-2">

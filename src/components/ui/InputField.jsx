@@ -14,7 +14,7 @@ const InputField = ({
   return (
     <Form.Item label={label} name={name} rules={rules} {...props}>
       <Input
-        className="h-8"
+        className="!h-8 !w-full"
         type={showPassword ? "text" : type}
         placeholder={placeholder}
         suffix={

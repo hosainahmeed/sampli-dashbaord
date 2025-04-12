@@ -58,9 +58,9 @@ function SalesAnalytics() {
 
   return (
     <div className="w-full">
-      <div className="flex p-2 rounded-md justify-between items-center">
+      <div className="flex p-2 rounded-md flex-col md:flex-row md:justify-between items-start md:items-center">
         <h1 className="text-2xl">Campaign analytics</h1>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mt-3 md:-mt-0">
           <Select
             value={selectedOption}
             style={{ width: 160 }}

@@ -20,11 +20,11 @@ function StatsOverview() {
     },
   ];
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border border-[#dadada] rounded-3xl overflow-hidden">
+    <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-4 gap-4 border border-[#dadada] rounded-3xl overflow-hidden">
       {statsData?.map((key) => (
         <div
           key={key}
-          className="flex p-8 border-r border-[#999Eab] flex-col items-start justify-center text-[#26282F] cursor-pointer transition-all"
+          className="flex p-8 shadow md:shadow-none md:border-r border-[#999Eab] flex-col items-start justify-center text-[#26282F] cursor-pointer transition-all"
         >
           <h1 className="uppercase text-xs xl:text-base text-[#6D7486]">
             {key?.title}
