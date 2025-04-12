@@ -456,11 +456,11 @@ const SamplerFeed = () => {
                           {post.timeAgo}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 ">
                         <Rate
                           disabled
                           defaultValue={post.rating}
-                          className="!text-[16px] !text-[#FD8240]"
+                          className="!text-[16px] !text-[#FD8240] "
                         />
                         <span className="text-gray-500">{post.rating}</span>
                         <span className="text-gray-500">•</span>
@@ -539,7 +539,7 @@ const SamplerFeed = () => {
                   className="flex items-center space-x-2 mb-2 cursor-pointer"
                   onClick={showModalLike}
                 >
-                  {users.slice(0, 8).map((user, index) => (
+                  {users.slice(0, 5).map((user, index) => (
                     <Tooltip key={index} title={user.name} placement="top">
                       <div className="relative">
                         <Avatar
@@ -552,7 +552,7 @@ const SamplerFeed = () => {
                     </Tooltip>
                   ))}
                   <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full text-gray-600 font-semibold">
-                    +{users.length - 8}
+                    +{users.length - 5}
                   </div>
                 </div>
 

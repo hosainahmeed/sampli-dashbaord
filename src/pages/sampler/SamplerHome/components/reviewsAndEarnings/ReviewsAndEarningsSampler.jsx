@@ -116,7 +116,7 @@ const ReviewsAndEarningsSampler = () => {
           </div>
           <div
             onClick={() => Navigate('/sampler/campaign/earnings')}
-            className="border border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
+            className="border whitespace-nowrap border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
           >
             See all
           </div>
