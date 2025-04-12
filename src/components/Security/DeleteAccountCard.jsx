@@ -49,7 +49,7 @@ function DeleteAccountCard() {
         visible={modal}
         // onOk={handleDelete}
         // okText="Delete"
-        // onCancel={handleCancel}
+        onCancel={handleCancel}
         footer={null}
         okButtonProps={{ disabled: !check }}
       >

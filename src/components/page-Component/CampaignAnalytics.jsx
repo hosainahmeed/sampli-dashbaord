@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { Select, DatePicker } from 'antd';
 import CampaignCard from '../ui/CampaignCard';
-
+import dollar from '../../assets/icons/dollar.svg';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 function SalesAnalytics() {
   const [selectedOption, setSelectedOption] = useState('This Week');
   const [customDateRange, setCustomDateRange] = useState(null);
+  console.log(customDateRange)
   const number = 3434;
   const datas = [
     {
       title: 'TOTAL SPENT',
       amount: (
-        <>
-          <small className='text-[#6D7486]'>$ </small>
+        <div className='flex items-center'>
+          <small className="text-[#6D7486] flex items-center gap-2">
+            <img className="w-4 h-4" src={dollar} alt='$' />
+          </small>
           {number.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}
-        </>
+        </div>
       ),
       change: '-30%',
       avgCostPerReview: '$25.00',

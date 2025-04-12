@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const ReviewRating = () => {
+  // eslint-disable-next-line no-unused-vars
   const [reviews, setReviews] = useState({
     totalReviews: 138,
     ratingDistribution: { 5: 100, 4: 30, 3: 5, 2: 2, 1: 1 },

@@ -2,10 +2,14 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import CampaignAnalytics from '../../../components/page-Component/CampaignAnalytics';
 import SalesAnalytics from '../../../components/page-Component/SalesAnalytics';
+import { Helmet } from 'react-helmet-async';
 
 function DashboardHome() {
   return (
     <div className="scrollbar">
+      <Helmet>
+        <title>Sampli Business Portal || Home</title>
+      </Helmet>
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <div className="mb-4">

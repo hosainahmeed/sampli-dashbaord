@@ -18,7 +18,7 @@ function SalesCard({ data }) {
               data?.change.includes('-')
                 ? 'bg-red-100 text-red-500'
                 : 'bg-green-100 text-green-500'
-            }`}
+            } font-semibold text-gray-800 !-mt-3`}
           >
             {data?.change}
           </p>

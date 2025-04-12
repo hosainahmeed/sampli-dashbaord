@@ -6,7 +6,6 @@ import { BsThreeDots } from 'react-icons/bs';
 import UploadCsv from '../page-Component/UploadCsv';
 import {
   FaAngleLeft,
-  FaAngleRight,
   FaEdit,
   FaEye,
   FaTrash,
@@ -31,7 +30,7 @@ const ProductTable = ({ filterStatus }) => {
       status: 'Active',
       progress: 10,
       total: <span className="text-[#6D7486]">300</span>,
-      salse: <span className='text-[#6D7486]'>40</span>,
+      salse: <span className="text-[#6D7486]">40</span>,
       budget: <span className="text-[#6D7486]">$25,000 of $100,000</span>,
       image:
         'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
@@ -60,6 +59,7 @@ const ProductTable = ({ filterStatus }) => {
       }
       return 0;
     });
+
   const items = [
     {
       key: '1',
@@ -94,6 +94,7 @@ const ProductTable = ({ filterStatus }) => {
       title: <span className="text-xs xl:text-lg">Item Name</span>,
       dataIndex: 'name',
       key: 'name',
+      width: '25%',
       render: (text, record) => (
         <span className="flex gap-2 item-center">
           {record.image && (
@@ -117,11 +118,13 @@ const ProductTable = ({ filterStatus }) => {
       title: <span className="text-xs xl:text-lg">Price</span>,
       dataIndex: 'budget',
       key: 'budget',
+      width: '15%',
     },
     {
       title: <span className="text-xs xl:text-lg">Status</span>,
       dataIndex: 'status',
       key: 'status',
+      width: '10%',
       render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
     },
     {
@@ -142,6 +145,7 @@ const ProductTable = ({ filterStatus }) => {
     {
       title: <span className="text-xs xl:text-lg">Action</span>,
       key: 'action',
+      // eslint-disable-next-line no-unused-vars
       render: (text, record) => (
         <Dropdown
           menu={{
@@ -196,6 +200,7 @@ const ProductTable = ({ filterStatus }) => {
       <Table
         columns={columns}
         dataSource={filteredCampaigns}
+        scroll={{ x: 'max-content' }}
         locale={{
           filterConfirm: 'Confirm',
           filterReset: 'Reset',
@@ -211,7 +216,7 @@ const ProductTable = ({ filterStatus }) => {
           defaultPageSize: 5,
           defaultCurrent: 1,
           position: ['bottomCenter'],
-          itemRender:(current, type, originalElement) => {
+          itemRender: (current, type, originalElement) => {
             if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
@@ -220,7 +225,7 @@ const ProductTable = ({ filterStatus }) => {
               );
             }
             if (type === 'next') {
-              return <h1 className='text-[#2E78E9]'>Next Page</h1>;
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;

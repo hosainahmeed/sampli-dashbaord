@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Table, Tag, Button, Input, Select } from 'antd';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 const { Option } = Select;
 const OrderTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-
+console.log(statusFilter)
   const allOrders = [
     {
       key: '1',

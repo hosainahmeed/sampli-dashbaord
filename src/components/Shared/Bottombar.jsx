@@ -14,7 +14,7 @@ import { MdKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { Button } from 'antd';
 
 const Bottombar = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const location = useLocation();
   const adminMenus = [
     {

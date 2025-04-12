@@ -280,6 +280,7 @@ const CampaignTable = () => {
         <Progress
           className="xl:text-base text-xs"
           percent={(progress / record.total) * 100}
+          // eslint-disable-next-line no-unused-vars
           format={(percent, successPercent) => `${progress}/${record.total}`}
         />
       ),
@@ -288,7 +289,7 @@ const CampaignTable = () => {
       title: 'Budget',
       dataIndex: 'budget',
       key: 'budget',
-      render: (budget) => <p className="xl:text-sm text-xs">{budget}</p>,
+      render: (budget) => <p className="xl:text-sm text-xs text-[#6D7486]">{budget}</p>,
     },
     {
       title: 'Action',

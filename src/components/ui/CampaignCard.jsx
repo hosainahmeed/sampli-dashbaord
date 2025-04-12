@@ -13,9 +13,9 @@ function CampaignCard({ data }) {
 
       <div className="text-lg xl:text-2xl flex items-center mb-4">
         {data?.amount ? (
-          <p className="font-semibold text-gray-800">{data?.amount}</p>
+          <p className="font-semibold text-gray-800 !mt-3">{data?.amount}</p>
         ) : (
-          <p className="font-semibold text-gray-800">{data?.count}</p>
+          <p className="font-semibold text-gray-800 !mt-3">{data?.count}</p>
         )}
         <p
           className={`text-xs ml-2 p-1 rounded-md ${
