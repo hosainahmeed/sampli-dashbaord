@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Card, Avatar, Typography, Rate, Tag, Button, Modal } from 'antd';
-import { CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { Card, Avatar, Typography, Rate, Button, Modal } from 'antd';
+import { CommentOutlined } from '@ant-design/icons';
+import { RiShareForwardLine } from 'react-icons/ri';
 import { BsThreeDots } from 'react-icons/bs';
 import { CiHeart } from 'react-icons/ci';
 import { ShareSocial } from 'react-share-social';
@@ -45,20 +46,22 @@ const FeedCard = () => {
             <Title level={5} style={{ margin: 0 }}>
               Micheal Scott <Text type="secondary">@Mike67 • 23mins ago</Text>
             </Title>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="flex items-center justify-center">
               <Rate
                 disabled
                 defaultValue={2}
                 style={{ fontSize: 9, marginRight: 5 }}
               />
-              <Text level={5}>2.0</Text>•
-              <Text type="secondary" style={{ marginLeft: 10 }}>
+              <h1>2.0</h1>•
+              <h1 className="!text-black !underline" style={{ marginLeft: 10 }}>
                 Natural Glow Serum
-              </Text>
-              <Text style={{ color: 'green' }}>$25.00</Text>
-              <Text type="secondary" style={{ marginLeft: 10 }}>
+              </h1>
+              <h1 className="!ml-2 mt-1" style={{ color: 'green' }}>
+                $25.00
+              </h1>
+              <h1 className="!text-black !underline" style={{ marginLeft: 10 }}>
                 • Electronics
-              </Text>
+              </h1>
             </div>
           </div>
         </div>
@@ -77,13 +80,10 @@ const FeedCard = () => {
         />
       </div>
       <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: 10,
-        }}
+        className='mt-4'
       >
         <Button
+        className='!text-[#6D7486]'
           onClick={() => {
             setLike(!like);
             like ? toast.error('Unliked') : toast.success('Liked');
@@ -94,6 +94,7 @@ const FeedCard = () => {
           <Text type="secondary">23</Text>
         </Button>
         <Button
+        className='!text-[#6D7486]'
           onClick={() => {
             setShowCommentModal(true);
           }}
@@ -103,9 +104,10 @@ const FeedCard = () => {
           6 comments
         </Button>
         <Button
+        className='!text-[#6D7486]'
           onClick={() => setShowModal(!showModal)}
           type="text"
-          icon={<ShareAltOutlined />}
+          icon={<RiShareForwardLine />}
         >
           Share
         </Button>

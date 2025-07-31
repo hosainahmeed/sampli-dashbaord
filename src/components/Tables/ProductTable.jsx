@@ -4,13 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
 import UploadCsv from '../page-Component/UploadCsv';
-import {
-  FaAngleLeft,
-  FaAngleRight,
-  FaEdit,
-  FaEye,
-  FaTrash,
-} from 'react-icons/fa';
+import { FaAngleLeft, FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 
 const { Option } = Select;
 
@@ -23,14 +17,16 @@ const ProductTable = ({ filterStatus }) => {
   const campaigns = [
     {
       key: '1',
+      item_id: '121321',
+      item_category: 'Shoes',
       id: 1,
       name: 'Summer Collection Review Group 1',
-      createdAt: '2023-03-23',
+      createdAt: <span className="text-[#6D7486]">2023-03-23</span>,
       status: 'Active',
       progress: 10,
-      total: 300,
-      salse: 40,
-      budget: '$25,000 of $100,000',
+      total: <span className="text-[#6D7486]">300</span>,
+      salse: <span className="text-[#6D7486]">40</span>,
+      budget: <span className="text-[#6D7486]">$25,000 of $100,000</span>,
       image:
         'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
     },
@@ -58,6 +54,7 @@ const ProductTable = ({ filterStatus }) => {
       }
       return 0;
     });
+
   const items = [
     {
       key: '1',
@@ -89,9 +86,10 @@ const ProductTable = ({ filterStatus }) => {
   ];
   const columns = [
     {
-      title: <span className="text-xs xl:text-lg">Name</span>,
+      title: <span className="text-xs xl:text-lg">Item Name</span>,
       dataIndex: 'name',
       key: 'name',
+      width: '25%',
       render: (text, record) => (
         <span className="flex gap-2 item-center">
           {record.image && (
@@ -103,7 +101,10 @@ const ProductTable = ({ filterStatus }) => {
           )}
           <div>
             <h1 className="text-xs xl:text-sm">{text}</h1>
-            <h1 className="text-xs xl:text-sm">{record.createdAt}</h1>
+            <div className="flex items-center text-[#6D7486] gap-2">
+              <span className="text-xs  xl:text-sm">#{record.item_id}</span>
+              <span>• {record.item_category}</span>
+            </div>
           </div>
         </span>
       ),
@@ -112,11 +113,13 @@ const ProductTable = ({ filterStatus }) => {
       title: <span className="text-xs xl:text-lg">Price</span>,
       dataIndex: 'budget',
       key: 'budget',
+      width: '15%',
     },
     {
       title: <span className="text-xs xl:text-lg">Status</span>,
       dataIndex: 'status',
       key: 'status',
+      width: '10%',
       render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
     },
     {
@@ -137,6 +140,7 @@ const ProductTable = ({ filterStatus }) => {
     {
       title: <span className="text-xs xl:text-lg">Action</span>,
       key: 'action',
+      // eslint-disable-next-line no-unused-vars
       render: (text, record) => (
         <Dropdown
           menu={{
@@ -159,13 +163,14 @@ const ProductTable = ({ filterStatus }) => {
 
   return (
     <div className="pb-12">
-      <div className="flex w-full mt-12 justify-between ">
+      <div className="flex items-start flex-col md:flex-row md:item-center w-full mt-12 justify-between ">
         <div className="flex item-center gap-12">
           <Input
             placeholder="Search"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 300, marginBottom: 16, marginRight: 16 }}
+            style={{ marginBottom: 16, marginRight: 16 }}
+            className='md:!w-[300px] !w-full'
           />
         </div>
         <div className="flex-center-center gap-2">
@@ -191,6 +196,7 @@ const ProductTable = ({ filterStatus }) => {
       <Table
         columns={columns}
         dataSource={filteredCampaigns}
+        scroll={{ x: 'max-content' }}
         locale={{
           filterConfirm: 'Confirm',
           filterReset: 'Reset',
@@ -207,7 +213,7 @@ const ProductTable = ({ filterStatus }) => {
           defaultCurrent: 1,
           position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
-            if (type === 'prev') {
+            if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -215,11 +221,7 @@ const ProductTable = ({ filterStatus }) => {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;
@@ -228,7 +230,6 @@ const ProductTable = ({ filterStatus }) => {
           },
         }}
       />
-
       <Modal
         centered
         footer={null}

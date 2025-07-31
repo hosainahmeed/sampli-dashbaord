@@ -4,6 +4,7 @@ import { Button, Modal, Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import UploadCsv from '../../../components/page-Component/UploadCsv';
+import { Helmet } from 'react-helmet-async';
 
 function ProductPage() {
   const [openCsv, setOpenCsv] = useState(false);
@@ -31,8 +32,11 @@ function ProductPage() {
   ];
   return (
     <div>
-       <div className="flex-center-between">
-        <h2 className="my-3 text-2xl">Product</h2>
+      <Helmet>
+        <title>Sampli Business Portal || Product</title>
+      </Helmet>
+      <div className="flex md:items-center items-start md:flex-row flex-col justify-between">
+        <h2 className="my-3 text-2xl !font-semibold">Product</h2>
         <div className="flex-center-center gap-2">
           <Button
             onClick={() => {

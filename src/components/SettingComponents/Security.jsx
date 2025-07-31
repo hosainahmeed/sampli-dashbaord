@@ -161,14 +161,13 @@ function Security() {
         onOk={async (values) => {
           try {
             console.log(values);
-
-            if (response.status === 200) {
+            // if (response.status === 200) {
               setModalState({
                 ...modalState,
                 changePassModal: false,
                 successModal: true,
               });
-            }
+            // }
           } catch (error) {
             console.log('Error changing password:', error);
           }

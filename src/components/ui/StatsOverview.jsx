@@ -1,28 +1,41 @@
 import React from 'react';
-
+import img from '../../assets/icons/dollar.svg';
 function StatsOverview() {
-  const statsData = {
-    totalCampaigns: 32,
-    totalSpent: 12450,
-    activeCampaigns: 12,
-    averageRating: 4.3,
-  };
+  const statsData = [
+    {
+      title: 'Total Campaigns',
+      value: 150,
+    },
+    {
+      title: 'Total Spent',
+      value: 50000,
+    },
+    {
+      title: 'Active Customers',
+      value: 120,
+    },
+    {
+      title: 'Average Rating',
+      value: 300,
+    },
+  ];
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border border-[#dadada] rounded-3xl overflow-hidden">
-      {Object.keys(statsData).map((key) => (
+    <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-4 gap-4 border border-[#dadada] rounded-3xl overflow-hidden">
+      {statsData?.map((key) => (
         <div
           key={key}
-          className="flex p-8 border-r border-[#999Eab] flex-col items-start justify-center text-[#111] cursor-pointer transition-all"
+          className="flex p-8 shadow md:shadow-none md:border-r border-[#999Eab] flex-col items-start justify-center text-[#26282F] cursor-pointer transition-all"
         >
-          <h1 className="uppercase text-xs xl:text-sm">{key}</h1>
+          <h1 className="uppercase text-xs xl:text-base text-[#6D7486]">
+            {key?.title}
+          </h1>
           <h1 className="sm:text-xl xl:text-4xl font-semibold">
-            {key === 'totalSpent' ? (
-              <span>
-                $
-                {statsData[key].toLocaleString('en-US')}
+            {key?.title === 'Total Spent' ? (
+              <span className='flex items-center gap-2'>
+                <img src={img} /> {key?.value.toLocaleString('en-US')}
               </span>
             ) : (
-              statsData[key]
+              key?.value
             )}
           </h1>
         </div>

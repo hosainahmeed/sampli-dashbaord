@@ -51,7 +51,9 @@ function Notification() {
         headStyle={{ borderBottom: 'none' }}
       >
         <div className="flex-center-between">
-          <label htmlFor="browser-notifications">Browser notifications</label>
+          <label className="text-[#6d6d6d]" htmlFor="browser-notifications">
+            Browser notifications
+          </label>
           <Switch
             className="switch"
             checked={isBrowserNotification}
@@ -65,7 +67,9 @@ function Notification() {
         title="Customer notifications"
       >
         <div className="flex-center-between">
-          <p>Notify customers about their order events</p>
+          <p className="text-[#6d6d6d]">
+            Notify customers about their order events
+          </p>
           <Switch
             className="switch"
             checked={isCustomerNotification}
@@ -79,7 +83,7 @@ function Notification() {
         title="Order Notifications"
       >
         <div className="flex-center-between">
-          <p>New Order</p>
+          <p className="text-[#6d6d6d]">New Order</p>
           <Switch
             className="switch"
             checked={isNewOrderNotification}

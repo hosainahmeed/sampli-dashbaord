@@ -1,6 +1,7 @@
 import { Card, Typography, Space, Button } from 'antd';
 import { CiEdit } from 'react-icons/ci';
 import React from 'react';
+import { FiMap } from 'react-icons/fi';
 const { Title, Text } = Typography;
 
 function BillingAddressCustomer({ order }) {
@@ -31,7 +32,7 @@ function BillingAddressCustomer({ order }) {
           <Text type="secondary">{order.shippingAddress.address}</Text>
           <Text type="secondary">{order.shippingAddress.phone}</Text>
           <Button type="link" className="mt-2 p-0" onClick={handleViewMap}>
-            View Map
+          <FiMap /> View Map
           </Button>
         </Space>
       </Card>

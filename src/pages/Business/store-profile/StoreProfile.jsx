@@ -5,7 +5,7 @@ import logo from '../../../assets/logo/logo.svg';
 import { CiCalendar, CiStar } from 'react-icons/ci';
 import converImage from '../../../assets/cover-image.png';
 import SelectField from '../../../components/page-Component/SelectField';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 import ReviewRating from '../../../components/store-profile-component/ReviewRating';
 import ReviewCard from '../../../components/store-profile-component/ReviewCard';
 const { Meta } = Card;
@@ -168,6 +168,7 @@ function StoreProfile() {
 
   // Pagination logic for items
   const [currentPage, setCurrentPage] = useState(1);
+  const storeName = 'Shoe Store';
   const itemsPerPage = 8;
   const currentItems = items.slice(
     (currentPage - 1) * itemsPerPage,
@@ -192,35 +193,45 @@ function StoreProfile() {
 
   return (
     <div>
-      <div className="z-[888] relative">
-        <img src={converImage} alt="sampli cover image" />
+      <div className="responsive-width w-full h-48 md:h-64 xl:h-72 z-[888] relative">
+        <img
+          className="w-full h-full object-cover"
+          src={converImage}
+          alt="sampli cover image"
+        />
       </div>
-      <div className="max-w-screen-xl mx-auto px-2 -mt-24 z-[999] relative">
-        <div className="w-48 h-48 rounded-full shadow-2xl flex items-center bg-white justify-center">
+      <div className="max-w-screen-xl mx-auto px-2 -mt-12 md:-mt-24 z-[999] relative">
+        <div className="md:w-48 md:h-48 w-24 h-24 rounded-full shadow-2xl flex items-center bg-white justify-center">
           <img src={logo} alt="sampli image logo" />
         </div>
-        <div className="mt-12 flex items-center gap-12 text-[#6D7486]">
-          <h1 className="flex items-center gap-2">
-            <CiCalendar />
-            Joined Feb 2002
+        <div>
+          <h1 className="text-xl md:text-3xl font-semibold !mt-8 text-[#111]">
+            {storeName}
           </h1>
-          <h1 className="flex items-center gap-2">
-            <CiStar />
-            99% positive feedback
-          </h1>
-          <h1 className="flex items-center gap-2">
-            <AiOutlineUser />
-            23 followers
-          </h1>
+
+          <div className="flex items-center gap-3 md:gap-12 text-[#6D7486]">
+            <h1 className="flex items-center gap-2 text-xs md:text-xl ">
+              <CiCalendar />
+              Joined Feb 2002
+            </h1>
+            <h1 className="flex items-center gap-2 text-xs md:text-xl ">
+              <CiStar />
+              99% positive feedback
+            </h1>
+            <h1 className="flex items-center gap-2 text-xs md:text-xl ">
+              <AiOutlineUser />
+              23 followers
+            </h1>
+          </div>
         </div>
-        <p className="text-[#6D7486] text-sm xl:text-base leading-7">
+        <p className="text-[#6D7486] text-xs xl:text-base leading-7">
           {description}
         </p>
-        <div className="flex items-center justify-between my-12">
-          <h2 className="text-3xl">Items</h2>
-          {/* Your category and sorting select fields */}
+        <div className="flex md:items-center items-start md:flex-row flex-col  justify-between my-12">
+          <h2 className="text-xl md:text-3xl">Items</h2>
+          <p className='text-sm md:text-base'>Your category and sorting select fields</p>
         </div>
-        <div className="grid grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
           {currentItems.map((item, index) => (
             <CardComponent key={index} item={item} />
           ))}
@@ -233,7 +244,7 @@ function StoreProfile() {
           className="!my-12 flex items-center justify-center"
           showSizeChanger={false}
           itemRender={(current, type, originalElement) => {
-            if (type === 'prev') {
+            if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -241,11 +252,7 @@ function StoreProfile() {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;
@@ -253,11 +260,11 @@ function StoreProfile() {
             return originalElement;
           }}
         />
-        <div className="flex items-start gap-24 justify-between">
-          <div className="flex-1 sticky top-10">
+        <div className="flex items-start md:flex-row flex-col gap-24 justify-between">
+          <div className="md:flex-1 w-full md:sticky top-10">
             <ReviewRating />
           </div>
-          <div className="mx-auto font-sans flex-1">
+          <div className="mx-auto font-sans w-full md:flex-1">
             <div className="w-full flex items-center gap-3 justify-between">
               <div className="flex gap-2">
                 <SelectField
@@ -293,7 +300,7 @@ function StoreProfile() {
               className="!my-12 flex items-center justify-center"
               showSizeChanger={false}
               itemRender={(current, type, originalElement) => {
-                if (type === 'prev') {
+                if (type === 'prev' && current > 1) {
                   return (
                     <Button className="!border-none ">
                       <FaAngleLeft />
@@ -301,11 +308,7 @@ function StoreProfile() {
                   );
                 }
                 if (type === 'next') {
-                  return (
-                    <Button className="!border-none ">
-                      <FaAngleRight />
-                    </Button>
-                  );
+                  return <h1 className="text-[#2E78E9]">Next Page</h1>;
                 }
                 if (type === 'page') {
                   return current;
@@ -328,7 +331,7 @@ const CardComponent = ({ item }) => {
       className="shadow-md border-[1px] overflow-hidden border-[#eee]"
       cover={
         <img
-          className="h-[300px] object-cover"
+          className="lg:h-[250px] sm:h-[200px] h-[180px] object-contain md:object-cover xl:h-[300px]"
           alt="example"
           src={item.image}
         />

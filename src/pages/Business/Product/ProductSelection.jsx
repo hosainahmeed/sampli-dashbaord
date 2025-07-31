@@ -107,65 +107,70 @@ const ProductSelection = () => {
 
   return (
     <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-2">Choose Existing Product</h2>
-      <p className="text-gray-500 mb-4">
+      <h2 className="text-2xl font-semibold mb-2 text-center">
+        Choose Existing Product
+      </h2>
+      <p className="text-gray-500 mb-4 text-center">
         Choose products from your catalog to include in this campaign.
       </p>
 
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center w-full flex-col gap-3 mb-4">
         <Input
           placeholder="Search"
           prefix={<SearchOutlined />}
-          className="w-full"
+          className="w-full !rounded-full"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Button>
-            Sort by: {sortOrder.charAt(0).toUpperCase() + sortOrder.slice(1)}
-          </Button>
-        </Dropdown>
-        <Dropdown overlay={categoryMenu} trigger={['click']}>
-          <Button icon={<FilterOutlined />}>{selectedCategory}</Button>
-        </Dropdown>
+        <div className="flex gap-3 items-center justify-between w-full">
+          <h1>{products.length} items</h1>
+
+          <div className="flex gap-3">
+            <Dropdown overlay={menu} trigger={['click']}>
+              <Button className="!rounded-full">
+                Sort by:{' '}
+                {sortOrder.charAt(0).toUpperCase() + sortOrder.slice(1)}
+              </Button>
+            </Dropdown>
+            <Dropdown overlay={categoryMenu} trigger={['click']}>
+              <Button className="!rounded-full" icon={<FilterOutlined />}>
+                {selectedCategory}
+              </Button>
+            </Dropdown>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-3 flex flex-col gap-3">
         {products.length > 0 ? (
-          products.map((product) =>
-            products.map((product) => (
-              <Card key={product.id} className="p-4">
-                <div className="flex w-full justify-between items-center">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-24 h-24 rounded-xl overflow-hidden">
-                      <img
-                        className="w-full h-full object-cover"
-                        src={product.image}
-                      />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">{product.name}</h4>
-                      <p className="text-gray-500 text-sm">
-                        {product.category}
-                      </p>
-                      <p className="text-gray-500 text-sm">
-                        ${product.price} • {product.units} Units
-                    </p>
-                    </div>
-                  </div>
-                  <div>
-                    <Checkbox
-                      checked={selectedProducts.some(
-                        (p) => p.id === product.id
-                      )}
-                      onChange={() => handleSelect(product)}
+          products.map((product) => (
+            <Card key={product.id} className="p-4">
+              <div className="flex w-full justify-between items-center">
+                <div className="flex items-center space-x-4">
+                  <div className="w-24 h-24 rounded-xl overflow-hidden">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={product.image}
                     />
                   </div>
+                  <div>
+                    <h4 className="font-semibold">{product.name}</h4>
+                    <p className="text-gray-500 text-sm">{product.category}</p>
+                    <p className="text-gray-500 text-sm">
+                      ${product.price} • {product.units} Units
+                    </p>
+                  </div>
                 </div>
-              </Card>
-            ))
-          )
+                <div>
+                  <Checkbox
+                    checked={selectedProducts.some((p) => p.id === product.id)}
+                    onChange={() => handleSelect(product)}
+                  />
+                </div>
+              </div>
+            </Card>
+          ))
         ) : (
           <Empty description="No products found" />
         )}

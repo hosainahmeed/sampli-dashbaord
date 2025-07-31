@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Radio, Typography, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
 const { Title, Text } = Typography;
 
 function CreateCampaign() {
@@ -16,7 +15,8 @@ function CreateCampaign() {
   };
 
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative  h-full flex  items-center justify-center">
+      <div className="gradient-ellipse"></div>
       <Card style={{ width: 500, borderRadius: 12 }}>
         <Title level={3} style={{ textAlign: 'center' }}>
           Select Your Product

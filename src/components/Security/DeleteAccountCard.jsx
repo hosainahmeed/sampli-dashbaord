@@ -46,22 +46,23 @@ function DeleteAccountCard() {
         </div>
       </div>
       <Modal
-        title="Delete Account Confirmation"
         visible={modal}
-        onOk={handleDelete}
+        // onOk={handleDelete}
+        // okText="Delete"
         onCancel={handleCancel}
+        footer={null}
         okButtonProps={{ disabled: !check }}
       >
-        <Title level={3}>Delete account</Title>
-        <Text>
+        <h1 className="!text-center text-xl font-semibold">Delete account</h1>
+        <h3 className="!text-center text-[#6D7486]">
           Once you delete your account, your profile and username are
           permanently removed from Reddit and your posts, comments, and messages
           are disassociated (not deleted) from your account unless you delete
           them beforehand.
-        </Text>
+        </h3>
         <Form className="!mt-5" requiredMark={false} layout="vertical">
           <Form.Item
-            label="Reason for leaving"
+            label={<h1 className="text-[#6D7486]">Reason for leaving</h1>}
             name="reason"
             rules={[{ required: true, message: 'Please input your reason!' }]}
           >
@@ -73,7 +74,7 @@ function DeleteAccountCard() {
             />
           </Form.Item>
           <Form.Item
-            label="Password"
+            label={<h1 className="text-[#6D7486]">Password</h1>}
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
@@ -95,10 +96,24 @@ function DeleteAccountCard() {
               },
             ]}
           >
-            <Checkbox checked={check} onChange={handleCheck}>
-              I understand that deleted accounts aren't recoverable
+            <Checkbox
+              className="!text-[#6D7486]"
+              checked={check}
+              onChange={handleCheck}
+            >
+              I understand that deleted accounts aren&apos;t recoverable
             </Checkbox>
           </Form.Item>
+          <div className="flex items-center justify-center w-full gap-3">
+            <Button
+              className="!w-full"
+              type="primary"
+              onClick={handleDelete}
+              disabled={!check}
+            >
+              Continue
+            </Button>
+          </div>
         </Form>
       </Modal>
     </Card>

@@ -69,6 +69,7 @@ const ageRangeOptions = [
 const genderOptions = [
   { label: 'Male', value: 'Male' },
   { label: 'Female', value: 'Female' },
+  { label: 'Both', value: 'both' },
   { label: 'Other', value: 'Other' },
 ];
 

@@ -32,17 +32,18 @@ function General() {
 
   return (
     <>
-      <div className="flex items-start xl:flex-row sm:flex-col justify-between gap-4">
-        <div className="flex-1 w-full">
+      <div className="max-w-screen-lg  flex flex-col gap-4">
+        <div className=" w-full">
           <Title level={3}>General</Title>
-          <Card className="w-full flex-1">
+          <Card className="w-full ">
             <FormWrapper
               form={form1}
               onFinish={onFinishForm1}
               className="grid grid-cols-2 gap-x-2"
             >
               <InputField
-                label="Store Name"
+                className="col-span-2 md:col-span-1"
+                label="StoreName"
                 name="storeName"
                 rules={[
                   { required: true, message: 'Please enter your store name!' },
@@ -50,7 +51,8 @@ function General() {
                 placeholder="Enter your store name"
               />
               <InputField
-                label="Store Phone"
+                className="col-span-2 md:col-span-1"
+                label="StorePhone"
                 name="storePhone"
                 rules={[
                   { required: true, message: 'Please enter your store phone!' },
@@ -58,7 +60,8 @@ function General() {
                 placeholder="Enter your store phone"
               />
               <InputField
-                label="Store Email"
+                className="col-span-2 md:col-span-1"
+                label="StoreEmail"
                 name="storeEmail"
                 rules={[
                   { required: true, message: 'Please enter your store email!' },
@@ -66,7 +69,8 @@ function General() {
                 placeholder="Enter your store email"
               />
               <InputField
-                label="Store Tagline"
+                className="col-span-2 md:col-span-1"
+                label="StoreTagline"
                 name="storeTagline"
                 rules={[
                   {
@@ -91,7 +95,7 @@ function General() {
               </Form.Item>
               <Form.Item className="col-span-2">
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Save
                 </Button>
               </Form.Item>
             </FormWrapper>
@@ -99,14 +103,15 @@ function General() {
         </div>
 
         <div className="w-full flex-1">
-          <h1>Store Information</h1>
           <Card>
+            <h1>Store Information</h1>
             <FormWrapper
               form={form2}
               onFinish={onFinishForm2}
               className="grid grid-cols-2 gap-x-2"
             >
               <InputField
+                className="col-span-2 md:col-span-1"
                 label="Legal Business Name"
                 name="businessName"
                 rules={[
@@ -118,6 +123,7 @@ function General() {
                 placeholder="Enter your legal business name"
               />
               <InputField
+                className="col-span-2 md:col-span-1"
                 label="Address"
                 name="address"
                 rules={[
@@ -141,7 +147,7 @@ function General() {
                   setSelectedState(null);
                   form2.setFieldsValue({ state: undefined, city: undefined });
                 }}
-                className="w-full"
+                className="w-full col-span-2 md:col-span-1"
               />
               <SelectField
                 label="State"
@@ -160,7 +166,7 @@ function General() {
                   setSelectedState(val);
                   form2.setFieldsValue({ city: undefined });
                 }}
-                className="w-full"
+                className="w-full col-span-2 md:col-span-1"
               />
               <SelectField
                 label="City"
@@ -174,16 +180,17 @@ function General() {
                     : []
                 }
                 disabled={!selectedState}
-                className="w-full"
+                className="w-full col-span-2 md:col-span-1"
               />
               <InputField
+                className="col-span-2 md:col-span-1"
                 label="ZIP/Postal Code"
                 name="postalCode"
                 placeholder="Enter your ZIP/Postal Code"
               />
               <Form.Item className="col-span-2">
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Save
                 </Button>
               </Form.Item>
             </FormWrapper>

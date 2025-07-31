@@ -109,7 +109,7 @@ function AddProduct() {
         <FaAngleLeft />
         <h1 className="!mt-[10px]">Back </h1>
       </div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between  items-start md:flex-row flex-col md:items-center mb-4">
         <h2 className="text-2xl">Add new product</h2>
         <div className="flex gap-2">
           <Button type="default" onClick={() => form.submit()}>

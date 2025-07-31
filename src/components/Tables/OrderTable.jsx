@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Table, Tag, Button, Input } from 'antd';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { Table, Tag, Button, Input, Select } from 'antd';
+import { FaAngleLeft } from 'react-icons/fa';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+const { Option } = Select;
 const OrderTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
-
+  const [statusFilter, setStatusFilter] = useState('All');
+  console.log(statusFilter);
   const allOrders = [
     {
       key: '1',
@@ -13,7 +15,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#783838',
       date: '23rd Mar, 2023',
       customer: 'Adele Singer',
-      amount: '$50.00',
+      amount: '50.00',
       status: 'Processing',
     },
     {
@@ -22,7 +24,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#123456',
       date: '15th Feb, 2023',
       customer: 'John Doe',
-      amount: '$80.00',
+      amount: '80.00',
       status: 'Delivered',
     },
     {
@@ -31,7 +33,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#654321',
       date: '10th Jan, 2023',
       customer: 'Jane Smith',
-      amount: '$200.00',
+      amount: '200.00',
       status: 'Cancelled',
     },
     {
@@ -40,7 +42,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#987654',
       date: '1st Apr, 2023',
       customer: 'Mike Johnson',
-      amount: '$500.00',
+      amount: '500.00',
       status: 'Processing',
     },
     {
@@ -49,7 +51,7 @@ const OrderTable = ({ filterStatus }) => {
       orderId: '#456789',
       date: '7th Mar, 2023',
       customer: 'Sarah Connor',
-      amount: '$300.00',
+      amount: '300.00',
       status: 'Delivered',
     },
   ];
@@ -101,6 +103,7 @@ const OrderTable = ({ filterStatus }) => {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
+      render: (amount) => <span>${amount}</span>,
     },
     {
       title: 'Fulfillment',
@@ -122,23 +125,37 @@ const OrderTable = ({ filterStatus }) => {
   return (
     <div className="pb-12">
       <div className="flex items-center gap-12 mb-4">
-        <Input
-          placeholder="Search by Order ID, Product, or Customer"
-          prefix={<SearchOutlined />}
-          onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: 300 }}
-        />
+        <div className="w-full flex md:flex-row flex-col gap-2 md:items-center justify-between">
+          <Input
+            className="!rounded-full !w-full md:!w-[300px]"
+            placeholder="Search by Order ID, Product, or Customer"
+            prefix={<SearchOutlined />}
+            onChange={(e) => setSearchText(e.target.value)}
+            
+          />
+          <Select
+            placeholder="Filter"
+            onChange={setStatusFilter}
+            style={{ width: 120, marginBottom: 16 }}
+          >
+            <Option value="delivered">Delivered</Option>
+            <Option value="processing">Processing</Option>
+            <Option value="cancelled">Cancelled</Option>
+            <Option value="shipping">Shipping</Option>
+          </Select>
+        </div>
       </div>
       <Table
         columns={columns}
         dataSource={filteredOrders}
+        scroll={{ x: 900}}
         pagination={{
           showSizeChanger: false,
           defaultPageSize: 5,
           defaultCurrent: 1,
           position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
-            if (type === 'prev') {
+            if (type === 'prev' && current > 1) {
               return (
                 <Button className="!border-none ">
                   <FaAngleLeft />
@@ -146,11 +163,7 @@ const OrderTable = ({ filterStatus }) => {
               );
             }
             if (type === 'next') {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleRight />
-                </Button>
-              );
+              return <h1 className="text-[#2E78E9]">Next Page</h1>;
             }
             if (type === 'page') {
               return current;

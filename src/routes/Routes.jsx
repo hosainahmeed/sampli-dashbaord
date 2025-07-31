@@ -61,9 +61,9 @@ export const router = createBrowserRouter([
     path: "/",
     errorElement: <PageNotFound />,
     element: (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <MainLayout />
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
     children: [
       { path: "/", element: <DashboardHome /> },

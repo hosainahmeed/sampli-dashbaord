@@ -10,6 +10,7 @@ import { GoDatabase, GoFileMedia } from 'react-icons/go';
 import { MdOutlineSecurity } from 'react-icons/md';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const items = [
   {
@@ -71,6 +72,9 @@ function SettingPage() {
   const notificationTab = state?.tab;
   return (
     <>
+      <Helmet>
+        <title>Sampli Business Portal || Setting</title>
+      </Helmet>
       <Tabs items={items} defaultActiveKey={notificationTab || 'general'} />
     </>
   );
