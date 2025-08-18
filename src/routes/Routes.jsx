@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      // { path: '/', element: <DashboardHome /> },
+      { path: '/', element: <DashboardHome /> },
       {
         path: '/',
         element: <Navigate to="/sampler/campaign" />,
