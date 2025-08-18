@@ -3,7 +3,7 @@ import Security from '../../../../../components/SettingComponents/Security'
 
 const SecuritySettingsSampler = () => {
   return (
-    <div>
+    <div className="!h-[90vh] overflow-y-auto scrollbar-none">
       <Security />
     </div>
   )

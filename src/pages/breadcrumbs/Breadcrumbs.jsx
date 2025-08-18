@@ -1,35 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const Breadcrumbs = () => {
   const location = useLocation()
-  const [navHistory, setNavHistory] = useState([])
 
-  useEffect(() => {
-    setNavHistory((prevHistory) => {
-      if (!prevHistory.includes(location.pathname)) {
-        return [...prevHistory, location.pathname]
-      }
-      return prevHistory
-    })
-  }, [location.pathname])
+  const pathnames = location.pathname.split('/').filter((x) => x)
+  const lastSegment = pathnames[pathnames.length - 1]
 
   return (
-    <nav>
-      <ul className="breadcrumb text-gray-500 pb-5">
-        {navHistory.map((path, index) => {
-          const name =
-            path === '/'
-              ? 'Home'
-              : path.replace('/', '').charAt(0).toUpperCase() + path.slice(2)
-          return (
-            <li key={index}>
-              <Link to={path}>{name}</Link>
-              {index < navHistory.length - 1 && ' → '}
-            </li>
-          )
-        })}
-      </ul>
+    <nav className="text-sm text-gray-600 ">
+      <ol className="flex items-center space-x-2">
+        <li>
+          <Link to="/" className="text-gray-600  underline underline-offset-4">
+            Home
+          </Link>
+        </li>
+        <span>/</span>
+        <li className="text-gray-800 capitalize">
+          {decodeURIComponent(lastSegment)}
+        </li>
+      </ol>
     </nav>
   )
 }

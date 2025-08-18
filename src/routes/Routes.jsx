@@ -7,7 +7,7 @@ import Signup from "../pages/sampler/signup/Signup.jsx";
 import SignUpOtp from "../pages/sampler/signup/SignUpOtp.jsx";
 import SignUpMoreInformation from "../pages/sampler/signup/SignUpMoreInformation.jsx";
 import SamplerHome from "../pages/sampler/SamplerHome/SamplerHome.jsx";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import DashboardHome from "../pages/Business/home/DashboardHome.jsx";
 import SingleCampaign from "../pages/Business/SingleCampaign";
@@ -62,11 +62,15 @@ export const router = createBrowserRouter([
     errorElement: <PageNotFound />,
     element: (
       // <ProtectedRoute>
-        <MainLayout />
+      <MainLayout />
       // </ProtectedRoute>
     ),
     children: [
       { path: "/", element: <DashboardHome /> },
+      {
+        path: "/",
+        element: <Navigate to="/sampler/campaign" />,
+      },
       { path: "/campaign", element: <CampaignPage /> },
       { path: "/create-campaign", element: <CreateCampaign /> },
       {

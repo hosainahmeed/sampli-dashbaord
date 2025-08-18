@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Table, Tabs, Tag } from 'antd'
 import OfferOrderDetails from '../../offer/components/OfferOrderDetails'
+import productImage from '/public/product_image.svg'
 
 const onChange = (key) => {
   console.log(key)
@@ -12,7 +13,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Shipped',
     statusColor: 'purple',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 2,
@@ -20,7 +21,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Waiting to be Shipped',
     statusColor: 'orange',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 3,
@@ -28,7 +29,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Cancelled',
     statusColor: 'gray',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 4,
@@ -36,7 +37,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Delivered',
     statusColor: 'green',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 5,
@@ -44,7 +45,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'In Transit',
     statusColor: 'blue',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 6,
@@ -52,7 +53,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Shipped',
     statusColor: 'purple',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 7,
@@ -60,7 +61,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Waiting to be Shipped',
     statusColor: 'orange',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 8,
@@ -68,7 +69,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Cancelled',
     statusColor: 'gray',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 9,
@@ -76,7 +77,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Delivered',
     statusColor: 'green',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 10,
@@ -84,7 +85,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'In Transit',
     statusColor: 'blue',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 11,
@@ -92,7 +93,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Waiting to be Shipped',
     statusColor: 'orange',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 12,
@@ -100,7 +101,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Cancelled',
     statusColor: 'gray',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 13,
@@ -108,7 +109,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Delivered',
     statusColor: 'green',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 14,
@@ -116,7 +117,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'In Transit',
     statusColor: 'blue',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 15,
@@ -124,7 +125,7 @@ const productData = [
     date: '23 Mar, 2024',
     status: 'Shipped',
     statusColor: 'purple',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
 ]
 
@@ -195,6 +196,7 @@ const OfferShipmentsSampler = () => {
             showSizeChanger: false,
             position: ['bottomCenter'],
           }}
+          scroll={{ x: 1200 }}
         />
       ),
     },
@@ -220,6 +222,7 @@ const OfferShipmentsSampler = () => {
             position: ['bottomCenter'],
             showSizeChanger: false,
           }}
+          scroll={{ x: 1200 }}
         />
       ),
     },

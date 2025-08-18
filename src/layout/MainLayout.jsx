@@ -1,15 +1,15 @@
-import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import Sidebar from '../components/Shared/Sidebar.jsx';
-import Header from '../components/Shared/Header.jsx';
-import StoreFooter from '../components/Shared/StoreFooter.jsx';
-import Bottombar from '../components/Shared/Bottombar.jsx';
+import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import Sidebar from "../components/Shared/Sidebar.jsx";
+import Header from "../components/Shared/Header.jsx";
+import StoreFooter from "../components/Shared/StoreFooter.jsx";
+import Bottombar from "../components/Shared/Bottombar.jsx";
 
 const MainLayout = () => {
   const location = useLocation();
   const path = location.pathname;
   const currentPath =
-    path === '/store-profile' || path === '/all-notifications';
+    path === "/store-profile" || path === "/all-notifications";
   if (currentPath) {
     return (
       <>

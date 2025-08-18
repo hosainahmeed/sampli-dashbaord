@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, Tag } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
 
 const productData = [
   {
@@ -10,7 +11,7 @@ const productData = [
     ReviewEarnings: '$5',
     Commission: '$5',
     Total: '$10',
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
   },
   {
     id: 2,
@@ -19,7 +20,7 @@ const productData = [
     ReviewEarnings: '$3',
     Commission: '$2',
     Total: '$5',
-    image: `https://picsum.photos/seed/${Math.random()}/155`,
+    image: productImage,
   },
   {
     id: 3,
@@ -28,7 +29,7 @@ const productData = [
     ReviewEarnings: '$4',
     Commission: '$3',
     Total: '$7',
-    image: `https://picsum.photos/seed/${Math.random()}/156`,
+    image: productImage,
   },
   {
     id: 4,
@@ -37,7 +38,7 @@ const productData = [
     ReviewEarnings: '$6',
     Commission: '$4',
     Total: '$10',
-    image: `https://picsum.photos/seed/${Math.random()}/157`,
+    image: productImage,
   },
   {
     id: 5,
@@ -46,7 +47,7 @@ const productData = [
     ReviewEarnings: '$7',
     Commission: '$3',
     Total: '$10',
-    image: `https://picsum.photos/seed/${Math.random()}/158`,
+    image: productImage,
   },
 ]
 
@@ -63,19 +64,26 @@ const columns = [
     ),
   },
   {
-    title: 'Date',
+    title: <div className="text-gray-500">Date</div>,
     dataIndex: 'date',
     key: 'date',
+    render: (_, text) => <p className="text-gray-500">{text.date}</p>,
   },
   {
-    title: 'Review Earnings',
+    title: <div className="text-gray-500 text-center">Review Earnings</div>,
     dataIndex: 'ReviewEarnings',
     key: 'reviewEarnings',
+    render: (_, text) => (
+      <p className="text-gray-500 text-center">{text.ReviewEarnings}</p>
+    ),
   },
   {
-    title: 'Commission',
+    title: <div className="text-gray-500 text-center">Commission</div>,
     dataIndex: 'Commission',
     key: 'commission',
+    render: (_, text) => (
+      <p className="text-gray-500 text-center">{text.Commission}</p>
+    ),
   },
   {
     title: 'Total',
@@ -108,7 +116,7 @@ const ReviewsAndEarningsSampler = () => {
           </div>
           <div
             onClick={() => Navigate('/sampler/campaign/earnings')}
-            className="border border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
+            className="border whitespace-nowrap border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
           >
             See all
           </div>
@@ -121,6 +129,7 @@ const ReviewsAndEarningsSampler = () => {
               dataSource={productData}
               rowKey="id"
               pagination={false}
+              scroll={{ x: 1200 }}
             />
           ) : (
             <div

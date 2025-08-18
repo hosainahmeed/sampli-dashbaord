@@ -1,41 +1,49 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Dropdown, Menu, Badge } from 'antd';
-import { CiHeart, CiStar } from 'react-icons/ci';
-import { BsQuestionLg } from 'react-icons/bs';
-import { IoMdNotificationsOutline } from 'react-icons/io';
+import React, { useEffect, useState } from "react";
+import { Avatar, Button, Dropdown, Menu, Badge } from "antd";
+import { CiHeart, CiStar } from "react-icons/ci";
+import { BsQuestionLg } from "react-icons/bs";
+import { IoMdArrowDropdown, IoMdNotificationsOutline } from "react-icons/io";
 import {
   UserOutlined,
   SettingOutlined,
   WalletOutlined,
   LogoutOutlined,
-} from '@ant-design/icons';
-import brandlogo from '../../assets/logo/BrandLogo.svg';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { GrNotes } from 'react-icons/gr';
+} from "@ant-design/icons";
+import brandlogo from "../../assets/logo/BrandLogo.svg";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { GrNotes } from "react-icons/gr";
 import {
+  MdKeyboardArrowDown,
   MdOutlineAttachMoney,
   MdOutlineCampaign,
+  MdOutlineKeyboardArrowUp,
   MdRssFeed,
-} from 'react-icons/md';
-import { LuShoppingCart } from 'react-icons/lu';
-import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler';
-import { IoMdArrowDropdown } from 'react-icons/io';
+} from "react-icons/md";
+import { LuShoppingCart } from "react-icons/lu";
+import ShoppingCartSampler from "../../pages/sampler/shoppingCartSampler/ShoppingCartSampler";
+import campaignIcon from "../../assets/campaign.svg";
+import feedInactive from "../../assets/cam.svg";
+import feedActive from "../../assets/feedAc.svg";
+import campaignInActive from "../../assets/campaignInActive.svg";
+import shopIcon from "../../assets/shopIcon.png";
+import shopInActive from "../../assets/shopInActive.svg";
+
 function Header() {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState('business'); // sampler, business
+  const [userType, setUserType] = useState("business"); // sampler, business
   const [show, setShow] = useState(true);
   const user = {
-    photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
-    displayName: 'Micheal Scott',
-    username: '@Micheal46',
+    photoURL: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
+    displayName: "Micheal Scott",
+    username: "@Micheal46",
   };
   //update
   const handleSignOut = () => {
-    toast.success('sigh out successfully!');
-    navigate('/login');
-    console.log('sign out');
+    toast.success("sigh out successfully!");
+    navigate("/login");
+    console.log("sign out");
   };
 
   const menu = (
@@ -57,7 +65,11 @@ function Header() {
       <Menu.Item key="3" icon={<WalletOutlined />}>
         <Link to="/business/transaction-balance">Balance</Link>
       </Menu.Item>
-      <Menu.Item className='md:block hidden' key="3" icon={<IoMdNotificationsOutline />}>
+      <Menu.Item
+        className="md:block hidden"
+        key="3"
+        icon={<IoMdNotificationsOutline />}
+      >
         <Link to="/all-notifications">Notification</Link>
       </Menu.Item>
       <Menu.Divider />
@@ -77,34 +89,45 @@ function Header() {
         </div>
       </div>
       <Menu.Divider />
-      <Menu.Item key="1" icon={<UserOutlined />}>
+      <Menu.Item key="1" icon={<UserOutlined />} className="!text-gray-500">
         <Link to="/sampler/my-profile">My Profile</Link>
       </Menu.Item>
-      <Menu.Item key="2" icon={<SettingOutlined />}>
+      <Menu.Item key="2" icon={<SettingOutlined />} className="!text-gray-500">
         <Link to="/sampler/settings/basic-details-settings-sampler">
           Settings
         </Link>
       </Menu.Item>
-      <Menu.Item key="3" icon={<GrNotes />}>
+      <Menu.Item key="3" icon={<GrNotes />} className="!text-gray-500">
         <Link to="/sampler/campaign/shipments/offer-shipments">My orders</Link>
       </Menu.Item>
-      <Menu.Item key="4" icon={<CiHeart />}>
+      <Menu.Item key="4" icon={<CiHeart />} className="!text-gray-500">
         <Link to="/sampler/campaign/shipments/wishlist">Wishlist</Link>
       </Menu.Item>
-      <Menu.Item key="5" icon={<CiStar />}>
+      <Menu.Item key="5" icon={<CiStar />} className="!text-gray-500">
         <Link to="/sampler/my-profile">My Reviews</Link>
       </Menu.Item>
-      <Menu.Item key="6" icon={<MdOutlineAttachMoney />}>
+      <Menu.Item
+        key="6"
+        icon={<MdOutlineAttachMoney />}
+        className="!text-gray-500"
+      >
         <Link to="/sampler/campaign/earnings">My earnings</Link>
       </Menu.Item>
-      <Menu.Item key="7" icon={<LogoutOutlined />} onClick={handleSignOut}>
+      <Menu.Item
+        key="7"
+        icon={<LogoutOutlined />}
+        onClick={handleSignOut}
+        className="!text-gray-500"
+      >
         Log out
       </Menu.Item>
     </Menu>
   );
 
   const location = useLocation();
-  const getLinkClass = (path) => location.pathname === path && 'text-blue-600';
+  // const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
+  const getLinkClass = (path) =>
+    location.pathname.startsWith(path) ? "text-blue-600" : "text-gray-500";
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -118,16 +141,46 @@ function Header() {
       setPrevScrollPos(currentScrollPos);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollPos]);
+
+  const navItems = [
+    {
+      to: "/sampler/campaign",
+      icon: location.pathname.startsWith("/sampler/campaign") ? (
+        <img src={campaignIcon} alt="campaignActive" className="w-5 h-5" />
+      ) : (
+        <img
+          src={campaignInActive}
+          alt="campaignInActive"
+          className="w-5 h-5"
+        />
+      ),
+      text: "Campaign",
+    },
+    {
+      to: "/sampler/feed",
+      icon: <MdRssFeed className="w-5 h-5 " />,
+      text: "Feed",
+    },
+    {
+      to: "/sampler/shop",
+      icon: location.pathname.startsWith("/sampler/shop") ? (
+        <img src={shopIcon} alt="shopActive" className="w-5 h-5" />
+      ) : (
+        <img src={shopInActive} alt="shopInActive" className="w-5 h-5" />
+      ),
+      text: "Shop",
+    },
+  ];
 
   return (
     <div>
       {/* Hosain part */}
-      {userType == 'business' ? (
+      {userType == "business" ? (
         <div className="px-2 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
-          <Link to={'/'}>
+          <Link to={"/"}>
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex items-center gap-4 text-2xl">
@@ -147,7 +200,7 @@ function Header() {
             <div className="flex items-center">
               <Dropdown
                 overlay={menu}
-                trigger={['click']}
+                trigger={["click"]}
                 placement="bottomRight"
               >
                 <Avatar
@@ -162,77 +215,136 @@ function Header() {
         </div>
       ) : (
         // Ahsan Mahfuz part
-        <div
-          className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
-            visible ? 'translate-y-0' : '-translate-y-full'
-          }`}
-        >
-          <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white">
-            <Link to={'/sampler/campaign'}>
-              <img src={brandlogo} alt="brand logo" />
-            </Link>
-            <div className="flex gap-20 text-gray-600">
-              <Link
-                to={'/sampler/campaign'}
-                className={`hover:text-black transition-all ${getLinkClass(
-                  '/sampler/campaign'
-                )}`}
-              >
-                <div className="flex gap-2">
-                  <MdOutlineCampaign className="text-[19px]" />
-                  Campaign
-                </div>
+        <>
+          {/* Top navbar */}
+          <div
+            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
+              visible ? "translate-y-0" : "-translate-y-full"
+            }`}
+          >
+            <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
+              <Link to={"/sampler/campaign"}>
+                <img src={brandlogo} alt="brand logo" />
               </Link>
-              <Link
-                to={'/sampler/feed'}
-                className={`hover:text-black transition-all ${getLinkClass(
-                  '/sampler/feed'
-                )}`}
-              >
-                <div className="flex gap-2">
-                  <MdRssFeed />
-                  Feed
-                </div>
-              </Link>
-              <Link
-                to={'/sampler/shop'}
-                className={`hover:text-black transition-all ${getLinkClass(
-                  '/sampler/shop'
-                )}`}
-              >
-                <div className="flex gap-2">
-                  <LuShoppingCart />
-                  Shop
-                </div>
-              </Link>
-            </div>
-            <div className="flex items-center gap-6 text-2xl">
-              <Link
-                to="/sampler/checkout"
-                className="hover:scale-110 transition-all"
-              >
-                <ShoppingCartSampler />
-              </Link>
-              <Link
-                to="/sampler/campaign/shipments/notifications"
-                className="hover:scale-110 transition-all"
-              >
-                <IoMdNotificationsOutline className="hover:text-black text-gray-600 transition-all" />
-              </Link>
-              <Dropdown
-                overlay={menuSampler}
-                trigger={['click']}
-                placement="bottomRight"
-              >
-                <Avatar
-                  size={40}
-                  src={user?.photoURL}
-                  className="cursor-pointer hover:scale-110 transition-all"
-                />
-              </Dropdown>
+              {/* Navigation links - visible on screens larger than 48rem */}
+              <div className="hidden md:flex gap-20 text-gray-600">
+                <Link
+                  to={"/sampler/campaign"}
+                  className={`hover:text-black transition-all ${getLinkClass(
+                    "/sampler/campaign"
+                  )}`}
+                >
+                  <div className="flex gap-2">
+                    {location.pathname.startsWith("/sampler/campaign") ? (
+                      <img
+                        src={campaignIcon}
+                        alt="campaignActive"
+                        className="w-[17px]"
+                      />
+                    ) : (
+                      <img
+                        src={campaignInActive}
+                        alt="campaignInActive"
+                        className="w-[17px]"
+                      />
+                    )}
+                    Campaign
+                  </div>
+                </Link>
+                <Link
+                  to={"/sampler/feed"}
+                  className={`hover:text-black transition-all ${getLinkClass(
+                    "/sampler/feed"
+                  )}`}
+                >
+                  <div className="flex gap-2 items-center justify-center ">
+                    {location.pathname.startsWith("/sampler/feed") ? (
+                      <img
+                        src={feedActive}
+                        alt="feedActive"
+                        className="w-[17px]"
+                      />
+                    ) : (
+                      <img
+                        src={feedInactive}
+                        alt="feedInActive"
+                        className="w-[17px]"
+                      />
+                    )}
+                    <div className="pt-0.5">Feed</div>
+                  </div>
+                </Link>
+                <Link
+                  to={"/sampler/shop"}
+                  className={`hover:text-black transition-all ${getLinkClass(
+                    "/sampler/shop"
+                  )}`}
+                >
+                  <div className="flex gap-2">
+                    {location.pathname.startsWith("/sampler/shop") ? (
+                      <img
+                        src={shopIcon}
+                        alt="shopActive"
+                        className="w-[17px]"
+                      />
+                    ) : (
+                      <img
+                        src={shopInActive}
+                        alt="shopInActive"
+                        className="w-[17px]"
+                      />
+                    )}
+                    Shop
+                  </div>
+                </Link>
+              </div>
+              <div className="flex items-center gap-6 text-2xl">
+                <Link
+                  to="/sampler/checkout"
+                  className="hover:scale-110 transition-all"
+                >
+                  <ShoppingCartSampler className="hover:text-black  transition-all" />
+                </Link>
+                <Link
+                  to="/sampler/campaign/shipments/notifications"
+                  className="hover:scale-110 transition-all"
+                >
+                  <IoMdNotificationsOutline className="hover:text-black text-gray-400 transition-all" />
+                </Link>
+                <Dropdown
+                  overlay={menuSampler}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                >
+                  <Avatar
+                    size={40}
+                    src={user?.photoURL}
+                    className="cursor-pointer hover:scale-110 transition-all"
+                  />
+                </Dropdown>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="fixed bottom-0 left-0 right-0 flex md:hidden justify-around items-center bg-white shadow-md border-t border-gray-200 z-50 py-3 ">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                className={`flex flex-col items-center text-xs ${
+                  location.pathname.startsWith(item.to)
+                    ? "text-blue-600"
+                    : "text-gray-600"
+                }`}
+                to={item.to}
+              >
+                {item.icon}
+                <span className="mt-1">{item.text}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="md:hidden "></div>
+        </>
       )}
     </div>
   );

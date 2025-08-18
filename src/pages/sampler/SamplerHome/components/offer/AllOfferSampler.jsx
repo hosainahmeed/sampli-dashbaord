@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs } from 'antd'
 import OfferCardSampler from './OfferCardSampler'
+import productImage from '/public/product_image.svg'
 const onChange = (key) => {
   console.log(key)
 }
@@ -8,7 +9,7 @@ const onChange = (key) => {
 const productData = [
   {
     id: 1,
-    image: `https://picsum.photos/seed/${Math.random()}/150`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -17,7 +18,7 @@ const productData = [
   },
   {
     id: 2,
-    image: `https://picsum.photos/seed/${Math.random()}/151`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -26,7 +27,7 @@ const productData = [
   },
   {
     id: 3,
-    image: `https://picsum.photos/seed/${Math.random()}/152`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -35,7 +36,7 @@ const productData = [
   },
   {
     id: 4,
-    image: `https://picsum.photos/seed/${Math.random()}/153`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -44,7 +45,7 @@ const productData = [
   },
   {
     id: 5,
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -53,7 +54,7 @@ const productData = [
   },
   {
     id: 6,
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -62,7 +63,7 @@ const productData = [
   },
   {
     id: 7,
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -71,7 +72,7 @@ const productData = [
   },
   {
     id: 8,
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -92,7 +93,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>
@@ -123,7 +124,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>
@@ -154,7 +155,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>
@@ -185,7 +186,7 @@ const items = [
       </div>
     ),
     children: (
-      <div className="flex gap-5 items-center flex-wrap ">
+      <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
         {productData && productData.length > 0 ? (
           productData.map(
             (product) =>

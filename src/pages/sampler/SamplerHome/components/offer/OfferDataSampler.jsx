@@ -1,11 +1,12 @@
 import React from 'react'
 import OfferCardSampler from './OfferCardSampler'
 import { useNavigate } from 'react-router-dom'
+import productImage from '/public/product_image.svg'
 
 const productData = [
   {
     id: 1,
-    image: `https://picsum.photos/seed/${Math.random()}/150`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -14,7 +15,7 @@ const productData = [
   },
   {
     id: 2,
-    image: `https://picsum.photos/seed/${Math.random()}/151`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -23,7 +24,7 @@ const productData = [
   },
   {
     id: 3,
-    image: `https://picsum.photos/seed/${Math.random()}/152`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -32,7 +33,7 @@ const productData = [
   },
   {
     id: 4,
-    image: `https://picsum.photos/seed/${Math.random()}/153`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -41,7 +42,7 @@ const productData = [
   },
   {
     id: 5,
-    image: `https://picsum.photos/seed/${Math.random()}/154`,
+    image: productImage,
     title: 'Mini Portable Refillable Spray...',
     description: 'We are a factory direct sales store...',
     rewards: 5,
@@ -71,8 +72,8 @@ const OfferDataSampler = () => {
           <div className="col-span-5 text-center  flex flex-col items-center justify-center py-10 w-full h-[30vh]">
             <p className="font-bold text-xl">No Active Offers Yet</p>
             <p className="mt-5 text-gray-500">
-              Looks like you don&apos;t have any offers at the moment. Check back
-              soon!
+              Looks like you don&apos;t have any offers at the moment. Check
+              back soon!
             </p>
           </div>
         )}

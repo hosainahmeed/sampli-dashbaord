@@ -9,6 +9,11 @@ import { MdArrowBack } from "react-icons/md";
 import toast from "react-hot-toast";
 import Dragger from "antd/es/upload/Dragger";
 import ReviewsVideo from "./ReviewsVideo";
+import { GoLinkExternal } from "react-icons/go";
+import phone from "../../../../../../assets/phone.svg";
+import contact from "../../../../../../assets/contact.svg";
+import shipping from "../../../../../../assets/shipping.svg";
+import productImage from "/public/product_image.svg";
 
 const { Step } = Steps;
 
@@ -88,7 +93,7 @@ const OfferOrderDetails = ({ setIsClicked }) => {
           <div className="mt-10 flex items-start justify-between">
             <div className="flex gap-2">
               <img
-                src={`https://picsum.photos/seed/${Math.random()}/200`}
+                src={productImage}
                 alt="Product"
                 className="w-24 h-24 object-cover"
               />
@@ -106,8 +111,9 @@ const OfferOrderDetails = ({ setIsClicked }) => {
             </div>
             <div>
               <div className="flex gap-2">
-                <button className="border text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
+                <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
                   Track Item
+                  <GoLinkExternal className="text-blue-700" />
                 </button>
                 <Button
                   className="!bg-blue-500  !text-white"
@@ -147,21 +153,32 @@ const OfferOrderDetails = ({ setIsClicked }) => {
 
           <h4 className="font-semibold text-xl !mb-5 ">Shipping Information</h4>
           <div className="grid grid-cols-3 gap-8">
-            <div>
-              <h5 className="font-medium">Contact Information</h5>
-              <p className="text-sm text-gray-500">Micheal@gmail.com</p>
-              <p className="text-sm text-gray-500">+123 456 7890</p>
+            <div className="flex items-start  gap-2">
+              <img src={phone} alt="contact" className="w-[20px]" />
+              <div>
+                <h5 className="font-medium">Contact Information</h5>
+                <p className="text-sm text-gray-500">Micheal@gmail.com</p>
+                <p className="text-sm text-gray-500">+123 456 7890</p>
+              </div>
             </div>
-            <div>
-              <h5 className="font-xl">Shipping Address</h5>
-              <p className="text-sm text-gray-500">Maurice Swift</p>
-              <p className="text-sm text-gray-500">
-                36 Moses A Ebitu road, SPG LEKKI-AGUNGI, Lagos
-              </p>
+            <div className="flex items-start gap-2">
+              <img src={shipping} alt="contact" className="w-[30px]" />
+
+              <div>
+                <h5 className="font-xl">Shipping Address</h5>
+                <p className="text-sm text-gray-500">Maurice Swift</p>
+                <p className="text-sm text-gray-500">
+                  36 Moses A Ebitu road, SPG LEKKI-AGUNGI, Lagos
+                </p>
+              </div>
             </div>
-            <div>
-              <h5 className="font-xl">Shipping Method</h5>
-              <p className="text-sm text-gray-500">Door Delivery</p>
+            <div className="flex items-start gap-2">
+              <img src={contact} alt="contact" className="w-[30px]" />
+
+              <div>
+                <h5 className="font-xl">Shipping Method</h5>
+                <p className="text-sm text-gray-500">Door Delivery</p>
+              </div>
             </div>
           </div>
         </div>

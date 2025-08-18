@@ -1,6 +1,8 @@
 import React from 'react'
 import { FiMessageCircle, FiMoreHorizontal, FiShare2 } from 'react-icons/fi'
 import { CiHeart } from 'react-icons/ci'
+import gift from '../../../assets/gift-02.svg'
+import sale from '../../../assets/sale-03.svg'
 
 const ProfileReviewsVideo = () => {
   return (

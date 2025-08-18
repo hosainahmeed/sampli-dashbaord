@@ -15,12 +15,16 @@ import {
   HeartFilled,
   MessageOutlined,
   MoreOutlined,
-  SmileOutlined,
   SendOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import EmojiPicker from 'emoji-picker-react'
+import followingInactiveLogo from '../../../assets/feedLogo/following.svg'
+import followingActiveLogo from '../../../assets/feedLogo/followingActive.svg'
+import newLogo from '../../../assets/feedLogo/new.svg'
+import newActiveLogo from '../../../assets/feedLogo/newActive.svg'
+import popularActiveLogo from '../../../assets/feedLogo/popularActive.svg'
+import popularInActiveLogo from '../../../assets/feedLogo/popularInactive.svg'
 
 const { TabPane } = Tabs
 
@@ -28,6 +32,63 @@ const SamplerFeed = () => {
   const [activeTab, setActiveTab] = useState('popular')
   const [activeCategory, setActiveCategory] = useState('all')
   const [posts, setPosts] = useState([
+    {
+      id: 1,
+      author: {
+        name: 'Gustavo',
+        handle: '@GustavoLubin',
+        avatar: `https://i.pravatar.cc/150?img=${Math.floor(
+          Math.random() * 70
+        )}`,
+      },
+      rating: 5.0,
+      productName: 'Natural Glow Serum',
+      price: '$25.00',
+      category: 'Electronics',
+      timeAgo: '24mins ago',
+      content:
+        "I've been using this serum for a month and the results are amazing! My skin looks more radiant and the texture has improved significantly. Totally worth the price!",
+      likes: 23,
+      liked: false,
+      comments: [
+        {
+          id: 1,
+          author: {
+            name: 'Bassey',
+            handle: '@Bator',
+            avatar: `https://i.pravatar.cc/150?img=${Math.floor(
+              Math.random() * 70
+            )}`,
+          },
+          content: 'AirPods offer efficient sound quality and connectivity.',
+          timeAgo: '23m',
+          likes: 21,
+          liked: false,
+          replies: [],
+        },
+      ],
+    },
+    {
+      id: 2,
+      author: {
+        name: 'Chance',
+        handle: '@ChanceWestervelt',
+        avatar: `https://i.pravatar.cc/150?img=${Math.floor(
+          Math.random() * 70
+        )}`,
+      },
+      rating: 5.0,
+      productName: 'WH-Portable Be...',
+      price: '$70.00',
+      category: 'Electronics',
+      timeAgo: '23mins ago',
+      content:
+        "These headphones are absolutely incredible! The noise-canceling is top-notch and battery life is amazing. Been using them for a week now and I'm impressed with the sound quality. Great for both music and calls.",
+      likes: 23,
+      liked: false,
+      hasVideo: true,
+      comments: [],
+    },
     {
       id: 1,
       author: {
@@ -278,10 +339,10 @@ const SamplerFeed = () => {
 
   return (
     <div className="responsive-width !mt-2 !mb-20">
-      <div className=" bg-white flex justify-between items-start gap-10">
+      <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
-        <div className="p-4 w-1/3 sticky top-10 ">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-4 w-1/3  max-lg:w-full">
+          <div className="flex items-center justify-between ">
             <div className="flex items-center gap-4 ">
               <Avatar
                 size={64}
@@ -316,22 +377,59 @@ const SamplerFeed = () => {
         </div>
 
         {/* right side */}
-        <div className="w-2/3">
+        <div className="w-2/3 max-lg:w-full">
           {/* Feed Tabs */}
           <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
-            <TabPane tab="Popular" key="popular" />
-            <TabPane tab="New" key="new" />
-            <TabPane tab="Following" key="following" />
+            <TabPane
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === 'following' ? (
+                    <img src={followingActiveLogo} alt="following active" />
+                  ) : (
+                    <img src={followingInactiveLogo} alt="following inactive" />
+                  )}
+                  <span>Following</span>
+                </div>
+              }
+              key="following"
+            />
+
+            <TabPane
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === 'new' ? (
+                    <img src={newActiveLogo} alt="new active" />
+                  ) : (
+                    <img src={newLogo} alt="new inactive" />
+                  )}
+                  <span>New</span>
+                </div>
+              }
+              key="new"
+            />
+            <TabPane
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === 'popular' ? (
+                    <img src={popularActiveLogo} alt="popular active" />
+                  ) : (
+                    <img src={popularInActiveLogo} alt="popular inactive" />
+                  )}
+                  <span>Popular</span>
+                </div>
+              }
+              key="popular"
+            />
           </Tabs>
 
           {/* Category Pills */}
-          <div className="flex gap-2 py-4 overflow-x-auto mb-3">
+          <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
             {['all', 'electronics', 'beauty', 'home', 'fashion', 'gaming'].map(
               (category) => (
                 <Button
                   key={category}
                   type={activeCategory === category ? 'primary' : 'default'}
-                  className="rounded-full"
+                  className="!rounded-full !py-5"
                   onClick={() => setActiveCategory(category)}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -341,7 +439,6 @@ const SamplerFeed = () => {
           </div>
 
           {/* Feed Posts */}
-          
 
           <div className="space-y-4">
             {posts.map((post) => (
@@ -359,18 +456,22 @@ const SamplerFeed = () => {
                           {post.timeAgo}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 ">
                         <Rate
                           disabled
                           defaultValue={post.rating}
-                          className="text-sm"
+                          className="!text-[16px] !text-[#FD8240] "
                         />
                         <span className="text-gray-500">{post.rating}</span>
-                        <span className="text-gray-700">
+                        <span className="text-gray-500">•</span>
+                        <span className=" underline underline-offset-4 cursor-pointer">
                           {post.productName}
                         </span>
+                        <span className="text-gray-500">•</span>
                         <span className="text-green-500">{post.price}</span>
-                        <span className="text-gray-500">/{post.category}</span>
+                        <span className=" underline underline-offset-4 cursor-pointer">
+                          /{post.category}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -438,7 +539,7 @@ const SamplerFeed = () => {
                   className="flex items-center space-x-2 mb-2 cursor-pointer"
                   onClick={showModalLike}
                 >
-                  {users.slice(0, 8).map((user, index) => (
+                  {users.slice(0, 5).map((user, index) => (
                     <Tooltip key={index} title={user.name} placement="top">
                       <div className="relative">
                         <Avatar
@@ -451,7 +552,7 @@ const SamplerFeed = () => {
                     </Tooltip>
                   ))}
                   <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full text-gray-600 font-semibold">
-                    +{users.length - 8}
+                    +{users.length - 5}
                   </div>
                 </div>
 

@@ -32,8 +32,10 @@ const CardComponent = ({ item }) => {
         description={
           <div className="flex justify-between flex-col  h-[100px]">
             <div className="text-sm text-gray-600">{item.description}</div>
-            <div className="flex justify-between items-center mt-2 ">
-              <span className="text-xl font-semibold ">{item.price}</span>
+            <div className="flex gap-3 items-center mt-2 text-[18px] ">
+              <span className=" font-semibold text-black">
+                {item.price}
+              </span>
               <span className="text-gray-500 line-through ">
                 {item.originalPrice}
               </span>

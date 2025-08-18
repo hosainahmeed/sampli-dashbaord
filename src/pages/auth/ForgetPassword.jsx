@@ -80,7 +80,7 @@ const ForgetPassword = () => {
 
         <div className="mt-4 text-gray-500">
           New to Sampli?{" "}
-          <Link to="/register" className="text-blue-500">
+          <Link to="/choose-role" className="text-blue-500">
             Get started
           </Link>
         </div>

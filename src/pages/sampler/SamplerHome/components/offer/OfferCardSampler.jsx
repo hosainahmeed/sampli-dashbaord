@@ -13,13 +13,13 @@ const OfferCardSampler = ({ product }) => {
     setIsModalVisible(false)
   }
   return (
-    <div className="w-full  bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+    <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow">
       {/* Product Image */}
       <div className=" flex justify-center w-full">
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-32 object-cover object-center"
+          className="w-full h-32 object-contain object-center"
         />
       </div>
 
@@ -31,11 +31,11 @@ const OfferCardSampler = ({ product }) => {
         {/* Rewards & Due */}
         <div className="flex justify-between items-center text-sm mt-2">
           <span className="text-gray-700">
-            <strong>Rewards:</strong>{' '}
+            <span className="text-gray-500 ">Rewards:</span>{' '}
             <span className="text-black">${product.rewards}</span>
           </span>
           <span className="text-gray-700">
-            <strong>Due:</strong>{' '}
+            <span className="text-gray-500 ">Due:</span>{' '}
             <span className="text-black">{product.due}</span>
           </span>
         </div>

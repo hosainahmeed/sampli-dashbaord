@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { Modal, Checkbox, Input } from 'antd';
-import { Edit2 } from 'lucide-react';
-import { FaTwitter, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa';
+import React, { useState } from 'react'
+import { Modal, Checkbox, Input } from 'antd'
+import { Edit2 } from 'lucide-react'
+import facebookIcon from '../../../../../assets/socialsLogo/facebook.svg'
+import instagramIcon from '../../../../../assets/socialsLogo/instragram.svg'
+import tiktokIcon from '../../../../../assets/socialsLogo/tiktok.svg'
+import webIcon from '../../../../../assets/socialsLogo/web.svg'
+import whatsappIcon from '../../../../../assets/socialsLogo/whatsapp.svg'
+import youtubeIcon from '../../../../../assets/socialsLogo/youtube.svg'
 const PreferencesSettingsSampler = () => {
-  const [openModal, setOpenModal] = useState('');
+  const [openModal, setOpenModal] = useState('')
 
   const [preferences, setPreferences] = useState({
     products: ['Tech & Electronics', 'Home & Kitchen'],
@@ -14,12 +19,12 @@ const PreferencesSettingsSampler = () => {
       instagram: '',
       tiktok: '',
       whatsapp: '',
-      blog: '',
+      web: '',
       facebook: '',
     },
-  });
+  })
 
-  const [tempPreferences, setTempPreferences] = useState(preferences);
+  const [tempPreferences, setTempPreferences] = useState(preferences)
 
   const productCategories = [
     'Tech & Electronics',
@@ -30,7 +35,7 @@ const PreferencesSettingsSampler = () => {
     'Sports & Fitness',
     'Home & Kitchen',
     'Toys & Games',
-  ];
+  ]
 
   const priceRanges = [
     'Under $25',
@@ -39,26 +44,28 @@ const PreferencesSettingsSampler = () => {
     '$100-$250',
     '$250-$500',
     '$500+',
-  ];
+  ]
 
-  const frequencies = ['Weekly', 'Bi-Weekly', 'Monthly', 'Quarterly'];
+  const frequencies = ['Weekly', 'Bi-Weekly', 'Monthly', 'Quarterly']
 
   const socialPlatforms = [
-    { key: 'instagram', label: <FaInstagram /> },
-    { key: 'twitter', label: <FaTwitter /> },
-    { key: 'youtube', label: <FaYoutube /> },
-    { key: 'tiktok', label: <FaTiktok /> },
-  ];
+    { key: 'facebook', label: facebookIcon },
+    { key: 'instagram', label: instagramIcon },
+    { key: 'tiktok', label: tiktokIcon },
+    { key: 'web', label: webIcon },
+    { key: 'whatsapp', label: whatsappIcon },
+    { key: 'youtube', label: youtubeIcon },
+  ]
 
   const handleModalSave = (type) => {
-    setPreferences(tempPreferences);
-    setOpenModal('');
-  };
+    setPreferences(tempPreferences)
+    setOpenModal('')
+  }
 
   const handleModalCancel = () => {
-    setTempPreferences(preferences);
-    setOpenModal('');
-  };
+    setTempPreferences(preferences)
+    setOpenModal('')
+  }
 
   const PreferenceSection = ({ title, items, type }) => (
     <section className="border border-gray-200 p-4 rounded-lg shadow-sm mb-4">
@@ -66,8 +73,8 @@ const PreferencesSettingsSampler = () => {
         <h3 className="font-medium text-lg">{title}</h3>
         <button
           onClick={() => {
-            setTempPreferences(preferences);
-            setOpenModal(type);
+            setTempPreferences(preferences)
+            setOpenModal(type)
           }}
           className="!text-blue-500 hover:!text-blue-800 flex items-center gap-2 cursor-pointer "
         >
@@ -86,7 +93,7 @@ const PreferencesSettingsSampler = () => {
         ))}
       </div>
     </section>
-  );
+  )
 
   return (
     <div className="">
@@ -136,15 +143,40 @@ const PreferencesSettingsSampler = () => {
             <span>Edit</span>
           </button>
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           {Object.entries(preferences.socialAccounts).map(
             ([platform, username]) =>
               username && (
                 <div key={platform} className="flex items-center gap-2">
-                  <span className="capitalize">{platform}:</span>
+                  <span className="capitalize">{platform} :</span>
                   <span className="text-gray-600">{username}</span>
                 </div>
               )
+          )}
+        </div> */}
+        <div className="space-y-2 flex gap-3 ">
+          {Object.entries(preferences.socialAccounts).map(
+            ([platform, username]) => {
+              const platformData = socialPlatforms.find(
+                (p) => p.key === platform
+              )
+              return (
+                username && (
+                  <div
+                    key={platform}
+                    className=" flex bg-gray-100 h-[30px] text-gray-800 px-3 py-1 rounded-full text-sm items-center gap-2"
+                  >
+                    <img
+                      src={platformData?.label}
+                      alt={platform}
+                      className="w-6 h-6"
+                    />
+                    <span>:</span>
+                    <span className="text-gray-600">{username}</span>
+                  </div>
+                )
+              )
+            }
           )}
         </div>
       </section>
@@ -172,11 +204,11 @@ const PreferencesSettingsSampler = () => {
                 onChange={(e) => {
                   const newProducts = e.target.checked
                     ? [...tempPreferences.products, category]
-                    : tempPreferences.products.filter((p) => p !== category);
+                    : tempPreferences.products.filter((p) => p !== category)
                   setTempPreferences({
                     ...tempPreferences,
                     products: newProducts,
-                  });
+                  })
                 }}
               >
                 {category}
@@ -206,11 +238,11 @@ const PreferencesSettingsSampler = () => {
                 onChange={(e) => {
                   const newRanges = e.target.checked
                     ? [...tempPreferences.priceRanges, range]
-                    : tempPreferences.priceRanges.filter((p) => p !== range);
+                    : tempPreferences.priceRanges.filter((p) => p !== range)
                   setTempPreferences({
                     ...tempPreferences,
                     priceRanges: newRanges,
-                  });
+                  })
                 }}
               >
                 {range}
@@ -239,7 +271,7 @@ const PreferencesSettingsSampler = () => {
                 checked={tempPreferences.frequency === freq}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    setTempPreferences({ ...tempPreferences, frequency: freq });
+                    setTempPreferences({ ...tempPreferences, frequency: freq })
                   }
                 }}
               >
@@ -263,7 +295,9 @@ const PreferencesSettingsSampler = () => {
           {socialPlatforms.map((platform) => (
             <div key={platform.key} className="space-y-1">
               <div className="flex gap-2 items-center justify-center">
-                <div> {platform.label}</div>
+                <div>
+                  <img src={platform.label} alt={platform.name} />
+                </div>
                 <Input
                   value={tempPreferences.socialAccounts[platform.key]}
                   className="h-[40px]"
@@ -274,7 +308,7 @@ const PreferencesSettingsSampler = () => {
                         ...tempPreferences.socialAccounts,
                         [platform.key]: e.target.value,
                       },
-                    });
+                    })
                   }}
                   placeholder={`Enter your ${platform.key} username`}
                 />
@@ -284,7 +318,7 @@ const PreferencesSettingsSampler = () => {
         </div>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default PreferencesSettingsSampler;
+export default PreferencesSettingsSampler

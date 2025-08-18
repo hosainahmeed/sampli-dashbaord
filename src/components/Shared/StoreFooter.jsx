@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 import {
   FaFacebook,
   FaInstagram,
   FaLinkedin,
   FaTiktok,
   FaTwitter,
-} from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function StoreFooter() {
   return (
@@ -58,7 +58,7 @@ function StoreFooter() {
       </div>
       <p className="pl-2 block md:text-center md:hidden">
         © {new Date().getFullYear()} Sampli. All Rights Reserved.
-      </p> 
+      </p>
     </div>
   );
 }

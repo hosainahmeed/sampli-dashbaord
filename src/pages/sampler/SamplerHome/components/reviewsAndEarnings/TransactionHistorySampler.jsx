@@ -77,6 +77,7 @@ const TransactionHistorySampler = () => {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+      render: (date) => <p className="text-gray-500">{date}</p>,
     },
     {
       title: 'Item',
@@ -87,7 +88,7 @@ const TransactionHistorySampler = () => {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
-      render: (amount) => `$${amount}`,
+      render: (amount) => <p className="text-gray-500">{amount}</p>,
     },
     {
       title: 'Status',
@@ -111,6 +112,7 @@ const TransactionHistorySampler = () => {
       title: 'Ref ID',
       dataIndex: 'refId',
       key: 'refId',
+      render: (refId) => <p className="text-gray-500">{refId}</p>,
     },
   ]
 
@@ -121,7 +123,7 @@ const TransactionHistorySampler = () => {
       <div className="mt-7">
         <div className="flex justify-between gap-6">
           <div className="flex gap-6 mb-6">
-            <div >
+            <div>
               <Select
                 className="w-40"
                 placeholder="Date range"
@@ -137,7 +139,7 @@ const TransactionHistorySampler = () => {
               </Select>
 
               {filters.dateRange === 'customDateRange' && (
-                <div className='mt-5 '>
+                <div className="mt-5 ">
                   <div className="flex gap-6">
                     <div className="w-40">
                       <p className="!mb-1 !text-sm text-gray-600">From</p>
@@ -207,6 +209,7 @@ const TransactionHistorySampler = () => {
           dataSource={transactionData}
           rowKey="key"
           pagination={false}
+          scroll={{ x: 1200 }}
         />
       </div>
     </div>

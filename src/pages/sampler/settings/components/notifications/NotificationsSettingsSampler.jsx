@@ -32,7 +32,7 @@ const NotificationsSettingsSampler = () => {
   }
 
   const NotificationSection = ({ title, items, category }) => (
-    <div className="mb-8">
+    <div className="mb-8 border border-gray-200 p-5 rounded-2xl">
       <h3 className="text-base font-semibold text-gray-900 mb-4">{title}</h3>
       <div className="space-y-4">
         {Object.entries(items).map(([key, value]) => (
@@ -43,6 +43,10 @@ const NotificationsSettingsSampler = () => {
             <Switch
               checked={value}
               onChange={() => handleToggle(category, key)}
+              className="custom-switch"
+              style={{
+                backgroundColor: value ? 'gray' : '#36D96F',
+              }}
             />
           </div>
         ))}
@@ -51,8 +55,8 @@ const NotificationsSettingsSampler = () => {
   )
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Notifications</h2>
+    <div className='!h-[95vh] overflow-y-auto scrollbar-none  '>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 ">Notifications</h2>
 
       <NotificationSection
         title="General"
@@ -71,13 +75,6 @@ const NotificationsSettingsSampler = () => {
         items={settings.recommendations}
         category="recommendations"
       />
-
-      <div className="border-t border-gray-200 mt-8 pt-6">
-        <p className="text-sm text-gray-500">
-          You can manage your notification preferences here. Changes are saved
-          automatically.
-        </p>
-      </div>
     </div>
   )
 }

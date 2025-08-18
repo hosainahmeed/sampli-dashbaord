@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react'
 import { Modal, Button, Descriptions, Carousel, Form, Input } from 'antd'
 import toast from 'react-hot-toast'
+import productImage from '/public/product_image.svg'
 
 const ProductDetails = ({ visible, onCancel }) => {
   const images = Array.from({ length: 5 }, (_, index) => ({
-    src: `https://picsum.photos/seed/${Math.random()}/300`,
+    src: productImage,
     alt: `Product Image ${index + 1}`,
   }))
 
@@ -160,7 +161,9 @@ const ProductDetails = ({ visible, onCancel }) => {
 
         {page === 2 && (
           <div className="flex flex-col mt-10 h-screen w-full text-gray-500">
-            <h2 className="text-xl font-semibold">Confirm delivery address</h2>
+            <h2 className="text-xl font-semibold text-black">
+              Confirm delivery address
+            </h2>
             <p className="text-gray-500 text-sm mb-6">
               High-quality wireless headphones with noise cancellation
             </p>

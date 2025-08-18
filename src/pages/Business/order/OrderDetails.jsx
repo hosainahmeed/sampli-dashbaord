@@ -1,13 +1,14 @@
-import { Button, Card, Typography } from 'antd';
-import React from 'react';
-import { FaAngleLeft } from 'react-icons/fa';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FiShoppingBag } from 'react-icons/fi';
-import { LuUserRound } from 'react-icons/lu';
-import TimeLineCard from '../../../components/business-product-details/TimeLineCard';
-import ContactInformationCustomer from '../../../components/business-product-details/ContactInformationCustomer';
-import ShippingAddressCustomer from '../../../components/business-product-details/ShippingAddressCustomer';
-import BillingAddressCustomer from '../../../components/business-product-details/BillingAddressCustomer';
+import { Button, Card, Typography } from "antd";
+import React from "react";
+import { FaAngleLeft } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FiShoppingBag } from "react-icons/fi";
+import { LuUserRound } from "react-icons/lu";
+import TimeLineCard from "../../../components/business-product-details/TimeLineCard";
+import ContactInformationCustomer from "../../../components/business-product-details/ContactInformationCustomer";
+import ShippingAddressCustomer from "../../../components/business-product-details/ShippingAddressCustomer";
+import BillingAddressCustomer from "../../../components/business-product-details/BillingAddressCustomer";
+import { GoLinkExternal } from "react-icons/go";
 
 const { Text, Title } = Typography;
 
@@ -21,27 +22,27 @@ function OrderDetails() {
     status: status,
     date: date,
     image:
-      'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg',
+      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
     name: product,
-    variant: 'Medium Black',
+    variant: "Medium Black",
     price: amount,
     quantity: 1,
     subtotal: 50.0,
     shipping: 50.0,
     total: 50.0,
     timeline: [
-      { status: 'Order processed', date: '23, Oct 2023', completed: true },
-      { status: 'Payment Confirmed', date: '23, Oct 2023', completed: true },
-      { status: 'Item shipped', date: '23, Oct 2023', completed: false },
-      { status: 'Delivered', date: '23, Oct 2023', completed: false },
+      { status: "Order processed", date: "23, Oct 2023", completed: true },
+      { status: "Payment Confirmed", date: "23, Oct 2023", completed: true },
+      { status: "Item shipped", date: "23, Oct 2023", completed: false },
+      { status: "Delivered", date: "23, Oct 2023", completed: false },
     ],
     customer: customer,
-    email: 'MichaelScott@gmail.com',
-    phone: '',
+    email: "MichaelScott@gmail.com",
+    phone: "",
     shippingAddress: {
       name: customer,
-      address: 'rampura dhaka bangladesh',
-      phone: '+16278847',
+      address: "rampura dhaka bangladesh",
+      phone: "+16278847",
     },
   };
   const navigate = useNavigate();
@@ -68,7 +69,10 @@ function OrderDetails() {
         </div>
         <div className="flex gap-2">
           <Button>Go to item</Button>
-          <Button type="primary">Track Item</Button>
+          <Button type="primary" className="flex items-center">
+            Track Item
+            <GoLinkExternal className="text-blue-700" />
+          </Button>
         </div>
       </div>
       <Title className="!mt-4" level={4}>
