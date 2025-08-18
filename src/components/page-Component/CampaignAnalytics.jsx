@@ -80,7 +80,7 @@ function SalesAnalytics() {
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {datas.map((data) => (
           <CampaignCard key={data.title} data={data} />
         ))}
