@@ -1,4 +1,4 @@
-import baseApis from "../../baseApis";
+import { baseApis } from "./main/baseApis";
 
 const authApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({

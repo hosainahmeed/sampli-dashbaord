@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { url } from './server'
 
 export const baseApis = createApi({
-  reducerPath: 'hyeGatherApis',
+  reducerPath: 'SampliApis',
   baseQuery: fetchBaseQuery({
     baseUrl: url,
     prepareHeaders: (headers, { endpoint }) => {
