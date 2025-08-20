@@ -8,7 +8,7 @@ import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useLoginMutation } from "../../Redux/apis/auth/authApis";
+import { useLoginMutation } from "../../Redux/authApis";
 
 const { Title } = Typography;
 
