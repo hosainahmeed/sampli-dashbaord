@@ -8,15 +8,28 @@ import InputField from '../../components/ui/InputField'
 import FormWrapper from '../../components/ui/FormWrapper'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-
+import { useRegisterAsBusinessMutation } from '../../Redux/authApis'
 const { Title, Text } = Typography
 
 const Register = () => {
-  const router = useNavigate()
-  const onFinish = (values) => {
-    console.log('Success:', values)
-    router('/business-info')
-    toast.success('Form submitted successfully!')
+  const navigate = useNavigate()
+  const [registerAsBusiness, { isLoading: registerLoading }] = useRegisterAsBusinessMutation()
+  const onFinish = async (values) => {
+    const registerData = {
+      email: values.email,
+      password: values.password
+    }
+    try {
+      await registerAsBusiness({ data: registerData })
+        .unwrap()
+        .then((res) => {
+          if (res?.success) {
+            toast.success(res?.message);
+          }
+        })
+    } catch (error) {
+      toast.error(error?.data?.message)
+    }
   }
 
   return (
@@ -64,8 +77,26 @@ const Register = () => {
               textAlign: 'start',
             }}
           />
+          <InputField
+            label="Password"
+            name="password"
+            rules={[
+              { required: true, message: 'Password is required!' },
+              { type: 'password', message: 'Enter a valid password!' },
+            ]}
+            placeholder="Password"
+            type="password"
+            style={{
+              width: '100%',
+              marginTop: 10,
+              marginBottom: 10,
+              textAlign: 'start',
+            }}
+          />
 
           <Button
+            loading={registerLoading}
+            disabled={registerLoading}
             type="primary"
             htmlType="submit"
             className="w-full"

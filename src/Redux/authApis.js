@@ -9,7 +9,14 @@ const authApis = baseApis.injectEndpoints({
         body: data,
       }),
     }),
+    registerAsBusiness: builder.mutation({
+      query: ({data}) => ({
+        url: "/user/register-bussiness",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApis;
+export const { useLoginMutation, useRegisterAsBusinessMutation } = authApis;
