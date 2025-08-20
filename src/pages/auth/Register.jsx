@@ -8,8 +8,7 @@ import InputField from '../../components/ui/InputField'
 import FormWrapper from '../../components/ui/FormWrapper'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { useRegisterAsBusinessMutation } from '../../Redux/apis/auth/authApis'
-
+import { useRegisterAsBusinessMutation } from '../../Redux/authApis'
 const { Title, Text } = Typography
 
 const Register = () => {
