@@ -7,7 +7,7 @@ const { Title, Text } = Typography
 
 const SignUpOtp = () => {
   const navigate = useNavigate()
-  const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [otp, setOtp] = useState(['', '', '', '', ''])
   const [timeLeft, setTimeLeft] = useState(30)
   const inputsRef = useRef([])
 
@@ -25,7 +25,7 @@ const SignUpOtp = () => {
     newOtp[index] = value
     setOtp(newOtp)
 
-    if (value && index < 5) {
+    if (value && index < 4) {
       inputsRef.current[index + 1].focus()
     }
   }
@@ -37,7 +37,7 @@ const SignUpOtp = () => {
   }
 
   const handleResend = () => {
-    setOtp(['', '', '', '', '', ''])
+    setOtp(['', '', '', '', ''])
     setTimeLeft(30)
   }
 

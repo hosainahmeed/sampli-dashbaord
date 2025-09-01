@@ -7,15 +7,38 @@ import InputField from '../../../components/ui/InputField'
 import FormWrapper from '../../../components/ui/FormWrapper'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { useAuthSectionSignupMutation } from '../../../Redux/sampler/authSectionApis'
 
 const { Title } = Typography
 
 const Signup = () => {
-  const Navigate = useNavigate()
-  const onFinish = (values) => {
-    console.log(values)
-    toast.success('Sent otp to your email!')
-    Navigate('/sign-up-otp')
+  const navigate = useNavigate()
+  const [createSampler, { isLoading }] = useAuthSectionSignupMutation()
+
+  const onFinish = async (values) => {
+    try {
+      const payload = {
+        name: values.fullname,
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      }
+
+      const res = await createSampler(payload).unwrap()
+
+      if (res.success) {
+        toast.success(
+          res.message || 'Signup successful! Check your email for verification.'
+        )
+        navigate('/sign-up-otp', { state: { email: values.email } })
+      } else {
+        toast.error(res.message || 'Signup failed. Try again.')
+      }
+    } catch (err) {
+      toast.error(
+        err?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
   return (
@@ -34,38 +57,19 @@ const Signup = () => {
 
         <FormWrapper onFinish={onFinish}>
           <InputField
-            label="Full Name  "
+            label="Full Name"
             name="fullname"
-            rules={[
-              { required: true, message: 'Please enter your name!' },
-              { type: 'name', message: 'Enter a valid full name!' },
-            ]}
+            rules={[{ required: true, message: 'Please enter your name!' }]}
             placeholder="Ahsan Mahfuz"
-            type="name"
-            style={{
-              width: '100%',
-              marginTop: 10,
-              marginBottom: 10,
-              textAlign: 'start',
-            }}
+            type="text"
           />
           <InputField
-            label="Username  "
+            label="Username"
             name="username"
-            rules={[
-              { required: true, message: 'Please enter your username!' },
-              { type: 'username', message: 'Enter a valid username!' },
-            ]}
+            rules={[{ required: true, message: 'Please enter your username!' }]}
             placeholder="ahsan12"
-            type="username"
-            style={{
-              width: '100%',
-              marginTop: 10,
-              marginBottom: 10,
-              textAlign: 'start',
-            }}
+            type="text"
           />
-
           <InputField
             label="Email address"
             name="email"
@@ -75,35 +79,13 @@ const Signup = () => {
             ]}
             placeholder="MichealScott@gmail.com"
             type="email"
-            style={{
-              width: '100%',
-              marginTop: 10,
-              marginBottom: 10,
-              textAlign: 'start',
-            }}
           />
           <InputField
             label="Password"
             name="password"
             type="password"
-            rules={[
-              { required: true, message: 'Please confirm your password' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('Passwords do not match!'))
-                },
-              }),
-            ]}
+            rules={[{ required: true, message: 'Please enter your password!' }]}
             placeholder="Password"
-            style={{
-              width: '100%',
-              marginTop: 10,
-              marginBottom: 10,
-              textAlign: 'start',
-            }}
           />
 
           <Button
@@ -111,6 +93,7 @@ const Signup = () => {
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10 }}
+            loading={isLoading}
           >
             Continue with Email
           </Button>
@@ -118,13 +101,13 @@ const Signup = () => {
 
         <Divider className="!text-xs !text-gray-500">Or Signup with</Divider>
         <div className="grid grid-cols-3 h-16 gap-2 space-x-4">
-          <button className="cursor-pointer px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
+          <button className="cursor-pointer px-6 flex items-center justify-center py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
             <AppleOutlined className="text-2xl" />
           </button>
-          <button className="cursor-pointer px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
+          <button className="cursor-pointer px-6 flex items-center justify-center py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
             <GoogleOutlined className="text-2xl" />
           </button>
-          <button className=" cursor-pointer px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
+          <button className="cursor-pointer px-6 flex items-center justify-center py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
             <TiSocialFacebook className="text-2xl" />
           </button>
         </div>
@@ -132,14 +115,14 @@ const Signup = () => {
         <div className="mt-4 text-gray-500 text-[14px]">
           Already have an account?{' '}
           <Link
-            to="/register"
-            className="text-blue-500 hover:underline  text-[14px] transition-all"
+            to="/login"
+            className="text-blue-500 hover:underline text-[14px] transition-all"
           >
             Login
           </Link>
         </div>
 
-        <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5 ">
+        <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5">
           <Link to="/" className="text-blue-500 hover:underline transition-all">
             Help
           </Link>
