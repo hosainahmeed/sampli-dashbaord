@@ -6,15 +6,33 @@ import FormWrapper from '../../../components/ui/FormWrapper'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { IoMdArrowRoundBack } from 'react-icons/io'
-
+import { useAddAddressReviewerMutation } from '../../../Redux/sampler/authSectionApis'
 const { Title } = Typography
 
 const SignUpMoreInformation = () => {
   const Navigate = useNavigate()
-  const onFinish = (values) => {
-    console.log(values)
-    toast.success('Sent otp to your email!')
-    Navigate('/sign-up-select-all-categories')
+  const [addAddress, { isLoading: addressLoading }] =
+    useAddAddressReviewerMutation()
+
+  const onFinish = async (values) => {
+    try {
+      const res = await addAddress({
+        city: values.city,
+        zipCode: values.zipCode,
+        gender: values.gender,
+        age: values.age,
+      }).unwrap()
+      if (res.success) {
+        toast.success(res.message)
+        Navigate('/sign-up-select-all-categories')
+      } else {
+        toast.error(res.message)
+      }
+    } catch (error) {
+      toast.error(
+        error?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
   return (
@@ -53,7 +71,7 @@ const SignUpMoreInformation = () => {
           />
           <InputField
             label="Zip Code  "
-            name="zipcode"
+            name="zipCode"
             rules={[{ required: true, message: 'Please enter your zipcode!' }]}
             placeholder="zipcode"
             style={{
@@ -81,9 +99,9 @@ const SignUpMoreInformation = () => {
             }}
           >
             <Select placeholder="Select your gender">
-              <Select.Option value="male">Male</Select.Option>
-              <Select.Option value="female">Female</Select.Option>
-              <Select.Option value="other">Other</Select.Option>
+              <Select.Option value="Male">Male</Select.Option>
+              <Select.Option value="Female">Female</Select.Option>
+              <Select.Option value="Other">Other</Select.Option>
             </Select>
           </Form.Item>
 
@@ -118,7 +136,7 @@ const SignUpMoreInformation = () => {
             className="w-full"
             style={{ marginTop: 10 }}
           >
-            Continue
+            {addressLoading ? 'Loading...' : 'Continue'}
           </Button>
         </FormWrapper>
 

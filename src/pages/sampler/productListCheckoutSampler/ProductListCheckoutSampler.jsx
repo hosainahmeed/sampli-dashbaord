@@ -227,7 +227,8 @@ const SoloStoveCart = () => {
                     }}
                   />
                   <Text type="secondary">
-                    Looks like you haven't added any items to your cart yet.
+                    Looks like you haven&apos;t added any items to your cart
+                    yet.
                   </Text>
                 </div>
               }

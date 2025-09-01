@@ -1,9 +1,12 @@
 import { Checkbox } from 'antd'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useAddCurrentlyShareReviewerMutation } from '../../../../Redux/sampler/authSectionApis'
 
 const ReviewPlatforms = ({ prev, next }) => {
   const [selectedReviews, setSelectedReviews] = useState([])
+  const [addCurrentlyShare, { isLoading }] =
+    useAddCurrentlyShareReviewerMutation()
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target
@@ -12,13 +15,26 @@ const ReviewPlatforms = ({ prev, next }) => {
     )
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (selectedReviews.length === 0) {
       toast.error('Please select at least one platform before proceeding.')
       return
     }
-    console.log('Selected Review Platforms:', selectedReviews)
-    next()
+    try {
+      const res = await addCurrentlyShare({
+        currentlyShareReview: selectedReviews,
+      }).unwrap()
+      if (res.success) {
+        toast.success(res.message)
+        next()
+      } else {
+        toast.error(res.message)
+      }
+    } catch (error) {
+      toast.error(
+        error?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
   return (
@@ -52,7 +68,7 @@ const ReviewPlatforms = ({ prev, next }) => {
             onClick={handleSubmit}
             className="cursor-pointer hover:!text-blue-500"
           >
-            Next
+            {isLoading ? 'Loading...' : ' Next'}
           </button>
         </div>
       </div>

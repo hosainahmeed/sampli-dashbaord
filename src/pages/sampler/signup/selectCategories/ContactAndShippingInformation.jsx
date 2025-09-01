@@ -1,11 +1,33 @@
 import { Form, Input, Select } from 'antd'
 import { Country } from 'country-state-city'
 import React from 'react'
+import { useAddShippingAddressReviewerMutation } from '../../../../Redux/sampler/authSectionApis'
+import toast from 'react-hot-toast'
 
 const ContactAndShippingInformation = ({ prev, next }) => {
-  const handleFormSubmit = (values) => {
-    console.log('Submitted Values:', values)
-    next()
+  const [addShipping, { isLoading }] = useAddShippingAddressReviewerMutation()
+  const handleFormSubmit = async (values) => {
+    try {
+      const res = await addShipping({
+        address: values.address,
+        country: values.country,
+        zipCode: values.postalCode,
+        city: values.city,
+        phoneNumber: values.phone,
+        state: values.state,
+        alternativePhoneNumber: values.altPhone,
+      }).unwrap()
+      if (res.success) {
+        toast.success(res.message)
+        next()
+      } else {
+        toast.error(res.message)
+      }
+    } catch (error) {
+      toast.error(
+        error?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
   return (
@@ -17,7 +39,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
       <Form
         layout="vertical"
         className="p-6"
-        onFinish={handleFormSubmit} 
+        onFinish={handleFormSubmit}
         requiredMark={false}
       >
         <div className="!flex !flex-col !justify-between h-[425px]">
@@ -121,7 +143,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
               type="submit"
               className="cursor-pointer hover:!text-blue-500"
             >
-              Next
+              {isLoading ? 'Loading...' : 'Next'}
             </button>
           </div>
         </div>

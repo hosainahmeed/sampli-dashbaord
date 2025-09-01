@@ -1,25 +1,47 @@
 import { Form, Select } from 'antd'
 import React from 'react'
+import { useAddPersonalInfoReviewerMutation } from '../../../../Redux/sampler/authSectionApis'
+import toast from 'react-hot-toast'
 
 const { Option } = Select
 
 const AllCategories = ({ next }) => {
   const [form] = Form.useForm()
 
-  const handleFormSubmit = (values) => {
-    console.log('Submitted Values:', values)
-    next()
+  const [addPersonalInfo, { isLoading }] = useAddPersonalInfoReviewerMutation()
+
+  const handleFormSubmit = async (values) => {
+    try {
+      const res = await addPersonalInfo({
+        ethnicity: values.city,
+        educationLevel: values.zipCode,
+        maritalStatus: values.gender,
+        employmentStatus: values.age,
+        householdIncome: values.age,
+        familyAndDependents: values.age,
+      }).unwrap()
+      if (res.success) {
+        toast.success(res.message)
+        next()
+      } else {
+        toast.error(res.message)
+      }
+    } catch (error) {
+      toast.error(
+        error?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
   return (
-    <div >
+    <div>
       <p className="pb-5 text-2xl text-center font-semibold">
         Select all categories that apply
       </p>
       <Form
         form={form}
         layout="vertical"
-        onFinish={handleFormSubmit} // Ensure form submits properly
+        onFinish={handleFormSubmit}
         className="p-6"
         requiredMark={false}
       >
@@ -164,7 +186,7 @@ const AllCategories = ({ next }) => {
               type="submit"
               className="!text-[16px] flex justify-end cursor-pointer hover:!text-blue-500"
             >
-              Next
+              {isLoading ? 'Loading...' : ' Next'}
             </button>
           </div>
         </div>

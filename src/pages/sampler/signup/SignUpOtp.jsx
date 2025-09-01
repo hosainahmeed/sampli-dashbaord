@@ -1,12 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Typography, Input, Button } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../../../components/ui/Logo'
+import {
+  useAuthSectionVerifyCodeMutation,
+  useResendVerifyCodeMutation,
+} from '../../../Redux/sampler/authSectionApis'
+import toast from 'react-hot-toast'
 
 const { Title, Text } = Typography
 
 const SignUpOtp = () => {
+  const location = useLocation()
+
   const navigate = useNavigate()
+  const [verifyEmail, { isLoading }] = useAuthSectionVerifyCodeMutation()
+  const [resendCode, { isLoading: resendLoading }] =
+    useResendVerifyCodeMutation()
   const [otp, setOtp] = useState(['', '', '', '', ''])
   const [timeLeft, setTimeLeft] = useState(30)
   const inputsRef = useRef([])
@@ -36,14 +46,44 @@ const SignUpOtp = () => {
     }
   }
 
-  const handleResend = () => {
-    setOtp(['', '', '', '', ''])
-    setTimeLeft(30)
+  const handleResend = async () => {
+    try {
+      const res = await resendCode({
+        email: location?.state?.email,
+      }).unwrap()
+
+      if (res.success) {
+        toast.success(res.message)
+        setTimeLeft(30)
+      }
+    } catch (error) {
+      toast.error(
+        error?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
-  const handleContinue = () => {
-    console.log('OTP:', otp.join(''))
-    navigate('/sign-up-more-info')
+  const handleContinue = async () => {
+    try {
+      const res = await verifyEmail({
+        email: location?.state?.email,
+        verifyCode: Number(otp.join('')),
+      }).unwrap()
+
+      if (res.success) {
+        toast.success(res.message)
+        localStorage.setItem('token', res?.data?.accessToken)
+        navigate('/sign-up-more-info', {
+          state: { email: location?.state?.email },
+        })
+      } else {
+        toast.error(res.message)
+      }
+    } catch (error) {
+      toast.error(
+        error?.data?.message || 'Something went wrong. Please try again.'
+      )
+    }
   }
 
   return (
@@ -60,8 +100,11 @@ const SignUpOtp = () => {
           <h1 className="text-base text-[14px] text-justify text-gray-500">
             <div>
               Just one last step, we sent an otp to
-              <strong className="text-[#111]"> micheal@gmail.com</strong> please
-              input the OTP below
+              <strong className="text-[#111]">
+                {' '}
+                {location?.state?.email}
+              </strong>{' '}
+              please input the OTP below
             </div>
           </h1>
         </div>
@@ -86,18 +129,18 @@ const SignUpOtp = () => {
           disabled={otp.includes('')}
           onClick={handleContinue}
         >
-          Continue
+          {isLoading ? 'Loading...' : ' Continue'}
         </Button>
 
         <div className="mt-3">
-          {timeLeft > 0 ? (
+          {timeLeft > 10 ? (
             <Text>00:{timeLeft < 10 ? `0${timeLeft}` : timeLeft}</Text>
           ) : (
             <h1
               className="text-blue-500 cursor-pointer text-[14px] hover:text-blue-800"
               onClick={handleResend}
             >
-              Resend OTP
+              {resendLoading ? 'Loading...' : '  Resend OTP'}
             </h1>
           )}
         </div>

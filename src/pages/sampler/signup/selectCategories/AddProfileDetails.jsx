@@ -180,7 +180,7 @@ const AddProfileDetails = ({ prev, next }) => {
             </Upload>
           </div>
           <p className="text-center text-red-500 mt-2">
-            Avatar image must be under 500kb
+            Avatar image must be under 1000kb
           </p>
           <Form.Item
             name="bio"

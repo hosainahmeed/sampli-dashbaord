@@ -30,6 +30,7 @@ const Signup = () => {
         toast.success(
           res.message || 'Signup successful! Check your email for verification.'
         )
+
         navigate('/sign-up-otp', { state: { email: values.email } })
       } else {
         toast.error(res.message || 'Signup failed. Try again.')
