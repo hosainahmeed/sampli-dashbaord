@@ -16,11 +16,11 @@ import SignUpMoreInformation from "../pages/sampler/signup/SignUpMoreInformation
 import SelectAllCategories from "../pages/sampler/signup/selectCategories/SelectAllCategories.jsx";
 import { businessRoutes } from "./businessRoutes.jsx";
 import { samplerRoutes } from "./samplerRoutes.jsx";
- 
+
 export const router = createBrowserRouter([
   businessRoutes,
   samplerRoutes,
- 
+
   // shared/auth routes
   { path: "/otp", element: <Otp /> },
   { path: "/login", element: <Login /> },
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
   { path: "/reset-password", element: <ResetPassword /> },
   { path: "/business-info", element: <BusinessInfoForm /> },
   { path: "/forgot-password", element: <ForgetPassword /> },
- 
+
   // sampler signup flow
   { path: "/choose-role", element: <ChooseRole /> },
   { path: "/signup/reviewer", element: <Signup /> },
