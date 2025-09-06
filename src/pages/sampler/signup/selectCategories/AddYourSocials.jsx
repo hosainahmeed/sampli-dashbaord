@@ -8,16 +8,27 @@ import {
 } from 'react-icons/ai'
 import { FaTiktok } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { useUpdateProfileApisMutation } from '../../../../Redux/sampler/profileApis'
 
 const AddYourSocials = ({ prev }) => {
   const [form] = Form.useForm()
   const Navigate = useNavigate()
 
-  const handleFormSubmit = (values) => {
+  const [updateProfile, { isLoading }] = useUpdateProfileApisMutation()
+
+  const handleFormSubmit = async (values) => {
     const hasAtLeastOneSocial = Object.values(values).some((val) => val?.trim())
     if (!hasAtLeastOneSocial) {
       toast.error('Please add at least one social media username.')
       return
+    }
+    try {
+      await updateProfile(values).unwrap()
+      toast.success('Socials have been uploaded successfully!')
+    } catch (error) {
+      console.error('Upload error:', error)
+      toast.error('Failed to update your socials')
+      throw error
     }
     console.log('Submitted Values:', values)
     Navigate('/login')
@@ -72,7 +83,7 @@ const AddYourSocials = ({ prev }) => {
             Back
           </button>
           <button type="submit" className="cursor-pointer hover:!text-blue-500">
-            Next
+            {isLoading ? 'Uploading...' : 'Next'}
           </button>
         </div>
       </div>
