@@ -11,7 +11,7 @@ const Breadcrumbs = () => {
     <nav className="text-sm text-gray-600 ">
       <ol className="flex items-center space-x-2">
         <li>
-          <Link to="/" className="text-gray-600  underline underline-offset-4">
+          <Link to="/sampler/campaign" className="text-gray-600  underline underline-offset-4">
             Home
           </Link>
         </li>

@@ -78,9 +78,9 @@ export const samplerRoutes = {
     },
     { path: "/sampler/my-profile", element: <MyProfileSampler /> },
     { path: "/sampler/shop", element: <ShopHeroPage /> },
-    { path: `/sampler/shop/:name`, element: <ServiceWithCategory /> },
+    { path: `/sampler/shop/:id/:name`, element: <ServiceWithCategory /> },
     {
-      path: `/sampler/shop/:name/:id`,
+      path: `/sampler/shop/category/:name/:id`,
       element: <ServiceWithCategoryProductDetails />,
     },
     { path: `/sampler/feed`, element: <SamplerFeed /> },

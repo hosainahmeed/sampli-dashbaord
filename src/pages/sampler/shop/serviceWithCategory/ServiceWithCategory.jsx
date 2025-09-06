@@ -1,155 +1,82 @@
-import React, { useState } from 'react'
-import { Card, Input, Select, Typography, Badge } from 'antd'
-import { HeartOutlined, HeartFilled } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
-import Breadcrumbs from '../../../breadcrumbs/Breadcrumbs'
-import productImage from '/public/product_image.svg'
+import React, { useState } from "react";
+import { Card, Input, Select, Typography, Badge } from "antd";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
+import { useNavigate, useParams } from "react-router-dom";
+import Breadcrumbs from "../../../breadcrumbs/Breadcrumbs";
+import { useCategorySectionApisQuery } from "../../../../Redux/sampler/categoryApis";
+import {
+  useBookmarkUpdateMutation,
+  useGetProductApisQuery,
+} from "../../../../Redux/sampler/productApis";
+import toast from "react-hot-toast";
 
-const { Search } = Input
-const { Title, Text } = Typography
-const { Meta } = Card
-
-const initialProducts = [
-  {
-    id: 1,
-    title: 'BENGOO G9000 Stereo Gaming Headset',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 10.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Air Conditioners',
-  },
-  {
-    id: 2,
-    title: 'Ahsan',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 25.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-  {
-    id: 3,
-    title: 'Mahfuz',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 5.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-  {
-    id: 3,
-    title: 'Mahfuz',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 5.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-  {
-    id: 3,
-    title: 'Mahfuz',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 5.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-  {
-    id: 3,
-    title: 'Mahfuz',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 5.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-  {
-    id: 3,
-    title: 'Mahfuz',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 5.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-  {
-    id: 3,
-    title: 'Mahfuz',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: 5.0,
-    originalPrice: 4.0,
-    image: productImage,
-    category: 'Headphones',
-  },
-]
-
-const categories = [
-  'TVs',
-  'Stereos',
-  'Standing Fans',
-  'Air Conditioners',
-  'Headphones',
-]
+const { Search } = Input;
+const { Title, Text } = Typography;
+const { Meta } = Card;
 
 const ServiceWithCategory = () => {
-  const [products, setProducts] = useState(initialProducts)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [sortBy, setSortBy] = useState('relevance')
+  const { id, name } = useParams();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(id);
+  const [sortBy, setSortBy] = useState("");
 
-  const filteredProducts = products
-    .filter((product) => {
-      const matchesSearch = product.title
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-      const matchesCategory =
-        !selectedCategory || product.category === selectedCategory
-      return matchesSearch && matchesCategory
-    })
-    .sort((a, b) => {
-      if (sortBy === 'price-low') return a.price - b.price
-      if (sortBy === 'price-high') return b.price - a.price
-      return 0
-    })
+  const { data: getAllCategory, isLoading } = useCategorySectionApisQuery();
+  const [bookmarkUpdate, { isLoading: bookmarkLoading }] =
+    useBookmarkUpdateMutation();
 
-  const toggleWishlist = (productId) => {
-    setProducts(
-      products.map((product) =>
-        product.id === productId
-          ? { ...product, isWishlisted: !product.isWishlisted }
-          : product
-      )
-    )
-  }
-  const navigate = useNavigate()
+  const categories = getAllCategory?.data;
+
+  const { data: getProducts, isLoading: isLoadingProducts, refetch } =
+    useGetProductApisQuery({ selectedCategory, sortBy, searchTerm });
+
+  const navigate = useNavigate();
+
+  const handleClickBookmark = async (product) => {
+    try {
+      const res = await bookmarkUpdate({
+        id: product,
+      }).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="responsive-width ">
       <div className="h-[100vh]  mx-auto px-4 !mt-5   overflow-y-auto scrollbar-none mb-20 ">
         <Breadcrumbs />
         <div className="flex justify-between items-center mb-6">
-          <Title level={2}>Electronics</Title>
+          <Title level={2}>{name}</Title>
         </div>
 
         <div className="flex gap-6 mb-6 overflow-x-auto pb-4">
-          {categories.map((category) => (
-            <div key={category} className="px-2 ">
-              <Badge className="!mt-2" dot={selectedCategory === category}>
+          {isLoading && (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+              <p className="text-[20px] font-semibold ml-2 !mt-5">Loading...</p>
+            </div>
+          )}
+          {categories?.map((category) => (
+            <div key={category?.name} className="px-2 ">
+              <Badge className="!mt-2" dot={selectedCategory === category?._id}>
                 <Card
                   hoverable
                   className="w-48 text-center cursor-pointer  !border-none"
-                  bodyStyle={{ padding: '12px' }}
-                  onClick={() => setSelectedCategory(category)}
+                  bodyStyle={{ padding: "12px" }}
+                  onClick={() => setSelectedCategory(category?._id)}
                 >
                   <div>
                     <img
-                      className="w-30 h-30 bg-gray-100 rounded-full mx-auto mb-2 p-5"
-                      src={productImage}
+                      className="w-30 h-30 bg-gray-100 rounded-full mx-auto mb-2 object-cover object-center"
+                      src={category?.category_image}
                       alt=""
                     />
                   </div>
-                  <Text>{category}</Text>
+                  <Text>{category?.name}</Text>
                 </Card>
               </Badge>
             </div>
@@ -166,67 +93,73 @@ const ServiceWithCategory = () => {
             />
           </div>
           <Select
-            defaultValue="relevance"
+            defaultValue="newest"
             className="w-48"
-            onChange={setSortBy}
+            onChange={(value) => setSortBy(value)}
             options={[
-              { value: 'relevance', label: 'Relevance' },
-              { value: 'price-low', label: 'Low to High' },
-              { value: 'price-high', label: 'High to Low' },
-              { value: 'newest', label: 'Newest' },
+              { value: "-price", label: "Low to High" },
+              { value: "price", label: "High to Low" },
+              { value: "", label: "Newest" },
             ]}
           />
         </div>
-
+        {isLoadingProducts && (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+            <p className="text-[20px] font-semibold ml-2 !mt-5">
+              Loading Products...
+            </p>
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product) => (
+          {getProducts?.data?.result?.map((product) => (
             <Card
-              onClick={() => {
-                navigate(`/sampler/shop/${product.title}/${product.id}`)
-              }}
-              key={product.id}
+              key={product?._id}
               className=" border  cursor-pointer border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
               cover={
                 <div className="relative">
-                  {product.isWishlisted ? (
+                  {product?.isBookmark ? (
                     <HeartFilled
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleWishlist(product.id)
+                      onClick={() => {
+                        handleClickBookmark(product?._id);
                       }}
-                      className="cursor-pointer absolute top-2 right-2 text-4xl font-bold text-red-500"
+                      className="cursor-pointer absolute top-2 right-2 text-4xl font-bold !text-red-500 rounded-full p-1"
                     />
                   ) : (
                     <HeartOutlined
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleWishlist(product.id)
+                      onClick={() => {
+                        handleClickBookmark(product?._id);
                       }}
                       className="cursor-pointer absolute top-2 right-2 text-4xl !text-gray-600 rounded-full p-1 hover:!text-red-500"
                     />
                   )}
                   <img
                     className="w-full h-[230px] object-cover object-center"
-                    alt={product.title}
-                    src={product.image}
+                    alt={product?.name}
+                    src={product?.images?.[0]}
                   />
                 </div>
               }
             >
               <Meta
-                title={product.title}
+                onClick={() => {
+                  navigate(
+                    `/sampler/shop/category/${product?.name}/${product?._id}`
+                  );
+                }}
+                title={product?.name}
                 description={
                   <div className="flex justify-between flex-col h-[100px]">
                     <div className="text-sm text-gray-600">
-                      {product.description}
+                      {product?.description}
                     </div>
                     <div className="flex justify-between items-center mt-2">
                       <span className="text-xl font-semibold">
-                        ${product.price.toFixed(2)}
+                        ${product?.price}
                       </span>
-                      <span className="text-gray-500 line-through">
+                      {/* <span className="text-gray-500 line-through">
                         ${product.originalPrice.toFixed(2)}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                 }
@@ -236,7 +169,7 @@ const ServiceWithCategory = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceWithCategory
+export default ServiceWithCategory;

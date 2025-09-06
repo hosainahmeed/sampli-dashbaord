@@ -1,19 +1,15 @@
-import React, { useRef } from 'react'
-import { Carousel } from 'antd'
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
-import productImage from '/public/product_image.svg'
+import React, { useRef } from "react";
+import { Carousel } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { useCategorySectionApisQuery } from "../../../../../Redux/sampler/categoryApis";
 
-const categories = [
-  { id: 1, name: 'Beauty', img: productImage },
-  { id: 2, name: 'Apparel', img: productImage },
-  { id: 3, name: 'Footwear', img: productImage },
-  { id: 4, name: 'Personal Care', img: productImage },
-  { id: 5, name: 'Home appliances', img: productImage },
-  { id: 6, name: 'Food & Beverage', img: productImage },
-]
 const CategoryCarousel = () => {
-  const carouselRef = useRef(null)
+  const carouselRef = useRef(null);
+
+  const { data: getAllCategory, isLoading } = useCategorySectionApisQuery();
+
+  const categories = getAllCategory?.data;
 
   return (
     <div className=" my-8 relative">
@@ -32,29 +28,37 @@ const CategoryCarousel = () => {
         <RightOutlined className="!text-white" />
       </button>
 
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+          <p className="text-[20px] font-semibold ml-2 !mt-5">Loading...</p>
+        </div>
+      )}
+
       <Carousel
         ref={carouselRef}
         dots={false}
-        slidesToShow={5}
-        slidesToScroll={2}
+        slidesToShow={4}
+        slidesToScroll={1}
         responsive={[
           { breakpoint: 1024, settings: { slidesToShow: 3 } },
           { breakpoint: 768, settings: { slidesToShow: 2 } },
           { breakpoint: 480, settings: { slidesToShow: 1 } },
         ]}
       >
-        {categories.map((category, index) => (
+        {categories?.map((category, index) => (
           <Link
-            to={`/sampler/shop/${category.name}`}
+            to={`/sampler/shop/${category._id}/${category.name}`}
             key={index}
             className="p-2"
+            state={{ categoryId: category.id }}
           >
-            <div className='flex flex-col items-center'>
-              <div className="flex flex-col items-center  justify-center w-48 h-48 p-4 border-gray-300 rounded-full border cursor-pointer hover:shadow-lg transition">
+            <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center overflow-hidden  justify-center w-52 h-52  border-gray-300 rounded-full border cursor-pointer hover:shadow-lg transition">
                 <img
-                  src={category.img}
+                  src={category.category_image}
                   alt={category.name}
-                  className="w-full object-cover object-center"
+                  className="w-52 h-52 bg-gray-100 rounded-full mx-auto  object-cover object-center"
                 />
               </div>
               <p className="text-sm text-black font-medium !mt-5 text-center">
@@ -65,7 +69,7 @@ const CategoryCarousel = () => {
         ))}
       </Carousel>
     </div>
-  )
-}
+  );
+};
 
-export default CategoryCarousel
+export default CategoryCarousel;
