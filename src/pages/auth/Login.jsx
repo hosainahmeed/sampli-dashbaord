@@ -1,20 +1,22 @@
-import React from "react";
-import { Button, Typography, Divider } from "antd";
-import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
-import "antd/dist/reset.css";
-import Logo from "../../components/ui/Logo";
-import { TiSocialFacebook } from "react-icons/ti";
-import InputField from "../../components/ui/InputField";
-import FormWrapper from "../../components/ui/FormWrapper";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useLoginMutation } from "../../Redux/authApis";
+import React from 'react'
+import { Button, Typography, Divider } from 'antd'
+import { AppleOutlined, GoogleOutlined } from '@ant-design/icons'
+import 'antd/dist/reset.css'
+import Logo from '../../components/ui/Logo'
+import { TiSocialFacebook } from 'react-icons/ti'
+import InputField from '../../components/ui/InputField'
+import FormWrapper from '../../components/ui/FormWrapper'
+import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { useLoginMutation } from '../../Redux/authApis'
 
-const { Title } = Typography;
+import { jwtDecode } from 'jwt-decode'
+
+const { Title } = Typography
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-  const [login, { isLoading: loginLoading }] = useLoginMutation();
+  const navigate = useNavigate()
+  const [login, { isLoading: loginLoading }] = useLoginMutation()
   const onFinish = async (values) => {
     if (values.email && values.password) {
       try {
@@ -23,17 +25,25 @@ const LoginForm = () => {
           .then((res) => {
             if (res?.success) {
               if (!loginLoading) {
-                localStorage.setItem("token", res?.data?.accessToken);
-                toast.success(res?.message);
-                navigate("/");
+                const token = res?.data?.accessToken
+                const decoded = jwtDecode(token)
+                localStorage.setItem('token', token)
+
+                if (decoded?.role == 'reviewer') {
+                  toast.success(res?.message)
+                  navigate('/sampler/campaign')
+                } else if (decoded?.role == 'business') {
+                  toast.success(res?.message)
+                  navigate('/')
+                }
               }
             }
-          });
+          })
       } catch (error) {
-        toast.error(error?.data?.message);
+        toast.error(error?.data?.message)
       }
     }
-  };
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
@@ -54,16 +64,16 @@ const LoginForm = () => {
             label="Email address"
             name="email"
             rules={[
-              { required: true, message: "Please enter your email!" },
-              { type: "email", message: "Enter a valid email address!" },
+              { required: true, message: 'Please enter your email!' },
+              { type: 'email', message: 'Enter a valid email address!' },
             ]}
             placeholder="MichealScott@gmail.com"
             type="email"
             style={{
-              width: "100%",
+              width: '100%',
               marginTop: 10,
               marginBottom: 10,
-              textAlign: "start",
+              textAlign: 'start',
             }}
           />
           <InputField
@@ -71,22 +81,22 @@ const LoginForm = () => {
             name="password"
             type="password"
             rules={[
-              { required: true, message: "Please confirm your password" },
+              { required: true, message: 'Please confirm your password' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve()
                   }
-                  return Promise.reject(new Error("Passwords do not match!"));
+                  return Promise.reject(new Error('Passwords do not match!'))
                 },
               }),
             ]}
             placeholder="Password"
             style={{
-              width: "100%",
+              width: '100%',
               marginTop: 10,
               marginBottom: 10,
-              textAlign: "start",
+              textAlign: 'start',
             }}
           />
 
@@ -121,7 +131,7 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-4 text-gray-500">
-          New to Sampli?{" "}
+          New to Sampli?{' '}
           <Link
             to="/choose-role"
             className="text-blue-500 hover:underline transtion-all"
@@ -131,7 +141,7 @@ const LoginForm = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

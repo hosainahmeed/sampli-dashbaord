@@ -1,50 +1,52 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import { Avatar, Button, Dropdown, Menu, Badge } from "antd";
-import { CiHeart, CiStar } from "react-icons/ci";
-import { BsQuestionLg } from "react-icons/bs";
-import { IoMdArrowDropdown, IoMdNotificationsOutline } from "react-icons/io";
+import React, { useEffect, useState } from 'react'
+import { Avatar, Button, Dropdown, Menu, Badge } from 'antd'
+import { CiHeart, CiStar } from 'react-icons/ci'
+import { BsQuestionLg } from 'react-icons/bs'
+import { IoMdArrowDropdown, IoMdNotificationsOutline } from 'react-icons/io'
 import {
   UserOutlined,
   SettingOutlined,
   WalletOutlined,
   LogoutOutlined,
-} from "@ant-design/icons";
-import brandlogo from "../../assets/logo/BrandLogo.svg";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { GrNotes } from "react-icons/gr";
+} from '@ant-design/icons'
+import brandlogo from '../../assets/logo/BrandLogo.svg'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { GrNotes } from 'react-icons/gr'
 import {
   MdKeyboardArrowDown,
   MdOutlineAttachMoney,
   MdOutlineCampaign,
   MdOutlineKeyboardArrowUp,
   MdRssFeed,
-} from "react-icons/md";
-import { LuShoppingCart } from "react-icons/lu";
-import ShoppingCartSampler from "../../pages/sampler/shoppingCartSampler/ShoppingCartSampler";
-import campaignIcon from "../../assets/campaign.svg";
-import feedInactive from "../../assets/cam.svg";
-import feedActive from "../../assets/feedAc.svg";
-import campaignInActive from "../../assets/campaignInActive.svg";
-import shopIcon from "../../assets/shopIcon.png";
-import shopInActive from "../../assets/shopInActive.svg";
+} from 'react-icons/md'
+import { LuShoppingCart } from 'react-icons/lu'
+import ShoppingCartSampler from '../../pages/sampler/shoppingCartSampler/ShoppingCartSampler'
+import campaignIcon from '../../assets/campaign.svg'
+import feedInactive from '../../assets/cam.svg'
+import feedActive from '../../assets/feedAc.svg'
+import campaignInActive from '../../assets/campaignInActive.svg'
+import shopIcon from '../../assets/shopIcon.png'
+import shopInActive from '../../assets/shopInActive.svg'
+import { jwtDecode } from 'jwt-decode'
 
 function Header() {
-  const navigate = useNavigate();
-  const [userType, setUserType] = useState("business"); // sampler, business
-  const [show, setShow] = useState(true);
+  const navigate = useNavigate()
+  const decode = jwtDecode(localStorage.getItem('token'))
+  const [userType, setUserType] = useState(decode?.role) // sampler, business
+  const [show, setShow] = useState(true)
   const user = {
-    photoURL: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
-    displayName: "Micheal Scott",
-    username: "@Micheal46",
-  };
+    photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
+    displayName: 'Micheal Scott',
+    username: '@Micheal46',
+  }
   //update
   const handleSignOut = () => {
-    toast.success("sigh out successfully!");
-    navigate("/login");
-    console.log("sign out");
-  };
+    toast.success('sigh out successfully!')
+    navigate('/login')
+    console.log('sign out')
+  }
 
   const menu = (
     <Menu className="w-56 rounded-xl shadow-lg">
@@ -78,7 +80,7 @@ function Header() {
       </Menu.Item>
       <div className="text-center text-gray-400 text-sm p-2">v1.10</div>
     </Menu>
-  );
+  )
   const menuSampler = (
     <Menu className="w-56 rounded-xl shadow-lg">
       <div className="p-4 flex items-center gap-3">
@@ -122,33 +124,33 @@ function Header() {
         Log out
       </Menu.Item>
     </Menu>
-  );
+  )
 
-  const location = useLocation();
+  const location = useLocation()
   // const getLinkClass = (path) => location.pathname === path && 'text-blue-600'
   const getLinkClass = (path) =>
-    location.pathname.startsWith(path) ? "text-blue-600" : "text-gray-500";
+    location.pathname.startsWith(path) ? 'text-blue-600' : 'text-gray-500'
 
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0)
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
+      const currentScrollPos = window.scrollY
 
-      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10)
 
-      setPrevScrollPos(currentScrollPos);
-    };
+      setPrevScrollPos(currentScrollPos)
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [prevScrollPos]);
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [prevScrollPos])
 
   const navItems = [
     {
-      to: "/sampler/campaign",
-      icon: location.pathname.startsWith("/sampler/campaign") ? (
+      to: '/sampler/campaign',
+      icon: location.pathname.startsWith('/sampler/campaign') ? (
         <img src={campaignIcon} alt="campaignActive" className="w-5 h-5" />
       ) : (
         <img
@@ -157,30 +159,30 @@ function Header() {
           className="w-5 h-5"
         />
       ),
-      text: "Campaign",
+      text: 'Campaign',
     },
     {
-      to: "/sampler/feed",
+      to: '/sampler/feed',
       icon: <MdRssFeed className="w-5 h-5 " />,
-      text: "Feed",
+      text: 'Feed',
     },
     {
-      to: "/sampler/shop",
-      icon: location.pathname.startsWith("/sampler/shop") ? (
+      to: '/sampler/shop',
+      icon: location.pathname.startsWith('/sampler/shop') ? (
         <img src={shopIcon} alt="shopActive" className="w-5 h-5" />
       ) : (
         <img src={shopInActive} alt="shopInActive" className="w-5 h-5" />
       ),
-      text: "Shop",
+      text: 'Shop',
     },
-  ];
+  ]
 
   return (
     <div>
       {/* Hosain part */}
-      {userType == "business" ? (
+      {userType !== 'reviewer' ? (
         <div className="px-2 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
-          <Link to={"/"}>
+          <Link to={'/'}>
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex items-center gap-4 text-2xl">
@@ -200,7 +202,7 @@ function Header() {
             <div className="flex items-center">
               <Dropdown
                 overlay={menu}
-                trigger={["click"]}
+                trigger={['click']}
                 placement="bottomRight"
               >
                 <Avatar
@@ -219,23 +221,23 @@ function Header() {
           {/* Top navbar */}
           <div
             className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
-              visible ? "translate-y-0" : "-translate-y-full"
+              visible ? 'translate-y-0' : '-translate-y-full'
             }`}
           >
             <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
-              <Link to={"/sampler/campaign"}>
+              <Link to={'/sampler/campaign'}>
                 <img src={brandlogo} alt="brand logo" />
               </Link>
               {/* Navigation links - visible on screens larger than 48rem */}
               <div className="hidden md:flex gap-20 text-gray-600">
                 <Link
-                  to={"/sampler/campaign"}
+                  to={'/sampler/campaign'}
                   className={`hover:text-black transition-all ${getLinkClass(
-                    "/sampler/campaign"
+                    '/sampler/campaign'
                   )}`}
                 >
                   <div className="flex gap-2">
-                    {location.pathname.startsWith("/sampler/campaign") ? (
+                    {location.pathname.startsWith('/sampler/campaign') ? (
                       <img
                         src={campaignIcon}
                         alt="campaignActive"
@@ -252,13 +254,13 @@ function Header() {
                   </div>
                 </Link>
                 <Link
-                  to={"/sampler/feed"}
+                  to={'/sampler/feed'}
                   className={`hover:text-black transition-all ${getLinkClass(
-                    "/sampler/feed"
+                    '/sampler/feed'
                   )}`}
                 >
                   <div className="flex gap-2 items-center justify-center ">
-                    {location.pathname.startsWith("/sampler/feed") ? (
+                    {location.pathname.startsWith('/sampler/feed') ? (
                       <img
                         src={feedActive}
                         alt="feedActive"
@@ -275,13 +277,13 @@ function Header() {
                   </div>
                 </Link>
                 <Link
-                  to={"/sampler/shop"}
+                  to={'/sampler/shop'}
                   className={`hover:text-black transition-all ${getLinkClass(
-                    "/sampler/shop"
+                    '/sampler/shop'
                   )}`}
                 >
                   <div className="flex gap-2">
-                    {location.pathname.startsWith("/sampler/shop") ? (
+                    {location.pathname.startsWith('/sampler/shop') ? (
                       <img
                         src={shopIcon}
                         alt="shopActive"
@@ -313,7 +315,7 @@ function Header() {
                 </Link>
                 <Dropdown
                   overlay={menuSampler}
-                  trigger={["click"]}
+                  trigger={['click']}
                   placement="bottomRight"
                 >
                   <Avatar
@@ -332,8 +334,8 @@ function Header() {
                 key={item.to}
                 className={`flex flex-col items-center text-xs ${
                   location.pathname.startsWith(item.to)
-                    ? "text-blue-600"
-                    : "text-gray-600"
+                    ? 'text-blue-600'
+                    : 'text-gray-600'
                 }`}
                 to={item.to}
               >
@@ -347,7 +349,7 @@ function Header() {
         </>
       )}
     </div>
-  );
+  )
 }
 
-export default Header;
+export default Header
