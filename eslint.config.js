@@ -1,21 +1,21 @@
-import pluginJs from '@eslint/js'
-import pluginReact from 'eslint-plugin-react'
+import pluginJs from "@eslint/js";
+import pluginReact from "eslint-plugin-react";
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
   {
-    files: ['**/*.{js,mjs,cjs,jsx}'],
+    files: ["**/*.{js,mjs,cjs,jsx}"],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      ecmaVersion: "latest",
+      sourceType: "module",
       globals: {
-        console: 'readonly',
-        window: 'readonly',
-        document: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        localStorage: 'readonly',
-        URL: 'readonly',
+        console: "readonly",
+        window: "readonly",
+        document: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        localStorage: "readonly",
+        URL: "readonly",
       },
     },
   },
@@ -23,7 +23,8 @@ export default [
   pluginReact.configs.flat.recommended,
   {
     rules: {
-      'react/prop-types': 'off',
+      "react/prop-types": "off",
+      "no-unused-vars": "off",
     },
   },
-]
+];

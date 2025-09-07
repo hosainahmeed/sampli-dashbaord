@@ -8,6 +8,14 @@ const productApis = baseApis.injectEndpoints({
         method: "GET",
         params: { sort: sortBy, searchTerm },
       }),
+      providesTags: ["Bookmark"],
+    }),
+    getSingleProductApis: builder.query({
+      query: ({ id }) => ({
+        url: `/product/get-single-product/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Bookmark"],
     }),
     bookmarkUpdate: builder.mutation({
       query: ({ id }) => ({
@@ -19,5 +27,8 @@ const productApis = baseApis.injectEndpoints({
   }),
 });
 
-export const { useGetProductApisQuery, useBookmarkUpdateMutation } =
-  productApis;
+export const {
+  useGetProductApisQuery,
+  useGetSingleProductApisQuery,
+  useBookmarkUpdateMutation,
+} = productApis;

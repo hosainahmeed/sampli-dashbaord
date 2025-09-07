@@ -21,8 +21,7 @@ const ServiceWithCategory = () => {
   const [sortBy, setSortBy] = useState("");
 
   const { data: getAllCategory, isLoading } = useCategorySectionApisQuery();
-  const [bookmarkUpdate, { isLoading: bookmarkLoading }] =
-    useBookmarkUpdateMutation();
+  const [bookmarkUpdate] = useBookmarkUpdateMutation();
 
   const categories = getAllCategory?.data;
 
