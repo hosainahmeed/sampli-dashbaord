@@ -26,8 +26,11 @@ const ServiceWithCategory = () => {
 
   const categories = getAllCategory?.data;
 
-  const { data: getProducts, isLoading: isLoadingProducts, refetch } =
-    useGetProductApisQuery({ selectedCategory, sortBy, searchTerm });
+  const {
+    data: getProducts,
+    isLoading: isLoadingProducts,
+    refetch,
+  } = useGetProductApisQuery({ selectedCategory, sortBy, searchTerm });
 
   const navigate = useNavigate();
 

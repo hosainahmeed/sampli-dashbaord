@@ -312,8 +312,8 @@ const SamplerFeed = () => {
     { key: 'mute', label: 'Mute User' },
   ]
 
-  const [showPicker, setShowPicker] = useState(false)
-  const [selectedEmoji, setSelectedEmoji] = useState('')
+  // const [showPicker, setShowPicker] = useState(false)
+  // const [selectedEmoji, setSelectedEmoji] = useState('')
 
   const [isModalOpenLike, setIsModalOpenLike] = useState(false)
   const showModalLike = () => {
