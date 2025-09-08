@@ -30,6 +30,7 @@ import campaignInActive from "../../assets/campaignInActive.svg";
 import shopIcon from "../../assets/shopIcon.png";
 import shopInActive from "../../assets/shopInActive.svg";
 import { jwtDecode } from "jwt-decode";
+import { useGetAllCartItemsQuery } from "../../Redux/sampler/cartApis";
 
 function Header() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function Header() {
     displayName: "Micheal Scott",
     username: "@Micheal46",
   };
-  //update
+
   const handleSignOut = () => {
     toast.success("sigh out successfully!");
     navigate("/login");

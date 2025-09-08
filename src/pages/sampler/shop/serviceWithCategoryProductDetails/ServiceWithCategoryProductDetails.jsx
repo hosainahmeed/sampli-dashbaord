@@ -1,5 +1,5 @@
 import { Button, Carousel, Pagination } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CardComponent from "../components/cardComponent/CardComponent";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import SCProductDetails from "./SCProductDetails";
@@ -9,7 +9,12 @@ import StoreProfileSampler from "./StoreProfileSampler";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import productImage from "/public/product_image.svg";
 import { useParams } from "react-router-dom";
-import { useGetSingleProductApisQuery } from "../../../../Redux/sampler/productApis";
+import {
+  useGetBusinessProductApisQuery,
+  useGetCategoryProductApisQuery,
+  useGetSingleProductApisQuery,
+  useGetVariantProductApisQuery,
+} from "../../../../Redux/sampler/productApis";
 
 const items = [
   {
@@ -148,8 +153,30 @@ const reviewData = [
   // Add more reviews here...
 ];
 const ServiceWithCategoryProductDetails = () => {
-  
+  const { id } = useParams();
+  const [businessId, setBusinessId] = useState(null);
+  const [categoryId, setCategoryId] = useState(null);
+
   const carouselRef = useRef(null);
+  const { data: getSingleProduct, refetch } = useGetSingleProductApisQuery({
+    id,
+  });
+ 
+  useEffect(() => {
+    if (getSingleProduct) {
+      setBusinessId(getSingleProduct?.data?.bussiness?._id);
+      setCategoryId(getSingleProduct?.data?.category?._id);
+    }
+  }, [getSingleProduct]);
+
+  const { data: getBusinessProducts } = useGetBusinessProductApisQuery(
+    businessId ? { id: businessId } : {},
+    { skip: !businessId }
+  );
+  const { data: getCategoryProducts } = useGetCategoryProductApisQuery(
+    categoryId ? { id: categoryId } : {},
+    { skip: !categoryId }
+  );
 
   const [reviewPage, setReviewPage] = useState(1);
   const reviewsPerPage = 5;
@@ -185,23 +212,30 @@ const ServiceWithCategoryProductDetails = () => {
           <RightOutlined className="!text-white" />
         </button>
 
-        <Carousel
-          ref={carouselRef}
-          dots={false}
-          slidesToShow={4}
-          slidesToScroll={2}
-          responsive={[
-            { breakpoint: 1024, settings: { slidesToShow: 3 } },
-            { breakpoint: 768, settings: { slidesToShow: 2 } },
-            { breakpoint: 480, settings: { slidesToShow: 1 } },
-          ]}
-        >
-          {items?.map((item, index) => (
-            <div className="ml-7" key={index}>
-              <CardComponent item={item} />
-            </div>
-          ))}
-        </Carousel>
+        {getBusinessProducts?.data?.result?.length > 0 ? (
+          <Carousel
+            ref={carouselRef}
+            dots={false}
+            slidesToShow={4}
+            slidesToScroll={2}
+            responsive={[
+              { breakpoint: 1024, settings: { slidesToShow: 3 } },
+              { breakpoint: 768, settings: { slidesToShow: 2 } },
+              { breakpoint: 480, settings: { slidesToShow: 1 } },
+            ]}
+          >
+            {getBusinessProducts?.data?.result?.map((item, index) => (
+              <div className="ml-7" key={index}>
+                <CardComponent item={item} />
+              </div>
+            ))}
+          </Carousel>
+        ) : (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 !mb-5"></div>
+            <p className="text-[20px] font-semibold ml-2 mt-5">Loading...</p>
+          </div>
+        )}
       </section>
 
       {/* store info */}
@@ -272,23 +306,30 @@ const ServiceWithCategoryProductDetails = () => {
           <RightOutlined className="!text-white" />
         </button>
 
-        <Carousel
-          ref={carouselRef}
-          dots={false}
-          slidesToShow={4}
-          slidesToScroll={2}
-          responsive={[
-            { breakpoint: 1024, settings: { slidesToShow: 3 } },
-            { breakpoint: 768, settings: { slidesToShow: 2 } },
-            { breakpoint: 480, settings: { slidesToShow: 1 } },
-          ]}
-        >
-          {items.map((item, index) => (
-            <div className="ml-7" key={index}>
-              <CardComponent item={item} />
-            </div>
-          ))}
-        </Carousel>
+        {getCategoryProducts?.data?.result?.length > 0 ? (
+          <Carousel
+            ref={carouselRef}
+            dots={false}
+            slidesToShow={4}
+            slidesToScroll={2}
+            responsive={[
+              { breakpoint: 1024, settings: { slidesToShow: 3 } },
+              { breakpoint: 768, settings: { slidesToShow: 2 } },
+              { breakpoint: 480, settings: { slidesToShow: 1 } },
+            ]}
+          >
+            {getCategoryProducts?.data?.result?.map((item, index) => (
+              <div className="ml-7" key={index}>
+                <CardComponent item={item} />
+              </div>
+            ))}
+          </Carousel>
+        ) : (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 !mb-5"></div>
+            <p className="text-[20px] font-semibold ml-2 mt-5">Loading...</p>
+          </div>
+        )}
       </section>
     </div>
   );

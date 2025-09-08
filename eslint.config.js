@@ -4,6 +4,11 @@ import pluginReact from "eslint-plugin-react";
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
   {
+    env: {
+      browser: true, // ✅ allows FormData
+      es2021: true,
+      node: true,
+    },
     files: ["**/*.{js,mjs,cjs,jsx}"],
     languageOptions: {
       ecmaVersion: "latest",

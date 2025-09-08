@@ -10,6 +10,20 @@ const productApis = baseApis.injectEndpoints({
       }),
       providesTags: ["Bookmark"],
     }),
+    getBusinessProductApis: builder.query({
+      query: ({ id }) => ({
+        url: `/product/get-all-product?bussiness=${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Bookmark"],
+    }),
+    getCategoryProductApis: builder.query({
+      query: ({ id }) => ({
+        url: `/product/get-all-product?category=${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Bookmark"],
+    }),
     getSingleProductApis: builder.query({
       query: ({ id }) => ({
         url: `/product/get-single-product/${id}`,
@@ -24,11 +38,21 @@ const productApis = baseApis.injectEndpoints({
       }),
       invalidatesTags: ["Bookmark"],
     }),
+    getVariantProductApis: builder.query({
+      query: ({ id }) => ({
+        url: `/variant/get-product-variant/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Bookmark"],
+    }),
   }),
 });
 
 export const {
   useGetProductApisQuery,
+  useGetBusinessProductApisQuery,
+  useGetCategoryProductApisQuery,
   useGetSingleProductApisQuery,
   useBookmarkUpdateMutation,
+  useGetVariantProductApisQuery,
 } = productApis;
