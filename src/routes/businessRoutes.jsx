@@ -15,23 +15,26 @@ import StoreProfile from "../pages/Business/store-profile/StoreProfile.jsx";
 import AllNotificationPage from "../pages/Business/NotificationPage/AllNotificationPage.jsx";
 import TransectionOfBusiness from "../pages/Business/balance/TransectionOfBusiness.jsx";
 import PageNotFound from "../pages/pageNotFound/PageNotFound.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import AddVariant from "../components/page-Component/AddVariant.jsx";
 
 export const businessRoutes = {
   path: "/",
   errorElement: <PageNotFound />,
   element: (
-    // <ProtectedRoute>
-    <MainLayout />
-    // </ProtectedRoute>
+    <ProtectedRoute>
+      <MainLayout />
+    </ProtectedRoute>
   ),
   children: [
-    { path: "/", element: <DashboardHome /> },
+    { path: "/business-dashboard", element: <DashboardHome /> },
     { path: "/campaign", element: <CampaignPage /> },
     { path: "/create-campaign", element: <CreateCampaign /> },
     { path: "/create-campaign/existing-product", element: <ExistingProduct /> },
     { path: "/sales", element: <SalesPage /> },
     { path: "/product", element: <ProductPage /> },
     { path: "/product/add-product", element: <AddProduct /> },
+    { path: "/add-variant/:productId", element: <AddVariant /> },
     { path: "/settings", element: <SettingPage /> },
     { path: "/campaign/single-campaign", element: <SingleCampaign /> },
     {

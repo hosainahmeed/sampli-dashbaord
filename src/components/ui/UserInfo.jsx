@@ -6,15 +6,42 @@ import InputField from '../../components/ui/InputField'
 import FormWrapper from '../../components/ui/FormWrapper'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { useAddBussinessInfoMutation } from '../../Redux/businessApis/addBussinessInfoApis'
 
 const { Title } = Typography
 
 const UserInfo = () => {
   const router = useNavigate()
-  const onFinish = (values) => {
-    console.log('Success:', values)
-    toast.success('Form submitted successfully!')
-    router('/contact-info')
+  const [addBussinessInfo, { loading }] = useAddBussinessInfoMutation()
+  const onFinish = async (values) => {
+    try {
+      const businessInfo = JSON.parse(localStorage.getItem('businessInfo'))
+      const data = {
+        ...values,
+        ...businessInfo,
+      }
+      const businessInfoData = {
+        bussinessName: data?.legalBusinessName,
+        email: data?.email,
+        tradeName: data?.tradeName,
+        bussinessType: data?.businessType,
+        industryType: data?.businessSector,
+        bussinessAddress: data?.businessAddress,
+        phoneNumber: data?.phone,
+        website: data?.website,
+        taxtIndentificationNumber: data?.taxId
+      }
+      await addBussinessInfo(businessInfoData).unwrap().then((res) => {
+        if (res.success) {
+          toast.success(res.message)
+          router('/contact-info')
+        }
+      })
+
+    } catch (error) {
+      toast.error(error?.data?.message)
+    }
+
   }
 
   return (
@@ -60,6 +87,8 @@ const UserInfo = () => {
           />
 
           <Button
+            loading={loading}
+            disabled={loading}
             type="primary"
             htmlType="submit"
             className="w-full"

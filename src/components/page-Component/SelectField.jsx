@@ -10,6 +10,7 @@ const SelectField = ({
   options = [],
   placeholder,
   onChange,
+  loading,
   ...props
 }) => {
   const handleChange = (value) => {
@@ -20,7 +21,7 @@ const SelectField = ({
 
   return (
     <Form.Item className="flex items-start justify-start" label={label} name={name} rules={rules} {...props}>
-      <Select placeholder={placeholder} onChange={handleChange}>
+      <Select loading={loading} placeholder={placeholder} onChange={handleChange}>
         {options.map((option) => (
           <Option key={option.value} value={option.value}>
             {option.label}

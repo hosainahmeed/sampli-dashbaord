@@ -17,12 +17,12 @@ const Sidebar = () => {
     {
       name: 'Dashboard',
       icon:
-        location?.pathname === '/' ? (
+        location?.pathname === '/business-dashboard' ? (
           <img className="w-5 h-5" src={activeHome} alt="home"></img>
         ) : (
           <img className="w-5 h-5" src={homeIcon} alt="home"></img>
         ),
-      path: '/',
+      path: '/business-dashboard',
     },
     {
       name: 'Campaign',

@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-import { Button, Card, Pagination } from "antd";
+import { Button, Card, Pagination, Skeleton } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import logo from "../../../assets/logo/logo.svg";
 import { CiCalendar, CiStar } from "react-icons/ci";
-import converImage from "../../../assets/cover-image.png";
+import coverImage from "../../../assets/cover-image.png";
 import SelectField from "../../../components/page-Component/SelectField";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import ReviewRating from "../../../components/store-profile-component/ReviewRating";
 import ReviewCard from "../../../components/store-profile-component/ReviewCard";
+import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
+import { useGetBusinessProductApisQuery } from "../../../Redux/sampler/productApis";
+import dummyProductImage from "../../../assets/logo/logo.svg";
 const { Meta } = Card;
 
 function StoreProfile() {
-  const description =
-    "It all started with a little camera shop in Brooklyn. Founded by Abe Berkowitz in 1966, Focus has faithfully served the New York City Metropolitan Area for over half a century. In that time, we’ve built a tight knit community of photographers, videographers, musicians, and other creators passionate about reaching their goals.Today we have two retail store locations, hundreds of employees, and millions of customers from around the world, whom we reach through our award-winning website. However, our mission remains the same: to help creators find the gear they need to realize their vision.";
+  const { data: profile, isLoading } = useGetProfileQuery();
+  const { data: products, isLoading: productLoading } = useGetBusinessProductApisQuery({ id: profile?.data?._id }, {
+    skip: !profile?.data?._id,
+  });
 
   const items = [
     {
@@ -169,10 +174,6 @@ function StoreProfile() {
   // Pagination logic for items
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
-  const currentItems = items.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   // Pagination logic for reviews
   const [reviewPage, setReviewPage] = useState(1);
@@ -195,37 +196,43 @@ function StoreProfile() {
       <div className="responsive-width w-full h-48 md:h-64 xl:h-72 z-[888] relative">
         <img
           className="w-full h-full object-cover"
-          src={converImage}
+          src={profile?.data?.coverImage || coverImage}
           alt="sampli cover image"
         />
       </div>
       <div className="max-w-screen-xl mx-auto px-2 -mt-12 md:-mt-24 z-[999] relative">
-        <div className="md:w-48 md:h-48 w-24 h-24 rounded-full shadow-2xl flex items-center bg-white justify-center">
-          <img src={logo} alt="sampli image logo" />
+        <div className="md:w-48 md:h-48 w-24 h-24 rounded-full overflow-hidden shadow-2xl flex items-center bg-white justify-center">
+          <img src={profile?.data?.logo || logo} alt="sampli image logo" />
         </div>
 
         <div>
           <h1 className="text-3xl font-semibold !mt-8 text-[#111]">
-            Shoe Store
+            {isLoading ? <Skeleton.Input /> : profile?.data?.bussinessName}
           </h1>
 
           <div className=" flex items-center gap-12 text-[#6D7486]">
             <h1 className="flex items-center gap-2">
               <CiCalendar />
-              Joined Feb 2002
+              {isLoading ? <Skeleton.Input size="small" /> : `Joined ${new Date(
+                profile?.data?.createdAt
+              ).toLocaleString("default", {
+                month: "short",
+                day: "numeric",
+                // year: "numeric",
+              })}`}
             </h1>
             <h1 className="flex items-center gap-2">
               <CiStar />
-              99% positive feedback
+              {isLoading ? <Skeleton.Input size="small" /> : "99% positive feedback"}
             </h1>
             <h1 className="flex items-center gap-2">
               <AiOutlineUser />
-              23 followers
+              {isLoading ? <Skeleton.Input size="small" /> : profile?.data?.followers?.length || 0} followers
             </h1>
           </div>
         </div>
         <p className="text-[#6D7486] text-xs xl:text-base leading-7">
-          {description}
+          {isLoading ? <Card loading /> : profile?.data?.bio}
         </p>
         <div className="flex md:items-center items-start md:flex-row flex-col  justify-between my-12">
           <h2 className="text-xl md:text-3xl">Items</h2>
@@ -234,13 +241,17 @@ function StoreProfile() {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-          {currentItems.map((item, index) => (
-            <CardComponent key={index} item={item} />
-          ))}
+          {productLoading || isLoading ?
+            Array.from({ length: 8 }).map((_, index) => (
+              <ProductLoaderCard key={index} />
+            ))
+            : products?.data?.result?.map((item) => (
+              <CardComponent key={item?._id} item={item} />
+            ))}
         </div>
         <Pagination
           current={currentPage}
-          total={items.length}
+          total={products?.data?.result?.length}
           pageSize={itemsPerPage}
           onChange={onPageChange}
           className="!my-12 flex items-center justify-center"
@@ -343,21 +354,21 @@ const CardComponent = ({ item }) => {
         <img
           className="lg:h-[250px] sm:h-[200px] h-[180px] object-contain md:object-cover xl:h-[300px]"
           alt="example"
-          src={item.image}
+          src={item?.images[0]}
         />
       }
     >
       <Meta
-        title={item.title}
+        title={item?.title}
         description={
           <>
-            <p>{item.description}</p>
+            <p>{item?.description}</p>
             <div className="flex justify-between items-center mt-2">
               <span className="text-xl font-semibold !text-black">
-                {item.price}
+                {item?.price}
               </span>
               <span className="text-gray-500 line-through">
-                {item.originalPrice}
+                {item?.originalPrice}
               </span>
             </div>
           </>
@@ -366,3 +377,36 @@ const CardComponent = ({ item }) => {
     </Card>
   );
 };
+
+
+const ProductLoaderCard = () => {
+  return (
+    <Card
+      className="shadow-md border-[1px] overflow-hidden border-[#eee]"
+      cover={<Skeleton.Image
+        style={{
+          height: "250px",
+          width: "100%",
+          objectFit: "cover",
+        }}
+        />}
+    >
+      <Meta
+        title={"Product Name"}
+        description={
+          <>
+            <p>{"Product Description"}</p>
+            <div className="flex justify-between items-center mt-2">
+              <span className="text-xl font-semibold !text-black">
+                {"Product Price"}
+              </span>
+              <span className="text-gray-500 line-through">
+                {"Original Price"}
+              </span>
+            </div>
+          </>
+        }
+      />
+    </Card>
+  );
+}

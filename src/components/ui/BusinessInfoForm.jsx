@@ -7,7 +7,7 @@ import {
   Typography,
   Divider,
 } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import FormWrapper from './FormWrapper';
 import InputField from './InputField';
 import SelectField from '../page-Component/SelectField';
@@ -15,36 +15,39 @@ import Logo from './Logo';
 import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
-const { Option } = Select;
 
 const BusinessInfoForm = () => {
   const options = [
-    { value: 'sole_proprietorship', label: 'Sole Proprietorship' },
-    { value: 'private_limited_company', label: 'Private Limited Company' },
+    { value: 'Sole Proprietorship', label: 'Sole Proprietorship' },
+    { value: 'Private Limited Company', label: 'Private Limited Company' },
     { value: 'partnership', label: 'Partnership' },
     { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
-    { value: 'corporation', label: 'Corporation' },
-    { value: 'sme', label: 'Small Business Enterprise (SME)' },
-    { value: 'startup', label: 'Startup' },
-    { value: 'online_retailer', label: 'Online Retailer/E-commerce' },
-    { value: 'manufacturing_company', label: 'Manufacturing Company' },
+    { value: 'Corporation', label: 'Corporation' },
+    { value: 'Small Business Enterprise (SME)', label: 'Small Business Enterprise (SME)' },
+    { value: 'Startup', label: 'Startup' },
+    { value: 'Online Retailer/E-commerce', label: 'Online Retailer/E-commerce' },
+    { value: 'Manufacturing Company', label: 'Manufacturing Company' },
   ];
   const SectorOptions = [
-    { value: 'beauty', label: 'Beauty' },
-    { value: 'apparel', label: 'Apparel' },
-    { value: 'footwear', label: 'Footwear' },
-    { value: 'personal_care', label: 'Personal Care' },
-    { value: 'home_appliances', label: 'Home Appliances' },
-    { value: 'food_beverage', label: 'Food & Beverage' },
-    { value: 'pets', label: 'Pets' },
-    { value: 'kids_baby', label: 'Kids & Baby' },
-    { value: 'jewelry', label: 'Jewelry' },
-    { value: 'women', label: 'Women' },
-    { value: 'men', label: 'Men' },
+    { value: 'Beauty', label: 'Beauty' },
+    { value: 'Apparel', label: 'Apparel' },
+    { value: 'Footwear', label: 'Footwear' },
+    { value: 'PersonalCare', label: 'Personal Care' },
+    { value: 'HomeAppliances', label: 'Home Appliances' },
+    { value: 'FoodAndBeverage', label: 'Food & Beverage' },
+    { value: 'Pets', label: 'Pets' },
+    { value: 'KidsBaby', label: 'Kids & Baby' },
+    { value: 'Jewelry', label: 'Jewelry' },
+    { value: 'Women', label: 'Women' },
+    { value: 'Men', label: 'Men' },
   ];
+
+  const location = useLocation()
+  console.log(location?.state?.email)
   const router = useNavigate();
   const onFinish = (values) => {
     console.log('Success:', values);
+    localStorage.setItem('businessInfo', JSON.stringify({ ...values, email: location?.state?.email }));
     toast.success('Form submitted successfully!');
     router('/user-info');
   };

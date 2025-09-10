@@ -24,17 +24,17 @@ const LoginForm = () => {
           .unwrap()
           .then((res) => {
             if (res?.success) {
+              console.log(res)
               if (!loginLoading) {
                 const token = res?.data?.accessToken
                 const decoded = jwtDecode(token)
                 localStorage.setItem('token', token)
-
-                if (decoded?.role == 'reviewer') {
+                if (decoded?.role === 'reviewer') {
                   toast.success(res?.message)
                   navigate('/sampler/campaign')
-                } else if (decoded?.role == 'business') {
+                } else if (decoded?.role === 'bussinessOwner') {
                   toast.success(res?.message)
-                  navigate('/')
+                  navigate('/business-dashboard')
                 }
               }
             }
