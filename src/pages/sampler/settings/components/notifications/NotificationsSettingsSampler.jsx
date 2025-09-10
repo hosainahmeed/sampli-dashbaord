@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { Switch } from 'antd'
+import React, { useState } from "react";
+import { Switch, message } from "antd";
 
 const NotificationsSettingsSampler = () => {
   const [settings, setSettings] = useState({
-    general: {
-      pushNotifications: false,
-    },
+    general: { pushNotifications: false },
     activity: {
       mentions: true,
       comments: false,
@@ -19,17 +17,21 @@ const NotificationsSettingsSampler = () => {
       newPosts: false,
       postsFromFollowers: false,
     },
-  })
+  });
 
   const handleToggle = (category, setting) => {
-    setSettings((prev) => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [setting]: !prev[category][setting],
-      },
-    }))
-  }
+    setSettings((prev) => {
+      const updated = {
+        ...prev,
+        [category]: {
+          ...prev[category],
+          [setting]: !prev[category][setting],
+        },
+      };
+
+      return updated;
+    });
+  };
 
   const NotificationSection = ({ title, items, category }) => (
     <div className="mb-8 border border-gray-200 p-5 rounded-2xl">
@@ -38,45 +40,42 @@ const NotificationsSettingsSampler = () => {
         {Object.entries(items).map(([key, value]) => (
           <div key={key} className="flex items-center justify-between py-2">
             <span className="text-sm text-gray-600 capitalize">
-              {key.replace(/([A-Z])/g, ' $1').trim()}
+              {key.replace(/([A-Z])/g, " $1").trim()}
             </span>
             <Switch
               checked={value}
               onChange={() => handleToggle(category, key)}
-              className="custom-switch"
               style={{
-                backgroundColor: value ? 'gray' : '#36D96F',
+                backgroundColor: value ? "#36D96F" : "gray",
               }}
             />
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 
   return (
-    <div className='!h-[95vh] overflow-y-auto scrollbar-none  '>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 ">Notifications</h2>
+    <div className="!h-[95vh] overflow-y-auto scrollbar-none">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Notifications</h2>
 
       <NotificationSection
         title="General"
         items={settings.general}
         category="general"
       />
-
       <NotificationSection
         title="Activity"
         items={settings.activity}
         category="activity"
       />
-
       <NotificationSection
         title="Recommendations"
         items={settings.recommendations}
         category="recommendations"
       />
     </div>
-  )
-}
+  );
+};
 
-export default NotificationsSettingsSampler
+export default NotificationsSettingsSampler;

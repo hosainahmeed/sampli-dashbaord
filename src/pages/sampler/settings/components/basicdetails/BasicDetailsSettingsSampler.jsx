@@ -1,93 +1,123 @@
-import React, { useState } from 'react'
-import { FaCircleChevronRight } from 'react-icons/fa6'
-import { Modal, Input, Button, Upload, message } from 'antd'
-import toast from 'react-hot-toast'
-import { UploadOutlined } from '@ant-design/icons'
+import React, { use, useEffect, useState } from "react";
+import { FaCircleChevronRight } from "react-icons/fa6";
+import { Modal, Input, Button, Upload, message } from "antd";
+import toast from "react-hot-toast";
+import { UploadOutlined } from "@ant-design/icons";
+import {
+  useGetShippingAddressQuery,
+  useUpdateShippingAddressMutation,
+} from "../../../../../Redux/sampler/shippingAddressApis";
+import ContactAndShipping from "./ContactAndShipping";
+import {
+  useGetReviewerProfileQuery,
+  useUpdateReviewerProfileMutation,
+} from "../../../../../Redux/sampler/reviewerProfileApis";
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!')
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
-  }
-  return isJpgOrPng && isLt2M
-}
 const BasicDetailsSettingsSampler = () => {
-  const [showUsernameModal, setShowUsernameModal] = useState(false)
-  const [showPhotoModal, setShowPhotoModal] = useState(false)
-  const [username, setUsername] = useState('ahsan')
-  const [selectedPhoto, setSelectedPhoto] = useState(
-    `https://img.freepik.com/free-photo/abstract-luxury-plain-blur-grey-black-gradient-used-as-background-studio-wall-display-your-products_1258-101806.jpg?t=st=1742792384~exp=1742795984~hmac=8373bcf22d114c8bc7cdd1a5f36680d730f4b600f07e304ba865f3870717be5f&w=740`
-  )
-  const [tempUsername, setTempUsername] = useState(username)
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
 
-  const handleSaveUsername = () => {
-    setUsername(tempUsername)
-    setShowUsernameModal(false)
-    toast.success('Username updated successfully!')
-  }
+  const { data: getAllShippingAddress } = useGetShippingAddressQuery();
+  const [updateShipping] = useUpdateShippingAddressMutation();
+  const { data: getReviewerData } = useGetReviewerProfileQuery();
+  const [updateReviewerProfile, { isLoading: isUpdating }] =
+    useUpdateReviewerProfileMutation();
+
+  const [username, setUsername] = useState(
+    getReviewerData?.data?.username || ""
+  );
+  const [name, setName] = useState(getReviewerData?.data?.name || "");
+  const [bio, setBio] = useState(getReviewerData?.data?.bio || "");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+
+  useEffect(() => {
+    if (getReviewerData?.data) {
+      const profileData = getReviewerData.data;
+      setUsername(profileData.username);
+      setName(profileData.name);
+      setBio(profileData.bio);
+    }
+  }, [getReviewerData]);
 
   const handleSavePhoto = () => {
-    setShowPhotoModal(false)
-    setImageFile(setImageFileSave)
-  }
+    setShowPhotoModal(false);
+    toast.success("Photo selected!");
+  };
 
-  const handleInfoUpdate = () => {
-    toast.success('Info updated successfully!')
-  }
-  const handleContactUpdate = () => {
-    toast.success('Contact information updated successfully!')
-  }
+  // Handle Info Update
+  const handleInfoUpdate = async () => {
+    try {
+      const formData = new FormData();
 
-  const [imagePreview, setImagePreview] = useState('')
-  const [imageFile, setImageFile] = useState(null)
-  const [setImageFileSave, isSetImageFileSave] = useState(null)
+      console.log(imageFile, username, name, bio);
+
+      if (imageFile) {
+        formData.append("profile_image", imageFile);
+      }
+
+      // formData.append(
+      //   "data",
+      //   JSON.stringify({
+      //     username,
+      //     name,
+      //     bio,
+      //   })
+      // );
+      // console.log(formData);
+      const data = {
+        username,
+        name,
+        bio,
+      };
+      await updateReviewerProfile({ data: formData }).unwrap();
+      await updateReviewerProfile({ data }).unwrap();
+      toast.success("Info updated successfully!");
+    } catch (error) {
+      toast.error("Update failed. Try again!");
+    }
+  };
+
+  // Handle image upload
   const handleImageChange = (info) => {
-    console.log(info)
     if (info.file) {
       const isJpgOrPng =
-        info.file.type === 'image/jpeg' || info.file.type === 'image/png'
+        info.file.type === "image/jpeg" || info.file.type === "image/png";
       if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG files!')
-        return
+        message.error("You can only upload JPG/PNG files!");
+        return;
       }
-
-      const isLt2M = info.file.size / 1024 / 1024 < 2
+      const isLt2M = info.file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        message.error('Image must be smaller than 2MB!')
-        return
+        message.error("Image must be smaller than 2MB!");
+        return;
       }
-      isSetImageFileSave(info.file)
-      setImagePreview(URL.createObjectURL(info.file))
+      setImageFile(info.file);
+      setImagePreview(URL.createObjectURL(info.file));
     }
-  }
+  };
 
   return (
-    <div className="!pb-20 h-[96vh] overflow-auto scroll-y-auto scrollbar-none">
+    <div className="!pb-20 h-[96vh] overflow-auto scrollbar-none">
       {/* Basic Details Section */}
-      <div className=" rounded-lg">
+      <div className="rounded-lg">
         <div className="flex justify-between mt-1 border-b border-gray-200 pb-2">
           <h2 className="text-2xl font-medium">Basic Information</h2>
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-4">
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-gray-200">
-                {imageFile ? (
+                {imagePreview ? (
                   <img
-                    src={URL.createObjectURL(imageFile)}
+                    src={imagePreview}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
                 ) : (
                   <img
-                    src={selectedPhoto}
+                    src={
+                      getReviewerData?.data?.profile_image ||
+                      "https://via.placeholder.com/150"
+                    }
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
@@ -95,7 +125,6 @@ const BasicDetailsSettingsSampler = () => {
               </div>
               <button
                 onClick={() => setShowPhotoModal(true)}
-                type="primary"
                 className="!text-sm cursor-pointer !font-medium border !text-black  !bg-white !border-gray-200 px-4 py-2 rounded-lg"
               >
                 Upload photo
@@ -121,21 +150,14 @@ const BasicDetailsSettingsSampler = () => {
               <FaCircleChevronRight size={20} className="text-gray-400" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 gap-4 mb-4">
               <div className="text-sm">
-                <p className="text-sm text-gray-600 mb-1">First name</p>
+                <p className="text-sm text-gray-600 mb-1">Name</p>
                 <Input
                   type="text"
                   className="w-full text-sm p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                  defaultValue="Michael Scott"
-                />
-              </div>
-              <div className="text-sm">
-                <p className="text-sm text-gray-600 mb-1">Last name</p>
-                <Input
-                  type="text"
-                  className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                  defaultValue="Michael Scott"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
             </div>
@@ -144,7 +166,8 @@ const BasicDetailsSettingsSampler = () => {
               <p className="text-sm text-gray-600 mb-1">About</p>
               <textarea
                 className="w-full p-2 border rounded-md h-32 border-gray-200 outline-none"
-                defaultValue="Michael Gary Scott is a fictional character in the NBC sitcom The Office, portrayed by Steve Carell. Michael is the regional manager of the Scranton, Pennsylvania branch of Dunder Mifflin, a paper company, for the majority of the series"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
               />
             </div>
           </div>
@@ -153,6 +176,7 @@ const BasicDetailsSettingsSampler = () => {
             <Button
               onClick={handleInfoUpdate}
               type="primary"
+              loading={isUpdating}
               className="!text-white px-4 py-2 rounded-md !text-sm font-medium !mt-6"
             >
               Update
@@ -162,102 +186,25 @@ const BasicDetailsSettingsSampler = () => {
       </div>
 
       {/* Contact & Shipping Information */}
-      <div className="border border-gray-200 p-5 mt-5 ">
-        <div className=" border-b border-gray-200">
-          <h2 className="text-lg font-medium">
-            Contact & Shipping Information
-          </h2>
-        </div>
-
-        <div className="mt-3 text-sm">
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Address</p>
-              <Input
-                type="text"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Country</p>
-                <select className="w-full p-2 border rounded-md  bg-white pr-8 border-gray-200 outline-none h-[40px]">
-                  <option>Select</option>
-                  <option>United States</option>
-                  <option>Canada</option>
-                </select>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-1">ZIP/Postal Code</p>
-                <Input
-                  type="text"
-                  className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">City</p>
-                <select className="w-full p-2 border rounded-md  bg-white pr-8 border-gray-200 outline-none h-[40px]">
-                  <option>Select</option>
-                  <option>Scranton</option>
-                  <option>New York</option>
-                </select>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-1">State</p>
-                <select className="w-full p-2 border rounded-md  bg-white pr-8 border-gray-200 outline-none h-[40px]">
-                  <option>Select</option>
-                  <option>Pennsylvania</option>
-                  <option>New York</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Phone number</p>
-                <Input
-                  type="tel"
-                  className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-1">
-                  Alternate Phone number
-                </p>
-                <Input
-                  type="tel"
-                  className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-end">
-            <Button
-              onClick={handleContactUpdate}
-              type="primary"
-              className="!text-white px-4 py-2 rounded-md !text-sm font-medium !mt-6"
-            >
-              Update
-            </Button>
-          </div>
-        </div>
-      </div>
+      <ContactAndShipping />
 
       {/* Username Change Modal */}
       <Modal
         title="Change Username"
-        visible={showUsernameModal}
+        open={showUsernameModal}
         onCancel={() => setShowUsernameModal(false)}
         footer={[
           <Button key="cancel" onClick={() => setShowUsernameModal(false)}>
             Cancel
           </Button>,
-          <Button key="save" type="primary" onClick={handleSaveUsername}>
+          <Button
+            key="save"
+            type="primary"
+            onClick={() => {
+              setUsername(username);
+              setShowUsernameModal(false);
+            }}
+          >
             Save
           </Button>,
         ]}
@@ -267,8 +214,8 @@ const BasicDetailsSettingsSampler = () => {
           Your new username will be visible to all users.
         </p>
         <Input
-          value={tempUsername}
-          onChange={(e) => setTempUsername(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter new username"
         />
       </Modal>
@@ -276,7 +223,7 @@ const BasicDetailsSettingsSampler = () => {
       {/* Photo Update Modal */}
       <Modal
         title="Update Photo"
-        visible={showPhotoModal}
+        open={showPhotoModal}
         onCancel={() => setShowPhotoModal(false)}
         footer={[
           <Button key="cancel" onClick={() => setShowPhotoModal(false)}>
@@ -300,7 +247,7 @@ const BasicDetailsSettingsSampler = () => {
               <img
                 src={imagePreview}
                 alt="preview"
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
             ) : (
               <div className="w-[100px]">
@@ -309,12 +256,11 @@ const BasicDetailsSettingsSampler = () => {
               </div>
             )}
           </Upload>
-
-          <p className="text-xs  text-gray-500 !mt-2">Max file size: 2MB</p>
+          <p className="text-xs text-gray-500 !mt-2">Max file size: 2MB</p>
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default BasicDetailsSettingsSampler
+export default BasicDetailsSettingsSampler;

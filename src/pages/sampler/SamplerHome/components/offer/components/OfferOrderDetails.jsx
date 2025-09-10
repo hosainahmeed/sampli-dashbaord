@@ -39,11 +39,11 @@ const OfferOrderDetails = ({ setIsClicked }) => {
       if (status !== "uploading") {
         console.log(info.file, info.fileList);
       }
-      if (status === "done") {
-        toast.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        toast.error(`${info.file.name} file upload failed.`);
-      }
+      // if (status === "done") {
+      //   toast.success(`${info.file.name} file uploaded successfully.`);
+      // } else if (status === "error") {
+      //   toast.error(`${info.file.name} file upload failed.`);
+      // }
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
