@@ -8,6 +8,7 @@ import {
   Modal,
   Dropdown,
   Tooltip,
+  Upload,
 } from "antd";
 import {
   ShareAltOutlined,
@@ -17,6 +18,7 @@ import {
   MoreOutlined,
   SendOutlined,
   EllipsisOutlined,
+  CameraOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import followingInactiveLogo from "../../../assets/feedLogo/following.svg";
@@ -31,6 +33,10 @@ import {
   useGetAllReviewQuery,
   useGetReviewerLikersQuery,
   useChangeLikesMutation,
+  useGetReviewerCommentsQuery,
+  usePostCommentLikesMutation,
+  useGetCommentsRepliesQuery,
+  usePostCommentRepliesMutation,
 } from "../../../Redux/sampler/reviewApis";
 
 const { TabPane } = Tabs;
@@ -42,136 +48,41 @@ const SamplerFeed = () => {
     category: activeCategory,
   });
 
+  // Change this to track which comment's replies are shown
+  const [showRepliesForComment, setShowRepliesForComment] = useState(null);
+
+  const { data: getCommentReplies } = useGetCommentsRepliesQuery(
+    {
+      id: showRepliesForComment,
+    },
+    {
+      skip: !showRepliesForComment,
+    }
+  );
+
   const [createComments] = useCreateCommentMutation();
+  const [postCommentLike] = usePostCommentLikesMutation();
   const [reviewId, setReviewId] = useState("");
+  const [replyText, setReplyText] = useState("");
   const [comments, setComments] = useState(false);
   const posts = reviewList?.data?.data?.result;
   const { data: getReviewerLikers, isLoading: likersLoading } =
     useGetReviewerLikersQuery({
       id: reviewId,
     });
+  const {
+    data: getReviewComments,
+    isLoading: commentsLoading,
+    refetch,
+  } = useGetReviewerCommentsQuery({
+    id: reviewId,
+  });
   const [reviewLikeUnlike] = useChangeLikesMutation();
+  const [postReplyChat] = usePostCommentRepliesMutation();
 
   const users = getReviewerLikers?.data?.result;
 
   const [activeTab, setActiveTab] = useState("popular");
-
-  // const [posts, setPosts] = useState([
-  //   {
-  //     id: 1,
-  //     author: {
-  //       name: "Gustavo",
-  //       handle: "@GustavoLubin",
-  //       avatar: `https://i.pravatar.cc/150?img=${Math.floor(
-  //         Math.random() * 70
-  //       )}`,
-  //     },
-  //     rating: 5.0,
-  //     productName: "Natural Glow Serum",
-  //     price: "$25.00",
-  //     category: "Electronics",
-  //     timeAgo: "24mins ago",
-  //     content:
-  //       "I've been using this serum for a month and the results are amazing! My skin looks more radiant and the texture has improved significantly. Totally worth the price!",
-  //     likes: 23,
-  //     liked: false,
-  //     comments: [
-  //       {
-  //         id: 1,
-  //         author: {
-  //           name: "Bassey",
-  //           handle: "@Bator",
-  //           avatar: `https://i.pravatar.cc/150?img=${Math.floor(
-  //             Math.random() * 70
-  //           )}`,
-  //         },
-  //         content: "AirPods offer efficient sound quality and connectivity.",
-  //         timeAgo: "23m",
-  //         likes: 21,
-  //         liked: false,
-  //         replies: [],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     author: {
-  //       name: "Chance",
-  //       handle: "@ChanceWestervelt",
-  //       avatar: `https://i.pravatar.cc/150?img=${Math.floor(
-  //         Math.random() * 70
-  //       )}`,
-  //     },
-  //     rating: 5.0,
-  //     productName: "WH-Portable Be...",
-  //     price: "$70.00",
-  //     category: "Electronics",
-  //     timeAgo: "23mins ago",
-  //     content:
-  //       "These headphones are absolutely incredible! The noise-canceling is top-notch and battery life is amazing. Been using them for a week now and I'm impressed with the sound quality. Great for both music and calls.",
-  //     likes: 23,
-  //     liked: false,
-  //     hasVideo: true,
-  //     comments: [],
-  //   },
-  //   {
-  //     id: 1,
-  //     author: {
-  //       name: "Gustavo",
-  //       handle: "@GustavoLubin",
-  //       avatar: `https://i.pravatar.cc/150?img=${Math.floor(
-  //         Math.random() * 70
-  //       )}`,
-  //     },
-  //     rating: 5.0,
-  //     productName: "Natural Glow Serum",
-  //     price: "$25.00",
-  //     category: "Electronics",
-  //     timeAgo: "24mins ago",
-  //     content:
-  //       "I've been using this serum for a month and the results are amazing! My skin looks more radiant and the texture has improved significantly. Totally worth the price!",
-  //     likes: 23,
-  //     liked: false,
-  //     comments: [
-  //       {
-  //         id: 1,
-  //         author: {
-  //           name: "Bassey",
-  //           handle: "@Bator",
-  //           avatar: `https://i.pravatar.cc/150?img=${Math.floor(
-  //             Math.random() * 70
-  //           )}`,
-  //         },
-  //         content: "AirPods offer efficient sound quality and connectivity.",
-  //         timeAgo: "23m",
-  //         likes: 21,
-  //         liked: false,
-  //         replies: [],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     author: {
-  //       name: "Chance",
-  //       handle: "@ChanceWestervelt",
-  //       avatar: `https://i.pravatar.cc/150?img=${Math.floor(
-  //         Math.random() * 70
-  //       )}`,
-  //     },
-  //     rating: 5.0,
-  //     productName: "WH-Portable Be...",
-  //     price: "$70.00",
-  //     category: "Electronics",
-  //     timeAgo: "23mins ago",
-  //     content:
-  //       "These headphones are absolutely incredible! The noise-canceling is top-notch and battery life is amazing. Been using them for a week now and I'm impressed with the sound quality. Great for both music and calls.",
-  //     likes: 23,
-  //     liked: false,
-  //     hasVideo: true,
-  //     comments: [],
-  //   },
-  // ]);
 
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
@@ -182,57 +93,17 @@ const SamplerFeed = () => {
     await reviewLikeUnlike({ id: postId });
   };
 
-  const handleCommentLike = (postId, commentId) => {
-    setPosts(
-      posts.map((post) => {
-        if (post.id === postId) {
-          const updatedComments = post.comments.map((comment) => {
-            if (comment.id === commentId) {
-              return {
-                ...comment,
-                likes: comment.liked ? comment.likes - 1 : comment.likes + 1,
-                liked: !comment.liked,
-              };
-            }
-            return comment;
-          });
-          return { ...post, comments: updatedComments };
-        }
-        return post;
-      })
-    );
+  const handleCommentLike = async (commentId) => {
+    console.log(commentId);
+    try {
+      await postCommentLike({ id: commentId });
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleComment = async (postId) => {
-    // if (!commentText.trim()) return;
-
-    // setPosts(
-    //   posts.map((post) => {
-    //     if (post.id === postId) {
-    //       return {
-    //         ...post,
-    //         comments: [
-    //           ...post.comments,
-    //           {
-    //             id: Date.now(),
-    //             author: {
-    //               name: "Current User",
-    //               handle: "@currentuser",
-    //               avatar: "/api/placeholder/32/32",
-    //             },
-    //             content: commentText,
-    //             timeAgo: "Just now",
-    //             likes: 0,
-    //             liked: false,
-    //             replies: [],
-    //           },
-    //         ],
-    //       };
-    //     }
-    //     return post;
-    //   })
-    // );
-
     try {
       await createComments({
         data: { text: commentText, review: postId },
@@ -253,88 +124,6 @@ const SamplerFeed = () => {
   const handleShare = () => {
     setShowShareModal(true);
   };
-
-  // const users = [
-  //   {
-  //     id: 1,
-  //     src: "https://randomuser.me/api/portraits/women/1.jpg",
-  //     name: "Chance Westervelt",
-  //     username: "@Chance23",
-  //     reviews: 23,
-  //   },
-  //   {
-  //     id: 2,
-  //     src: "https://randomuser.me/api/portraits/women/2.jpg",
-  //     name: "Lola Patel",
-  //     username: "@LolaP",
-  //     reviews: 42,
-  //   },
-  //   {
-  //     id: 3,
-  //     src: "https://randomuser.me/api/portraits/men/3.jpg",
-  //     name: "Elianore Quintero",
-  //     username: "@ElianoreQ",
-  //     reviews: 87,
-  //   },
-  //   {
-  //     id: 4,
-  //     src: "https://randomuser.me/api/portraits/women/4.jpg",
-  //     name: "Luna Chen",
-  //     username: "@LunaC",
-  //     reviews: 13,
-  //   },
-  //   {
-  //     id: 5,
-  //     src: "https://randomuser.me/api/portraits/men/5.jpg",
-  //     name: "Caelum Ortega",
-  //     username: "@CaelumO",
-  //     reviews: 25,
-  //   },
-  //   {
-  //     id: 6,
-  //     src: "https://randomuser.me/api/portraits/men/6.jpg",
-  //     name: "Kaito Santos",
-  //     username: "@KaitoS",
-  //     reviews: 67,
-  //   },
-  //   {
-  //     id: 7,
-  //     src: "https://randomuser.me/api/portraits/women/7.jpg",
-  //     name: "Astrid Hall",
-  //     username: "@AstridH",
-  //     reviews: 91,
-  //   },
-  //   {
-  //     id: 8,
-  //     src: "https://randomuser.me/api/portraits/men/8.jpg",
-  //     name: "Sage Patel",
-  //     username: "@SageP",
-  //     reviews: 56,
-  //   },
-  //   {
-  //     id: 9,
-  //     src: "https://randomuser.me/api/portraits/women/9.jpg",
-  //     name: "Lylah Martin",
-  //     username: "@LylahM",
-  //     reviews: 32,
-  //   },
-  //   {
-  //     id: 10,
-  //     src: "https://randomuser.me/api/portraits/men/10.jpg",
-  //     name: "Caspian Lee",
-  //     username: "@CaspianL",
-  //     reviews: 19,
-  //   },
-  // ];
-
-  const moreOptions = [
-    { key: "save", label: "Save Post" },
-    { key: "report", label: "Report Post" },
-    { key: "mute", label: "Mute User" },
-  ];
-
-  // const [showPicker, setShowPicker] = useState(false)
-  // const [selectedEmoji, setSelectedEmoji] = useState('')
 
   const [isModalOpenLike, setIsModalOpenLike] = useState(false);
   const showModalLike = (id) => {
@@ -359,8 +148,37 @@ const SamplerFeed = () => {
     }));
   };
 
+  const handleAllComments = (id) => {
+    setComments((prev) => !prev);
+    setReviewId(id);
+  };
+
+  const handleClickRepliesChat = (commentId) => {
+    console.log(commentId);
+    if (showRepliesForComment === commentId) {
+      setShowRepliesForComment(null); // Hide if already showing
+    } else {
+      setShowRepliesForComment(commentId); // Show replies for this comment
+    }
+  };
+
+  const moreOptions = [
+    { key: "save", label: "Save Post" },
+    { key: "report", label: "Report Post" },
+    { key: "mute", label: "Mute User" },
+  ];
+
+  const handleReply = async (commentId) => {
+    try {
+      await postReplyChat({ data: { text: replyText, parent: commentId } });
+      setReplyText("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="responsive-width !mt-2 !mb-20 h-screen">
+    <div className="responsive-width !mt-2 !mb-20 ">
       <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
         <div className="p-4 w-1/3  max-lg:w-full">
@@ -400,50 +218,6 @@ const SamplerFeed = () => {
 
         {/* right side */}
         <div className="w-2/3 max-lg:w-full">
-          {/* Feed Tabs */}
-          <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "following" ? (
-                    <img src={followingActiveLogo} alt="following active" />
-                  ) : (
-                    <img src={followingInactiveLogo} alt="following inactive" />
-                  )}
-                  <span>Following</span>
-                </div>
-              }
-              key="following"
-            />
-
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "new" ? (
-                    <img src={newActiveLogo} alt="new active" />
-                  ) : (
-                    <img src={newLogo} alt="new inactive" />
-                  )}
-                  <span>New</span>
-                </div>
-              }
-              key="new"
-            />
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "popular" ? (
-                    <img src={popularActiveLogo} alt="popular active" />
-                  ) : (
-                    <img src={popularInActiveLogo} alt="popular inactive" />
-                  )}
-                  <span>Popular</span>
-                </div>
-              }
-              key="popular"
-            />
-          </Tabs>
-
           {/* Category Pills */}
           <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
             {categoryList?.data?.map((category) => (
@@ -459,7 +233,6 @@ const SamplerFeed = () => {
           </div>
 
           {/* Feed Posts */}
-
           <div className="space-y-4">
             {posts?.map((post) => (
               <div key={post.id} className=" border border-gray-200 p-5">
@@ -518,24 +291,18 @@ const SamplerFeed = () => {
                         ? "Following"
                         : "Follow"}
                     </Button>
-                    <Dropdown menu={{ items: moreOptions }} trigger={["click"]}>
-                      <Button type="text" icon={<MoreOutlined />} />
-                    </Dropdown>
                   </div>
                 </div>
 
                 <p className="!my-5 text-gray-700 ">{post?.description}</p>
 
-                {post?.hasVideo && (
+                {post?.video && (
                   <div
                     className="relative rounded-lg overflow-hidden bg-gray-100 mb-4"
                     style={{ paddingTop: "56.25%" }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <video
-                        src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
-                        controls
-                      ></video>
+                      <video src={post?.video} controls></video>
                     </div>
                   </div>
                 )}
@@ -554,8 +321,8 @@ const SamplerFeed = () => {
                       {post?.totalLikers}
                     </button>
                     <button
-                      className="flex items-center gap-1 text-gray-500"
-                      onClick={() => setComments(true)}
+                      className="flex items-center gap-1 text-gray-500 cursor-pointer"
+                      onClick={() => handleAllComments(post?._id)}
                     >
                       <MessageOutlined />
                       {post?.totalComments}
@@ -603,65 +370,6 @@ const SamplerFeed = () => {
                   </div>
                 )}
 
-                {/* Comments Section */}
-                <div className="space-y-4">
-                  {comments &&
-                    post.comments.map((comment) => (
-                      <div key={comment.id} className="pl-8 space-y-2">
-                        <div className="flex items-start gap-2">
-                          <Avatar size="small" src={comment.author.avatar} />
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">
-                                {comment.author.name}
-                              </span>
-                              <span className="text-gray-500 text-xs">
-                                {comment.author.handle}
-                              </span>
-                              <span className="text-gray-400 text-xs">
-                                {comment.timeAgo}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              {comment.content}
-                            </p>
-                            <div className="flex items-center gap-4 mt-1">
-                              <button
-                                className="!text-xs !text-gray-500"
-                                onClick={() =>
-                                  handleCommentLike(post.id, comment.id)
-                                }
-                              >
-                                {comment.liked ? (
-                                  <HeartFilled className="!text-red-500 !text-sm" />
-                                ) : (
-                                  <HeartOutlined />
-                                )}
-                                {comment.likes}
-                              </button>
-                              <button
-                                className="!text-xs !text-gray-500 "
-                                onClick={() => setReplyingTo(comment.id)}
-                              >
-                                Reply
-                              </button>
-                            </div>
-                          </div>
-                          <Dropdown
-                            menu={{ items: moreOptions }}
-                            trigger={["click"]}
-                          >
-                            <Button
-                              type="text"
-                              size="small"
-                              icon={<EllipsisOutlined />}
-                            />
-                          </Dropdown>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-
                 {/* Comment Input */}
                 <div className="my-4 flex items-center gap-2">
                   <Avatar size="small" src={post?.reviewer?.profile_image} />
@@ -673,8 +381,6 @@ const SamplerFeed = () => {
                     onChange={(e) => setCommentText(e.target.value)}
                     suffix={
                       <div className="flex items-center gap-2">
-                        {/* <EmojiPicker /> */}
-                        {/* <SmileOutlined className="text-gray-400 cursor-pointer" /> */}
                         <SendOutlined
                           className="text-blue-500 cursor-pointer"
                           onClick={() => handleComment(post?._id)}
@@ -683,6 +389,151 @@ const SamplerFeed = () => {
                     }
                     onPressEnter={() => handleComment(post?._id)}
                   />
+                </div>
+
+                {/* Comments Section */}
+                <div className="space-y-4">
+                  {comments &&
+                    getReviewComments?.data?.result.map((comment) => (
+                      <div key={comment._id} className="pl-8 space-y-2">
+                        <div className="flex items-start gap-2">
+                          <Avatar
+                            size="small"
+                            src={comment?.commentorProfileImage}
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">
+                                {comment?.commentorName}
+                              </span>
+                              <span className="text-gray-400 text-xs">
+                                {new Intl.DateTimeFormat("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "2-digit",
+                                }).format(new Date(comment?.createdAt))}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              {comment?.text}
+                            </p>
+                            <div className="flex items-center gap-4 mt-1">
+                              <button
+                                className="!text-xs !text-gray-500 cursor-pointer flex gap-1"
+                                onClick={() => handleCommentLike(comment._id)}
+                              >
+                                {comment?.isMyLike ? (
+                                  <HeartFilled className="!text-red-500 !text-sm" />
+                                ) : (
+                                  <HeartOutlined />
+                                )}
+                                {comment?.totalLike}
+                              </button>
+
+                              <button
+                                className="!text-xs !text-gray-500 cursor-pointer"
+                                onClick={() => {
+                                  setReplyingTo(comment?._id);
+                                  setReplyText("");
+                                }}
+                              >
+                                Reply
+                              </button>
+                            </div>
+
+                            {/* Reply Input Field - Only show for the comment being replied to */}
+                            {replyingTo === comment?._id && (
+                              <div className="mt-3 flex items-center gap-2">
+                                <Avatar
+                                  size="small"
+                                  src={post?.reviewer?.profile_image}
+                                />
+                                <Input
+                                  placeholder="Write a reply..."
+                                  value={replyText}
+                                  onChange={(e) => setReplyText(e.target.value)}
+                                  suffix={
+                                    <div className="flex items-center gap-2">
+                                      <SendOutlined
+                                        className="text-blue-500 cursor-pointer"
+                                        onClick={() =>
+                                          handleReply(comment?._id)
+                                        }
+                                      />
+                                    </div>
+                                  }
+                                  onPressEnter={() => handleReply(comment?._id)}
+                                  autoFocus
+                                />
+                              </div>
+                            )}
+
+                            {/* Show replies button */}
+                            {comment?.totalReplies > 0 && (
+                              <div
+                                className="cursor-pointer text-sm mt-5 hover:text-blue-500"
+                                onClick={() =>
+                                  handleClickRepliesChat(comment?._id)
+                                }
+                              >
+                                {showRepliesForComment === comment?._id
+                                  ? `Hide ${comment?.totalReplies} replies`
+                                  : `See ${comment?.totalReplies} replies`}
+                              </div>
+                            )}
+
+                            {/* Only show replies for the specific comment that was clicked */}
+                            {showRepliesForComment === comment?._id &&
+                              getCommentReplies?.data?.result?.length > 0 &&
+                              getCommentReplies?.data?.result.map((reply) => (
+                                <div
+                                  key={reply._id}
+                                  className="ml-8 mt-3 p-3 bg-gray-50 rounded-lg"
+                                >
+                                  <div className="flex items-start gap-2">
+                                    <Avatar
+                                      size="small"
+                                      src={reply?.commentorProfileImage}
+                                    />
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <span className="font-medium">
+                                          {reply?.commentorName}
+                                        </span>
+                                        <span className="text-gray-400 text-xs">
+                                          {new Intl.DateTimeFormat("en-US", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "2-digit",
+                                          }).format(new Date(reply?.createdAt))}
+                                        </span>
+                                      </div>
+                                      <p className="text-sm text-gray-600">
+                                        {reply?.text}
+                                      </p>
+                                      <div className="flex items-center gap-4 mt-1">
+                                        <button
+                                          className="!text-xs !text-gray-500 cursor-pointer flex gap-1"
+                                          onClick={() =>
+                                            handleCommentLike(reply._id)
+                                          }
+                                        >
+                                          {reply?.isMyLike ? (
+                                            <HeartFilled className="!text-red-500 !text-sm" />
+                                          ) : (
+                                            <HeartOutlined />
+                                          )}
+                                          {reply?.totalLike}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             ))}
@@ -707,7 +558,6 @@ const SamplerFeed = () => {
         </Modal>
 
         {/* like modal */}
-
         {!likersLoading && (
           <Modal
             title={`Liked (${users?.length})`}
@@ -738,18 +588,9 @@ const SamplerFeed = () => {
                         <div className="text-sm font-medium flex-grow">
                           @{user?.username}
                         </div>
-                        {/* <div className="text-sm font-medium flex-grow">
-                        {user.reviews} reviews
-                      </div> */}
                       </div>
                     </div>
                   </div>
-                  {/* <Button
-                  type={followStatus[user?._id] ? "default" : "primary"}
-                  onClick={() => toggleFollow(user?._id)}
-                >
-                  {followStatus[user?._id] ? "Following" : "Follow"}
-                </Button> */}
                 </div>
               ))}
             </div>
