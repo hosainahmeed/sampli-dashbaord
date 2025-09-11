@@ -16,7 +16,7 @@ const productApis = baseApis.injectEndpoints({
         method: "GET",
         params: { status, searchTerm, sort },
       }),
-      providesTags: ["Bookmark", "product"],
+      providesTags: ["Bookmark", "product", "businessProfile"],
     }),
     getCategoryProductApis: builder.query({
       query: ({ id }) => ({
