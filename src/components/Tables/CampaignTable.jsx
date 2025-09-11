@@ -3,12 +3,14 @@ import { Table, Tag, Progress, Input, Button, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { FaAngleLeft } from 'react-icons/fa';
+import { useGetCampaignsQuery } from '../../Redux/businessApis/campaign/campaignApis';
 
 const { Option } = Select;
 
 const CampaignTable = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const { data: campaignsData } = useGetCampaignsQuery();
   const navigate = useNavigate();
   const totalSpent = 1000;
   const totalBudget = 2000;

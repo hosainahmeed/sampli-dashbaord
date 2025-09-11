@@ -16,6 +16,7 @@ import SignUpMoreInformation from "../pages/sampler/signup/SignUpMoreInformation
 import SelectAllCategories from "../pages/sampler/signup/selectCategories/SelectAllCategories.jsx";
 import { businessRoutes } from "./businessRoutes.jsx";
 import { samplerRoutes } from "./samplerRoutes.jsx";
+import BusinessSendOtp from "../pages/Business/business_auth/BusinessSendOtp.jsx";
 
 export const router = createBrowserRouter([
   businessRoutes,
@@ -38,4 +39,5 @@ export const router = createBrowserRouter([
   { path: "/sign-up-otp", element: <SignUpOtp /> },
   { path: "/sign-up-more-info", element: <SignUpMoreInformation /> },
   { path: "/sign-up-select-all-categories", element: <SelectAllCategories /> },
+  { path: "/business/otp", element: <BusinessSendOtp /> }
 ]);

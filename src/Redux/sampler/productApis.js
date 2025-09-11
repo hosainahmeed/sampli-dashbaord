@@ -8,14 +8,15 @@ const productApis = baseApis.injectEndpoints({
         method: "GET",
         params: { sort: sortBy, searchTerm },
       }),
-      providesTags: ["Bookmark"],
+      providesTags: ["Bookmark", "product"],
     }),
     getBusinessProductApis: builder.query({
-      query: ({ id }) => ({
+      query: ({ id, status, searchTerm, sort }) => ({
         url: `/product/get-all-product?bussiness=${id}`,
         method: "GET",
+        params: { status, searchTerm, sort },
       }),
-      providesTags: ["Bookmark"],
+      providesTags: ["Bookmark", "product"],
     }),
     getCategoryProductApis: builder.query({
       query: ({ id }) => ({
@@ -29,7 +30,7 @@ const productApis = baseApis.injectEndpoints({
         url: `/product/get-single-product/${id}`,
         method: "GET",
       }),
-      providesTags: ["Bookmark"],
+      providesTags: ["Bookmark", "product"],
     }),
     bookmarkUpdate: builder.mutation({
       query: ({ id }) => ({

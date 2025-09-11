@@ -2,15 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { url } from "./server";
 
 export const baseApis = createApi({
-  reducerPath: "SampliApis",
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: url,
-    prepareHeaders: (headers, { endpoint }) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        headers.set("Authorization", `${token}`);
-      }
-      return headers;
+    headers: {
+      Authorization: `${localStorage.getItem("token")}`,
     },
   }),
   tagTypes: [
@@ -21,6 +17,8 @@ export const baseApis = createApi({
     "Review",
     "Comments",
     "RepliesComments",
+    "product",
+    "businessProfile",
   ],
   endpoints: () => ({}),
 });

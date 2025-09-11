@@ -31,10 +31,12 @@ import shopIcon from "../../assets/shopIcon.png";
 import shopInActive from "../../assets/shopInActive.svg";
 import { jwtDecode } from "jwt-decode";
 import { useGetAllCartItemsQuery } from "../../Redux/sampler/cartApis";
+import { useGetProfileQuery } from "../../Redux/businessApis/business _profile/getprofileApi";
 
 function Header() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const { data: profile, isLoading } = useGetProfileQuery();
   let decode;
   if (token) {
     decode = jwtDecode(localStorage.getItem("token"));
@@ -43,14 +45,16 @@ function Header() {
   const [show, setShow] = useState(true);
   const user = {
     photoURL: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
-    displayName: "Micheal Scott",
-    username: "@Micheal46",
+    displayName: profile?.data?.bussinessName || "Guest User",
+    email: profile?.data?.email || "guest@User.com",
   };
 
   const handleSignOut = () => {
+    localStorage.removeItem("token");
     toast.success("sigh out successfully!");
-    navigate("/login");
-    console.log("sign out");
+    if (window !== undefined) {
+      window.location.reload();
+    }
   };
 
   const menu = (
@@ -59,7 +63,7 @@ function Header() {
         <Avatar size={48} src={user?.photoURL} />
         <div>
           <h1 className="font-semibold text-base">{user?.displayName}</h1>
-          <h1 className="font-normal opacity-75 text-sm">{user?.username}</h1>
+          <h1 className="font-normal opacity-75 text-sm">{user?.email}</h1>
         </div>
       </div>
       <Menu.Divider />
@@ -92,7 +96,7 @@ function Header() {
         <Avatar size={48} src={user?.photoURL} />
         <div>
           <h1 className="font-semibold text-base">{user?.displayName}</h1>
-          <h1 className="font-normal opacity-75 text-sm">{user?.username}</h1>
+          <h1 className="font-normal opacity-75 text-sm">{user?.email}</h1>
         </div>
       </div>
       <Menu.Divider />
@@ -187,7 +191,7 @@ function Header() {
       {/* Hosain part */}
       {userType !== "reviewer" ? (
         <div className="px-2 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
-          <Link to={"/"}>
+          <Link to={"/business-dashboard"}>
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex items-center gap-4 text-2xl">
@@ -225,9 +229,8 @@ function Header() {
         <>
           {/* Top navbar */}
           <div
-            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
-              visible ? "translate-y-0" : "-translate-y-full"
-            }`}
+            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"
+              }`}
           >
             <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
               <Link to={"/sampler/campaign"}>
@@ -337,11 +340,10 @@ function Header() {
             {navItems.map((item) => (
               <Link
                 key={item.to}
-                className={`flex flex-col items-center text-xs ${
-                  location.pathname.startsWith(item.to)
-                    ? "text-blue-600"
-                    : "text-gray-600"
-                }`}
+                className={`flex flex-col items-center text-xs ${location.pathname.startsWith(item.to)
+                  ? "text-blue-600"
+                  : "text-gray-600"
+                  }`}
                 to={item.to}
               >
                 {item.icon}

@@ -1,20 +1,34 @@
 import React from 'react';
-import { Button, Typography, message } from 'antd';
+import { Button, Typography } from 'antd';
 import 'antd/dist/reset.css';
 import Logo from '../../components/ui/Logo';
 import InputField from '../../components/ui/InputField';
 import FormWrapper from '../../components/ui/FormWrapper';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAddComplianceInfoMutation } from '../../Redux/businessApis/complianceApi';
 
 const { Title } = Typography;
 
 const ContactInfo = () => {
   const router = useNavigate();
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    toast.success('Form submitted successfully!');
-    router('/compliance-info');
+  const [addComplianceInfo, { isLoading }] = useAddComplianceInfoMutation()
+  const onFinish = async (values) => {
+    try {
+      console.log('Success:', values);
+      await addComplianceInfo(values).unwrap().then((res) => {
+        if (res.success) {
+          console.log(res)
+          toast.success(res.message)
+          router('/compliance-info')
+        } else {
+          throw new Error(res.message)
+        }
+      })
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong")
+    }
+
   };
 
   return (
@@ -53,7 +67,7 @@ const ContactInfo = () => {
             type="number"
             className="text-start"
             label="Phone Number"
-            name="phone"
+            name="phoneNumber"
             rules={[
               { required: true, message: 'Please enter your phone number!' },
             ]}
@@ -64,6 +78,8 @@ const ContactInfo = () => {
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10 }}
+            loading={isLoading}
+            disabled={isLoading}
           >
             Continue with Email
           </Button>

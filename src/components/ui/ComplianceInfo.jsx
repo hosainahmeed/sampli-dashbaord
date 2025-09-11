@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import InputField from './InputField'
 import toast from 'react-hot-toast'
+import { useAddbusinessDocumentMutation } from '../../Redux/businessApis/addBussinessInfoApis'
 
 const { Title } = Typography
 
@@ -14,75 +15,62 @@ const ComplianceInfo = () => {
   const [form] = Form.useForm()
   const [certificateFileList, setCertificateFileList] = useState([])
   const [licenseFileList, setLicenseFileList] = useState([])
+  const [addbusinessDocument, { isLoading }] = useAddbusinessDocumentMutation()
 
   // Allowed file types
   const allowedTypes = ['application/pdf', 'image/jpeg']
 
   const handleFileChange =
     (setFileList) =>
-    ({ fileList }) => {
-      const filteredFiles = fileList.filter((file) =>
-        allowedTypes.includes(file.type)
-      )
+      ({ fileList }) => {
+        const filteredFiles = fileList.filter((file) =>
+          allowedTypes.includes(file.type)
+        )
 
-      if (filteredFiles.length !== fileList.length) {
-        toast.error('Only PDF and JPG files are allowed!')
+        if (filteredFiles.length !== fileList.length) {
+          toast.error('Only PDF and JPG files are allowed!')
+        }
+
+        setFileList(filteredFiles)
       }
-
-      setFileList(filteredFiles)
-    }
 
   const handleFileRemove = (setFileList) => () => {
     setFileList([])
   }
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     const values = await form.validateFields();
-  //     const formData = new FormData();
-  //     formData.append("ein", values.ein);
-  //     if (certificateFileList.length > 0) {
-  //       formData.append("certificate", certificateFileList[0].originFileObj);
-  //     }
-  //     if (licenseFileList.length > 0) {
-  //       formData.append("license", licenseFileList[0].originFileObj);
-  //     }
-
-  //     console.log("Form Data:", {
-  //       EIN: values.ein,
-  //       Certificate: certificateFileList[0]?.name,
-  //       License: licenseFileList[0]?.name,
-  //     });
-
-  //     message.success("Form submitted successfully!");
-  //   } catch (error) {
-  //     message.error("Please fill out all fields correctly.");
-  //   }
-  // };
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields()
       const formData = new FormData()
-      formData.append('ein', values.ein)
-
+      const data = {
+        einNumber: parseInt(values.ein),
+      }
       if (certificateFileList.length > 0) {
-        formData.append('certificate', certificateFileList[0].originFileObj)
+        formData.append('incorparationCertificate', certificateFileList[0].originFileObj)
       }
       if (licenseFileList.length > 0) {
-        formData.append('license', licenseFileList[0].originFileObj)
+        formData.append('bussinessLicense', licenseFileList[0].originFileObj)
+      }
+      const finalData = {
+        ...data,
+        ...formData
       }
 
-      console.log('Form Data:', {
-        EIN: values.ein,
-        Certificate: certificateFileList[0]?.originFileObj,
-        License: licenseFileList[0]?.originFileObj,
+      await addbusinessDocument(finalData).unwrap().then((res) => {
+        if (res.success) {
+          toast.success(res.message)
+          navigate('/business-dashboard')
+          form.resetFields()
+          setCertificateFileList([])
+          setLicenseFileList([])
+          localStorage.removeItem('businessInfo')
+          localStorage.removeItem('userInfo')
+          localStorage.removeItem('email')
+        } else {
+          throw new Error(res.message)
+        }
       })
-
-      // Simulating a server request
-      toast.success('Register Success!')
-      navigate('/')
     } catch (error) {
-      toast.error('Please fill out all fields correctly.')
+      toast.error(error?.message || "Something went wrong")
     }
   }
 
@@ -131,8 +119,8 @@ const ComplianceInfo = () => {
                         certificateFileList[0].type === 'application/pdf'
                           ? 'https://img.icons8.com/fluency/48/000000/pdf.png'
                           : URL.createObjectURL(
-                              certificateFileList[0].originFileObj
-                            )
+                            certificateFileList[0].originFileObj
+                          )
                       }
                       alt="File Icon"
                       className="w-10 h-10"
@@ -193,8 +181,8 @@ const ComplianceInfo = () => {
                         licenseFileList[0].type === 'application/pdf'
                           ? 'https://img.icons8.com/fluency/48/000000/pdf.png'
                           : URL.createObjectURL(
-                              licenseFileList[0].originFileObj
-                            )
+                            licenseFileList[0].originFileObj
+                          )
                       }
                       alt="File Icon"
                       className="w-10 h-10"
@@ -247,6 +235,8 @@ const ComplianceInfo = () => {
 
             {/* Submit Button */}
             <Button
+              loading={isLoading}
+              disabled={isLoading}
               className="w-full bg-blue-500 text-white"
               type="primary"
               htmlType="submit"

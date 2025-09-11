@@ -98,7 +98,7 @@ const SignUpMoreInformation = () => {
               textAlign: 'start',
             }}
           >
-            <Select placeholder="Select your gender">
+            <Select size="middle" placeholder="Select your gender">
               <Select.Option value="Male">Male</Select.Option>
               <Select.Option value="Female">Female</Select.Option>
               <Select.Option value="Other">Other</Select.Option>
@@ -121,7 +121,7 @@ const SignUpMoreInformation = () => {
               textAlign: 'start',
             }}
           >
-            <Select showSearch placeholder="Select your age">
+            <Select size="middle" showSearch placeholder="Select your age">
               {Array.from({ length: 150 }).map((_, i) => (
                 <Select.Option key={i + 1} value={i + 1}>
                   {i + 1}
@@ -131,12 +131,13 @@ const SignUpMoreInformation = () => {
           </Form.Item>
 
           <Button
+            loading={addressLoading}
             type="primary"
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10 }}
           >
-            {addressLoading ? 'Loading...' : 'Continue'}
+            Continue
           </Button>
         </FormWrapper>
 
