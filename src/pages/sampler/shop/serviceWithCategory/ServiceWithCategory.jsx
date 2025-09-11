@@ -64,7 +64,13 @@ const ServiceWithCategory = () => {
           )}
           {categories?.map((category) => (
             <div key={category?.name} className="px-2 ">
-              <Badge className="!mt-2" dot={selectedCategory === category?._id}>
+              <Badge
+                className={
+                  selectedCategory === category?._id
+                    ? " shadow-xl overflow-hidden rounded-4xl  !mt-2"
+                    : ""
+                }
+              >
                 <Card
                   hoverable
                   className="w-48 text-center cursor-pointer  !border-none"
@@ -152,10 +158,16 @@ const ServiceWithCategory = () => {
                 title={product?.name}
                 description={
                   <div className="flex justify-between flex-col h-[100px]">
-                    <div className="text-sm text-gray-600">
-                      {product?.description}
-                    </div>
-                    <div className="flex justify-between items-center mt-2">
+                    <p
+                      className="text-sm text-gray-600"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          product?.description?.length > 50
+                            ? `${product?.description?.slice(0, 50)}...`
+                            : product?.description,
+                      }}
+                    />
+                    <div className="flex justify-between items-center mt-1">
                       <span className="text-xl font-semibold">
                         ${product?.price}
                       </span>

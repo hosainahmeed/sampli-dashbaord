@@ -245,13 +245,13 @@ const SCProductDetails = () => {
                               >
                                 {variant.variantValue}
                               </div>
-                              <div
+                              {/* <div
                                 className={`text-sm font-semibold ${
                                   isSelected ? "text-blue-600" : "text-gray-600"
                                 }`}
                               >
                                 ${variant.price}
-                              </div>
+                              </div> */}
 
                               {/* Show color preview if it's a color variant */}
                               {optionType.toLowerCase() === "color" &&

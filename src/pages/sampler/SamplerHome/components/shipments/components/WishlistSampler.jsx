@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button } from "antd";
 import toast from "react-hot-toast";
 import productImage from "/public/product_image.svg";
@@ -47,7 +47,9 @@ import { useNavigate } from "react-router-dom";
 
 const WishlistSampler = () => {
   const navigate = useNavigate();
-  const [bookmarkUpdate] = useBookmarkUpdateMutation();
+  const [bookmarkUpdate, { isLoading: bookmarkLoading }] =
+    useBookmarkUpdateMutation();
+  const [userId, setUserId] = useState("");
   const { data: wishlistData, isLoading } = useWishListApisQuery();
   const productData = wishlistData?.data?.result || [];
 
@@ -101,16 +103,24 @@ const WishlistSampler = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <div className="flex gap-4">
+        <div className="flex gap-4 !-mt-3">
           <Button
-            onClick={() => handleRemoveClickBookmark(record?.product?._id)}
-            className="hover:!text-black !text-gray-500 border border-blue-500 hover:bg-gray-100 cursor-pointer rounded !px-7 !py-5"
+            loading={bookmarkLoading && userId === record?.product?._id}
+            onClick={() => {
+              setUserId(record?.product?._id);
+              handleRemoveClickBookmark(record?.product?._id);
+            }}
+            className="hover:!text-black !text-gray-500 border  border-blue-500 hover:bg-gray-100 cursor-pointer rounded !px-7 !py-5"
           >
             Remove
           </Button>
           <button
             type="primary"
-            onClick={() => navigate(`/sampler/shop/category/${record?.product?.name}/${record?.product?._id}`)}
+            onClick={() =>
+              navigate(
+                `/sampler/shop/category/${record?.product?.name}/${record?.product?._id}`
+              )
+            }
             className="!text-blue-500 border border-blue-500 hover:bg-gray-100 cursor-pointer rounded px-3 py-2"
           >
             See Details

@@ -39,6 +39,7 @@ import {
   usePostCommentRepliesMutation,
 } from "../../../Redux/sampler/reviewApis";
 import { useAddToCartMutation } from "../../../Redux/sampler/cartApis";
+import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
 
 const { TabPane } = Tabs;
 
@@ -48,6 +49,11 @@ const SamplerFeed = () => {
   const { data: reviewList } = useGetAllReviewQuery({
     category: activeCategory,
   });
+
+  const { data: getMyProfile, isLoading: myProfileLoading } =
+    useGetProfileApisQuery();
+
+  const profileData = getMyProfile?.data;
 
   const [showRepliesForComment, setShowRepliesForComment] = useState(null);
 
@@ -70,12 +76,16 @@ const SamplerFeed = () => {
     useGetReviewerLikersQuery({
       id: reviewId,
     });
+
+  const [limit, setLimit] = useState(10);
+
   const {
     data: getReviewComments,
     isLoading: commentsLoading,
     refetch,
   } = useGetReviewerCommentsQuery({
     id: reviewId,
+    limit,
   });
   const [reviewLikeUnlike] = useChangeLikesMutation();
   const [postReplyChat] = usePostCommentRepliesMutation();
@@ -203,15 +213,12 @@ const SamplerFeed = () => {
         <div className="p-4 w-1/3  max-lg:w-full">
           <div className="flex items-center justify-between ">
             <div className="flex items-center gap-4 ">
-              <Avatar
-                size={64}
-                src={`https://i.pravatar.cc/150?img=${Math.floor(
-                  Math.random() * 70
-                )}`}
-              />
+              <Avatar size={64} src={`${profileData?.profile_image}`} />
               <div className="mt-3">
-                <h2 className="text-lg font-semibold">Micheal Scott</h2>
-                <p className="text-gray-500 text-sm">@BestBossAliveDunder</p>
+                <h2 className="text-lg font-semibold">{profileData?.name}</h2>
+                <p className="text-gray-500 text-sm">
+                  @{profileData?.username}
+                </p>
               </div>
             </div>
             <Link to={"/sampler/my-profile"} className="mb-5">
@@ -221,15 +228,21 @@ const SamplerFeed = () => {
 
           <div className="flex justify-between text-center">
             <div>
-              <div className="font-semibold ">142</div>
+              <div className="font-semibold ">
+                {profileData?.totalFollowers}
+              </div>
               <div className="text-gray-500 ">Reviews</div>
             </div>
             <div>
-              <div className="font-semibold  ">12.4k</div>
+              <div className="font-semibold  ">
+                {profileData?.totalFollowing}
+              </div>
               <div className="text-gray-500 ">Followers</div>
             </div>
             <div>
-              <div className="font-semibold  ">12.4k</div>
+              <div className="font-semibold  ">
+                {profileData?.totalFollowing}
+              </div>
               <div className="text-gray-500 ">Referrals</div>
             </div>
           </div>
@@ -597,6 +610,19 @@ const SamplerFeed = () => {
                         </div>
                       </div>
                     ))}
+                  {comments && (
+                    <div
+                      onClick={() => {
+                        setLimit((limit) => limit + 10);
+                        refetch();
+                      }}
+                      className="cursor-pointer text-sm mt-5 hover:text-blue-500 text-end"
+                    >
+                      {getReviewComments?.data?.meta?.total > limit
+                        ? "Load More"
+                        : ""}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

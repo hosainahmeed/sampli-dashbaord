@@ -70,8 +70,8 @@ const MyProfileSampler = () => {
               <p className="text-xl font-semibold">{profile?.name}</p>
               <p className="text-gray-500">@{profile?.username}</p>
               <p className="text-sm text-gray-500">
-                {profile?.followers?.length} followers •{" "}
-                {profile?.following?.length} following
+                {profile?.totalFollowers} followers •{" "}
+                {profile?.totalFollowing} following
               </p>
             </div>
           </div>

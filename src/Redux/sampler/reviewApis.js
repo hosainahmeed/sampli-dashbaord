@@ -34,9 +34,10 @@ const reviewApis = baseApis.injectEndpoints({
     }),
 
     getReviewerComments: builder.query({
-      query: ({ id }) => ({
+      query: ({ id, limit }) => ({
         url: `/comment/get-review-comments/${id}`,
         method: "GET",
+        params: { limit },
       }),
       providesTags: ["Comments", "Review"],
     }),
