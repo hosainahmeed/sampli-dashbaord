@@ -15,7 +15,6 @@ import { jwtDecode } from 'jwt-decode'
 const { Title } = Typography
 
 const LoginForm = () => {
-  const navigate = useNavigate()
   const [login, { isLoading: loginLoading }] = useLoginMutation()
   const onFinish = async (values) => {
     if (values.email && values.password) {
@@ -31,10 +30,14 @@ const LoginForm = () => {
                 localStorage.setItem('token', token)
                 if (decoded?.role === 'reviewer') {
                   toast.success(res?.message)
-                  navigate('/sampler/campaign')
+                  if (window !== undefined) {
+                    window.location.href = '/sampler/campaign'
+                  }
                 } else if (decoded?.role === 'bussinessOwner') {
                   toast.success(res?.message)
-                  navigate('/business-dashboard')
+                  if (window !== undefined) {
+                    window.location.href = '/business-dashboard'
+                  }
                 }
               }
             }
