@@ -12,6 +12,16 @@ const businessCreateProduct = baseApis.injectEndpoints({
       },
       invalidatesTags: ["product"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/product/update-product/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["product"],
+    }),
     deletePorduct: builder.mutation({
       query: (id) => {
         return {
@@ -24,5 +34,8 @@ const businessCreateProduct = baseApis.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation, useDeletePorductMutation } =
-  businessCreateProduct;
+export const {
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeletePorductMutation,
+} = businessCreateProduct;

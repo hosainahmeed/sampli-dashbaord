@@ -14,13 +14,18 @@ const { Option } = Select;
 
 const ProductTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
+  // const [statusFilter, setStatusFilter] = useState('');
   const [sortKey, setSortKey] = useState(null);
   const [openCsv, setOpenCsv] = useState(false);
   const [deleteProduct] = useDeletePorductMutation()
 
   const { data: profile } = useGetProfileQuery();
-  const { data: products, isLoading: productLoading } = useGetBusinessProductApisQuery({ id: profile?.data?._id }, {
+  const { data: products, isLoading: productLoading } = useGetBusinessProductApisQuery({
+    id: profile?.data?._id,
+    ...filterStatus !== '' && { status: filterStatus },
+    searchTerm: searchText,
+    sort: sortKey,
+  }, {
     skip: !profile?.data?._id,
   });
 
@@ -45,12 +50,6 @@ const ProductTable = ({ filterStatus }) => {
     }
   }, []);
 
-
-  const handleEdit = (productId) => {
-    console.log('Edit product:', productId);
-    // Your edit logic here
-  };
-
   const handleView = (productId) => {
     console.log('View product:', productId);
     // Your view logic here
@@ -72,21 +71,21 @@ const ProductTable = ({ filterStatus }) => {
         <div className="flex-center-center gap-2">
           <Select
             placeholder="Sort by"
-            onChange={setSortKey}
-            style={{ width: 120, marginBottom: 16 }}
+            onChange={(value) => setSortKey(value)}
+            style={{ width: 200, marginBottom: 16 }}
           >
-            <Option value="date">Date</Option>
-            <Option value="name">Name</Option>
+            <Option value="-price">Price (High to Low)</Option>
+            <Option value="price">Price (Low to High)</Option>
           </Select>
-          <Select
+          {/* <Select
             placeholder="Filter"
-            onChange={setStatusFilter}
+            onChange={(value) => setStatusFilter(value)}
             style={{ width: 120, marginBottom: 16 }}
           >
             <Option value="active">Active</Option>
             <Option value="draft">Draft</Option>
-            <Option value="inactive">Inactive</Option>
-          </Select>
+            <Option value="archived">Archived</Option>
+          </Select> */}
         </div>
       </div>
       <Table
@@ -94,7 +93,6 @@ const ProductTable = ({ filterStatus }) => {
         columns={productTableColumn({
           statusColors,
           handleDelete,
-          handleEdit,
           handleView
         })}
         dataSource={products?.data?.result}

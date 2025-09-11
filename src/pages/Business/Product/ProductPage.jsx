@@ -3,31 +3,31 @@ import ProductTable from '../../../components/Tables/ProductTable';
 import { Button, Modal, Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
-import UploadCsv from '../../../components/page-Component/UploadCsv';
+// import UploadCsv from '../../../components/page-Component/UploadCsv';
 import { Helmet } from 'react-helmet-async';
 
 function ProductPage() {
-  const [openCsv, setOpenCsv] = useState(false);
+  // const [openCsv, setOpenCsv] = useState(false);
   const items = [
     {
       label: 'All',
       key: 'all',
-      children: <ProductTable filterStatus={null} />,
+      children: <ProductTable filterStatus="" />,
     },
     {
       label: 'Active',
       key: 'active',
-      children: <ProductTable filterStatus="Active" />,
+      children: <ProductTable filterStatus="active" />,
     },
     {
       label: 'Draft',
       key: 'draft',
-      children: <ProductTable filterStatus="Draft" />,
+      children: <ProductTable filterStatus="draft" />,
     },
     {
       label: 'Archived',
       key: 'archived',
-      children: <ProductTable filterStatus="Archived" />,
+      children: <ProductTable filterStatus="archived" />,
     },
   ];
   return (
@@ -38,7 +38,7 @@ function ProductPage() {
       <div className="flex md:items-center items-start md:flex-row flex-col justify-between">
         <h2 className="my-3 text-2xl !font-semibold">Product</h2>
         <div className="flex-center-center gap-2">
-          <Button
+          {/* <Button
             onClick={() => {
               setOpenCsv(true);
             }}
@@ -46,7 +46,7 @@ function ProductPage() {
             className="flex items-center justify-center"
           >
             Upload CSV
-          </Button>
+          </Button> */}
           <Link to="/product/add-product">
             <Button className="flex items-center justify-center" type="primary">
               <FiPlus />
@@ -56,7 +56,7 @@ function ProductPage() {
         </div>
       </div>
       <Tabs className="!mt-4" items={items} />
-      <Modal
+      {/* <Modal
         centered
         footer={null}
         open={openCsv}
@@ -65,7 +65,7 @@ function ProductPage() {
         width={'fit-content'}
       >
         <UploadCsv setOpenCsv={setOpenCsv} />
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

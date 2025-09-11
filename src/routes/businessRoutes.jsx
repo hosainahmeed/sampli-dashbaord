@@ -17,6 +17,7 @@ import TransectionOfBusiness from "../pages/Business/balance/TransectionOfBusine
 import PageNotFound from "../pages/pageNotFound/PageNotFound.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import AddVariant from "../components/page-Component/AddVariant.jsx";
+import EditProduct from "../components/page-Component/EditProduct";
 
 export const businessRoutes = {
   path: "/",
@@ -27,13 +28,14 @@ export const businessRoutes = {
     </ProtectedRoute>
   ),
   children: [
-    { path: "/business-dashboard", element: <DashboardHome /> },
+    { path: "/business-dashboard", element: <DashboardHome />, index: true },
     { path: "/campaign", element: <CampaignPage /> },
     { path: "/create-campaign", element: <CreateCampaign /> },
     { path: "/create-campaign/existing-product", element: <ExistingProduct /> },
     { path: "/sales", element: <SalesPage /> },
     { path: "/product", element: <ProductPage /> },
     { path: "/product/add-product", element: <AddProduct /> },
+    { path: "/edit-product/:productId", element: <EditProduct /> },
     { path: "/add-variant/:productId", element: <AddVariant /> },
     { path: "/settings", element: <SettingPage /> },
     { path: "/campaign/single-campaign", element: <SingleCampaign /> },

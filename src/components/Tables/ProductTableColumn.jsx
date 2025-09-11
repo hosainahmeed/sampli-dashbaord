@@ -9,17 +9,18 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
 });
 
-export const productTableColumn = ({ statusColors, handleDelete, handleEdit, handleView }) => {
+export const productTableColumn = ({ statusColors, handleDelete, handleView }) => {
     const getActionItems = useMemo(() => (record) => [
         {
             key: 'view',
             label: (
                 <Button
                     type="text"
-                    className="w-full text-left p-0"
-                    onClick={() => handleView(record._id)}
+                    size='small'
+                    className="!w-full !text-left !p-0"
+                    onClick={() => handleView(record?._id)}
                 >
-                    <FaEye className="inline mr-2" /> View Product
+                    View Product
                 </Button>
             ),
         },
@@ -30,10 +31,11 @@ export const productTableColumn = ({ statusColors, handleDelete, handleEdit, han
                     title="Are you sure you want to delete this product?"
                     onConfirm={() => handleDelete(record._id)}>
                     <Button
+                        size='small'
                         type="text"
                         className="w-full text-left p-0 text-red-500 hover:text-red-600"
                     >
-                        <FaTrash className="inline mr-2" /> Delete Product
+                        Delete Product
                     </Button>
                 </Popconfirm>
             ),
@@ -41,13 +43,13 @@ export const productTableColumn = ({ statusColors, handleDelete, handleEdit, han
         {
             key: 'edit',
             label: (
-                <Link to={`/edit-product/${record._id}`}>
+                <Link to={`/edit-product/${record._id}`} state={{ id: record?._id }}>
                     <Button
+                        size='small'
                         type="text"
                         className="w-full text-left p-0 text-blue-500 hover:text-blue-600"
-                        onClick={() => handleEdit(record._id)}
                     >
-                        <FaEdit className="inline mr-2" /> Edit Product
+                        Edit Product
                     </Button>
                 </Link>
             ),
@@ -57,15 +59,16 @@ export const productTableColumn = ({ statusColors, handleDelete, handleEdit, han
             label: (
                 <Link to={`/add-variant/${record._id}`}>
                     <Button
+                        size='small'
                         type="text"
                         className="w-full text-left p-0 text-blue-500 hover:text-blue-600"
                     >
-                        <FaPlus className="inline mr-2" /> Add Variant
+                        Add Variant
                     </Button>
                 </Link>
             ),
         },
-    ], [handleDelete, handleEdit, handleView]);
+    ], [handleDelete, handleView]);
 
     // Memoize columns to prevent unnecessary re-renders
     const columns = useMemo(() => [
@@ -86,10 +89,9 @@ export const productTableColumn = ({ statusColors, handleDelete, handleEdit, han
                     )}
                     <div>
                         <h1 className="text-xs xl:text-sm font-medium">{text}</h1>
-                        <div className="flex items-center text-gray-500 gap-1 flex-wrap">
+                        <div className="flex items-center text-gray-500 gap-1 flex-nowrap">
                             <span className="text-xs xl:text-sm">#{record.item_id}</span>
-                            <span className="hidden xs:inline">•</span>
-                            <span className="text-xs xl:text-sm">{record.category}</span>
+                            <span className="text-xs xl:text-sm line-clamp-1">{record.category}</span>
                         </div>
                     </div>
                 </div>
@@ -148,7 +150,7 @@ export const productTableColumn = ({ statusColors, handleDelete, handleEdit, han
                     overlay={
                         <Menu items={getActionItems(record)} />
                     }
-                    placement="bottomLeft"
+                    placement="bottomRight"
                     trigger={['click']}
                     arrow
                 >
@@ -164,44 +166,3 @@ export const productTableColumn = ({ statusColors, handleDelete, handleEdit, han
 
     return columns;
 };
-
-// Usage example in a parent component:
-/*
-const MyComponent = () => {
-  const statusColors = {
-    active: 'green',
-    inactive: 'red',
-    draft: 'orange',
-  };
-
-  const handleDelete = (productId) => {
-    console.log('Delete product:', productId);
-    // Your delete logic here
-  };
-
-  const handleEdit = (productId) => {
-    console.log('Edit product:', productId);
-    // Your edit logic here
-  };
-
-  const handleView = (productId) => {
-    console.log('View product:', productId);
-    // Your view logic here
-  };
-
-  const columns = useProductTableColumn({
-    statusColors,
-    handleDelete,
-    handleEdit,
-    handleView
-  });
-
-  return (
-    <Table
-      columns={columns}
-      dataSource={productsData}
-      // other table props
-    />
-  );
-};
-*/
