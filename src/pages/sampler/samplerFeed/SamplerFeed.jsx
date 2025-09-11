@@ -38,6 +38,7 @@ import {
   useGetCommentsRepliesQuery,
   usePostCommentRepliesMutation,
 } from "../../../Redux/sampler/reviewApis";
+import { useAddToCartMutation } from "../../../Redux/sampler/cartApis";
 
 const { TabPane } = Tabs;
 
@@ -48,7 +49,6 @@ const SamplerFeed = () => {
     category: activeCategory,
   });
 
-  // Change this to track which comment's replies are shown
   const [showRepliesForComment, setShowRepliesForComment] = useState(null);
 
   const { data: getCommentReplies } = useGetCommentsRepliesQuery(
@@ -125,6 +125,8 @@ const SamplerFeed = () => {
     setShowShareModal(true);
   };
 
+  const [addCart, { isLoading }] = useAddToCartMutation();
+
   const [isModalOpenLike, setIsModalOpenLike] = useState(false);
   const showModalLike = (id) => {
     setReviewId(id);
@@ -177,6 +179,23 @@ const SamplerFeed = () => {
     }
   };
 
+  const handleClickAddToCart = async (productId, bussinessId) => {
+    try {
+      const data = {
+        productId,
+        bussinessId,
+        variantId: selectedVariant?._id || null,
+      };
+      const res = await addCart({
+        data,
+      }).unwrap();
+      toast.success(res?.message);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="responsive-width !mt-2 !mb-20 ">
       <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
@@ -218,6 +237,50 @@ const SamplerFeed = () => {
 
         {/* right side */}
         <div className="w-2/3 max-lg:w-full">
+          {/* Feed Tabs */}
+          <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
+            <TabPane
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === "following" ? (
+                    <img src={followingActiveLogo} alt="following active" />
+                  ) : (
+                    <img src={followingInactiveLogo} alt="following inactive" />
+                  )}
+                  <span>Following</span>
+                </div>
+              }
+              key="following"
+            />
+
+            <TabPane
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === "new" ? (
+                    <img src={newActiveLogo} alt="new active" />
+                  ) : (
+                    <img src={newLogo} alt="new inactive" />
+                  )}
+                  <span>New</span>
+                </div>
+              }
+              key="new"
+            />
+            <TabPane
+              tab={
+                <div className="flex gap-2">
+                  {activeTab === "popular" ? (
+                    <img src={popularActiveLogo} alt="popular active" />
+                  ) : (
+                    <img src={popularInActiveLogo} alt="popular inactive" />
+                  )}
+                  <span>Popular</span>
+                </div>
+              }
+              key="popular"
+            />
+          </Tabs>
+
           {/* Category Pills */}
           <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
             {categoryList?.data?.map((category) => (

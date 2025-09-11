@@ -1,15 +1,45 @@
-import { baseApis } from '../main/baseApis'
+import { baseApis } from "../main/baseApis";
 
 const profileApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
     updateProfileApis: builder.mutation({
       query: (data) => ({
-        url: '/reviewer/update-reviewer-profile',
-        method: 'PATCH',
+        url: "/reviewer/update-reviewer-profile",
+        method: "PATCH",
         body: data,
       }),
     }),
+    getProfileApis: builder.query({
+      query: () => ({
+        url: "/reviewer/get-profile",
+        method: "GET",
+      }),
+    }),
+    getMyReviews: builder.query({
+      query: () => ({
+        url: "/review/get-my-reviews",
+        method: "GET",
+      }),
+    }),
+    getMyComments: builder.query({
+      query: () => ({
+        url: "/comment/get-my-comments",
+        method: "GET",
+      }),
+    }),
+    getMyLikes: builder.query({
+      query: () => ({
+        url: "/comment/get-my-likes",
+        method: "GET",
+      }),
+    }),
   }),
-})
+});
 
-export const { useUpdateProfileApisMutation } = profileApis
+export const {
+  useUpdateProfileApisMutation,
+  useGetProfileApisQuery,
+  useGetMyReviewsQuery,
+  useGetMyCommentsQuery,
+  useGetMyLikesQuery,
+} = profileApis;

@@ -65,7 +65,6 @@ const SCProductDetails = () => {
     return product?.price;
   };
 
-  // Group variants by variantOption for better organization
   const getGroupedVariants = () => {
     const grouped = {};
     variants.forEach((variant) => {

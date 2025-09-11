@@ -1,10 +1,59 @@
-import React from 'react'
-import { FaInstagram, FaTiktok, FaTwitter, FaYoutube } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-import ProfileReviewsVideo from './ProfileReviewsVideo'
-
+import React from "react";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaRegComment,
+  FaTiktok,
+  FaTwitter,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import ProfileReviewsVideo from "./ProfileReviewsVideo";
+import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
+import { Tabs } from "antd";
+import { CiStar } from "react-icons/ci";
+import { AiOutlineLike } from "react-icons/ai";
+import AllLikes from "./allLikes";
+import AllComments from "./AllComments";
 
 const MyProfileSampler = () => {
+  const items = [
+    {
+      key: "1",
+      label: (
+        <div className="flex items-center gap-2">
+          <CiStar className=" text-2xl" /> Reviews
+        </div>
+      ),
+      children: <ProfileReviewsVideo />,
+    },
+    {
+      key: "2",
+      label: (
+        <div className="flex items-center gap-2">
+          <FaRegComment className=" text-xl" /> Comments
+        </div>
+      ),
+      children: <AllComments />,
+    },
+    {
+      key: "3",
+      label: (
+        <div className="flex items-center gap-2">
+          <AiOutlineLike className=" text-2xl" /> Liked
+        </div>
+      ),
+      children: <AllLikes />,
+    },
+  ];
+  const { data: profileData, isLoading } = useGetProfileApisQuery();
+  const profile = profileData?.data;
+
+  const onChange = (key) => {
+    console.log(key);
+  };
+
   return (
     <div className="responsive-width !mb-32">
       <div className="mx-auto bg-white p-6 text-gray-900">
@@ -12,53 +61,89 @@ const MyProfileSampler = () => {
           <div className="flex items-center space-x-4 ">
             <div>
               <img
-                src={`https://picsum.photos/seed/${Math.random()}/200`}
+                src={`${profile?.profile_image}`}
                 alt="Profile"
-                className="w-24 h-24 rounded-full"
+                className="w-24 h-24 rounded-full object-center object-cover"
               />
             </div>
-            <div className='leading-0'>
-              <p className="text-xl font-semibold">Micheal Scott</p>
-              <p className="text-gray-500">@Micheal46</p>
-              <p className="text-sm text-gray-500">0 followers • 0 following</p>
+            <div className="leading-0">
+              <p className="text-xl font-semibold">{profile?.name}</p>
+              <p className="text-gray-500">@{profile?.username}</p>
+              <p className="text-sm text-gray-500">
+                {profile?.followers?.length} followers •{" "}
+                {profile?.following?.length} following
+              </p>
             </div>
           </div>
           <Link
-            to={'/sampler/settings/basic-details-settings-sampler'}
+            to={"/sampler/settings/basic-details-settings-sampler"}
             className="border border-gray-200 !text-sm hover:bg-gray-100 cursor-pointer   px-4 py-2 rounded-lg "
           >
             Edit Profile
           </Link>
         </div>
-        <p className="!mt-2 text-gray-700 text-sm">
-          Michael Gary Scott is a fictional character in the NBC sitcom{' '}
-          <span className="font-semibold">The Office</span>, portrayed by Steve
-          Carell. Michael is the regional manager of the Scranton, Pennsylvania
-          branch of Dunder Mifflin, a paper company, for the majority of the
-          series.
-        </p>
+        <p className="!mt-2 text-gray-700 text-sm">{profile?.bio}</p>
         <div className="flex items-center gap-2 text-2xl">
-          <FaInstagram
-            onClick={() => {}}
-            className=" text-pink-500  cursor-pointer"
-          />
-          <FaTwitter
-            onClick={() => {}}
-            className=" text-blue-500 cursor-pointer"
-          />
-          <FaYoutube
-            onClick={() => {}}
-            className=" text-red-500 cursor-pointer"
-          />
-          <FaTiktok
-            onClick={() => {}}
-            className=" cursor-pointer"
-          />
+          {profile?.instagram && (
+            <FaInstagram
+              onClick={() => {
+                window.open(
+                  `https://www.instagram.com/${profile?.instagram}`,
+                  "_blank"
+                );
+              }}
+              className=" text-pink-500  cursor-pointer"
+            />
+          )}
+          {profile?.facebook && (
+            <FaFacebook
+              onClick={() => {
+                window.open(
+                  `https://www.facebook.com/${profile?.facebook}`,
+                  "_blank"
+                );
+              }}
+              className=" text-blue-700 cursor-pointer"
+            />
+          )}
+          {profile?.twitter && (
+            <FaTwitter
+              onClick={() => {
+                window.open(
+                  `https://www.twitter.com/${profile?.twitter}`,
+                  "_blank"
+                );
+              }}
+              className=" text-blue-500 cursor-pointer"
+            />
+          )}
+          {profile?.youtube && (
+            <FaYoutube
+              onClick={() => {
+                window.open(
+                  `https://www.youtube.com/channel/${profile?.youtube}`,
+                  "_blank"
+                );
+              }}
+              className=" text-red-500 cursor-pointer"
+            />
+          )}
+          {profile?.whatsapp && (
+            <FaWhatsapp
+              onClick={() => {
+                window.open(`https://wa.me/${profile?.whatsapp}`, "_blank");
+              }}
+              className=" text-green-500 cursor-pointer"
+            />
+          )}
         </div>
-        <ProfileReviewsVideo />
+
+        <div className="mt-10">
+          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyProfileSampler
+export default MyProfileSampler;
