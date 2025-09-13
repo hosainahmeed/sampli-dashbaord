@@ -19,6 +19,7 @@ export const baseApis = createApi({
     "RepliesComments",
     "product",
     "businessProfile",
+    "campaign",
   ],
   endpoints: () => ({}),
 });

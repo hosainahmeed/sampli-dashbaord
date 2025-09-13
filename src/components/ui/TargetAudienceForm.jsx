@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, DatePicker, Button } from 'antd';
 import InputField from './InputField';
 import FormWrapper from './FormWrapper';
 import toast from 'react-hot-toast';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 
-const DynamicSelect = ({ label, options, placeholder, onChange, ...rest }) => (
+const DynamicSelect = ({ label, options, placeholder, onChange, value, ...rest }) => (
   <div>
     {label && (
       <label className="block text-sm font-medium text-gray-700">{label}</label>
@@ -15,6 +16,7 @@ const DynamicSelect = ({ label, options, placeholder, onChange, ...rest }) => (
       placeholder={placeholder}
       className="w-full"
       required
+      value={value}
       onChange={onChange}
       {...rest}
     >
@@ -27,7 +29,7 @@ const DynamicSelect = ({ label, options, placeholder, onChange, ...rest }) => (
   </div>
 );
 
-const DynamicDatePicker = ({ label, placeholder, onChange, ...rest }) => (
+const DynamicDatePicker = ({ label, placeholder, onChange, value, ...rest }) => (
   <div>
     {label && (
       <label className="block text-sm font-medium text-gray-700">{label}</label>
@@ -36,71 +38,64 @@ const DynamicDatePicker = ({ label, placeholder, onChange, ...rest }) => (
       placeholder={placeholder}
       className="w-full"
       required
+      value={value}
       onChange={onChange}
       {...rest}
     />
   </div>
 );
 
-const ageRangeOptions = [
-  { label: '18yrs - 20yrs', value: '18-20' },
-  { label: '21yrs - 25yrs', value: '21-25' },
-  { label: '26yrs - 30yrs', value: '26-30' },
-  { label: '31yrs - 35yrs', value: '31-35' },
-  { label: '36yrs - 40yrs', value: '36-40' },
-  { label: '41yrs - 45yrs', value: '41-45' },
-  { label: '46yrs - 50yrs', value: '46-50' },
-  { label: '51yrs - 55yrs', value: '51-55' },
-  { label: '56yrs - 60yrs', value: '56-60' },
-  { label: '61yrs - 65yrs', value: '61-65' },
-  { label: '66yrs - 70yrs', value: '66-70' },
-  { label: '71yrs - 75yrs', value: '71-75' },
-  { label: '76yrs - 80yrs', value: '76-80' },
-  { label: '81yrs - 85yrs', value: '81-85' },
-  { label: '86yrs - 90yrs', value: '86-90' },
-  { label: '91yrs - 95yrs', value: '91-95' },
-  { label: '96yrs - 100yrs', value: '96-100' },
-  { label: '101yrs - 105yrs', value: '101-105' },
-  { label: '106yrs - 110yrs', value: '106-110' },
-  { label: '111yrs - 115yrs', value: '111-115' },
-  { label: '116yrs - 120yrs', value: '116-120' },
-];
-
 const genderOptions = [
-  { label: 'Male', value: 'Male' },
-  { label: 'Female', value: 'Female' },
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
   { label: 'Both', value: 'both' },
-  { label: 'Other', value: 'Other' },
+  { label: 'Other', value: 'other' },
 ];
 
 const TargetAudienceForm = () => {
   const [formData, setFormData] = useState({
     name: '',
-    costPerReview: '',
-    audienceSize: '',
+    amountForEachReview: '',
+    numberOfReviewers: '',
     location: '',
-    ageMin: '',
-    ageMax: '',
+    minAge: '',
+    maxAge: '',
     gender: 'Male',
-    timelineStart: null,
-    timelineEnd: null,
-    selectedProducts: [],
+    startDate: null,
+    endDate: null,
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem('targetAudience');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setFormData({
+        ...parsed,
+        startDate: parsed.startDate ? dayjs(parsed.startDate) : null,
+        endDate: parsed.endDate ? dayjs(parsed.endDate) : null,
+      });
+    }
+  }, []);
 
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleSubmit = () => {
+    if (!formData.name || !formData.amountForEachReview || !formData.numberOfReviewers) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
     const timeline =
-      formData.timelineStart && formData.timelineEnd
-        ? `${formData.timelineStart.format(
-            'MMM DD, YYYY'
-          )} - ${formData.timelineEnd.format('MMM DD, YYYY')}`
+      formData.startDate && formData.endDate
+        ? `${formData.startDate.format('MMM DD, YYYY')} - ${formData.endDate.format('MMM DD, YYYY')}`
         : '';
 
     const finalData = {
       ...formData,
+      startDate: formData.startDate ? formData.startDate.toISOString() : null,
+      endDate: formData.endDate ? formData.endDate.toISOString() : null,
       timeline,
     };
 
@@ -122,7 +117,7 @@ const TargetAudienceForm = () => {
           label="Campaign Name"
           placeholder="Campaign name"
           required
-          className="py-2"
+          value={formData.name}
           onChange={(e) => handleChange('name', e.target.value)}
         />
 
@@ -131,15 +126,17 @@ const TargetAudienceForm = () => {
             label="Amount Paid for Each Review"
             placeholder="$5"
             required
-            className="py-2"
-            onChange={(e) => handleChange('costPerReview', e.target.value)}
+            type='number'
+            value={formData.amountForEachReview}
+            onChange={(e) => handleChange('amountForEachReview', e.target.value)}
           />
           <InputField
             label="Number of Reviewers"
             placeholder="Number of Reviewers"
             required
-            className="py-2"
-            onChange={(e) => handleChange('audienceSize', e.target.value)}
+            type='number'
+            value={formData.numberOfReviewers}
+            onChange={(e) => handleChange('numberOfReviewers', e.target.value)}
           />
         </div>
 
@@ -147,6 +144,7 @@ const TargetAudienceForm = () => {
           label="Location"
           placeholder="Location"
           required
+          value={formData.location}
           onChange={(e) => handleChange('location', e.target.value)}
         />
 
@@ -154,16 +152,18 @@ const TargetAudienceForm = () => {
           <DynamicSelect
             label="Age Min Range"
             placeholder="Min age"
-            options={ageRangeOptions}
+            options={Array.from({ length: 100 }, (_, i) => ({ label: `${i + 1}`, value: i + 1 }))}
             required
-            onChange={(value) => handleChange('ageMin', value)}
+            value={formData.minAge}
+            onChange={(value) => handleChange('minAge', value)}
           />
           <DynamicSelect
             label="Age Max Range"
             placeholder="Max age"
-            options={ageRangeOptions}
+            options={Array.from({ length: 100 }, (_, i) => ({ label: `${i + 1}`, value: i + 1 }))}
             required
-            onChange={(value) => handleChange('ageMax', value)}
+            value={formData.maxAge}
+            onChange={(value) => handleChange('maxAge', value)}
           />
         </div>
 
@@ -172,21 +172,24 @@ const TargetAudienceForm = () => {
             label="Timeline Start"
             placeholder="Start date"
             required
-            onChange={(date) => handleChange('timelineStart', date)}
+            value={formData.startDate}
+            onChange={(date) => handleChange('startDate', date)}
           />
           <DynamicDatePicker
             label="Timeline End"
             placeholder="End date"
             required
-            onChange={(date) => handleChange('timelineEnd', date)}
+            value={formData.endDate}
+            onChange={(date) => handleChange('endDate', date)}
           />
         </div>
 
         <DynamicSelect
           label="Gender"
-          defaultValue="Male"
+          placeholder="Gender"
           options={genderOptions}
           required
+          value={formData.gender}
           onChange={(value) => handleChange('gender', value)}
         />
 

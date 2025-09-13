@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from 'antd';
 import { FaAngleLeft } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CampaignPerformanceChart from '../../components/ui/CampaignPerformanceChart';
 import AllFeedCard from '../../components/page-Component/AllFeedCard';
 import toast from 'react-hot-toast';
 
 function SingleCampaign() {
+  const { id } = useLocation().state;
+  console.log(id)
   const navigate = useNavigate();
   const statsData = {
     timeline: 'Mar 23, 2024 - Sep 30, 2024',
@@ -20,7 +22,7 @@ function SingleCampaign() {
   };
 
   const handleCampaignEdit = () => {
-    navigate('/campaign/single-campaign/edit-campaign');
+    navigate('/campaign/single-campaign/edit-campaign', { state: { id } });
   };
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-8">
@@ -90,10 +92,9 @@ function SingleCampaign() {
               <div
                 className="bg-blue-500 h-2 rounded-full"
                 style={{
-                  width: `${
-                    (statsData.progress.current / statsData.progress.total) *
+                  width: `${(statsData.progress.current / statsData.progress.total) *
                     100
-                  }%`,
+                    }%`,
                 }}
               ></div>
             </div>

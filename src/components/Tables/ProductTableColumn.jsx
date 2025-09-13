@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Button, Dropdown, Tag, Menu, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
-import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
@@ -81,17 +80,17 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView }) =
                 <div className="flex gap-2 items-center">
                     {record.images?.[0] && (
                         <img
-                            className="w-12 rounded-sm h-8 object-cover"
+                            className="w-12 rounded-sm h-12 object-cover"
                             src={record.images[0]}
                             alt={text || "Product"}
                             loading="lazy"
                         />
                     )}
                     <div>
-                        <h1 className="text-xs xl:text-sm font-medium">{text}</h1>
-                        <div className="flex items-center text-gray-500 gap-1 flex-nowrap">
-                            <span className="text-xs xl:text-sm">#{record.item_id}</span>
-                            <span className="text-xs xl:text-sm line-clamp-1">{record.category}</span>
+                        <h1 className="text-xs xl:text-sm leading-none font-medium">{text}</h1>
+                        <div className="flex items-center text-gray-500 flex-nowrap">
+                            {/* <span className="text-xs xl:text-sm">#{record?.category?._id}</span> */}
+                            •<span className="text-xs xl:text-sm leading-none line-clamp-1">{record?.category?.name}</span>
                         </div>
                     </div>
                 </div>

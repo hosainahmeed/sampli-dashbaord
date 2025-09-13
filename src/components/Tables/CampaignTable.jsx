@@ -11,214 +11,215 @@ const CampaignTable = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const { data: campaignsData } = useGetCampaignsQuery();
+  console.log(campaignsData?.data?.result)
   const navigate = useNavigate();
-  const totalSpent = 1000;
-  const totalBudget = 2000;
-  const campaigns = [
-    {
-      key: '1',
-      id: 1,
-      name: 'Summer Collection Review Group 1',
-      startAt: '2023-06-01',
-      endAt: '2023-06-01',
-      status: 'Active',
-      progress: 10,
-      total: 300,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
-    },
-    {
-      key: '2',
-      id: 2,
-      name: 'Summer Collection Review Group 2',
-      startAt: '2023-06-02',
-      endAt: '2023-06-02',
-      status: 'Scheduled',
-      progress: 20,
-      total: 500,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
-    },
-    {
-      key: '3',
-      id: 3,
-      name: 'Summer Collection Review Group 3',
-      startAt: '2023-06-03',
-      endAt: '2023-06-03',
-      status: 'Completed',
-      progress: 30,
-      total: 1000,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
-    },
-    {
-      key: '2',
-      id: 2,
-      name: 'Summer Collection Review Group 2',
-      startAt: '2023-06-02',
-      endAt: '2023-06-02',
-      status: 'Scheduled',
-      progress: 20,
-      total: 500,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
-    },
-    {
-      key: '3',
-      id: 3,
-      name: 'Summer Collection Review Group 3',
-      startAt: '2023-06-03',
-      endAt: '2023-06-03',
-      status: 'Completed',
-      progress: 30,
-      total: 1000,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
-    },
-    {
-      key: '2',
-      id: 2,
-      name: 'Summer Collection Review Group 2',
-      startAt: '2023-06-02',
-      endAt: '2023-06-02',
-      status: 'Scheduled',
-      progress: 20,
-      total: 500,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
-    },
-    {
-      key: '3',
-      id: 3,
-      name: 'Summer Collection Review Group 3',
-      startAt: '2023-06-03',
-      endAt: '2023-06-03',
-      status: 'Completed',
-      progress: 30,
-      total: 1000,
-      budget: (
-        <span>
-          $
-          {totalSpent.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          {' of '}
-          <span>
-            ${' '}
-            {totalBudget.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </span>
-      ),
-      image:
-        'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
-    },
-  ];
+  // const totalSpent = 1000;
+  // const totalBudget = 2000;
+  // const campaigns = [
+  //   {
+  //     key: '1',
+  //     id: 1,
+  //     name: 'Summer Collection Review Group 1',
+  //     startAt: '2023-06-01',
+  //     endAt: '2023-06-01',
+  //     status: 'Active',
+  //     progress: 10,
+  //     total: 300,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
+  //   },
+  //   {
+  //     key: '2',
+  //     id: 2,
+  //     name: 'Summer Collection Review Group 2',
+  //     startAt: '2023-06-02',
+  //     endAt: '2023-06-02',
+  //     status: 'Scheduled',
+  //     progress: 20,
+  //     total: 500,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
+  //   },
+  //   {
+  //     key: '3',
+  //     id: 3,
+  //     name: 'Summer Collection Review Group 3',
+  //     startAt: '2023-06-03',
+  //     endAt: '2023-06-03',
+  //     status: 'Completed',
+  //     progress: 30,
+  //     total: 1000,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
+  //   },
+  //   {
+  //     key: '2',
+  //     id: 2,
+  //     name: 'Summer Collection Review Group 2',
+  //     startAt: '2023-06-02',
+  //     endAt: '2023-06-02',
+  //     status: 'Scheduled',
+  //     progress: 20,
+  //     total: 500,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
+  //   },
+  //   {
+  //     key: '3',
+  //     id: 3,
+  //     name: 'Summer Collection Review Group 3',
+  //     startAt: '2023-06-03',
+  //     endAt: '2023-06-03',
+  //     status: 'Completed',
+  //     progress: 30,
+  //     total: 1000,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
+  //   },
+  //   {
+  //     key: '2',
+  //     id: 2,
+  //     name: 'Summer Collection Review Group 2',
+  //     startAt: '2023-06-02',
+  //     endAt: '2023-06-02',
+  //     status: 'Scheduled',
+  //     progress: 20,
+  //     total: 500,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/summer-beach-party-flat-design_23-2148443417.jpg',
+  //   },
+  //   {
+  //     key: '3',
+  //     id: 3,
+  //     name: 'Summer Collection Review Group 3',
+  //     startAt: '2023-06-03',
+  //     endAt: '2023-06-03',
+  //     status: 'Completed',
+  //     progress: 30,
+  //     total: 1000,
+  //     budget: (
+  //       <span>
+  //         $
+  //         {totalSpent.toLocaleString('en-US', {
+  //           minimumFractionDigits: 2,
+  //           maximumFractionDigits: 2,
+  //         })}
+  //         {' of '}
+  //         <span>
+  //           ${' '}
+  //           {totalBudget.toLocaleString('en-US', {
+  //             minimumFractionDigits: 2,
+  //             maximumFractionDigits: 2,
+  //           })}
+  //         </span>
+  //       </span>
+  //     ),
+  //     image:
+  //       'https://img.freepik.com/free-vector/summer-elements-collection_23-2148443418.jpg',
+  //   },
+  // ];
 
   const statusColors = {
     Active: 'orange',
@@ -227,11 +228,11 @@ const CampaignTable = () => {
     Paused: 'gray',
   };
 
-  const filteredCampaigns = campaigns.filter(
-    (campaign) =>
-      campaign.name.toLowerCase().includes(searchText.toLowerCase()) &&
-      (statusFilter === 'All' || campaign.status === statusFilter)
-  );
+  // const filteredCampaigns = campaigns.filter(
+  //   (campaign) =>
+  //     campaign.name.toLowerCase().includes(searchText.toLowerCase()) &&
+  //     (statusFilter === 'All' || campaign.status === statusFilter)
+  // );
 
   const columns = [
     {
@@ -241,10 +242,10 @@ const CampaignTable = () => {
       width: 350,
       render: (text, record) => (
         <span className="flex gap-2 items-center">
-          {record.image && (
+          {record?.product?.images && (
             <img
               className="w-8 xl:w-12 rounded-sm h-6 xl:h-8 object-cover"
-              src={record.image}
+              src={record?.product?.images[0]}
               alt="Campaign"
             />
           )}
@@ -252,12 +253,12 @@ const CampaignTable = () => {
             <h1 className="xl:text-sm text-xs">{text}</h1>
             <div className="flex items-center gap-2">
               <h1 className="text-xs text-[#6D7486]">
-                {new Date(record.startAt).toLocaleString('default', {
+                {new Date(record.startDate).toLocaleString('default', {
                   month: 'short',
                   day: 'numeric',
                 })}{' '}
                 -{' '}
-                {new Date(record.endAt).toLocaleString('default', {
+                {new Date(record.endDate).toLocaleString('default', {
                   month: 'short',
                   day: 'numeric',
                   year: 'numeric',
@@ -306,7 +307,7 @@ const CampaignTable = () => {
           type="default"
           className="!border-blue-500 !text-blue-500 hover:bg-gray-100"
           onClick={() => {
-            navigate(`single-campaign`, { state: { id: record.id } });
+            navigate(`single-campaign`, { state: { id: record._id } });
           }}
         >
           View
@@ -343,7 +344,7 @@ const CampaignTable = () => {
       </div>
       <Table
         columns={columns}
-        dataSource={filteredCampaigns}
+        dataSource={campaignsData?.data?.result}
         scroll={{ x: 1200 }}
         locale={{
           filterConfirm: 'Confirm',
@@ -359,7 +360,7 @@ const CampaignTable = () => {
           showSizeChanger: false,
           defaultPageSize: 5,
           defaultCurrent: 1,
-          total: filteredCampaigns.length,
+          total: campaignsData?.data?.meta?.total,
           position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
             if (type === 'prev' && current > 1) {

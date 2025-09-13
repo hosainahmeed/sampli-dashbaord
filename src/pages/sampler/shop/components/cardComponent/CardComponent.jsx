@@ -5,10 +5,12 @@ const { Meta } = Card;
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useBookmarkUpdateMutation } from "../../../../../Redux/sampler/productApis";
 import toast from "react-hot-toast";
+import Lottie from "react-lottie";
+import heartAnimation from "../../../../../../public/heart.json";
 const CardComponent = ({ item }) => {
   const navigate = useNavigate();
 
-  const [bookmarkUpdate] = useBookmarkUpdateMutation();
+  const [bookmarkUpdate, { isLoading: bookmarkLoading }] = useBookmarkUpdateMutation();
   const handleClickBookmark = async (product) => {
     try {
       const res = await bookmarkUpdate({
@@ -27,11 +29,19 @@ const CardComponent = ({ item }) => {
         <div>
           <button className="absolute top-4 right-4 z-10">
             {item?.isBookmark ? (
-              <HeartFilled
+              bookmarkLoading ? <HeartFilled
                 className="text-2xl font-bold !text-red-500 rounded-full p-1 "
                 onClick={() => {
                   handleClickBookmark(item?._id);
                 }}
+              /> : <Lottie
+                animationData={heartAnimation}
+                options={{
+                  loop: true,
+                  autoplay: true,
+                }}
+                height={20}
+                width={20}
               />
             ) : (
               <HeartOutlined

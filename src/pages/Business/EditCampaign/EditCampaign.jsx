@@ -1,188 +1,152 @@
-import React, { useState } from 'react';
-import InputField from '../../../components/ui/InputField';
-import FormWrapper from '../../../components/ui/FormWrapper';
-import { Button, DatePicker, Select } from 'antd';
-import toast from 'react-hot-toast';
+import React, { useEffect } from "react";
+import { Form, Input, Button, DatePicker, Select, Card } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import {
+  useGetCampaignByIdQuery,
+  useUpdateCampaignMutation,
+} from "../../../Redux/businessApis/campaign/campaignApis";
+import toast from "react-hot-toast";
+
 const { Option } = Select;
-const DynamicSelect = ({ label, options, placeholder, onChange, ...rest }) => (
-  <div>
-    {label && (
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
-    )}
-    <Select
-      placeholder={placeholder}
-      className="w-full"
-      required
-      onChange={onChange}
-      {...rest}
-    >
-      {options.map((option) => (
-        <Option key={option.value} value={option.value}>
-          {option.label}
-        </Option>
-      ))}
-    </Select>
-  </div>
-);
-
-const DynamicDatePicker = ({ label, placeholder, onChange, ...rest }) => (
-  <div>
-    {label && (
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
-    )}
-    <DatePicker
-      placeholder={placeholder}
-      className="w-full"
-      required
-      onChange={onChange}
-      {...rest}
-    />
-  </div>
-);
-
-const ageRangeOptions = [
-  { label: '18yrs - 20yrs', value: '18-20' },
-  { label: '21yrs - 25yrs', value: '21-25' },
-  { label: '26yrs - 30yrs', value: '26-30' },
-  { label: '31yrs - 35yrs', value: '31-35' },
-  { label: '36yrs - 40yrs', value: '36-40' },
-  { label: '41yrs - 45yrs', value: '41-45' },
-  { label: '46yrs - 50yrs', value: '46-50' },
-  { label: '51yrs - 55yrs', value: '51-55' },
-  { label: '56yrs - 60yrs', value: '56-60' },
-  { label: '61yrs - 65yrs', value: '61-65' },
-  { label: '66yrs - 70yrs', value: '66-70' },
-  { label: '71yrs - 75yrs', value: '71-75' },
-  { label: '76yrs - 80yrs', value: '76-80' },
-  { label: '81yrs - 85yrs', value: '81-85' },
-  { label: '86yrs - 90yrs', value: '86-90' },
-  { label: '91yrs - 95yrs', value: '91-95' },
-  { label: '96yrs - 100yrs', value: '96-100' },
-  { label: '101yrs - 105yrs', value: '101-105' },
-  { label: '106yrs - 110yrs', value: '106-110' },
-  { label: '111yrs - 115yrs', value: '111-115' },
-  { label: '116yrs - 120yrs', value: '116-120' },
-];
 
 const genderOptions = [
-  { label: 'Male', value: 'Male' },
-  { label: 'Female', value: 'Female' },
-  { label: 'Other', value: 'Other' },
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
+  { label: "Other", value: "other" },
 ];
 
 function EditCampaign() {
-  const [formData, setFormData] = useState({
-    name: '',
-    costPerReview: '',
-    audienceSize: '',
-    location: '',
-    ageMin: '',
-    ageMax: '',
-    gender: 'Male',
-    timelineStart: null,
-    timelineEnd: null,
-    selectedProducts: [],
+  const { id } = useLocation().state;
+  const { data: campaignData, isLoading } = useGetCampaignByIdQuery(id, {
+    skip: !id,
   });
+  const [updateCampaign, { isLoading: isUpdating }] = useUpdateCampaignMutation();
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-  const handleChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  // Prefill form when data loads
+  useEffect(() => {
+    if (campaignData?.data) {
+      const d = campaignData.data;
+      form.setFieldsValue({
+        name: d.name,
+        minAge: d.minAge,
+        maxAge: d.maxAge,
+        startDate: d.startDate ? dayjs(d.startDate) : null,
+        endDate: d.endDate ? dayjs(d.endDate) : null,
+        gender: d.gender,
+        location: d.location,
+      });
+    }
+  }, [campaignData, form]);
 
-  const handleSubmit = () => {
-    const timeline =
-      formData.timelineStart && formData.timelineEnd
-        ? `${formData.timelineStart.format(
-            'MMM DD, YYYY'
-          )} - ${formData.timelineEnd.format('MMM DD, YYYY')}`
-        : '';
-
-    const finalData = {
-      ...formData,
-      timeline,
+  const onFinish = async (values) => {
+    const payload = {
+      ...values,
+      startDate: values.startDate?.toISOString(),
+      endDate: values.endDate?.toISOString(),
     };
-
-    localStorage.setItem('targetAudience', JSON.stringify(finalData));
-    toast.success('Data saved successfully!');
+    try {
+      await updateCampaign({ id, data: payload }).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message);
+          navigate('/campaign');
+        }
+      });
+    } catch (err) {
+      toast.error(err?.data?.message || err.message || 'Something went wrong');
+    }
   };
+
+  if (isLoading) return <div className="container mx-auto">
+    <Card loading />
+  </div>;
+
   return (
-    <div className="max-w-screen-lg mx-auto">
-      <FormWrapper className="grid grid-cols-1 gap-4">
-        <InputField
+    <div className="max-w-screen-md mx-auto mt-8">
+      <Form
+        layout="vertical"
+        form={form} r
+        requiredMark={false}
+        onFinish={onFinish}
+        className="space-y-4"
+      >
+        <Form.Item
           label="Campaign Name"
-          placeholder="Campaign name"
-          required
-          className="py-2"
-          onChange={(e) => handleChange('name', e.target.value)}
-        />
+          name="name"
+          rules={[{ required: true, message: "Please enter campaign name" }]}
+        >
+          <Input placeholder="Campaign name" />
+        </Form.Item>
 
         <div className="grid grid-cols-2 gap-4">
-          <InputField
-            label="Amount Paid for Each Review"
-            placeholder="$5"
-            required
-            className="py-2"
-            onChange={(e) => handleChange('costPerReview', e.target.value)}
-          />
-          <InputField
-            label="Number of Reviewers"
-            placeholder="Number of Reviewers"
-            required
-            className="py-2"
-            onChange={(e) => handleChange('audienceSize', e.target.value)}
-          />
-        </div>
+          <Form.Item
+            label="Min Age"
+            name="minAge"
+            rules={[{ required: true, message: "Enter min age" }]}
+          >
+            <Input type="number" placeholder="18" />
+          </Form.Item>
 
-        <InputField
-          label="Location"
-          placeholder="Location"
-          required
-          onChange={(e) => handleChange('location', e.target.value)}
-        />
-
-        <div className="grid grid-cols-2 gap-4">
-          <DynamicSelect
-            label="Age Min Range"
-            placeholder="Min age"
-            options={ageRangeOptions}
-            required
-            onChange={(value) => handleChange('ageMin', value)}
-          />
-          <DynamicSelect
-            label="Age Max Range"
-            placeholder="Max age"
-            options={ageRangeOptions}
-            required
-            onChange={(value) => handleChange('ageMax', value)}
-          />
+          <Form.Item
+            label="Max Age"
+            name="maxAge"
+            rules={[{ required: true, message: "Enter max age" }]}
+          >
+            <Input type="number" placeholder="45" />
+          </Form.Item>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <DynamicDatePicker
-            label="Timeline Start"
-            placeholder="Start date"
-            required
-            onChange={(date) => handleChange('timelineStart', date)}
-          />
-          <DynamicDatePicker
-            label="Timeline End"
-            placeholder="End date"
-            required
-            onChange={(date) => handleChange('timelineEnd', date)}
-          />
+          <Form.Item
+            label="Start Date"
+            name="startDate"
+            rules={[{ required: true, message: "Select start date" }]}
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
+
+          <Form.Item
+            label="End Date"
+            name="endDate"
+            rules={[{ required: true, message: "Select end date" }]}
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
         </div>
 
-        <DynamicSelect
+        <Form.Item
           label="Gender"
-          defaultValue="Male"
-          options={genderOptions}
-          required
-          onChange={(value) => handleChange('gender', value)}
-        />
+          name="gender"
+          rules={[{ required: true, message: "Select gender" }]}
+        >
+          <Select placeholder="Select gender">
+            {genderOptions.map((g) => (
+              <Option key={g.value} value={g.value}>
+                {g.label}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
 
-        <Button type="primary" className="mt-4 w-full" onClick={handleSubmit}>
-          Save Data
+        <Form.Item
+          label="Location"
+          name="location"
+          rules={[{ required: true, message: "Please enter location" }]}
+        >
+          <Input placeholder="New York, USA" />
+        </Form.Item>
+
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="w-full"
+          loading={isUpdating}
+        >
+          Save Changes
         </Button>
-      </FormWrapper>
+      </Form>
     </div>
   );
 }

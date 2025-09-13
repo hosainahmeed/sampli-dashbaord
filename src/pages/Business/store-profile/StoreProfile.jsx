@@ -10,7 +10,7 @@ import ReviewRating from "../../../components/store-profile-component/ReviewRati
 import ReviewCard from "../../../components/store-profile-component/ReviewCard";
 import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
 import { useGetBusinessProductApisQuery } from "../../../Redux/sampler/productApis";
-import dummyProductImage from "../../../assets/logo/logo.svg";
+
 const { Meta } = Card;
 
 function StoreProfile() {
@@ -362,14 +362,14 @@ const CardComponent = ({ item }) => {
         title={item?.title}
         description={
           <>
-            <p>{item?.description}</p>
+            <p>{item?.shortDescription}</p>
             <div className="flex justify-between items-center mt-2">
               <span className="text-xl font-semibold !text-black">
-                {item?.price}
+                ${item?.price}
               </span>
-              <span className="text-gray-500 line-through">
-                {item?.originalPrice}
-              </span>
+              {item?.originalPrice && <span className="text-gray-500 line-through">
+                ${item?.originalPrice}
+              </span>}
             </div>
           </>
         }
@@ -389,7 +389,7 @@ const ProductLoaderCard = () => {
           width: "100%",
           objectFit: "cover",
         }}
-        />}
+      />}
     >
       <Meta
         title={"Product Name"}
