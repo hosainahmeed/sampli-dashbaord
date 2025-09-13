@@ -1,90 +1,91 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Typography, Input, Button } from 'antd'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import Logo from '../../../components/ui/Logo'
+import React, { useState, useRef, useEffect } from "react";
+import { Typography, Input, Button } from "antd";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Logo from "../../../components/ui/Logo";
 import {
   useAuthSectionVerifyCodeMutation,
   useResendVerifyCodeMutation,
-} from '../../../Redux/sampler/authSectionApis'
-import toast from 'react-hot-toast'
+} from "../../../Redux/sampler/authSectionApis";
+import toast from "react-hot-toast";
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 const SignUpOtp = () => {
-  const location = useLocation()
+  const location = useLocation();
 
-  const navigate = useNavigate()
-  const [verifyEmail, { isLoading }] = useAuthSectionVerifyCodeMutation()
+  const navigate = useNavigate();
+  const [verifyEmail, { isLoading }] = useAuthSectionVerifyCodeMutation();
   const [resendCode, { isLoading: resendLoading }] =
-    useResendVerifyCodeMutation()
-  const [otp, setOtp] = useState(['', '', '', '', ''])
-  const [timeLeft, setTimeLeft] = useState(30)
-  const inputsRef = useRef([])
+    useResendVerifyCodeMutation();
+  const [otp, setOtp] = useState(["", "", "", "", ""]);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const inputsRef = useRef([]);
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
     }
-  }, [timeLeft])
+  }, [timeLeft]);
 
   const handleChange = (index, value) => {
-    if (!/^\d*$/.test(value)) return
+    if (!/^\d*$/.test(value)) return;
 
-    let newOtp = [...otp]
-    newOtp[index] = value
-    setOtp(newOtp)
+    let newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
 
     if (value && index < 4) {
-      inputsRef.current[index + 1].focus()
+      inputsRef.current[index + 1].focus();
     }
-  }
+  };
 
   const handleKeyDown = (index, e) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputsRef.current[index - 1].focus()
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputsRef.current[index - 1].focus();
     }
-  }
+  };
 
   const handleResend = async () => {
     try {
       const res = await resendCode({
         email: location?.state?.email,
-      }).unwrap()
+      }).unwrap();
 
       if (res.success) {
-        toast.success(res.message)
-        setTimeLeft(30)
+        toast.success(res.message);
+        setTimeLeft(30);
       }
+      
     } catch (error) {
       toast.error(
-        error?.data?.message || 'Something went wrong. Please try again.'
-      )
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   const handleContinue = async () => {
     try {
       const res = await verifyEmail({
         email: location?.state?.email,
-        verifyCode: Number(otp.join('')),
-      }).unwrap()
+        verifyCode: Number(otp.join("")),
+      }).unwrap();
 
       if (res.success) {
-        toast.success(res.message)
-        localStorage.setItem('token', res?.data?.accessToken)
-        navigate('/sign-up-more-info', {
+        toast.success(res.message);
+        localStorage.setItem("token", res?.data?.accessToken);
+        navigate("/sign-up-more-info", {
           state: { email: location?.state?.email },
-        })
+        });
       } else {
-        toast.error(res.message)
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error(
-        error?.data?.message || 'Something went wrong. Please try again.'
-      )
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
@@ -101,9 +102,9 @@ const SignUpOtp = () => {
             <div>
               Just one last step, we sent an otp to
               <strong className="text-[#111]">
-                {' '}
+                {" "}
                 {location?.state?.email}
-              </strong>{' '}
+              </strong>{" "}
               please input the OTP below
             </div>
           </h1>
@@ -126,10 +127,10 @@ const SignUpOtp = () => {
         <Button
           type="primary"
           className="w-full"
-          disabled={otp.includes('')}
+          disabled={otp.includes("")}
           onClick={handleContinue}
         >
-          {isLoading ? 'Loading...' : ' Continue'}
+          {isLoading ? "Loading..." : " Continue"}
         </Button>
 
         <div className="mt-3">
@@ -140,7 +141,7 @@ const SignUpOtp = () => {
               className="text-blue-500 cursor-pointer text-[14px] hover:text-blue-800"
               onClick={handleResend}
             >
-              {resendLoading ? 'Loading...' : '  Resend OTP'}
+              {resendLoading ? "Loading..." : "  Resend OTP"}
             </h1>
           )}
         </div>
@@ -158,7 +159,7 @@ const SignUpOtp = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUpOtp
+export default SignUpOtp;
