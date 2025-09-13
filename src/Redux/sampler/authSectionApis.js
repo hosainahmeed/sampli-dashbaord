@@ -38,6 +38,9 @@ const authSectionApis = baseApis.injectEndpoints({
         url: "/reviewer/add-personal-info",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
     addInterestedCategoryReviewer: builder.mutation({
@@ -45,6 +48,9 @@ const authSectionApis = baseApis.injectEndpoints({
         url: "/reviewer/add-interested-category",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
     addCurrentlyShareReviewer: builder.mutation({
@@ -52,6 +58,9 @@ const authSectionApis = baseApis.injectEndpoints({
         url: "/reviewer/add-currently-share-review",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
     addShippingAddressReviewer: builder.mutation({
@@ -59,6 +68,9 @@ const authSectionApis = baseApis.injectEndpoints({
         url: "/shipping-address/create-shipping-address",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
   }),
