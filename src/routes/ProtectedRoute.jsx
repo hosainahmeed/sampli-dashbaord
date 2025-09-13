@@ -3,26 +3,25 @@ import { jwtDecode } from "jwt-decode";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
-  const token = localStorage.getItem('token');
-  const location = useLocation()
-  const router = useNavigate()
+  const token = localStorage.getItem("token");
+  const location = useLocation();
+  const router = useNavigate();
   if (!token) {
-    router('/login')
+    router("/login");
   }
   const decodedToken = token ? jwtDecode(token) : null;
 
-  if (location.pathname === '/') {
-    console.log(decodedToken?.role)
+  if (location.pathname === "/") {
+    console.log(decodedToken?.role);
     if (window !== undefined) {
-      if (decodedToken?.role === 'bussinessOwner') {
-        window.location.href = '/business-dashboard'
+      if (decodedToken?.role === "bussinessOwner") {
+        window.location.href = "/business-dashboard";
       }
-      if (decodedToken?.role === 'reviewer') {
-        window.location.href = '/sampler/campaign'
+      if (decodedToken?.role === "reviewer") {
+        window.location.href = "/sampler/campaign";
       }
     }
   }
-
 
   return decodedToken ? children : <Navigate to="/login" />;
 }
