@@ -57,7 +57,6 @@ const LoginForm = () => {
         </Title>
         <div className="flex mb-6 flex-col items-start">
           <Title level={2} className="mb-1">
-            Welcome,
             Welcome
           </Title>
           <h1 className="text-[var(--body-text)]">Continue to Sampli</h1>
