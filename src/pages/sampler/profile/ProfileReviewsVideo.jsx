@@ -1,23 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiMessageCircle, FiMoreHorizontal, FiShare2 } from "react-icons/fi";
 import { CiHeart } from "react-icons/ci";
 import gift from "../../../assets/gift-02.svg";
 import sale from "../../../assets/sale-03.svg";
 import { useGetMyReviewsQuery } from "../../../Redux/sampler/profileApis";
+import { AiFillHeart } from "react-icons/ai";
+import { Pagination } from "antd";
 
 const ProfileReviewsVideo = () => {
-  const { data: myReviews } = useGetMyReviewsQuery();
-  const myReview = myReviews?.data?.result;
+  const [sortBy, setSortBy] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const { data: myReviews, isLoading } = useGetMyReviewsQuery({
+    sortBy,
+    sortOrder: "desc",
+    limit,
+    page,
+  });
+  const myReview = myReviews?.data?.data?.result;
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 "></div>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="flex justify-between items-center mt-3">
         <h2 className="text-xl font-semibold">My Reviews</h2>
-        {/* <select className="outline-none border border-gray-200 hover:bg-gray-100 px-2 py-2 rounded-lg !text-sm cursor-pointer">
-          <option value="">New</option>
-          <option value="uploadReview">Highest views</option>
-          <option value="editProfile">Highest Referrals</option>
-        </select> */}
+        <div className="flex items-center gap-2">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="outline-none border border-gray-200 hover:bg-gray-100 px-2 py-2 rounded-lg !text-sm cursor-pointer"
+          >
+            <option value="">Sort by : New</option>
+            <option value="totalView">Highest Views</option>
+            <option value="totalReferralSales">Highest Referrals </option>
+          </select>
+        </div>
       </div>
+      <div>
+        {myReview?.length === 0 && (
+          <div className="text-center flex flex-col items-center justify-center py-10 w-full h-[30vh]">
+            <p className="font-bold text-xl">No Reviews Yet</p>
+            <p className="mt-5 text-gray-500">
+              Looks like you don&apos;t have any reviews at the moment. Check
+              back soon!
+            </p>
+          </div>
+        )}
+      </div>
+
       {myReview?.map((review) => (
         <div className=" mx-auto bg-white rounded-lg border border-gray-200 p-4 mt-3">
           <div className="border-b border-gray-200 pb-4 ">
@@ -25,7 +61,7 @@ const ProfileReviewsVideo = () => {
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden">
                   <img
-                    src={`${review?.video}`}
+                    src={`${review?.reviewer?.profile_image}`}
                     alt="User avatar"
                     className="w-full h-full object-cover"
                   />
@@ -40,10 +76,11 @@ const ProfileReviewsVideo = () => {
                     </span>
                     <span className="text-gray-400 text-sm">
                       •{" "}
-                      {new Date(review?.reviewer?.createdAt).toLocaleString(
-                        "default",
-                        { day: "numeric", month: "long", year: "numeric" }
-                      )}
+                      {new Date(review?.createdAt).toLocaleString("default", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -79,17 +116,26 @@ const ProfileReviewsVideo = () => {
             </div>
 
             <p className="my-3 text-gray-700">{review?.description}</p>
-
             <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">
-              <div className="aspect-video bg-gray-200 flex items-center justify-center">
-                {review?.video && <video src={review?.video}></video>}
-              </div>
+              {review?.video ? (
+                <video
+                  src={review.video}
+                  controls
+                  preload="metadata"
+                  className="w-full h-full min-h-[200px] max-h-[500px] object-cover rounded-lg"
+                  style={{ aspectRatio: "16/9" }}
+                />
+              ) : (
+                <div className="aspect-video bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-500">No video available</span>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-4 mt-2">
               <button className="flex items-center gap-1 text-gray-500">
-                <CiHeart size={16} />
-                <span>{review?.totalLikes} likes</span>
+                <AiFillHeart className="text-red-500" size={16} />
+                <span>{review?.totalLikers} likes</span>
               </button>
               <button className="flex items-center gap-1 text-gray-500">
                 <FiMessageCircle size={16} />
@@ -106,19 +152,23 @@ const ProfileReviewsVideo = () => {
             <h3 className="font-medium mb-1">Review insights</h3>
             <p className="text-xs text-gray-500 mb-4">Only you can see this</p>
 
-            <div className="grid grid-cols-4 gap-4">
-              {/* <div className="flex flex-col items-center">
-                <span className="text-2xl font-semibold">504</span>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-semibold">
+                  {review?.totalView}
+                </span>
                 <div className="flex items-center text-gray-500 text-sm">
                   <span className="mr-1" style={{ filter: "grayscale(100%)" }}>
                     👁️
                   </span>
                   <span>Total Views</span>
                 </div>
-              </div> */}
+              </div>
 
-              {/* <div className="flex flex-col items-center">
-                <span className="text-2xl font-semibold">23</span>
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-semibold">
+                  {review?.totalReferralSales}
+                </span>
                 <div className="flex items-center text-gray-500 text-sm">
                   <span className="mr-1">🛒</span>
                   <span>Referral sales</span>
@@ -126,7 +176,9 @@ const ProfileReviewsVideo = () => {
               </div>
 
               <div className="flex flex-col items-center">
-                <span className="text-2xl font-semibold">$30.00</span>
+                <span className="text-2xl font-semibold">
+                  {review?.totalCommissions}
+                </span>
                 <div className="flex items-center text-gray-500 text-sm">
                   <span className="mr-1" style={{ filter: "grayscale(100%)" }}>
                     💰
@@ -135,7 +187,7 @@ const ProfileReviewsVideo = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center">
+              {/* <div className="flex flex-col items-center">
                 <span className="text-2xl font-semibold">$5</span>
                 <div className="flex items-center text-gray-500 text-sm">
                   <span className="mr-1 " style={{ filter: "grayscale(100%)" }}>
@@ -148,6 +200,17 @@ const ProfileReviewsVideo = () => {
           </div>
         </div>
       ))}
+
+      <div className="mx-auto flex items-center justify-center mt-10">
+        <Pagination
+          currentPage={myReviews?.data?.data?.meta?.page}
+          totalPages={myReviews?.data?.data?.meta?.totalPage}
+          onPageChange={(newPage) => {
+            setPage(newPage);
+            setLimit(limit + 10);
+          }}
+        />
+      </div>
     </div>
   );
 };

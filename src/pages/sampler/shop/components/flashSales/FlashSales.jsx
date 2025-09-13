@@ -1,79 +1,81 @@
-import React, { useRef } from 'react'
-import { Carousel } from 'antd'
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import CardComponent from '../cardComponent/CardComponent'
-import productImage from '/public/product_image.svg'
+import React, { useRef } from "react";
+import { Carousel } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import CardComponent from "../cardComponent/CardComponent";
+import { useGetAllProductsQuery } from "../../../../../Redux/sampler/productApis";
 
-const items = [
-  {
-    id: 1,
-    image: productImage,
-    title: 'BENGOO G9000 Stereo Gaming Headset',
-    description: 'High-quality wireless headphones with noise cancellation',
-    price: '$5.00',
-    originalPrice: '$4.00',
-  },
-  {
-    id: 2,
-    image: productImage,
-    title: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
-    description: 'Compact and portable sprayer for your favorite fragrance',
-    price: '$3.00',
-    originalPrice: '$2.50',
-  },
-  {
-    id: 3,
-    image: productImage,
-    title: 'Ox 18 Inches Standing Plus Fan',
-    description: 'Powerful fan to keep you cool during hot days',
-    price: '$10.00',
-    originalPrice: '$8.00',
-  },
-  {
-    id: 4,
-    image: productImage,
-    title: 'Gaming Headset',
-    description: 'Immersive sound experience for gamers',
-    price: '$7.00',
-    originalPrice: '$5.50',
-  },
-  {
-    id: 5,
-    image: productImage,
-    title: 'Portable Speaker',
-    description: 'Compact speaker with high-quality sound',
-    price: '$15.00',
-    originalPrice: '$12.00',
-  },
-  {
-    id: 6,
-    image: productImage,
-    title: 'Smartwatch',
-    description: 'Feature-rich smartwatch with multiple health tracking',
-    price: '$25.00',
-    originalPrice: '$20.00',
-  },
-  {
-    id: 7,
-    image: productImage,
-    title: 'Wireless Bluetooth Earbuds',
-    description: 'Comfortable earbuds with superior sound quality',
-    price: '$30.00',
-    originalPrice: '$25.00',
-  },
-  {
-    id: 8,
-    image: productImage,
-    title: 'Digital Camera',
-    description: 'Capture high-resolution photos and videos',
-    price: '$200.00',
-    originalPrice: '$180.00',
-  },
-]
+// const items = [
+//   {
+//     id: 1,
+//     image: productImage,
+//     title: "BENGOO G9000 Stereo Gaming Headset",
+//     description: "High-quality wireless headphones with noise cancellation",
+//     price: "$5.00",
+//     originalPrice: "$4.00",
+//   },
+//   {
+//     id: 2,
+//     image: productImage,
+//     title: "Mini Portable Refillable Sprayer Atomizer Bottle 5ml",
+//     description: "Compact and portable sprayer for your favorite fragrance",
+//     price: "$3.00",
+//     originalPrice: "$2.50",
+//   },
+//   {
+//     id: 3,
+//     image: productImage,
+//     title: "Ox 18 Inches Standing Plus Fan",
+//     description: "Powerful fan to keep you cool during hot days",
+//     price: "$10.00",
+//     originalPrice: "$8.00",
+//   },
+//   {
+//     id: 4,
+//     image: productImage,
+//     title: "Gaming Headset",
+//     description: "Immersive sound experience for gamers",
+//     price: "$7.00",
+//     originalPrice: "$5.50",
+//   },
+//   {
+//     id: 5,
+//     image: productImage,
+//     title: "Portable Speaker",
+//     description: "Compact speaker with high-quality sound",
+//     price: "$15.00",
+//     originalPrice: "$12.00",
+//   },
+//   {
+//     id: 6,
+//     image: productImage,
+//     title: "Smartwatch",
+//     description: "Feature-rich smartwatch with multiple health tracking",
+//     price: "$25.00",
+//     originalPrice: "$20.00",
+//   },
+//   {
+//     id: 7,
+//     image: productImage,
+//     title: "Wireless Bluetooth Earbuds",
+//     description: "Comfortable earbuds with superior sound quality",
+//     price: "$30.00",
+//     originalPrice: "$25.00",
+//   },
+//   {
+//     id: 8,
+//     image: productImage,
+//     title: "Digital Camera",
+//     description: "Capture high-resolution photos and videos",
+//     price: "$200.00",
+//     originalPrice: "$180.00",
+//   },
+// ];
 
 function FlashSales() {
-  const carouselRef = useRef(null)
+  const carouselRef = useRef(null);
+  const { data: getProducts, isLoading } = useGetAllProductsQuery();
 
+  const items = getProducts?.data?.result;
   return (
     <div className=" px-4  mt-24 relative">
       <div className="flex items-center justify-between mb-4">
@@ -94,6 +96,13 @@ function FlashSales() {
         <RightOutlined className="!text-white" />
       </button>
 
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+          <p className="text-[20px] font-semibold ml-2 !mt-5">Loading...</p>
+        </div>
+      )}
+
       <Carousel
         ref={carouselRef}
         dots={false}
@@ -105,14 +114,14 @@ function FlashSales() {
           { breakpoint: 480, settings: { slidesToShow: 1 } },
         ]}
       >
-        {items.map((item, index) => (
+        {items?.map((item, index) => (
           <div key={index} className="ml-7">
             <CardComponent item={item} />
           </div>
         ))}
       </Carousel>
     </div>
-  )
+  );
 }
 
-export default FlashSales
+export default FlashSales;

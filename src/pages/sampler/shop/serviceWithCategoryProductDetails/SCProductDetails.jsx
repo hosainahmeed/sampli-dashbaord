@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { useAddToCartMutation } from "../../../../Redux/sampler/cartApis";
 
 const { Panel } = Collapse;
-const SCProductDetails = () => {
+const SCProductDetails = ({ referral }) => {
   const { id } = useParams();
 
   const { data: getSingleProduct, refetch } = useGetSingleProductApisQuery({
@@ -132,6 +132,7 @@ const SCProductDetails = () => {
         productId,
         bussinessId,
         variantId: selectedVariant?._id || null,
+        referral: referral,
       };
       const res = await addCart({
         data,

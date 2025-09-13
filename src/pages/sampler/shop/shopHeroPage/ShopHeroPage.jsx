@@ -1,9 +1,9 @@
-import React from 'react'
-import HeroPageImage from '../components/heroPageImage/HeroPageImage'
-import ShopCategory from '../components/ShopCategory/ShopCategory'
-import BestSellers from '../components/bestSellers/BestSellers'
-import FlashSales from '../components/flashSales/flashSales'
-import FeaturedBrands from '../components/featuredBrands/FeaturedBrands'
+import React from "react";
+import HeroPageImage from "../components/heroPageImage/HeroPageImage";
+import ShopCategory from "../components/shopCategory/ShopCategory";
+import BestSellers from "../components/bestSellers/BestSellers";
+import FlashSales from "../components/flashSales/FlashSales";
+import FeaturedBrands from "../components/featuredBrands/FeaturedBrands";
 
 const ShopHeroPage = () => {
   return (
@@ -14,7 +14,7 @@ const ShopHeroPage = () => {
       <FlashSales />
       <FeaturedBrands />
     </div>
-  )
-}
+  );
+};
 
-export default ShopHeroPage
+export default ShopHeroPage;

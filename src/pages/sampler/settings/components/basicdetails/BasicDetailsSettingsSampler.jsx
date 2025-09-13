@@ -45,40 +45,30 @@ const BasicDetailsSettingsSampler = () => {
     toast.success("Photo selected!");
   };
 
-  // Handle Info Update
   const handleInfoUpdate = async () => {
     try {
       const formData = new FormData();
-
-      console.log(imageFile, username, name, bio);
+      setShowPhotoModal(false);
 
       if (imageFile) {
         formData.append("profile_image", imageFile);
       }
 
-      // formData.append(
-      //   "data",
-      //   JSON.stringify({
-      //     username,
-      //     name,
-      //     bio,
-      //   })
-      // );
-      // console.log(formData);
-      const data = {
-        username,
-        name,
-        bio,
-      };
+      formData.append(
+        "data",
+        JSON.stringify({
+          name,
+          bio,
+        })
+      );
+
       await updateReviewerProfile({ data: formData }).unwrap();
-      await updateReviewerProfile({ data }).unwrap();
       toast.success("Info updated successfully!");
     } catch (error) {
       toast.error("Update failed. Try again!");
     }
   };
 
-  // Handle image upload
   const handleImageChange = (info) => {
     if (info.file) {
       const isJpgOrPng =
@@ -140,8 +130,8 @@ const BasicDetailsSettingsSampler = () => {
               Info
             </h3>
             <div
-              className="flex justify-between items-center py-2 rounded-md mb-3 cursor-pointer hover:bg-gray-50"
-              onClick={() => setShowUsernameModal(true)}
+              className="flex justify-between items-center py-2 rounded-md mb-3 cursor-disabled hover:bg-gray-50 "
+              // onClick={() => setShowUsernameModal(true)}
             >
               <div>
                 <p className="text-sm text-gray-600">Username</p>
@@ -229,7 +219,7 @@ const BasicDetailsSettingsSampler = () => {
           <Button key="cancel" onClick={() => setShowPhotoModal(false)}>
             Cancel
           </Button>,
-          <Button key="save" type="primary" onClick={handleSavePhoto}>
+          <Button key="save" type="primary" onClick={handleInfoUpdate}>
             Save
           </Button>,
         ]}

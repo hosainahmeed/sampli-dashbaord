@@ -8,7 +8,7 @@ import ReviewCardSampler from "./ReviewCardSampler";
 import StoreProfileSampler from "./StoreProfileSampler";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import productImage from "/public/product_image.svg";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   useGetBusinessProductApisQuery,
   useGetCategoryProductApisQuery,
@@ -153,7 +153,10 @@ const reviewData = [
   // Add more reviews here...
 ];
 const ServiceWithCategoryProductDetails = () => {
+  const location = useLocation();
   const { id } = useParams();
+  const { referral } = location.state || {};
+  console.log(referral);
   const [businessId, setBusinessId] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
 
@@ -161,7 +164,7 @@ const ServiceWithCategoryProductDetails = () => {
   const { data: getSingleProduct, refetch } = useGetSingleProductApisQuery({
     id,
   });
- 
+
   useEffect(() => {
     if (getSingleProduct) {
       setBusinessId(getSingleProduct?.data?.bussiness?._id);
@@ -189,7 +192,7 @@ const ServiceWithCategoryProductDetails = () => {
     <div className="responsive-width !mb-32">
       {/* product details */}
       <section>
-        <SCProductDetails />
+        <SCProductDetails referral={referral} />
       </section>
 
       {/*From same seller  */}

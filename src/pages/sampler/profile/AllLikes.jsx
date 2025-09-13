@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGetMyLikesQuery } from "../../../Redux/sampler/profileApis";
-import { Avatar, Rate } from "antd";
+import { Avatar, Pagination, Rate } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 
 const AllLikes = () => {
-  const { data: likes, isLoading } = useGetMyLikesQuery();
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const { data: likes, isLoading } = useGetMyLikesQuery({
+    limit,
+    page,
+  });
   const likesData = likes?.data?.result;
   if (isLoading) {
     return (
@@ -17,7 +22,6 @@ const AllLikes = () => {
   }
   return (
     <div>
-      ahsan mahfuz
       <div className="flex justify-between items-center mt-3">
         <h2 className="text-xl font-semibold !mb-10">My Liked</h2>
       </div>
@@ -100,6 +104,17 @@ const AllLikes = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mx-auto flex items-center justify-center mt-10">
+        <Pagination
+          currentPage={likes?.data?.meta?.page}
+          totalPages={likes?.data?.meta?.totalPage}
+          onPageChange={(newPage) => {
+            setPage(newPage);
+            setLimit(limit + 10);
+          }}
+        />
       </div>
     </div>
   );
