@@ -7,6 +7,9 @@ const complianceApi = baseApis.injectEndpoints({
         url: "/compliance-info/create-compliance-info",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
   }),

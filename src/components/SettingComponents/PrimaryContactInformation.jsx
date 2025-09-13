@@ -1,9 +1,17 @@
 import { Button, Card, Form } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import FormWrapper from "../ui/FormWrapper";
 import InputField from "../ui/InputField";
 
-function PrimaryContactInformation() {
+function PrimaryContactInformation({ data }) {
+  const [form] = Form.useForm();
+  console.log(data)
+  useEffect(() => {
+    form.setFieldsValue({
+      phoneNumber: data?.phoneNumber,
+      contactRole: data?.contactRole,
+    })
+  }, [data])
   const onFinishForm = (values) => {
     console.log(values);
   };
@@ -13,10 +21,11 @@ function PrimaryContactInformation() {
         <FormWrapper
           onFinish={onFinishForm}
           className="grid grid-cols-1 gap-x-4 gap-y-4"
+          form={form}
         >
           <InputField
             label="Contact Name"
-            name="contactName"
+            name="phoneNumber"
             rules={[
               { required: true, message: "Please enter your contact name!" },
             ]}

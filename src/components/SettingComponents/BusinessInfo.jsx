@@ -1,12 +1,29 @@
 import { Button, Card, Form, message, Typography } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import FormWrapper from '../ui/FormWrapper';
 import InputField from '../ui/InputField';
 import SelectField from '../page-Component/SelectField';
 import PrimaryContactInformation from './PrimaryContactInformation';
 import Documentation from './Documentation';
+import { useGetProfileQuery } from '../../Redux/businessApis/business _profile/getprofileApi';
+import { options, SectorOptions } from '../ui/BusinessInfoForm';
 const { Title } = Typography;
 function BusinessInfo() {
+  const { data, isLoading: isBusinessLoading } = useGetProfileQuery();
+  console.log(data?.data?.businessName)
+  const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue({
+      businessName: data?.data?.bussinessName,
+      tradeName: data?.data?.tradeName,
+      industryType: data?.data?.industryType,
+      bussinessType: data?.data?.bussinessType,
+      bussinessAddress: data?.data?.bussinessAddress,
+      phoneNumber: data?.data?.phoneNumber,
+      website: data?.data?.website,
+      taxtIndentificationNumber: data?.data?.taxtIndentificationNumber,
+    })
+  }, [data])
   const onFinishForm = (values) => {
     console.log(values);
   };
@@ -18,6 +35,7 @@ function BusinessInfo() {
           <FormWrapper
             onFinish={onFinishForm}
             className="grid grid-cols-2 gap-x-4 gap-y-4"
+            form={form}
           >
             <InputField
               label="Legal Business Name"
@@ -36,7 +54,7 @@ function BusinessInfo() {
             />
             <SelectField
               label="Type of Business"
-              name="businessType"
+              name="bussinessType"
               placeholder="Select business type"
               rules={[
                 {
@@ -44,30 +62,28 @@ function BusinessInfo() {
                   message: 'Please select your business type!',
                 },
               ]}
-              options={[
-                { value: 'retail', label: 'Retail' },
-                { value: 'wholesale', label: 'Wholesale' },
-                { value: 'services', label: 'Services' },
-              ]}
+              options={options.map((option) => ({
+                value: option.value,
+                label: option.label,
+              }))}
               className="w-full"
             />
             <SelectField
               label="Industry/Sector"
-              name="industry"
+              name="industryType"
               placeholder="Select industry"
               rules={[
                 { required: true, message: 'Please select your industry!' },
               ]}
-              options={[
-                { value: 'healthcare', label: 'Healthcare' },
-                { value: 'finance', label: 'Finance' },
-                { value: 'technology', label: 'Technology' },
-              ]}
+              options={SectorOptions.map((option) => ({
+                value: option.value,
+                label: option.label,
+              }))}
               className="w-full"
             />
             <InputField
               label="Business Address"
-              name="businessAddress"
+              name="bussinessAddress"
               rules={[
                 {
                   required: true,
@@ -98,7 +114,7 @@ function BusinessInfo() {
             />
             <InputField
               label="Tax Identification Number"
-              name="taxId"
+              name="taxtIndentificationNumber"
               rules={[
                 {
                   required: true,
@@ -116,8 +132,8 @@ function BusinessInfo() {
           </FormWrapper>
         </Card>
         <div className="space-y-4">
-          <PrimaryContactInformation />
-          <Documentation />
+          <PrimaryContactInformation data={data?.data} />
+          <Documentation data={data?.data} />
         </div>
       </div>
     </>

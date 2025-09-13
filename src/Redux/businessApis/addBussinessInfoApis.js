@@ -7,6 +7,9 @@ const addBussinessInfoApis = baseApis.injectEndpoints({
         url: "/bussiness/add-bussiness-info",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
 

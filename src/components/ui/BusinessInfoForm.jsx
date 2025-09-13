@@ -16,31 +16,32 @@ import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
 
+export const options = [
+  { value: 'Sole Proprietorship', label: 'Sole Proprietorship' },
+  { value: 'Private Limited Company', label: 'Private Limited Company' },
+  { value: 'partnership', label: 'Partnership' },
+  { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
+  { value: 'Corporation', label: 'Corporation' },
+  { value: 'Small Business Enterprise (SME)', label: 'Small Business Enterprise (SME)' },
+  { value: 'Startup', label: 'Startup' },
+  { value: 'Online Retailer/E-commerce', label: 'Online Retailer/E-commerce' },
+  { value: 'Manufacturing Company', label: 'Manufacturing Company' },
+];
+export const SectorOptions = [
+  { value: 'Beauty', label: 'Beauty' },
+  { value: 'Apparel', label: 'Apparel' },
+  { value: 'Footwear', label: 'Footwear' },
+  { value: 'PersonalCare', label: 'Personal Care' },
+  { value: 'HomeAppliances', label: 'Home Appliances' },
+  { value: 'FoodAndBeverage', label: 'Food & Beverage' },
+  { value: 'Pets', label: 'Pets' },
+  { value: 'KidsBaby', label: 'Kids & Baby' },
+  { value: 'Jewelry', label: 'Jewelry' },
+  { value: 'Women', label: 'Women' },
+  { value: 'Men', label: 'Men' },
+];
+
 const BusinessInfoForm = () => {
-  const options = [
-    { value: 'Sole Proprietorship', label: 'Sole Proprietorship' },
-    { value: 'Private Limited Company', label: 'Private Limited Company' },
-    { value: 'partnership', label: 'Partnership' },
-    { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
-    { value: 'Corporation', label: 'Corporation' },
-    { value: 'Small Business Enterprise (SME)', label: 'Small Business Enterprise (SME)' },
-    { value: 'Startup', label: 'Startup' },
-    { value: 'Online Retailer/E-commerce', label: 'Online Retailer/E-commerce' },
-    { value: 'Manufacturing Company', label: 'Manufacturing Company' },
-  ];
-  const SectorOptions = [
-    { value: 'Beauty', label: 'Beauty' },
-    { value: 'Apparel', label: 'Apparel' },
-    { value: 'Footwear', label: 'Footwear' },
-    { value: 'PersonalCare', label: 'Personal Care' },
-    { value: 'HomeAppliances', label: 'Home Appliances' },
-    { value: 'FoodAndBeverage', label: 'Food & Beverage' },
-    { value: 'Pets', label: 'Pets' },
-    { value: 'KidsBaby', label: 'Kids & Baby' },
-    { value: 'Jewelry', label: 'Jewelry' },
-    { value: 'Women', label: 'Women' },
-    { value: 'Men', label: 'Men' },
-  ];
 
   const location = useLocation()
   console.log(location?.state?.email)

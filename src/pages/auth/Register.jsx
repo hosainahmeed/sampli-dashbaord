@@ -72,7 +72,7 @@ const Register = () => {
               { required: true, message: 'Only company email is required!' },
               { type: 'email', message: 'Enter a valid email address!' },
             ]}
-            placeholder="MichealScott@gmail.com"
+            placeholder="Enter your company email address"
             type="email"
             style={{
               width: '100%',
@@ -88,7 +88,7 @@ const Register = () => {
               { required: true, message: 'Password is required!' },
               { type: 'password', message: 'Enter a valid password!' },
             ]}
-            placeholder="Password"
+            placeholder="Enter your password"
             type="password"
             style={{
               width: '100%',

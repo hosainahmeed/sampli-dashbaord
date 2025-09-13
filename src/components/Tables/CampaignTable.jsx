@@ -10,7 +10,7 @@ const { Option } = Select;
 const CampaignTable = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const { data: campaignsData } = useGetCampaignsQuery();
+  const { data: campaignsData, isLoading } = useGetCampaignsQuery();
   console.log(campaignsData?.data?.result)
   const navigate = useNavigate();
   // const totalSpent = 1000;
@@ -344,6 +344,7 @@ const CampaignTable = () => {
       </div>
       <Table
         columns={columns}
+        loading={isLoading}
         dataSource={campaignsData?.data?.result}
         scroll={{ x: 1200 }}
         locale={{

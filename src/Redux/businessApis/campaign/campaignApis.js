@@ -32,6 +32,14 @@ const campaignApis = baseApis.injectEndpoints({
       }),
       invalidatesTags: ["campaign"],
     }),
+    changeCampaignStatus: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/campaign/change-status/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["campaign"],
+    }),
   }),
 });
 
@@ -40,4 +48,5 @@ export const {
   useGetCampaignByIdQuery,
   useCreateCampaignMutation,
   useUpdateCampaignMutation,
+  useChangeCampaignStatusMutation,
 } = campaignApis;
