@@ -12,7 +12,7 @@ const { Title } = Typography
 
 const UserInfo = () => {
   const router = useNavigate()
-  const [addBussinessInfo, { loading }] = useAddBussinessInfoMutation()
+  const [addBussinessInfo, { isLoading }] = useAddBussinessInfoMutation()
   const onFinish = async (values) => {
     try {
       const businessInfo = JSON.parse(localStorage.getItem('businessInfo'))
@@ -87,8 +87,8 @@ const UserInfo = () => {
           />
 
           <Button
-            loading={loading}
-            disabled={loading}
+            loading={isLoading}
+            disabled={isLoading}
             type="primary"
             htmlType="submit"
             className="w-full"
