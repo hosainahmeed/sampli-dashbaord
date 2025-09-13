@@ -18,6 +18,9 @@ const addBussinessInfoApis = baseApis.injectEndpoints({
         url: "/bussiness/add-bussiness-document",
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
   }),
