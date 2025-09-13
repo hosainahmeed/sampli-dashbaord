@@ -1,4 +1,4 @@
-import { Button, Carousel, Pagination } from "antd";
+import { Button, Card, Carousel, Pagination, Skeleton } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import CardComponent from "../components/cardComponent/CardComponent";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
@@ -15,6 +15,8 @@ import {
   useGetSingleProductApisQuery,
   useGetVariantProductApisQuery,
 } from "../../../../Redux/sampler/productApis";
+import Meta from "antd/es/card/Meta";
+import { useGetSingleProductReviewQuery } from "../../../../Redux/sampler/reviewApis";
 
 const items = [
   {
@@ -165,6 +167,10 @@ const ServiceWithCategoryProductDetails = () => {
     id,
   });
 
+  const { data: getSingleProductReview } = useGetSingleProductReviewQuery({
+    id,
+  });
+
   useEffect(() => {
     if (getSingleProduct) {
       setBusinessId(getSingleProduct?.data?.bussiness?._id);
@@ -172,10 +178,10 @@ const ServiceWithCategoryProductDetails = () => {
     }
   }, [getSingleProduct]);
 
-  const { data: getBusinessProducts } = useGetBusinessProductApisQuery(
-    businessId ? { id: businessId } : {},
-    { skip: !businessId }
-  );
+  const { data: getBusinessProducts, isLoading: businessProductLoading } =
+    useGetBusinessProductApisQuery(businessId ? { id: businessId } : {}, {
+      skip: !businessId,
+    });
   const { data: getCategoryProducts } = useGetCategoryProductApisQuery(
     categoryId ? { id: categoryId } : {},
     { skip: !categoryId }
@@ -187,6 +193,8 @@ const ServiceWithCategoryProductDetails = () => {
   const onReviewPageChange = (page) => {
     setReviewPage(page);
   };
+
+  const meta = getSingleProductReview?.data?.meta;
 
   return (
     <div className="responsive-width !mb-32">
@@ -215,7 +223,62 @@ const ServiceWithCategoryProductDetails = () => {
           <RightOutlined className="!text-white" />
         </button>
 
-        {getBusinessProducts?.data?.result?.length > 0 ? (
+        {businessProductLoading && (
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 ">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <Card
+                key={index}
+                className="border border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
+                cover={
+                  <div className="relative">
+                    <Skeleton.Image
+                      active
+                      className="!w-full !h-[230px] object-cover object-center"
+                    />
+                    <div className="absolute top-4 right-4 z-10">
+                      <Skeleton.Avatar active size="large" shape="circle" />
+                    </div>
+                  </div>
+                }
+              >
+                <Meta
+                  title={
+                    <Skeleton.Input
+                      style={{ width: 120 }}
+                      active
+                      size="small"
+                    />
+                  }
+                  description={
+                    <div className="flex justify-between flex-col h-[100px]">
+                      <div className="text-sm text-gray-600">
+                        <Skeleton
+                          active
+                          paragraph={{ rows: 2 }}
+                          title={false}
+                        />
+                      </div>
+                      <div className="flex gap-3 items-center mt-2 text-[18px]">
+                        <Skeleton.Input
+                          style={{ width: 60 }}
+                          active
+                          size="small"
+                        />
+                        <Skeleton.Input
+                          style={{ width: 60 }}
+                          active
+                          size="small"
+                        />
+                      </div>
+                    </div>
+                  }
+                />
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {getBusinessProducts?.data?.result?.length > 0 && (
           <Carousel
             ref={carouselRef}
             dots={false}
@@ -233,17 +296,12 @@ const ServiceWithCategoryProductDetails = () => {
               </div>
             ))}
           </Carousel>
-        ) : (
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 !mb-5"></div>
-            <p className="text-[20px] font-semibold ml-2 mt-5">Loading...</p>
-          </div>
         )}
       </section>
 
       {/* store info */}
       <section className="!my-20  px-4">
-        <StoreProfileSampler />
+        <StoreProfileSampler businessId={businessId} />
       </section>
 
       {/* Review products */}
@@ -251,36 +309,36 @@ const ServiceWithCategoryProductDetails = () => {
         <div className="text-xl  mb-5">Reviews</div>
         <div className="flex gap-5 items-start ">
           <div className="flex-1">
-            <ReviewRatingSampler />
+            <ReviewRatingSampler id={id} />
           </div>
           <div className="flex-1">
-            {reviewData.map((review, index) => (
+            {getSingleProductReview?.data?.result?.map((review, index) => (
               <ReviewCardSampler key={index} review={review} />
             ))}
             <Pagination
-              current={reviewPage}
-              total={reviewData.length}
-              pageSize={reviewsPerPage}
+              current={reviewPage || meta?.page}
+              total={meta?.total || 0}
+              pageSize={meta?.limit || 10}
               onChange={onReviewPageChange}
               className="!my-12 flex items-center justify-center"
               showSizeChanger={false}
               itemRender={(current, type, originalElement) => {
                 if (type === "prev") {
                   return (
-                    <Button className="!border-none ">
+                    <Button className="!border-none">
                       <FaAngleLeft />
                     </Button>
                   );
                 }
                 if (type === "next") {
                   return (
-                    <Button className="!border-none ">
+                    <Button className="!border-none">
                       <FaAngleRight />
                     </Button>
                   );
                 }
                 if (type === "page") {
-                  return current;
+                  return <Button className="!border-none">{current}</Button>;
                 }
                 return originalElement;
               }}

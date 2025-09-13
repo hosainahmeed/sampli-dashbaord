@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
-import { Carousel } from "antd";
+import { Card, Carousel, Skeleton } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import CardComponent from "../cardComponent/CardComponent";
 import { useGetAllProductsQuery } from "../../../../../Redux/sampler/productApis";
+import Meta from "antd/es/card/Meta";
 
 // const items = [
 //   {
@@ -97,9 +98,49 @@ function FlashSales() {
       </button>
 
       {isLoading && (
-        <div className="flex items-center justify-center">
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
-          <p className="text-[20px] font-semibold ml-2 !mt-5">Loading...</p>
+        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 ">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Card
+              key={index}
+              className="border border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
+              cover={
+                <div className="relative">
+                  <Skeleton.Image
+                    active
+                    className="!w-full !h-[230px] object-cover object-center"
+                  />
+                  <div className="absolute top-4 right-4 z-10">
+                    <Skeleton.Avatar active size="large" shape="circle" />
+                  </div>
+                </div>
+              }
+            >
+              <Meta
+                title={
+                  <Skeleton.Input style={{ width: 120 }} active size="small" />
+                }
+                description={
+                  <div className="flex justify-between flex-col h-[100px]">
+                    <div className="text-sm text-gray-600">
+                      <Skeleton active paragraph={{ rows: 2 }} title={false} />
+                    </div>
+                    <div className="flex gap-3 items-center mt-2 text-[18px]">
+                      <Skeleton.Input
+                        style={{ width: 60 }}
+                        active
+                        size="small"
+                      />
+                      <Skeleton.Input
+                        style={{ width: 60 }}
+                        active
+                        size="small"
+                      />
+                    </div>
+                  </div>
+                }
+              />
+            </Card>
+          ))}
         </div>
       )}
 

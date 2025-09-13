@@ -1,34 +1,37 @@
-import { Form, Input, Select } from 'antd'
-import { Country } from 'country-state-city'
-import React from 'react'
-import { useAddShippingAddressReviewerMutation } from '../../../../Redux/sampler/authSectionApis'
-import toast from 'react-hot-toast'
+import { Form, Input, Select } from "antd";
+import { Country } from "country-state-city";
+import React from "react";
+import { useAddShippingAddressReviewerMutation } from "../../../../Redux/sampler/authSectionApis";
+import toast from "react-hot-toast";
 
 const ContactAndShippingInformation = ({ prev, next }) => {
-  const [addShipping, { isLoading }] = useAddShippingAddressReviewerMutation()
+  const [addShipping, { isLoading }] = useAddShippingAddressReviewerMutation();
   const handleFormSubmit = async (values) => {
     try {
       const res = await addShipping({
-        address: values.address,
+        company: values.company,
+        name: values.name,
+        street1: values.street1,
+        street2: values.street2,
         country: values.country,
-        zipCode: values.postalCode,
+        zip: values.postalCode,
         city: values.city,
-        phoneNumber: values.phone,
+        phone: values.phone,
         state: values.state,
         alternativePhoneNumber: values.altPhone,
-      }).unwrap()
+      }).unwrap();
       if (res.success) {
-        toast.success(res.message)
-        next()
+        toast.success(res.message);
+        next();
       } else {
-        toast.error(res.message)
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error(
-        error?.data?.message || 'Something went wrong. Please try again.'
-      )
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   return (
     <div>
@@ -44,20 +47,59 @@ const ContactAndShippingInformation = ({ prev, next }) => {
       >
         <div className="!flex !flex-col !justify-between h-[425px]">
           <div>
-            <Form.Item
-              label="Address"
-              name="address"
-              rules={[{ required: true, message: 'Please enter your address' }]}
-              className="w-full"
-            >
-              <Input placeholder="Enter your address" />
-            </Form.Item>
+            <div className="flex w-full gap-5 items-center justify-between">
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: "Please enter your name" }]}
+                className="w-full"
+              >
+                <Input placeholder="Enter your name" />
+              </Form.Item>
+              <Form.Item
+                label="Company name"
+                name="company"
+                rules={[
+                  {
+                    required: false,
+                    message: "Please enter your company name",
+                  },
+                ]}
+                className="w-full"
+              >
+                <Input placeholder="Enter your company name" />
+              </Form.Item>
+            </div>
+
+            <div className="flex w-full gap-5 items-center justify-between">
+              <Form.Item
+                label="Street 1"
+                name="street1"
+                rules={[
+                  { required: true, message: "Please enter your address" },
+                ]}
+                className="w-full"
+              >
+                <Input placeholder="Enter your address" />
+              </Form.Item>
+              <Form.Item
+                label="Street 2"
+                name="street2"
+                rules={[
+                  { required: false, message: "Please enter your address" },
+                ]}
+                className="w-full"
+              >
+                <Input placeholder="Enter your address" />
+              </Form.Item>
+            </div>
+
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item
                 label="Country"
                 name="country"
                 rules={[
-                  { required: true, message: 'Please select your country' },
+                  { required: true, message: "Please select your country" },
                 ]}
                 className="w-full"
               >
@@ -82,7 +124,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter your ZIP/Postal code',
+                    message: "Please enter your ZIP/Postal code",
                   },
                 ]}
                 className="w-full"
@@ -95,7 +137,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
               <Form.Item
                 label="City"
                 name="city"
-                rules={[{ required: true, message: 'Please select your city' }]}
+                rules={[{ required: true, message: "Please select your city" }]}
                 className="w-full"
               >
                 <Input placeholder="Enter your city" />
@@ -104,7 +146,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
                 label="State"
                 name="state"
                 rules={[
-                  { required: true, message: 'Please select your state' },
+                  { required: true, message: "Please select your state" },
                 ]}
                 className="w-full"
               >
@@ -117,7 +159,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
                 label="Phone number"
                 name="phone"
                 rules={[
-                  { required: true, message: 'Please enter your phone number' },
+                  { required: true, message: "Please enter your phone number" },
                 ]}
                 className="w-full"
               >
@@ -143,13 +185,13 @@ const ContactAndShippingInformation = ({ prev, next }) => {
               type="submit"
               className="cursor-pointer hover:!text-blue-500"
             >
-              {isLoading ? 'Loading...' : 'Next'}
+              {isLoading ? "Loading..." : "Next"}
             </button>
           </div>
         </div>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default ContactAndShippingInformation
+export default ContactAndShippingInformation;

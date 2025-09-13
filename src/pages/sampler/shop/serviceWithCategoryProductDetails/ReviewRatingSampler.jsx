@@ -1,49 +1,59 @@
-import React, { useState, useEffect } from 'react'
+import React from "react";
+import { useGetSingleProductReviewQuery } from "../../../../Redux/sampler/reviewApis";
 
-const ReviewRatingSampler = () => {
-  const [reviews, setReviews] = useState({
-    totalReviews: 138,
-    ratingDistribution: { 5: 100, 4: 30, 3: 5, 2: 2, 1: 1 },
-    averageRating: 4.5,
-  })
+const ReviewRatingSampler = ({ id }) => {
+  const { data: getSingleProduct } = useGetSingleProductReviewQuery({ id });
 
-  useEffect(() => {
-    // In a real app, fetch review data from an API
-    // Example of API call to fetch reviews
-    // fetch('/api/reviews')
-    //   .then((response) => response.json())
-    //   .then((data) => setReviews(data));
-  }, [])
+  const fiveStar = getSingleProduct?.data?.starCounts?.fiveStar || 0;
+  const fourStar = getSingleProduct?.data?.starCounts?.fourStar || 0;
+  const threeStar = getSingleProduct?.data?.starCounts?.threeStar || 0;
+  const twoStar = getSingleProduct?.data?.starCounts?.twoStar || 0;
+  const oneStar = getSingleProduct?.data?.starCounts?.oneStar || 0;
 
-  const getProgressWidth = (rating) => {
-    return (reviews.ratingDistribution[rating] / reviews.totalReviews) * 100
-  }
+  const totalReviews = getSingleProduct?.data?.meta?.total || 0;
+
+  const starCount = [
+    { stars: 5, count: fiveStar },
+    { stars: 4, count: fourStar },
+    { stars: 3, count: threeStar },
+    { stars: 2, count: twoStar },
+    { stars: 1, count: oneStar },
+  ];
+
+  const getProgressWidth = (count) => {
+    if (!totalReviews) return 0;
+    return (count / totalReviews) * 100;
+  };
 
   return (
-    <div className='!text-gray-500'>
+    <div className="!text-gray-500">
       <div>
-        <span className="text-4xl">{reviews.averageRating}</span>
+        <span className="text-4xl">
+          {getSingleProduct?.data?.averageRating || 0}
+        </span>
         <span>⭐</span>
-        <span>({reviews.totalReviews} Reviews)</span>
+        <span>({totalReviews} Reviews)</span>
       </div>
+
+      {/* Rating Breakdown */}
       <div>
-        {[5, 4, 3, 2, 1].map((rating) => (
-          <div key={rating} style={{ marginBottom: '10px' }}>
-            <span>{rating} stars</span>
+        {starCount.map(({ stars, count }) => (
+          <div key={stars} style={{ marginBottom: "10px" }}>
+            <span>{stars} stars</span>
             <div
               style={{
-                height: '8px',
-                backgroundColor: '#e0e0e0',
-                borderRadius: '5px',
-                overflow: 'hidden',
-                marginTop: '5px',
+                height: "8px",
+                backgroundColor: "#e0e0e0",
+                borderRadius: "5px",
+                overflow: "hidden",
+                marginTop: "5px",
               }}
             >
               <div
                 style={{
-                  width: `${getProgressWidth(rating)}%`,
-                  height: '100%',
-                  backgroundColor: '#f57c00',
+                  width: `${getProgressWidth(count)}%`,
+                  height: "100%",
+                  backgroundColor: "#f57c00",
                 }}
               />
             </div>
@@ -51,7 +61,7 @@ const ReviewRatingSampler = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ReviewRatingSampler
+export default ReviewRatingSampler;

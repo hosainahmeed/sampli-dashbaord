@@ -65,6 +65,14 @@ const reviewApis = baseApis.injectEndpoints({
       }),
       invalidatesTags: ["Comments", "Review", "RepliesComments"],
     }),
+
+    getSingleProductReview: builder.query({
+      query: ({ id }) => ({
+        url: `/review/get-single-product-review/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Comments", "Review", "RepliesComments"],
+    }),
   }),
 });
 
@@ -77,4 +85,5 @@ export const {
   usePostCommentLikesMutation,
   useGetCommentsRepliesQuery,
   usePostCommentRepliesMutation,
+  useGetSingleProductReviewQuery,
 } = reviewApis;
