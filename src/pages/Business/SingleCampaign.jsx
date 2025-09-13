@@ -1,19 +1,36 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CampaignPerformanceChart from '../../components/ui/CampaignPerformanceChart';
 import AllFeedCard from '../../components/page-Component/AllFeedCard';
 import toast from 'react-hot-toast';
+import { useChangeCampaignStatusMutation, useGetCampaignByIdQuery } from '../../Redux/businessApis/campaign/campaignApis';
+import { useGetAllReviewQuery } from '../../Redux/sampler/reviewApis';
 
 function SingleCampaign() {
   const { id } = useLocation().state;
   console.log(id)
   const navigate = useNavigate();
+  const [changeCampaignStatus, { isLoading: changeCampaignStatusLoading }] = useChangeCampaignStatusMutation();
+  const { data: campaignByIdData, isLoading: campaignByIdLoading } = useGetCampaignByIdQuery(id);
+
+  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
+    productId: id,
+  });
+  console.log(reviewList)
+  
   const statsData = {
-    timeline: 'Mar 23, 2024 - Sep 30, 2024',
+    timeline: new Date(campaignByIdData?.data?.startDate).toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+    }) + ' - ' + new Date(campaignByIdData?.data?.endDate).toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }),
     budget: { spent: 25000, total: 100000 },
-    status: 'Active',
+    status: campaignByIdData?.data?.status,
     progress: { current: 10, total: 300 },
     reviewsCompleted: 32,
     totalSpent: 12450,
@@ -24,6 +41,33 @@ function SingleCampaign() {
   const handleCampaignEdit = () => {
     navigate('/campaign/single-campaign/edit-campaign', { state: { id } });
   };
+
+  const handlePauseCampaign = async () => {
+    try {
+      await changeCampaignStatus({ id, data: { status: 'Paused' } }).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message);
+        }
+      })
+    } catch (error) {
+      toast.error(error?.data?.message || error.message || 'Failed to pause campaign');
+    }
+  };
+  const handleResumeCampaign = async () => {
+    try {
+      await changeCampaignStatus({ id, data: { status: 'Active' } }).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message);
+        }
+      })
+    } catch (error) {
+      toast.error(error?.data?.message || error.message || 'Failed to resume campaign');
+    }
+  };
+
+  if (campaignByIdLoading) return <div className="container mx-auto">
+    <Card loading />
+  </div>;
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-8">
       <div
@@ -44,12 +88,13 @@ function SingleCampaign() {
         <div className="flex items-center gap-3 mt-4 xl:mt-0">
           <Button onClick={() => handleCampaignEdit()}>Edit Campaign</Button>
           <Button
+            loading={changeCampaignStatusLoading}
             onClick={() => {
-              toast.success('Campaign Paused');
+              campaignByIdData?.data?.status === 'Active' ? handlePauseCampaign() : handleResumeCampaign()
             }}
-            style={{ color: 'red' }}
+            style={{ color: campaignByIdData?.data?.status === 'Active' ? 'red' : 'green' }}
           >
-            Pause Campaign
+            {campaignByIdData?.data?.status === 'Active' ? 'Pause Campaign' : 'Resume Campaign'}
           </Button>
         </div>
       </div>

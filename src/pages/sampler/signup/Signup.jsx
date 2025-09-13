@@ -78,7 +78,7 @@ const Signup = () => {
               { required: true, message: 'Please enter your email!' },
               { type: 'email', message: 'Enter a valid email address!' },
             ]}
-            placeholder="MichealScott@gmail.com"
+            placeholder="Enter your email address"
             type="email"
           />
           <InputField

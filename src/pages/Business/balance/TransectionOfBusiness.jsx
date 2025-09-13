@@ -1,125 +1,147 @@
-import React, { useState } from "react";
-import { Table, Select, Button, DatePicker, Card } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
-import { FaAngleLeft } from "react-icons/fa";
-import bank from "../../../assets/bank.svg";
-import { BsExclamationOctagon } from "react-icons/bs";
+import React, { useState } from 'react';
+import {
+  Table,
+  Select,
+  Button,
+  DatePicker,
+  Card,
+  Modal,
+  Alert,
+  Input,
+} from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { FaAngleLeft, FaExternalLinkAlt } from 'react-icons/fa';
+import bank from '../../../assets/bank.svg';
+import { BsExclamationOctagon } from 'react-icons/bs';
+import paypalImage from '../../../assets/paypal.svg';
+import stripeImage from '../../../assets/stripe.svg';
+import { IoIosAlert } from 'react-icons/io';
+import { LuBadgeDollarSign } from 'react-icons/lu';
+import toast from 'react-hot-toast';
 const { Option } = Select;
-
 const TransectionOfBusiness = () => {
   const [filters, setFilters] = useState({
-    dateRange: "",
-    category: "",
-    status: "",
+    dateRange: '',
+    category: '',
+    status: '',
   });
   const balance = 200;
   const pending = 0;
   const [selectedDateRange, setSelectedDateRange] = useState([]);
+  const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
+  const [paymentModal, showPaymentModal] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  // const [isModalVisible, setIsModalVisible] = useState(false)
   const navigate = useNavigate();
   const handleDateChange = (dates, dateStrings) => {
     setSelectedDateRange(dateStrings);
   };
+  const handleCancelGetPaid = () => {
+    setIsGetPaidModalVisible(false);
+  };
+
+  const handleWithdraw = () => {
+    toast.success(`Withdrawing $${withdrawAmount}`);
+    showPaymentModal(false);
+    setIsGetPaidModalVisible(false);
+  };
 
   const handleApply = () => {
-    console.log("Selected Date Range: ", selectedDateRange);
+    console.log('Selected Date Range: ', selectedDateRange);
   };
 
   const transactionData = [
     {
-      key: "1",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
+      key: '1',
+      date: '23 Mar, 2024',
+      item: 'Mini Portable Refillable Sprayer Atomizer',
       amount: 5,
-      status: "Successful",
-      refId: "709692663",
+      status: 'Successful',
+      refId: '709692663',
     },
     {
-      key: "2",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
+      key: '2',
+      date: '23 Mar, 2024',
+      item: 'Mini Portable Refillable Sprayer Atomizer',
       amount: 5,
-      status: "Successful",
-      refId: "709692663",
+      status: 'Successful',
+      refId: '709692663',
     },
     {
-      key: "3",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
+      key: '3',
+      date: '23 Mar, 2024',
+      item: 'Mini Portable Refillable Sprayer Atomizer',
       amount: 5,
-      status: "Processing",
-      refId: "709692663",
+      status: 'Processing',
+      refId: '709692663',
     },
     {
-      key: "4",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
+      key: '4',
+      date: '23 Mar, 2024',
+      item: 'Mini Portable Refillable Sprayer Atomizer',
       amount: 5,
-      status: "Successful",
-      refId: "709692663",
+      status: 'Successful',
+      refId: '709692663',
     },
     {
-      key: "5",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
+      key: '5',
+      date: '23 Mar, 2024',
+      item: 'Mini Portable Refillable Sprayer Atomizer',
       amount: 5,
-      status: "Cancelled",
-      refId: "709692663",
+      status: 'Cancelled',
+      refId: '709692663',
     },
     {
-      key: "6",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
+      key: '6',
+      date: '23 Mar, 2024',
+      item: 'Mini Portable Refillable Sprayer Atomizer',
       amount: 5,
-      status: "Cancelled",
-      refId: "709692663",
+      status: 'Cancelled',
+      refId: '709692663',
     },
   ];
 
   const columns = [
     {
-      title: "Date",
-      dataIndex: "date",
+      title: 'Date',
+      dataIndex: 'date',
       render: (date) => <span className="text-[#999Eab]">{date}</span>,
-      key: "date",
-      render: (_, text) => (
-        <p className="text-gray-500 text-center">{text.date}</p>
-      ),
+      key: 'date',
     },
     {
-      title: "Item",
-      dataIndex: "item",
+      title: 'Item',
+      dataIndex: 'item',
       render: (item) => <span className="text-[#111] underline">{item}</span>,
-      key: "item",
+      key: 'item',
     },
     {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
       render: (amount) => <p className="text-[#6D7486]">{` - $${amount}`}</p>,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
       render: (status) => (
         <span
-          className={`${
-            status === "Successful"
-              ? "bg-gray-100 text-green-500"
-              : status === "Processing"
-              ? "bg-gray-100 text-purple-700"
-              : "bg-gray-100 text-red-500"
-          } p-1 rounded-md text-sm`}
+          className={`${status === 'Successful'
+              ? 'bg-gray-100 text-green-500'
+              : status === 'Processing'
+                ? 'bg-gray-100 text-purple-700'
+                : 'bg-gray-100 text-red-500'
+            } p-1 rounded-md text-sm`}
         >
           {status}
         </span>
       ),
     },
     {
-      title: "Ref ID",
-      dataIndex: "refId",
-      key: "refId",
+      title: 'Ref ID',
+      dataIndex: 'refId',
+      key: 'refId',
     },
   ];
 
@@ -183,14 +205,14 @@ const TransectionOfBusiness = () => {
                 <Option value="customDateRange">Custom date range</Option>
               </Select>
 
-              {filters.dateRange === "customDateRange" && (
+              {filters.dateRange === 'customDateRange' && (
                 <div className="mt-5 ">
                   <div className="flex gap-6">
                     <div className="w-40">
                       <p className="!mb-1 !text-sm text-gray-600">From</p>
                       <DatePicker
                         format="MMM D, YYYY"
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                         onChange={handleDateChange}
                       />
                     </div>
@@ -198,7 +220,7 @@ const TransectionOfBusiness = () => {
                       <p className="!mb-1 !text-sm text-gray-600">To</p>
                       <DatePicker
                         format="MMM D, YYYY"
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                         onChange={handleDateChange}
                       />
                     </div>
@@ -209,9 +231,9 @@ const TransectionOfBusiness = () => {
                     onClick={handleApply}
                     className="w-full mt-6"
                     style={{
-                      fontSize: "16px",
-                      marginTop: "10px",
-                      fontWeight: "500",
+                      fontSize: '16px',
+                      marginTop: '10px',
+                      fontWeight: '500',
                     }}
                   >
                     Apply
@@ -254,7 +276,6 @@ const TransectionOfBusiness = () => {
           dataSource={transactionData}
           rowKey="key"
           pagination={false}
-          scroll={{ x: 1200 }}
         />
       </div>
 
@@ -280,7 +301,7 @@ const TransectionOfBusiness = () => {
             </div>
           }
           type="warning"
-          style={{ marginBottom: "16px" }}
+          style={{ marginBottom: '16px' }}
         />
 
         <Card>
@@ -346,13 +367,13 @@ const TransectionOfBusiness = () => {
         centered
       >
         <div className="flex flex-col items-center mb-4">
-          <LuBadgeDollarSign style={{ fontSize: 32, color: "#FF7A00" }} />
+          <LuBadgeDollarSign style={{ fontSize: 32, color: '#FF7A00' }} />
           <div className="ml-3 mt-2 max-w-[300px] w-full">
             <h3 className="text-gray-500 text-center">
               Enter the amount you wish to withdraw from your total balance.
             </h3>
             <p className="text-center">
-              Available Balance:{" "}
+              Available Balance:{' '}
               <span className="font-bold text-x text-blue-500">$426.25</span>
             </p>
           </div>
@@ -366,7 +387,7 @@ const TransectionOfBusiness = () => {
             prefix="$"
             value={withdrawAmount}
             onChange={(e) => setWithdrawAmount(e.target.value)}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
           />
         </div>
 
@@ -375,7 +396,7 @@ const TransectionOfBusiness = () => {
           <Button
             type="primary"
             onClick={handleWithdraw}
-            style={{ width: "100%", fontSize: "16px", fontWeight: "500" }}
+            style={{ width: '100%', fontSize: '16px', fontWeight: '500' }}
           >
             Withdraw
           </Button>

@@ -1,50 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
 
-const ReviewRating = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [reviews, setReviews] = useState({
-    totalReviews: 138,
-    ratingDistribution: { 5: 100, 4: 30, 3: 5, 2: 2, 1: 1 },
-    averageRating: 4.5,
-  });
+const ReviewRating = ({ rating }) => {
+  // Calculate total reviews
+  const totalReviews = Object.values(rating.starCounts).reduce(
+    (sum, count) => sum + count,
+    0
+  );
 
-  useEffect(() => {
-    // In a real app, fetch review data from an API
-    // Example of API call to fetch reviews
-    // fetch('/api/reviews')
-    //   .then((response) => response.json())
-    //   .then((data) => setReviews(data));
-  }, []);
+  // Map starCounts to numeric keys for easy loop
+  const ratingDistribution = {
+    5: rating.starCounts.fiveStar || 0,
+    4: rating.starCounts.fourStar || 0,
+    3: rating.starCounts.threeStar || 0,
+    2: rating.starCounts.twoStar || 0,
+    1: rating.starCounts.oneStar || 0,
+  };
 
-  const getProgressWidth = (rating) => {
-    return (reviews.ratingDistribution[rating] / reviews.totalReviews) * 100;
+  const getProgressWidth = (star) => {
+    if (totalReviews === 0) return 0;
+    return (ratingDistribution[star] / totalReviews) * 100;
   };
 
   return (
     <div>
-      <div>
-        <span className='text-4xl'>{reviews.averageRating}</span>
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-4xl font-bold">{rating.averageRating.toFixed(1)}</span>
         <span>⭐</span>
-        <span>({reviews.totalReviews} Reviews)</span>
+        <span className="text-gray-600">
+          ({totalReviews} {totalReviews === 1 ? "Review" : "Reviews"})
+        </span>
       </div>
+
       <div>
-        {[5, 4, 3, 2, 1].map((rating) => (
-          <div key={rating} style={{ marginBottom: '10px' }}>
-            <span>{rating} stars</span>
+        {[5, 4, 3, 2, 1].map((star) => (
+          <div key={star} className="mb-2">
+            <div className="flex items-center justify-between text-sm mb-1">
+              <span>{star} stars</span>
+              <span>{ratingDistribution[star]}</span>
+            </div>
             <div
               style={{
-                height: '8px',
-                backgroundColor: '#e0e0e0',
-                borderRadius: '5px',
-                overflow: 'hidden',
-                marginTop: '5px',
+                height: "8px",
+                backgroundColor: "#e0e0e0",
+                borderRadius: "5px",
+                overflow: "hidden",
               }}
             >
               <div
                 style={{
-                  width: `${getProgressWidth(rating)}%`,
-                  height: '100%',
-                  backgroundColor: '#f57c00',
+                  width: `${getProgressWidth(star)}%`,
+                  height: "100%",
+                  backgroundColor: "#f57c00",
                 }}
               />
             </div>

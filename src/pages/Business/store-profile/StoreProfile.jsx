@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Pagination, Skeleton } from "antd";
+import { Button, Card, Empty, Pagination, Skeleton } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import logo from "../../../assets/logo/logo.svg";
 import { CiCalendar, CiStar } from "react-icons/ci";
@@ -10,6 +10,7 @@ import ReviewRating from "../../../components/store-profile-component/ReviewRati
 import ReviewCard from "../../../components/store-profile-component/ReviewCard";
 import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
 import { useGetBusinessProductApisQuery } from "../../../Redux/sampler/productApis";
+import { useProductReviewByIdQuery } from "../../../Redux/businessApis/business_product/productReviewApis";
 
 const { Meta } = Card;
 
@@ -18,177 +19,15 @@ function StoreProfile() {
   const { data: products, isLoading: productLoading } = useGetBusinessProductApisQuery({ id: profile?.data?._id }, {
     skip: !profile?.data?._id,
   });
+  const [reviewId, setReviewId] = useState(null);
+  const { data: reviewDatas, isLoading: reviewLoading } = useProductReviewByIdQuery(reviewId, { skip: !reviewId })
+  const review = reviewDatas?.data?.result
 
-  const items = [
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "BENGOO G9000 Stereo Gaming Headset",
-      description: "High-quality wireless headphones with noise cancellation",
-      price: "$5.00",
-      originalPrice: "$4.00",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "BENGOO G9000 Stereo Gaming Headset",
-      description: "High-quality wireless headphones with noise cancellation",
-      price: "$5.00",
-      originalPrice: "$4.00",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Mini Portable Refillable Sprayer Atomizer Bottle 5ml",
-      description: "Compact and portable sprayer for your favorite fragrance",
-      price: "$3.00",
-      originalPrice: "$2.50",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Ox 18 Inches Standing Plus Fan",
-      description: "Powerful fan to keep you cool during hot days",
-      price: "$10.00",
-      originalPrice: "$8.00",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Gaming Headset",
-      description: "Immersive sound experience for gamers",
-      price: "$7.00",
-      originalPrice: "$5.50",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Portable Speaker",
-      description: "Compact speaker with high-quality sound",
-      price: "$15.00",
-      originalPrice: "$12.00",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Smartwatch",
-      description: "Feature-rich smartwatch with multiple health tracking",
-      price: "$25.00",
-      originalPrice: "$20.00",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Wireless Bluetooth Earbuds",
-      description: "Comfortable earbuds with superior sound quality",
-      price: "$30.00",
-      originalPrice: "$25.00",
-    },
-    {
-      image:
-        "https://t3.ftcdn.net/jpg/00/91/07/82/360_F_91078252_i7cx2uJzDzgoJGDdUAHtVAcpjugVauX9.jpg",
-      title: "Digital Camera",
-      description: "Capture high-resolution photos and videos",
-      price: "$200.00",
-      originalPrice: "$180.00",
-    },
-    // Add more items as needed
-  ];
-
-  const reviewData = [
-    {
-      name: "Adeyoka George",
-      rating: 2,
-      date: "2024-03-12",
-      reviewerImage:
-        "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png",
-      description:
-        "This is the description of the product the customer wants to buy.",
-      productImage:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      productName: "High-quality wireless headphones with noise cancellation",
-    },
-    {
-      name: "Adeyoka George",
-      rating: 2,
-      date: "2024-03-12",
-      reviewerImage:
-        "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png",
-      description:
-        "This is the description of the product the customer wants to buy.",
-      productImage:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      productName: "High-quality wireless headphones with noise cancellation",
-    },
-    {
-      name: "Adeyoka George",
-      rating: 3,
-      date: "2024-03-12",
-      reviewerImage:
-        "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png",
-      description:
-        "This is the description of the product the customer wants to buy.",
-      productImage:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      productName: "High-quality wireless headphones with noise cancellation",
-    },
-    {
-      name: "Adeyoka George",
-      rating: 2,
-      date: "2024-03-12",
-      reviewerImage:
-        "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png",
-      description:
-        "This is the description of the product the customer wants to buy.",
-      productImage:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      productName: "High-quality wireless headphones with noise cancellation",
-    },
-    {
-      name: "Adeyoka George",
-      rating: 5,
-      date: "2024-03-12",
-      reviewerImage:
-        "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png",
-      description:
-        "This is the description of the product the customer wants to buy.",
-      productImage:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      productName: "High-quality wireless headphones with noise cancellation",
-    },
-    {
-      name: "Adeyoka George",
-      rating: 2,
-      date: "2024-03-12",
-      reviewerImage:
-        "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/2a9500aa-74f9-11ee-8902-02420a000165/gooey.ai%20-%20A%20beautiful%20anime%20drawing%20of%20a%20smilin...ibli%20ponyo%20anime%20excited%20anime%20saturated%20colorsn.png",
-      description:
-        "This is the description of the product the customer wants to buy.",
-      productImage:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      productName: "High-quality wireless headphones with noise cancellation",
-    },
-    // Add more reviews here...
-  ];
-
-  // Pagination logic for items
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  // Pagination logic for reviews
-  const [reviewPage, setReviewPage] = useState(1);
-  const reviewsPerPage = 5;
-  const currentReviews = reviewData.slice(
-    (reviewPage - 1) * reviewsPerPage,
-    reviewPage * reviewsPerPage
-  );
-
   const onPageChange = (page) => {
     setCurrentPage(page);
-  };
-
-  const onReviewPageChange = (page) => {
-    setReviewPage(page);
   };
 
   return (
@@ -236,17 +75,17 @@ function StoreProfile() {
         </p>
         <div className="flex md:items-center items-start md:flex-row flex-col  justify-between my-12">
           <h2 className="text-xl md:text-3xl">Items</h2>
-          <p className="text-sm md:text-base">
+          {/* <p className="text-sm md:text-base">
             Your category and sorting select fields
-          </p>
+          </p> */}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6 mt-8">
           {productLoading || isLoading ?
             Array.from({ length: 8 }).map((_, index) => (
               <ProductLoaderCard key={index} />
             ))
             : products?.data?.result?.map((item) => (
-              <CardComponent key={item?._id} item={item} />
+              <CardComponent key={item?._id} item={item} setReviewId={setReviewId} />
             ))}
         </div>
         <Pagination
@@ -277,39 +116,40 @@ function StoreProfile() {
             return originalElement;
           }}
         />
-        <div className="flex items-start md:flex-row flex-col gap-24 justify-between">
-          <div className="md:flex-1 w-full md:sticky top-10">
-            <ReviewRating />
-          </div>
-          <div className="mx-auto font-sans w-full md:flex-1">
-            <div className="w-full flex items-center gap-3 justify-between">
-              <div className="flex gap-2">
-                <SelectField
-                  placeholder={"Recommended"}
-                  className="!w-full reconmended-ant-select "
-                  options={[
-                    { label: "Recommended", value: "yes" },
-                    { label: "Not Recommended", value: "no" },
-                  ]}
-                ></SelectField>
-                <SelectField
-                  placeholder={"All stars"}
-                  className="!w-full"
-                  options={[
-                    { label: "1 star", value: "1" },
-                    { label: "2 stars", value: "2" },
-                    { label: "3 stars", value: "3" },
-                    { label: "4 stars", value: "4" },
-                    { label: "5 stars", value: "5" },
-                  ]}
-                ></SelectField>
-              </div>
-              <div></div>
+        {reviewLoading ? <Skeleton /> : <div id="review" className="flex items-start md:flex-row flex-col gap-24 justify-between">
+          {review && <>
+            <div className="md:flex-1 w-full md:sticky top-10">
+              <ReviewRating rating={reviewDatas?.data} />
             </div>
-            {currentReviews.map((review, index) => (
-              <ReviewCard key={index} review={review} />
-            ))}
-            <Pagination
+            <div className="mx-auto font-sans w-full md:flex-1">
+              <div className="w-full flex items-center gap-3 justify-between">
+                <div className="flex gap-2">
+                  <SelectField
+                    placeholder={"Recommended"}
+                    className="!w-full reconmended-ant-select "
+                    options={[
+                      { label: "Recommended", value: "yes" },
+                      { label: "Not Recommended", value: "no" },
+                    ]}
+                  ></SelectField>
+                  <SelectField
+                    placeholder={"All stars"}
+                    className="!w-full"
+                    options={[
+                      { label: "1 star", value: "1" },
+                      { label: "2 stars", value: "2" },
+                      { label: "3 stars", value: "3" },
+                      { label: "4 stars", value: "4" },
+                      { label: "5 stars", value: "5" },
+                    ]}
+                  ></SelectField>
+                </div>
+                <div></div>
+              </div>
+              {review?.length > 0 ? review?.map((review) => (
+                <ReviewCard key={review?._id} r={review} reviewLoading={reviewLoading} />
+              )) : <Empty description="No reviews found" />}
+              {/* <Pagination
               current={reviewPage}
               total={reviewData.length}
               pageSize={reviewsPerPage}
@@ -336,9 +176,10 @@ function StoreProfile() {
                 }
                 return originalElement;
               }}
-            />
-          </div>
-        </div>
+            /> */}
+            </div>
+          </>}
+        </div>}
       </div>
     </div>
   );
@@ -346,10 +187,14 @@ function StoreProfile() {
 
 export default StoreProfile;
 
-const CardComponent = ({ item }) => {
+const CardComponent = ({ item, setReviewId }) => {
   return (
     <Card
-      className="shadow-md border-[1px] overflow-hidden border-[#eee]"
+      onClick={() => {
+        setReviewId(item?._id)
+        document.getElementById("review").scrollIntoView({ behavior: "smooth" })
+      }}
+      className="shadow-md cursor-pointer border-[1px] overflow-hidden border-[#eee]"
       cover={
         <img
           className="lg:h-[250px] sm:h-[200px] h-[180px] object-contain md:object-cover xl:h-[300px]"
@@ -359,7 +204,7 @@ const CardComponent = ({ item }) => {
       }
     >
       <Meta
-        title={item?.title}
+        title={item?.name}
         description={
           <>
             <p>{item?.shortDescription}</p>

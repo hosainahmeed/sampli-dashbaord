@@ -1,31 +1,26 @@
-import { Button } from 'antd';
-import React, { useState } from 'react';
-import { RxCross2 } from 'react-icons/rx';
-import { useSpring, animated } from 'react-spring';
+// import { Button } from 'antd';
+import { Skeleton } from 'antd';
+import React from 'react';
+// import { RxCross2 } from 'react-icons/rx';
+// import { useSpring, animated } from 'react-spring';
 
-const ReviewCard = ({ review }) => {
-  const {
-    name,
-    rating,
-    date,
-    description,
-    productImage,
-    productName,
-    reviewerImage,
-  } = review;
+const ReviewCard = ({ r, reviewLoading }) => {
+  console.log(reviewLoading)
+  // const [isReplying, setIsReplying] = useState(false);
+  // const [reply, setReply] = useState('');
 
-  const [isReplying, setIsReplying] = useState(false);
-  const [reply, setReply] = useState('');
-
-  const replyBoxAnimation = useSpring({
-    height: isReplying ? 'auto' : '0px',
-    opacity: isReplying ? 1 : 0,
-    overflow: 'hidden',
-    display: isReplying ? 'block' : 'none',
-    paddingTop: isReplying ? '10px' : '0px',
-    paddingBottom: isReplying ? '10px' : '0px',
-    config: { tension: 200, friction: 20 },
-  });
+  // const replyBoxAnimation = useSpring({
+  //   height: isReplying ? 'auto' : '0px',
+  //   opacity: isReplying ? 1 : 0,
+  //   overflow: 'hidden',
+  //   display: isReplying ? 'block' : 'none',
+  //   paddingTop: isReplying ? '10px' : '0px',
+  //   paddingBottom: isReplying ? '10px' : '0px',
+  //   config: { tension: 200, friction: 20 },
+  // });
+  if (reviewLoading) {
+    return <Skeleton loading />
+  }
 
   const renderStars = (rating) => {
     const stars = [];
@@ -39,21 +34,21 @@ const ReviewCard = ({ review }) => {
     return stars;
   };
 
-  const handleReplyChange = (e) => {
-    setReply(e.target.value);
-  };
+  // const handleReplyChange = (e) => {
+  //   setReply(e.target.value);
+  // };
 
-  const toggleReply = () => {
-    setIsReplying(!isReplying);
-  };
+  // const toggleReply = () => {
+  //   setIsReplying(!isReplying);
+  // };
 
-  const handleReplySubmit = () => {
-    if (reply.trim()) {
-      console.log('Reply submitted:', reply);
-      setReply('');
-      setIsReplying(false);
-    }
-  };
+  // const handleReplySubmit = () => {
+  //   if (reply.trim()) {
+  //     console.log('Reply submitted:', reply);
+  //     setReply('');
+  //     setIsReplying(false);
+  //   }
+  // };
 
   return (
     <div
@@ -65,28 +60,28 @@ const ReviewCard = ({ review }) => {
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <img
-          src={reviewerImage}
-          alt={name}
+          src={r?.reviewer?.profile_image}
+          alt={r?.reviewer?.name}
           className="rounded-full mr-3 w-12 h-12 object-cover"
         />
         <div className="flex justify-between items-center w-full">
           <div>
-            <span style={{ fontWeight: 'bold' }}>{name}</span>
-            <div>{renderStars(rating)}</div>
+            <span style={{ fontWeight: 'bold' }}>{r?.reviewer?.name}</span>
+            <div>{renderStars(r?.rating)}</div>
           </div>
         </div>
         <div className="flex gap-2 items-center">
           <div style={{ marginLeft: 'auto', color: '#888' }}>
-            {new Date(date).toLocaleDateString()}
+            {new Date(r?.createdAt).toLocaleDateString()}
           </div>
         </div>
       </div>
-      <p style={{ margin: '10px 0', color: '#555' }}>{description}</p>
-      {productImage && (
+      <p style={{ margin: '10px 0', color: '#555' }}>{r?.description}</p>
+      {r?.product?.image && (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img
-            src={productImage}
-            alt={productName}
+            src={r?.product?.image}
+            alt={r?.product?.name}
             style={{
               width: '60px',
               height: '60px',
@@ -95,10 +90,10 @@ const ReviewCard = ({ review }) => {
               marginRight: '10px',
             }}
           />
-          <span>{productName}</span>
+          <span>{r?.product?.name}</span>
         </div>
       )}
-      <div style={{ marginTop: '10px' }}>
+      {/* <div style={{ marginTop: '10px' }}>
         {isReplying ? (
           <Button
             size="small"
@@ -113,12 +108,12 @@ const ReviewCard = ({ review }) => {
           </Button>
         ) : (
           <Button onClick={toggleReply}
-          className='!border-none !text-sm hover:!underline'
+            className='!border-none !text-sm hover:!underline'
           >Reply</Button>
         )}
-      </div>
+      </div> */}
       {/* Animated reply input field */}
-      <animated.div style={replyBoxAnimation}>
+      {/* <animated.div style={replyBoxAnimation}>
         <div className="flex items-end gap-2">
           <textarea
             value={reply}
@@ -133,7 +128,7 @@ const ReviewCard = ({ review }) => {
             Reply
           </button>
         </div>
-      </animated.div>
+      </animated.div> */}
     </div>
   );
 };
