@@ -1,19 +1,19 @@
-import React from 'react'
-import { Button, Typography, Divider } from 'antd'
-import { AppleOutlined, GoogleOutlined } from '@ant-design/icons'
-import Logo from '../../../components/ui/Logo'
-import { TiSocialFacebook } from 'react-icons/ti'
-import InputField from '../../../components/ui/InputField'
-import FormWrapper from '../../../components/ui/FormWrapper'
-import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { useAuthSectionSignupMutation } from '../../../Redux/sampler/authSectionApis'
+import React from "react";
+import { Button, Typography, Divider } from "antd";
+import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
+import Logo from "../../../components/ui/Logo";
+import { TiSocialFacebook } from "react-icons/ti";
+import InputField from "../../../components/ui/InputField";
+import FormWrapper from "../../../components/ui/FormWrapper";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuthSectionSignupMutation } from "../../../Redux/sampler/authSectionApis";
 
-const { Title } = Typography
+const { Title } = Typography;
 
 const Signup = () => {
-  const navigate = useNavigate()
-  const [createSampler, { isLoading }] = useAuthSectionSignupMutation()
+  const navigate = useNavigate();
+  const [createSampler, { isLoading }] = useAuthSectionSignupMutation();
 
   const onFinish = async (values) => {
     try {
@@ -22,25 +22,25 @@ const Signup = () => {
         username: values.username,
         email: values.email,
         password: values.password,
-      }
+      };
 
-      const res = await createSampler(payload).unwrap()
+      const res = await createSampler(payload).unwrap();
 
       if (res.success) {
         toast.success(
-          res.message || 'Signup successful! Check your email for verification.'
-        )
+          res.message || "Signup successful! Check your email for verification."
+        );
 
-        navigate('/sign-up-otp', { state: { email: values.email } })
+        navigate("/sign-up-otp", { state: { email: values.email } });
       } else {
-        toast.error(res.message || 'Signup failed. Try again.')
+        toast.error(res.message || "Signup failed. Try again.");
       }
     } catch (err) {
       toast.error(
-        err?.data?.message || 'Something went wrong. Please try again.'
-      )
+        err?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
@@ -60,33 +60,33 @@ const Signup = () => {
           <InputField
             label="Full Name"
             name="fullname"
-            rules={[{ required: true, message: 'Please enter your name!' }]}
-            placeholder="Ahsan Mahfuz"
+            rules={[{ required: true, message: "Please enter your name!" }]}
+            placeholder="John Doe"
             type="text"
           />
           <InputField
             label="Username"
             name="username"
-            rules={[{ required: true, message: 'Please enter your username!' }]}
-            placeholder="ahsan12"
+            rules={[{ required: true, message: "Please enter your username!" }]}
+            placeholder="john_doe"
             type="text"
           />
           <InputField
             label="Email address"
             name="email"
             rules={[
-              { required: true, message: 'Please enter your email!' },
-              { type: 'email', message: 'Enter a valid email address!' },
+              { required: true, message: "Please enter your email!" },
+              { type: "email", message: "Enter a valid email address!" },
             ]}
-            placeholder="MichealScott@gmail.com"
+            placeholder="john.doe@example.com"
             type="email"
           />
           <InputField
             label="Password"
             name="password"
             type="password"
-            rules={[{ required: true, message: 'Please enter your password!' }]}
-            placeholder="Password"
+            rules={[{ required: true, message: "Please enter your password!" }]}
+            placeholder="Enter your password"
           />
 
           <Button
@@ -114,7 +114,7 @@ const Signup = () => {
         </div>
 
         <div className="mt-4 text-gray-500 text-[14px]">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link
             to="/login"
             className="text-blue-500 hover:underline text-[14px] transition-all"
@@ -136,7 +136,7 @@ const Signup = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;
