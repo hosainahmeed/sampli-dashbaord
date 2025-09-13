@@ -9,6 +9,8 @@ import {
   Dropdown,
   Tooltip,
   Upload,
+  Spin,
+  Skeleton,
 } from "antd";
 import {
   ShareAltOutlined,
@@ -46,7 +48,7 @@ const { TabPane } = Tabs;
 const SamplerFeed = () => {
   const { data: categoryList } = useCategorySectionApisQuery();
   const [activeCategory, setActiveCategory] = useState("");
-  const { data: reviewList } = useGetAllReviewQuery({
+  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
     category: activeCategory,
   });
 
@@ -189,23 +191,6 @@ const SamplerFeed = () => {
     }
   };
 
-  const handleClickAddToCart = async (productId, bussinessId) => {
-    try {
-      const data = {
-        productId,
-        bussinessId,
-        variantId: selectedVariant?._id || null,
-      };
-      const res = await addCart({
-        data,
-      }).unwrap();
-      toast.success(res?.message);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="responsive-width !mt-2 !mb-20 ">
       <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
@@ -247,6 +232,8 @@ const SamplerFeed = () => {
             </div>
           </div>
         </div>
+
+        <div>{}</div>
 
         {/* right side */}
         <div className="w-2/3 max-lg:w-full">
@@ -308,10 +295,108 @@ const SamplerFeed = () => {
             ))}
           </div>
 
+          {/* Skeleton */}
+          {reviewLoading && (
+            <div className="h-screen">
+              <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
+                {/* Header */}
+                <div className="flex justify-between mb-2 w-full">
+                  <div className="flex items-center gap-2 w-full">
+                    <Skeleton.Avatar active size="large" shape="circle" />
+                    <div>
+                      <Skeleton.Input
+                        active
+                        size="small"
+                        style={{ width: 120 }}
+                      />
+                      <div className="flex items-center gap-2 mt-1">
+                        <Skeleton.Input
+                          active
+                          size="small"
+                          style={{ width: 60 }}
+                        />
+                        <Skeleton.Input
+                          active
+                          size="small"
+                          style={{ width: 40 }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Skeleton.Button active size="small" shape="round" />
+                </div>
+
+                <Skeleton paragraph={{ rows: 2 }} active />
+
+                <div className="flex justify-between items-center mt-4 w-full">
+                  <div className="flex gap-4">
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                  </div>
+                  <Skeleton.Button active size="small" shape="round" />
+                </div>
+              </div>
+              <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
+                {/* Header */}
+                <div className="flex justify-between mb-2 w-full">
+                  <div className="flex items-center gap-2 w-full">
+                    <Skeleton.Avatar active size="large" shape="circle" />
+                    <div>
+                      <Skeleton.Input
+                        active
+                        size="small"
+                        style={{ width: 120 }}
+                      />
+                      <div className="flex items-center gap-2 mt-1">
+                        <Skeleton.Input
+                          active
+                          size="small"
+                          style={{ width: 60 }}
+                        />
+                        <Skeleton.Input
+                          active
+                          size="small"
+                          style={{ width: 40 }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Skeleton.Button active size="small" shape="round" />
+                </div>
+
+                <Skeleton paragraph={{ rows: 2 }} active />
+
+                <div className="flex justify-between items-center mt-4 w-full">
+                  <div className="flex gap-4">
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                    <Skeleton.Button active size="small" shape="round" />
+                  </div>
+                  <Skeleton.Button active size="small" shape="round" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div>{posts?.length == 0 && <div className="h-screen"></div>}</div>
           {/* Feed Posts */}
           <div className="space-y-4">
             {posts?.map((post) => (
-              <div key={post.id} className=" border border-gray-200 p-5">
+              <div
+                key={post.id}
+                className="shadow-md border border-gray-200 rounded-2xl p-5"
+              >
                 <div className="flex justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Avatar src={post?.reviewer?.profile_image} />
@@ -411,7 +496,19 @@ const SamplerFeed = () => {
                       Share
                     </button>
                   </div>
-                  <Button type="primary">Add to cart</Button>
+                  <Link
+                    to={`/sampler/shop/category/${post?.product?.name}/${post?.product?._id}`}
+                    className="border px-5 py-2 rounded-md border-blue-500 text-blue-500 hover: cursor-pointer"
+                    state={{
+                      referral: {
+                        reviewerId: post?.reviewer?._id,
+                        reviewId: post?._id,
+                        amount: post?.product?.price,
+                      },
+                    }}
+                  >
+                    Add to cart
+                  </Link>
                 </div>
 
                 {post?.totalLikers > 0 && (

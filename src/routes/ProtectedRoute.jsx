@@ -18,7 +18,7 @@ function ProtectedRoute({ children }) {
         window.location.href = '/business-dashboard'
       }
       if (decodedToken?.role === 'reviewer') {
-        window.location.href = '/campaign'
+        window.location.href = '/sampler/campaign'
       }
     }
   }

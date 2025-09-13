@@ -16,9 +16,10 @@ const profileApis = baseApis.injectEndpoints({
       }),
     }),
     getMyReviews: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/review/get-my-reviews",
         method: "GET",
+        params,
       }),
     }),
     getMyComments: builder.query({
@@ -29,9 +30,10 @@ const profileApis = baseApis.injectEndpoints({
       }),
     }),
     getMyLikes: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/comment/get-my-likes",
         method: "GET",
+        params,
       }),
     }),
   }),

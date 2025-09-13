@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useGetMyCommentsQuery } from "../../../Redux/sampler/profileApis";
-import { Avatar, Rate, Button } from "antd";
+import { Avatar, Rate, Button, Pagination } from "antd";
 import { Link } from "react-router-dom";
 
 const AllComments = () => {
   const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
   const { data: comments, isLoading } = useGetMyCommentsQuery({
     limit,
+    page,
   });
   const commentsData = comments?.data?.result || [];
 
@@ -129,6 +131,17 @@ const AllComments = () => {
         >
           {comments?.data?.meta?.total > limit && "Load More"}
         </div>
+      </div>
+
+      <div className="mx-auto flex items-center justify-center mt-10">
+        <Pagination
+          currentPage={comments?.data?.meta?.page}
+          totalPages={comments?.data?.meta?.totalPage}
+          onPageChange={(newPage) => {
+            setPage(newPage);
+            setLimit(limit + 10);
+          }}
+        />
       </div>
     </div>
   );
