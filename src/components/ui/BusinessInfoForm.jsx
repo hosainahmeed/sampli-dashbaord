@@ -41,9 +41,7 @@ export const SectorOptions = [
 ];
 
 const BusinessInfoForm = () => {
-
   const location = useLocation()
-  console.log(location?.state?.email)
   const router = useNavigate();
   const onFinish = (values) => {
     console.log('Success:', values);
