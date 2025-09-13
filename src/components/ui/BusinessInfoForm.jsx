@@ -15,12 +15,11 @@ import Logo from './Logo';
 import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
-
 export const options = [
   { value: 'Sole Proprietorship', label: 'Sole Proprietorship' },
   { value: 'Private Limited Company', label: 'Private Limited Company' },
-  { value: 'partnership', label: 'Partnership' },
-  { value: 'llp', label: 'Limited Liability Partnership (LLP)' },
+  { value: 'Partnership', label: 'Partnership' },
+  { value: 'Limited Liability Partnership (LLP)', label: 'Limited Liability Partnership (LLP)' },
   { value: 'Corporation', label: 'Corporation' },
   { value: 'Small Business Enterprise (SME)', label: 'Small Business Enterprise (SME)' },
   { value: 'Startup', label: 'Startup' },
@@ -42,9 +41,7 @@ export const SectorOptions = [
 ];
 
 const BusinessInfoForm = () => {
-
   const location = useLocation()
-  console.log(location?.state?.email)
   const router = useNavigate();
   const onFinish = (values) => {
     console.log('Success:', values);
