@@ -41,10 +41,11 @@ function Header() {
   if (token) {
     decode = jwtDecode(localStorage.getItem("token"));
   }
+  
   const [userType, setUserType] = useState(decode?.role); // sampler, business
   const [show, setShow] = useState(true);
   const user = {
-    photoURL: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
+    photoURL: profile?.data?.logo || "https://cdn-icons-png.flaticon.com/512/219/219988.png",
     displayName: profile?.data?.bussinessName || "Guest User",
     email: profile?.data?.email || "guest@User.com",
   };
@@ -58,7 +59,7 @@ function Header() {
   };
 
   const menu = (
-    <Menu className="w-56 rounded-xl shadow-lg">
+    <Menu className="w-fit rounded-xl shadow-lg">
       <div className="p-4 flex items-center gap-3">
         <Avatar size={48} src={user?.photoURL} />
         <div>

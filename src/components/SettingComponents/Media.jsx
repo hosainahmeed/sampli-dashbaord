@@ -1,251 +1,101 @@
-import React, { useState } from 'react';
-import { Card, Typography, Upload, Button, Form, Input, Row, Col } from 'antd';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
-import { RiImageAddLine } from 'react-icons/ri';
+import React, { useEffect, useState } from 'react';
+import { Card, Spin } from 'antd';
+import ImageUploader from './components/ImageUploader';
+import SocialLinksForm from './components/SocialLinksForm';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../Redux/businessApis/business _profile/getprofileApi';
 import toast from 'react-hot-toast';
 
-const { Title, Text } = Typography;
-const { Dragger } = Upload;
-import './Media.css';
 
 const Media = () => {
+  const [updateProfile, { isLoading: updateProfileLoading }] = useUpdateProfileMutation();
+  const { data: profileData } = useGetProfileQuery();
   const [images, setImages] = useState({
-    cover: null,
+    coverImage: null,
     logo: null,
   });
   const [warnings, setWarnings] = useState({
-    cover: null,
+    coverImage: null,
     logo: null,
   });
-  const [form] = Form.useForm();
 
-  const imageRequirements = {
-    cover: {
-      minWidth: 1920,
-      minHeight: 1080,
-      title: 'Cover Image',
-      description: 'Showcase promotional banners to grab attention!',
-    },
-    logo: {
-      minWidth: 512,
-      minHeight: 512,
-      title: 'Logo',
-      description: 'Add your brand logo',
-    },
-  };
-
-  const handleImageUpload = (file, type) => {
-    const validTypes = [
-      'image/heic',
-      'image/webp',
-      'image/svg+xml',
-      'image/png',
-      'image/jpeg',
-    ];
-    if (!validTypes.includes(file.type)) {
-      toast.error('Please upload HEIC, WEBP, SVG, PNG, or JPG files only.');
-      return false;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('File size should be less than 10MB');
-      return false;
-    }
-
-    const img = new Image();
-    const objectUrl = URL.createObjectURL(file);
-
-    img.onload = () => {
-      const requirements = imageRequirements[type];
-
-      if (
-        img.width < requirements.minWidth ||
-        img.height < requirements.minHeight
-      ) {
-        const warn = `Warning: ${requirements.title} is smaller than the recommended size of ${requirements.minWidth}×${requirements.minHeight} pixels. This might affect quality.`;
-        setWarnings((prev) => ({
-          ...prev,
-          [type]: warn,
-        }));
-      } else {
-        setWarnings((prev) => ({
-          ...prev,
-          [type]: null,
-        }));
-      }
-
+  useEffect(() => {
+    if (profileData?.data?.coverImage) {
       setImages((prev) => ({
         ...prev,
-        [type]: {
-          file,
-          preview: objectUrl,
-        },
-      }));
-      toast.success(`${requirements.title} uploaded successfully!`);
-    };
+        coverImage: {
+          file: profileData?.data?.coverImage,
+          preview: profileData?.data?.coverImage,
+        }
+      }))
+    }
+    if (profileData?.data?.logo) {
+      setImages((prev) => ({
+        ...prev,
+        logo: {
+          file: profileData?.data?.logo,
+          preview: profileData?.data?.logo,
+        }
+      }))
+    }
+  }, [profileData])
 
-    img.src = objectUrl;
-    return false;
+  const handleUpload = async ({ file, preview, warning, formData }) => {
+    try {
+      const type = formData.has('coverImage') ? 'coverImage' : 'logo';
+      await updateProfile(formData).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message)
+        }
+      })
+      setImages((prev) => ({
+        ...prev,
+        [type]: { file, preview },
+      }));
+
+      setWarnings((prev) => ({
+        ...prev,
+        [type]: warning,
+      }));
+    } catch (error) {
+      toast.error(error?.data?.message)
+    }
   };
 
-  const handleRemoveImage = (type) => {
+  const handleRemove = (type) => {
     if (images[type]?.preview) {
       URL.revokeObjectURL(images[type].preview);
     }
-    setImages((prev) => ({
-      ...prev,
-      [type]: null,
-    }));
-    setWarnings((prev) => ({
-      ...prev,
-      [type]: null,
-    }));
-    toast.success(`${imageRequirements[type].title} removed successfully!`);
+    setImages((prev) => ({ ...prev, [type]: null }));
+    setWarnings((prev) => ({ ...prev, [type]: null }));
   };
-
-  const handleSocialLinksSubmit = (values) => {
-    console.log('Social Links Submitted:', values);
-    toast.success('Social links saved successfully!');
-  };
-
-  const renderImageUpload = (type) => {
-    const { title, description } = imageRequirements[type];
-    const image = images[type];
-
-    return (
-      <div style={{ marginBottom: 24 }}>
-        <h3 style={{ fontSize: 18, marginBottom: 8 }}>{title}</h3>
-        <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
-          {description}
-        </Text>
-
-        <div className="border border-gray-300 rounded-lg p-4">
-          {image ? (
-            <div className="flex items-center justify-center flex-col !w-full">
-              <div className={type === 'logo' ? 'logoImage' : 'coverImage'}>
-                <img
-                  src={image.preview}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="mt-6 flex items-center flex-col">
-                <div>
-                  <Button
-                    icon={<EditOutlined />}
-                    onClick={() =>
-                      document.getElementById(`${type}-upload`).click()
-                    }
-                    style={{ marginRight: 8 }}
-                  >
-                    Change
-                  </Button>
-                  <Button
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={() => handleRemoveImage(type)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-
-                <Text type="warning">{warnings[type]}</Text>
-              </div>
-            </div>
-          ) : (
-            <Dragger
-              showUploadList={false}
-              beforeUpload={(file) => handleImageUpload(file, type)}
-              accept=".heic,.webp,.svg,.png,.jpg,.jpeg"
-              style={{ padding: 24 }}
-            >
-              <p className="ant-upload-drag-icon flex justify-center items-center">
-                <RiImageAddLine style={{ fontSize: 48, color: '#40a9ff' }} />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag file to upload {title}
-              </p>
-              <p className="ant-upload-hint">
-                HEIC, WEBP, SVG, PNG, or JPG
-                <br />
-                Recommended: {imageRequirements[type].minWidth}×
-                {imageRequirements[type].minHeight} pixels
-              </p>
-            </Dragger>
-          )}
-          <input
-            id={`${type}-upload`}
-            type="file"
-            style={{ display: 'none' }}
-            accept=".heic,.webp,.svg,.png,.jpg,.jpeg"
-            onChange={(e) => {
-              if (e.target.files?.[0]) {
-                handleImageUpload(e.target.files[0], type);
-              }
-            }}
-          />
-        </div>
-      </div>
-    );
-  };
-
-  const renderSocialLinks = () => (
-    <div style={{ marginBottom: 24 }}>
-      <h3 style={{ fontSize: 18, marginBottom: 8 }}>Social Links</h3>
-      <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
-        Connect with your audience across platforms
-      </Text>
-
-      <Form
-        form={form}
-        onFinish={handleSocialLinksSubmit}
-        layout="vertical"
-        initialValues={{
-          facebook: '',
-          twitter: '',
-          tiktok: '',
-          instagram: '',
-          website: '',
-          linkedin: '',
-        }}
-      >
-        <Row gutter={16}>
-          {[
-            'facebook',
-            'twitter',
-            'tiktok',
-            'instagram',
-            'website',
-            'linkedin',
-          ].map((platform) => (
-            <Col span={12} key={platform}>
-              <Form.Item
-                name={platform}
-                label={platform.charAt(0).toUpperCase() + platform.slice(1)}
-                style={{ marginBottom: 16 }}
-              >
-                <Input placeholder={`Enter your ${platform} URL`} />
-              </Form.Item>
-            </Col>
-          ))}
-        </Row>
-        <Button htmlType="submit" type="primary" icon={<UploadOutlined />}>
-          Save Social Links
-        </Button>
-      </Form>
-    </div>
-  );
 
   return (
-    <Card style={{ margin: '0 auto' }}>
-      {renderImageUpload('cover')}
-      {renderImageUpload('logo')}
-      {renderSocialLinks()}
-    </Card>
+    <Spin spinning={updateProfileLoading}>
+      <Card style={{ margin: '0 auto' }}>
+        <div className='grid grid-cols-6 gap-4'>
+          <div className='lg:col-span-2 col-span-6'>
+            <ImageUploader
+              type="logo"
+              image={images.logo}
+              warning={warnings.logo}
+              onUpload={handleUpload}
+              onRemove={handleRemove}
+            />
+          </div>
+
+          <div className='lg:col-span-4 col-span-6'>
+            <ImageUploader
+              type="coverImage"
+              image={images.coverImage}
+              warning={warnings.coverImage}
+              onUpload={handleUpload}
+              onRemove={handleRemove}
+            />
+          </div>
+        </div>
+        <SocialLinksForm data={profileData?.data} />
+      </Card>
+    </Spin>
   );
 };
 

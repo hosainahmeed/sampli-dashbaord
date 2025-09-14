@@ -137,3 +137,7 @@ body::-webkit-scrollbar {
 .ant-switch-checked {
   background-color: #36d96f !important;
 }
+.ant-otp-input{
+  height: 50px !important;
+  width: 100% !important;
+}

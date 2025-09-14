@@ -7,9 +7,6 @@ const profileApis = baseApis.injectEndpoints({
         url: "/reviewer/update-reviewer-profile",
         method: "PATCH",
         body: data,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
     }),
     getProfileApis: builder.query({

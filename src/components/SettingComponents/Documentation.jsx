@@ -23,6 +23,7 @@ const Documentation = () => {
       );
 
       if (filteredFiles.length !== fileList.length) {
+        toast.dismiss()
         toast.error('Only PDF and JPG files are allowed!');
       }
 
@@ -53,6 +54,7 @@ const Documentation = () => {
       });
 
       // Simulating a server request
+      toast.dismiss()
       toast.success('Form submitted successfully!');
     } catch (error) {
       toast.error('Please fill out all fields correctly.');

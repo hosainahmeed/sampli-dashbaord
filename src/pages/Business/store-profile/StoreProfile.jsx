@@ -34,7 +34,7 @@ function StoreProfile() {
     <div>
       <div className="responsive-width w-full h-48 md:h-64 xl:h-72 z-[888] relative">
         <img
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           src={profile?.data?.coverImage || coverImage}
           alt="sampli cover image"
         />

@@ -65,6 +65,7 @@ function AddProduct() {
       await createProduct(formData).unwrap().then((res) => {
         console.log(res)
         if (res.success) {
+          toast.dismiss()
           toast.success(res.message)
           setProductId(res?.data?._id)
           form.resetFields()
@@ -75,6 +76,7 @@ function AddProduct() {
       })
     } catch (error) {
       console.log(error)
+      toast.dismiss()
       toast.error(error?.message || 'Something went wrong!');
     }
   };

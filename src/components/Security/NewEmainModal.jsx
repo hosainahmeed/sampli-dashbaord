@@ -8,6 +8,7 @@ const NewEmainModal = ({ visible, onCancel, onContinue }) => {
   const onFinish = (values) => {
     console.log("Success:", values);
     localStorage.setItem("email", values.email);
+    toast.dismiss()
     toast.success("Form submitted successfully!");
     onContinue();
   };
