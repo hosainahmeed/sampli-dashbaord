@@ -1,26 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormWrapper from '../ui/FormWrapper';
 import InputField from '../ui/InputField';
 import TextArea from 'antd/es/input/TextArea';
-import { Button, Card, Form, Typography } from 'antd';
+import { Button, Card, Form, Modal, Typography } from 'antd';
 import SelectField from '../page-Component/SelectField';
 import { Country, State, City } from 'country-state-city';
 import toast from 'react-hot-toast';
+import { useGetProfileQuery } from '../../Redux/businessApis/business _profile/getprofileApi';
+import { useGetBusinessStoreQuery, useUpdateBusinessStoreMutation } from '../../Redux/businessApis/business_store/businessStoreApis';
+import { PlusOutlined } from '@ant-design/icons';
+import CompanyInfoForm from './components/CompanyInfoForm';
 const { Title } = Typography;
 function General() {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
+  const [showStoreForm, setShowStoreForm] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
-
+  const { data: profile, isLoading: isBusinessLoading } = useGetProfileQuery();
+  const { data: businessStore, isLoading: isBusinessStoreLoading } = useGetBusinessStoreQuery(profile?.data?._id,
+    { skip: !profile?.data?._id });
+  const [updateBusinessStore] = useUpdateBusinessStoreMutation();
   // console.log(Country.getAllCountries());
   // console.log(City.getAllCities());
   // console.log(State.getAllStates());
+  const businessStoreData = businessStore?.data?.[0];
+  console.log(businessStoreData);
   // console.log(selectedCountry);
 
-  const onFinishForm1 = () => {
-    toast.success('First form submitted successfully!');
-    form1.resetFields();
+  useEffect(() => {
+    if (businessStoreData) {
+      form1.setFieldsValue(businessStoreData);
+    }
+  }, [businessStoreData]);
+
+  const onFinishForm1 = async () => {
+    try {
+      if (!profile?.data?._id) {
+        throw new Error("Business not found!")
+      }
+      await updateBusinessStore({
+        id: profile?.data?._id,
+        data: form1.getFieldsValue(),
+      }).unwrap().then((res) => {
+        if (res?.success) {
+          toast.dismiss()
+          toast.success(res?.message || "Business updated successfully!")
+          form1.resetFields();
+        }
+      })
+    } catch (error) {
+      toast.dismiss()
+      toast.error(error?.data?.message || error?.message || "Something went wrong!")
+    }
   };
 
   const onFinishForm2 = () => {
@@ -35,16 +67,16 @@ function General() {
       <div className="max-w-screen-lg  flex flex-col gap-4">
         <div className=" w-full">
           <Title level={3}>General</Title>
-          <Card className="w-full ">
-            <FormWrapper
+          <Card loading={isBusinessStoreLoading || isBusinessLoading} className="w-full ">
+            {businessStore?.data?.length > 0 ? <FormWrapper
               form={form1}
               onFinish={onFinishForm1}
               className="grid grid-cols-2 gap-x-2"
             >
               <InputField
                 className="col-span-2 md:col-span-1"
-                label="StoreName"
-                name="storeName"
+                label="Store Name"
+                name="name"
                 rules={[
                   { required: true, message: 'Please enter your store name!' },
                 ]}
@@ -52,8 +84,8 @@ function General() {
               />
               <InputField
                 className="col-span-2 md:col-span-1"
-                label="StorePhone"
-                name="storePhone"
+                label="Store Phone"
+                name="phone"
                 rules={[
                   { required: true, message: 'Please enter your store phone!' },
                 ]}
@@ -61,8 +93,8 @@ function General() {
               />
               <InputField
                 className="col-span-2 md:col-span-1"
-                label="StoreEmail"
-                name="storeEmail"
+                label="Store Email"
+                name="email"
                 rules={[
                   { required: true, message: 'Please enter your store email!' },
                 ]}
@@ -70,8 +102,8 @@ function General() {
               />
               <InputField
                 className="col-span-2 md:col-span-1"
-                label="StoreTagline"
-                name="storeTagline"
+                label="Store Tagline"
+                name="tagline"
                 rules={[
                   {
                     required: true,
@@ -98,12 +130,19 @@ function General() {
                   Save
                 </Button>
               </Form.Item>
-            </FormWrapper>
+            </FormWrapper> :
+              <div className='flex flex-col items-center justify-center'>
+                <h1 className='text-center text-gray-500 text-2xl'>Store Information is not provided</h1>
+                <p className='text-center text-gray-500 text-sm'>Please provide store information first</p>
+                <Button type="primary" icon={<PlusOutlined />} onClick={() => {
+                  setShowStoreForm(true)
+                }}>Provide Store Information</Button>
+              </div>}
           </Card>
         </div>
 
         <div className="w-full flex-1">
-          <Card>
+          <Card loading={isBusinessStoreLoading || isBusinessLoading}>
             <h1>Store Information</h1>
             <FormWrapper
               form={form2}
@@ -156,9 +195,9 @@ function General() {
                 options={
                   selectedCountry
                     ? State.getStatesOfCountry(selectedCountry).map((s) => ({
-                        value: s.isoCode,
-                        label: s.name,
-                      }))
+                      value: s.isoCode,
+                      label: s.name,
+                    }))
                     : []
                 }
                 disabled={!selectedCountry}
@@ -175,8 +214,8 @@ function General() {
                 options={
                   selectedState
                     ? City.getCitiesOfState(selectedCountry, selectedState).map(
-                        (c) => ({ value: c.name, label: c.name })
-                      )
+                      (c) => ({ value: c.name, label: c.name })
+                    )
                     : []
                 }
                 disabled={!selectedState}
@@ -196,6 +235,15 @@ function General() {
             </FormWrapper>
           </Card>
         </div>
+        <Modal
+          open={showStoreForm && businessStore?.data?.length === 0}
+          onCancel={() => setShowStoreForm(false)}
+          footer={null}
+          width={800}
+          destroyOnClose
+        >
+          <CompanyInfoForm />
+        </Modal>
       </div>
     </>
   );

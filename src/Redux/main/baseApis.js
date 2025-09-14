@@ -5,8 +5,12 @@ export const baseApis = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: url,
-    headers: {
-      Authorization: `${localStorage.getItem("token")}`,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
     },
   }),
   tagTypes: [
@@ -20,6 +24,7 @@ export const baseApis = createApi({
     "product",
     "businessProfile",
     "campaign",
+    "businessStore",
   ],
   endpoints: () => ({}),
 });

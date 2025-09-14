@@ -13,11 +13,13 @@ function DeleteAccountCard() {
 
   const handleDelete = () => {
     if (!email || !password || !check) {
+      toast.dismiss()
       toast.error(
         'Please fill in both Reason and password and confirm that you understand!'
       );
       return;
     }
+    toast.dismiss()
     toast.success('Account deleted successfully!');
     // Implement delete logic here
     navigate('/login');

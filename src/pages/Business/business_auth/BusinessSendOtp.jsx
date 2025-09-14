@@ -94,7 +94,7 @@ const BusinessSendOtp = () => {
 
                 <Form onFinish={handleContinue}>
                     <Form.Item name={"verifyCode"} rules={[{ required: true }]}>
-                        <Input.OTP length={5} size="middle" />
+                        <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
                     </Form.Item>
                     <Form.Item>
                         <Button
