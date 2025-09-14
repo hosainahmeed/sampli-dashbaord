@@ -225,7 +225,7 @@ function General() {
                 className="col-span-2 md:col-span-1"
                 label="ZIP/Postal Code"
                 name="postalCode"
-                placeholder="Enter your ZIP/Postal Code"
+                placeholder="Enter your ZIP/Postal Codes"
               />
               <Form.Item className="col-span-2">
                 <Button type="primary" htmlType="submit">
