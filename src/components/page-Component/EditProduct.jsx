@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Form, Button, Upload, Card } from "antd";
+import { Form, Button, Upload, Card, Divider } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../ui/FormWrapper";
@@ -40,6 +40,10 @@ function EditProduct() {
         stock: singleProduct?.data?.stock,
         tags: singleProduct?.data?.tags?.join(", "),
         description: singleProduct?.data?.description,
+        weight: singleProduct?.data?.weight,
+        length: singleProduct?.data?.length,
+        width: singleProduct?.data?.width,
+        height: singleProduct?.data?.height,
       });
 
       setContent(singleProduct?.data?.description);
@@ -84,6 +88,10 @@ function EditProduct() {
         tags,
         description: content,
         deletedImages,
+        weight: parseFloat(values.weight),
+        length: parseFloat(values.length),
+        width: parseFloat(values.width),
+        height: parseFloat(values.height),
       }
 
       formData.append("data", JSON.stringify(data));
@@ -95,7 +103,6 @@ function EditProduct() {
       });
 
       await updateProduct({ id: location?.state?.id, data: formData }).unwrap().then((res) => {
-        console.log(res)
         if (res.success) {
           toast.dismiss()
           toast.success(res.message);
@@ -201,6 +208,42 @@ function EditProduct() {
               className="w-full"
             />
           </div>
+          <Divider className="!col-span-2">
+            <h1>For parcel details</h1>
+          </Divider>
+
+          <InputField
+            label="Weight (in lbs)"
+            name="weight"
+            rules={[{ required: true, message: "Please enter weight (in lbs) !" }]}
+            placeholder="Enter weight"
+            type="number"
+            className="w-full"
+          />
+          <InputField
+            label="Length (in inches)"
+            name="length"
+            rules={[{ required: true, message: "Please enter length (in inches) !" }]}
+            placeholder="Enter length"
+            type="number"
+            className="w-full"
+          />
+          <InputField
+            label="Width (in inches)"
+            name="width"
+            rules={[{ required: true, message: "Please enter width (in inches)!" }]}
+            placeholder="Enter width"
+            type="number"
+            className="w-full"
+          />
+          <InputField
+            label="Height (in inches)"
+            name="height"
+            rules={[{ required: true, message: "Please enter height (in inches)!" }]}
+            placeholder="Enter height"
+            type="number"
+            className="w-full"
+          />
 
           <Form.Item
             label="Item short Description"

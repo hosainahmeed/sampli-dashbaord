@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Table, Input, Button, Select, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UploadCsv from '../page-Component/UploadCsv';
 import { FaAngleLeft, FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { useGetProfileQuery } from '../../Redux/businessApis/business _profile/getprofileApi';
@@ -18,6 +18,7 @@ const ProductTable = ({ filterStatus }) => {
   const [sortKey, setSortKey] = useState(null);
   const [openCsv, setOpenCsv] = useState(false);
   const [deleteProduct] = useDeletePorductMutation()
+  const navigate = useNavigate()
 
   const { data: profile } = useGetProfileQuery();
   const { data: products, isLoading: productLoading } = useGetBusinessProductApisQuery({
@@ -51,8 +52,7 @@ const ProductTable = ({ filterStatus }) => {
   }, []);
 
   const handleView = (productId) => {
-    console.log('View product:', productId);
-    // Your view logic here
+    navigate(`/product/${productId}`, { state: { productId } })
   };
 
 

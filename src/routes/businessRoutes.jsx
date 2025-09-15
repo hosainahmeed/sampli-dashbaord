@@ -18,6 +18,7 @@ import PageNotFound from "../pages/pageNotFound/PageNotFound.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import AddVariant from "../components/page-Component/AddVariant.jsx";
 import EditProduct from "../components/page-Component/EditProduct";
+import ProductDetails from "../pages/Business/Product/ProductDetails";
 
 export const businessRoutes = {
   path: "/",
@@ -50,5 +51,9 @@ export const businessRoutes = {
       path: "/business/transaction-balance",
       element: <TransectionOfBusiness />,
     },
+    {
+      path: "product/:productId",
+      element: <ProductDetails />,
+    }
   ],
 };
