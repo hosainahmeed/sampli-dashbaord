@@ -1,15 +1,12 @@
 import { Button, Card, Form } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import React, { useEffect } from "react";
-import FormWrapper from "../ui/FormWrapper";
-import InputField from "../ui/InputField";
 
 function PrimaryContactInformation({ data }) {
   const [form] = Form.useForm();
-  console.log(data)
   useEffect(() => {
     form.setFieldsValue({
-      phoneNumber: data?.phoneNumber,
-      contactRole: data?.contactRole,
+      bio: data?.bio,
     })
   }, [data])
   const onFinishForm = (values) => {
@@ -17,42 +14,28 @@ function PrimaryContactInformation({ data }) {
   };
   return (
     <div>
-      <Card className="w-full shadow-md flex-1">
-        <FormWrapper
+      <Card className="w-full flex-1">
+        <Form
+          requiredMark={false}
+          layout="vertical"
           onFinish={onFinishForm}
-          className="grid grid-cols-1 gap-x-4 gap-y-4"
           form={form}
         >
-          <InputField
-            label="Contact Name"
-            name="phoneNumber"
+          <Form.Item
+            label="Bio"
+            name="bio"
             rules={[
-              { required: true, message: "Please enter your contact name!" },
+              { required: true, message: "Please enter your bio!" },
             ]}
-            placeholder="Enter contact name"
-          />
-          <InputField
-            label="Contact Role"
-            name="contactRole"
-            placeholder="Enter contact role"
-            rules={[
-              { required: true, message: "Please enter your contact role!" },
-            ]}
-          />
-          <InputField
-            label="Phone Number"
-            name="phoneNumber"
-            placeholder="Enter phone number"
-            rules={[
-              { required: true, message: "Please enter your phone number!" },
-            ]}
-          />
+          >
+            <TextArea rows={6} />
+          </Form.Item>
           <Form.Item className="flex justify-end">
             <Button type="primary" htmlType="submit" className="bg-gray-300">
               Save
             </Button>
           </Form.Item>
-        </FormWrapper>
+        </Form>
       </Card>
     </div>
   );

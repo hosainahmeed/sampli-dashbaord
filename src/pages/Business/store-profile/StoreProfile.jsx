@@ -228,13 +228,7 @@ const ProductLoaderCard = () => {
   return (
     <Card
       className="shadow-md border-[1px] overflow-hidden border-[#eee]"
-      cover={<Skeleton.Image
-        style={{
-          height: "250px",
-          width: "100%",
-          objectFit: "cover",
-        }}
-      />}
+      cover={<Skeleton.Image className="!h-[250px] !w-full !object-cover"/>}
     >
       <Meta
         title={"Product Name"}

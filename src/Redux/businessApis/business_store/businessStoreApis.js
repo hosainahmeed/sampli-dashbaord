@@ -10,10 +10,10 @@ const businessStoreApis = baseApis.injectEndpoints({
       providesTags: ["businessStore"],
     }),
     updateBusinessStore: builder.mutation({
-      query: ({ data, id }) => ({
+      query: ({ id, data }) => ({
         url: `/store/update-store/${id}`,
         method: "PATCH",
-        data,
+        body: data,
       }),
       invalidatesTags: ["businessStore"],
     }),
@@ -21,7 +21,7 @@ const businessStoreApis = baseApis.injectEndpoints({
       query: (data) => ({
         url: `/store/create-store`,
         method: "POST",
-        data,
+        body: data,
       }),
       invalidatesTags: ["businessStore"],
     }),

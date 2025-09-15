@@ -56,7 +56,7 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView }) =
         {
             key: 'add-variant',
             label: (
-                <Link to={`/add-variant/${record._id}`}>
+                <Link to={`/add-variant/${record._id}`} state={{ name: record?.name }}>
                     <Button
                         size='small'
                         type="text"

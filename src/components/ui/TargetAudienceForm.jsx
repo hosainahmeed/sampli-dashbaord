@@ -60,7 +60,7 @@ const TargetAudienceForm = () => {
     location: '',
     minAge: '',
     maxAge: '',
-    gender: 'Male',
+    gender: 'male',
     startDate: null,
     endDate: null,
   });

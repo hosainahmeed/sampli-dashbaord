@@ -1,96 +1,102 @@
-import React, { useState } from 'react';
-import { Card, Switch, Typography, notification } from 'antd';
-import { toast } from 'react-hot-toast';
+import React, { useEffect, useState, useCallback } from "react";
+import { Card, Switch, Typography } from "antd";
+import toast from "react-hot-toast";
+import {
+  useNotificationSettingQuery,
+  useUpdateNotificationSettingMutation,
+} from "../../Redux/businessApis/business_notifications/notificationSettingApis";
+
+const { Title } = Typography;
 
 function Notification() {
-  const [isBrowserNotification, setIsBrowserNotification] = useState(false);
-  const [isCustomerNotification, setIsCustomerNotification] = useState(false);
-  const [isNewOrderNotification, setIsNewOrderNotification] = useState(false);
-  const { Title } = Typography;
-  const handleBrowserNotification = (checked) => {
-    setIsBrowserNotification(checked);
-    if (checked) {
-      toast.success('Browser notifications enabled');
-    } else {
-      toast.success('Browser notifications disabled');
-    }
-  };
 
-  const handleCustomerNotification = (checked) => {
-    setIsCustomerNotification(checked);
-    if (checked) {
-      toast.success('Customer notifications enabled');
-    } else {
-      toast.success('Customer notifications disabled');
-    }
-  };
+  const [settings, setSettings] = useState({
+    general: false,
+    customerNotification: false,
+    orderNotification: false,
+  });
 
-  const handleNewOrderNotification = (checked) => {
-    setIsNewOrderNotification(checked);
-    if (checked) {
-      notification.success({
-        message: 'New order notifications enabled',
+
+  const [loading, setLoading] = useState({
+    general: false,
+    customerNotification: false,
+    orderNotification: false,
+  });
+
+
+  const { data: notificationSetting, isLoading: notificationLoading } =
+    useNotificationSettingQuery();
+  const [updateNotificationSetting] = useUpdateNotificationSettingMutation();
+
+
+  useEffect(() => {
+    if (notificationSetting?.data) {
+      setSettings({
+        general: notificationSetting.data.general,
+        customerNotification: notificationSetting.data.customerNotification,
+        orderNotification: notificationSetting.data.orderNotification,
       });
-      toast.success('New order notifications enabled');
-    } else {
-      notification.success({
-        message: 'New order notifications disabled',
-      });
-      toast.success('New order notifications disabled');
     }
-  };
+  }, [notificationSetting]);
+
+
+  const handleSwitchChange = useCallback(
+    async (key, checked) => {
+      try {
+        setLoading((prev) => ({ ...prev, [key]: true }));
+
+        const payload = { [key]: checked };
+        const res = await updateNotificationSetting(payload).unwrap();
+
+        if (res?.success) {
+          setSettings((prev) => ({ ...prev, [key]: checked }));
+          toast.dismiss()
+          toast.success(res.message || "Notification updated successfully!");
+        }
+      } catch (error) {
+        toast.dismiss()
+        toast.error(error?.data?.message || error?.message || "Something went wrong!");
+      } finally {
+        setLoading((prev) => ({ ...prev, [key]: false }));
+      }
+    },
+    [updateNotificationSetting]
+  );
+
+
+  const renderSwitchCard = (title, description, key) => (
+    <Card
+      loading={notificationLoading}
+      className="shadow-sm"
+      headStyle={{ borderBottom: "none" }}
+    >
+      <div className="flex-center-between">
+        <div>
+          <Title level={5}>{title}</Title>
+          <span className="text-[#6d6d6d]">{description}</span>
+        </div>
+        <Switch
+          loading={loading[key]}
+          checked={settings[key]}
+          onChange={(checked) => handleSwitchChange(key, checked)}
+        />
+      </div>
+    </Card>
+  );
 
   return (
-    <div className="flex flex-col gap-4 ">
+    <div className="flex flex-col gap-4">
       <Title level={3} className="text-2xl">
         Notifications
       </Title>
-      <Card
-        className="shadow-sm"
-        title="General"
-        headStyle={{ borderBottom: 'none' }}
-      >
-        <div className="flex-center-between">
-          <label className="text-[#6d6d6d]" htmlFor="browser-notifications">
-            Browser notifications
-          </label>
-          <Switch
-            className="switch"
-            checked={isBrowserNotification}
-            onChange={handleBrowserNotification}
-          />
-        </div>
-      </Card>
-      <Card
-        headStyle={{ borderBottom: 'none' }}
-        className="shadow-sm"
-        title="Customer notifications"
-      >
-        <div className="flex-center-between">
-          <p className="text-[#6d6d6d]">
-            Notify customers about their order events
-          </p>
-          <Switch
-            className="switch"
-            checked={isCustomerNotification}
-            onChange={handleCustomerNotification}
-          />
-        </div>
-      </Card>
-      <Card
-        headStyle={{ borderBottom: 'none' }}
-        className="shadow-sm"
-        title="Order Notifications"
-      >
-        <div className="flex-center-between">
-          <p className="text-[#6d6d6d]">New Order</p>
-          <Switch
-            className="switch"
-            checked={isNewOrderNotification}
-            onChange={handleNewOrderNotification}
-          />
-        </div>
-      </Card>
+
+      {renderSwitchCard("General", "Browser notifications", "general")}
+      {renderSwitchCard(
+        "Customer notifications",
+        "Notify customers about their order events",
+        "customerNotification"
+      )}
+      {renderSwitchCard("Order Notifications", "New Order", "orderNotification")}
     </div>
   );
 }

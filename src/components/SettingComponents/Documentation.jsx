@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
-import { Button,  Upload, Form, Card } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Upload, Form, Card } from 'antd';
 import 'antd/dist/reset.css';
-import { useNavigate } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
-import InputField from '../ui/InputField';
 import toast from 'react-hot-toast';
-
-const Documentation = () => {
-  const navigate = useNavigate();
+import { useUpdateProfileMutation } from '../../Redux/businessApis/business _profile/getprofileApi';
+const Documentation = ({ data }) => {
   const [form] = Form.useForm();
   const [certificateFileList, setCertificateFileList] = useState([]);
   const [licenseFileList, setLicenseFileList] = useState([]);
+  const [updateProfile, { isLoading: updateProfileLoading }] = useUpdateProfileMutation();
 
-  // Allowed file types
-  const allowedTypes = ['application/pdf', 'image/jpeg'];
+  const allowedTypes = ['application/pdf'];
 
-  const handleFileChange =
-    (setFileList) =>
-    ({ fileList }) => {
-      const filteredFiles = fileList.filter((file) =>
-        allowedTypes.includes(file.type)
-      );
+  useEffect(() => {
+    if (data?.incorparationCertificate) {
+      setCertificateFileList([
+        {
+          uid: '-1',
+          name: 'Incorporation Certificate',
+          status: 'done',
+          url: data?.incorparationCertificate,
+          type: 'application/pdf' || 'image/jpeg',
+        },
+      ]);
+    }
 
-      if (filteredFiles.length !== fileList.length) {
-        toast.dismiss()
-        toast.error('Only PDF and JPG files are allowed!');
-      }
+    if (data?.bussinessLicense) {
+      setLicenseFileList([
+        {
+          uid: '-2',
+          name: 'Business License',
+          status: 'done',
+          url: data?.bussinessLicense,
+          type: 'application/pdf' || 'image/jpeg',
+        },
+      ]);
+    }
+  }, [data]);
 
-      setFileList(filteredFiles);
-    };
+  const handleFileChange = (setFileList) => ({ fileList }) => {
+    const filteredFiles = fileList.filter((file) =>
+      allowedTypes.includes(file.type)
+    );
+
+    if (filteredFiles.length !== fileList.length) {
+      toast.dismiss();
+      toast.error('Only PDF and JPG files are allowed!');
+    }
+
+    setFileList(filteredFiles);
+  };
 
   const handleFileRemove = (setFileList) => () => {
     setFileList([]);
@@ -36,120 +57,100 @@ const Documentation = () => {
 
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields();
       const formData = new FormData();
-      formData.append('ein', values.ein);
-
-      if (certificateFileList.length > 0) {
-        formData.append('certificate', certificateFileList[0].originFileObj);
+      if (certificateFileList?.[0]?.originFileObj) {
+        formData.append('incorparationCertificate', certificateFileList[0]?.originFileObj);
       }
-      if (licenseFileList.length > 0) {
-        formData.append('license', licenseFileList[0].originFileObj);
+      if (licenseFileList?.[0]?.originFileObj) {
+        formData.append('bussinessLicense', licenseFileList[0]?.originFileObj);
       }
-
-      console.log('Form Data:', {
-        EIN: values.ein,
-        Certificate: certificateFileList[0]?.originFileObj,
-        License: licenseFileList[0]?.originFileObj,
-      });
-
-      // Simulating a server request
-      toast.dismiss()
-      toast.success('Form submitted successfully!');
+      await updateProfile(formData).unwrap().then((res) => {
+        if (res?.success) {
+          toast.dismiss()
+          toast.success(res?.message || "Business updated successfully!")
+        }
+      })
     } catch (error) {
-      toast.error('Please fill out all fields correctly.');
+      toast.error(error?.data?.message || error?.message || "Something went wrong!");
+    }
+  };
+
+  const renderPreview = (file) => {
+    if (!file) return null;
+    if (file.type === 'application/pdf') {
+      return (
+        <iframe
+          src={file.url || URL.createObjectURL(file.originFileObj)}
+          title={file.name}
+          width="100%"
+          height="200px"
+        />
+      );
     }
   };
 
   return (
-    <Card className="h-fit shadow-md">
-      <Form
-        requiredMark={false}
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-      >
-        <div className="space-y-6">
-          <InputField
-            className="text-start"
-            label="EIN *"
-            name="ein"
-            rules={[{ required: true, message: 'Please enter your EIN!' }]}
-            placeholder="EIN number"
-            type="number"
-          />
-
-          {/* Certificate of Incorporation Upload */}
-          <Form.Item label="Certificate of Incorporation *" className="!w-full">
-            {certificateFileList.length > 0 ? (
-              <div className="border rounded-lg p-3 flex justify-between items-center bg-gray-100">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={
-                      certificateFileList[0].type === 'application/pdf'
-                        ? 'https://img.icons8.com/fluency/48/000000/pdf.png'
-                        : URL.createObjectURL(
-                            certificateFileList[0].originFileObj
-                          )
-                    }
-                    alt="File Icon"
-                    className="w-10 h-10"
-                  />
-                  <div>
-                    <p className="text-sm font-medium">
-                      {certificateFileList[0].name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {(certificateFileList[0].size / 1024).toFixed(2)} KB
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    type="link"
-                    onClick={handleFileRemove(setCertificateFileList)}
-                  >
-                    Delete
-                  </Button>
-                  <Upload
-                    multiple={false}
-                    showUploadList={false}
-                    beforeUpload={() => false}
-                    onChange={handleFileChange(setCertificateFileList)}
-                    accept=".pdf,.jpg"
-                  >
-                    <Button type="link">Reupload</Button>
-                  </Upload>
-                </div>
-              </div>
-            ) : (
-              <Upload
-                listType="picture-card"
-                multiple={false}
-                beforeUpload={() => false}
-                showUploadList={false}
-                onChange={handleFileChange(setCertificateFileList)}
-                accept=".pdf,.jpg"
-              >
+    <Card className="h-fit">
+      <Form form={form} requiredMark={false} layout="vertical" onFinish={handleSubmit}>
+        <Form.Item label="Certificate of Incorporation">
+          {certificateFileList.length > 0 ? (
+            <div className="border border-gray-300 rounded-lg p-3 bg-gray-100">
+              {renderPreview(certificateFileList[0])}
+              <div className="flex justify-end gap-2 mt-2">
                 <Button
-                  icon={<UploadOutlined />}
-                  className="bg-[#21B6F2] text-white"
+                  type="link"
+                  onClick={handleFileRemove(setCertificateFileList)}
                 >
-                  Upload Certificate
+                  Delete
                 </Button>
-              </Upload>
-            )}
-          </Form.Item>
-          {/* Submit Button */}
-          <div className="flex items-center justify-end">
-            <Button
-              className="w-fit bg-blue-500 text-white"
-              type="primary"
-              htmlType="submit"
+              </div>
+            </div>
+          ) : (
+            <Upload
+              listType="picture-card"
+              multiple={false}
+              beforeUpload={() => false}
+              showUploadList={false}
+              onChange={handleFileChange(setCertificateFileList)}
+              accept=".pdf,.jpg"
             >
-              save
-            </Button>
-          </div>
+              <Button icon={<UploadOutlined />}>Upload Certificate</Button>
+            </Upload>
+          )}
+        </Form.Item>
+
+
+        <Form.Item label="Business License">
+          {licenseFileList.length > 0 ? (
+            <div className="border border-gray-300 rounded-lg p-3 bg-gray-100">
+              {renderPreview(licenseFileList[0])}
+              <div className="flex justify-end gap-2 mt-2">
+                <Button
+                  type="link"
+                  onClick={handleFileRemove(setLicenseFileList)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Upload
+              listType="picture-card"
+              multiple={false}
+              beforeUpload={() => false}
+              showUploadList={false}
+              onChange={handleFileChange(setLicenseFileList)}
+              accept=".pdf,.jpg"
+            >
+              <Button icon={<UploadOutlined />}>Upload License</Button>
+            </Upload>
+          )}
+        </Form.Item>
+
+        <div className="flex justify-end">
+          <Button loading={updateProfileLoading} disabled={updateProfileLoading} type="primary" htmlType="submit" className="bg-blue-500 text-white">
+            Save
+          </Button>
         </div>
       </Form>
     </Card>
