@@ -7,6 +7,7 @@ import {
   Empty,
   Typography,
   Divider,
+  Modal,
 } from "antd";
 import { DeleteOutlined, ShoppingOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
@@ -19,19 +20,82 @@ import {
   useIncreaseItemMutation,
   useRemoveCartMutation,
 } from "../../../Redux/sampler/cartApis";
+import { useGetShippingAddressQuery } from "../../../Redux/sampler/shippingAddressApis";
+import {
+  useCreateOrderMutation,
+  usePostShippingRatesMutation,
+} from "../../../Redux/sampler/shippoApis";
 
 const { Title, Text } = Typography;
 
 const SoloStoveCart = () => {
+  const { data: shippingAddresses, isLoading: shippingAddressesLoading } =
+    useGetShippingAddressQuery();
   const { data: cartItems, isLoading, refetch } = useGetAllCartItemsQuery();
+  const [shippingRates, { isLoading: shippingRatesLoading }] =
+    usePostShippingRatesMutation();
+  const [createOrder, { isLoading: createOrderLoading }] =
+    useCreateOrderMutation();
   const [increasedQuantity] = useIncreaseItemMutation();
   const [decreasedQuantity] = useDecreaseItemMutation();
   const [deleteQuantity] = useDeleteCartMutation();
   const [removeCartItem] = useRemoveCartMutation();
+  const [providerList, setProviderList] = useState([]);
+  const [shippingAddressId, setShippingAddressId] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [selectedRateId, setSelectedRateId] = useState("");
+  const [shipmentId, setShipment] = useState("");
 
   const cart = cartItems?.data;
   const cartData = cartItems?.data?.items;
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenProvider, setIsModalOpenProvider] = useState(false);
+
+  const showModalProvider = async () => {
+    setIsModalOpenProvider(true);
+  };
+  const handleOkProvider = async () => {
+    try {
+      const data = {
+        shippingAddress: shippingAddressId,
+        paymentMethod: paymentMethod,
+        selectedRateId: selectedRateId,
+        shipmentId: shipmentId,
+      };
+      console.log(data);
+      const res = await createOrder({ data });
+      window.open(res?.data?.data?.url, "_blank");
+      setIsModalOpenProvider(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCancelProvider = () => {
+    setIsModalOpenProvider(false);
+  };
+  const showModal = async () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = async () => {
+    if (!shippingAddressId) return;
+    console.log(shippingAddressId);
+    try {
+      const data = {
+        shippingAddressId: shippingAddressId,
+      };
+      const res = await shippingRates({ data });
+      setProviderList(res?.data?.data);
+
+      setIsModalOpen(false);
+      showModalProvider();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const increaseQuantity = async (itemId, variantId = null) => {
     try {
       const data = {
@@ -186,6 +250,11 @@ const SoloStoveCart = () => {
     },
   ];
 
+  const handleSetAddressId = (addressId) => {
+    console.log(addressId);
+    setShippingAddressId(addressId);
+  };
+
   return (
     <div className="responsive-width">
       <div
@@ -256,7 +325,7 @@ const SoloStoveCart = () => {
                 type="primary"
                 size="large"
                 block
-                onClick={() => toast.success("Checkout Successfully!")}
+                onClick={() => showModal()}
                 style={{ height: 50 }}
               >
                 Check out
@@ -303,6 +372,180 @@ const SoloStoveCart = () => {
           </div>
         )}
       </div>
+
+      <Modal
+        title="Which address do you want to use?"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalOpen}
+        onOk={handleOk}
+        confirmLoading={shippingRatesLoading}
+        onCancel={handleCancel}
+        centered
+      >
+        <div>
+          <div>
+            {shippingAddresses?.data && shippingAddresses.data.length > 0 && (
+              <div className="space-y-4">
+                {shippingAddresses.data.map((address, index) => (
+                  <div
+                    key={address._id}
+                    className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-medium text-gray-800">
+                        Address {index + 1}
+                      </h3>
+                      <div className="flex gap-2">
+                        <Button
+                          type="link"
+                          onClick={() => setShippingAddressId(address._id)}
+                          className="text-blue-600 p-0"
+                        >
+                          {shippingAddressId === address._id ? (
+                            <span className="bg-blue-500 text-white px-2 rounded-md">
+                              Selected Address
+                            </span>
+                          ) : (
+                            <Button
+                              type="link"
+                              onClick={() => handleSetAddressId(address._id)}
+                              className="text-blue-600 p-0"
+                            >
+                              Select this address
+                            </Button>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <span className="text-gray-600">Street 1: </span>
+                        <span className="text-gray-800">{address.street1}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Street 2: </span>
+                        <span className="text-gray-800">{address.street2}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">City: </span>
+                        <span className="text-gray-800">{address.city}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">State: </span>
+                        <span className="text-gray-800">{address.state}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Country: </span>
+                        <span className="text-gray-800">{address.country}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">ZIP Code: </span>
+                        <span className="text-gray-800">{address.zip}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Phone: </span>
+                        <span className="text-gray-800">{address.phone}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Email: </span>
+                        <span className="text-gray-800">{address.email}</span>
+                      </div>
+                      {address.alternativePhoneNumber && (
+                        <div>
+                          <span className="text-gray-600">Alt Phone: </span>
+                          <span className="text-gray-800">
+                            {address.alternativePhoneNumber}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        title="Which address do you want to use?"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalOpenProvider}
+        onOk={handleOkProvider}
+        confirmLoading={createOrderLoading}
+        onCancel={handleCancelProvider}
+        centered
+      >
+        <div>
+          <div>
+            {providerList?.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">
+                  Shipping Options:
+                </h3>
+                <div className="space-y-3">
+                  {providerList.map((provider) => (
+                    <div
+                      key={provider.objectId}
+                      className={`flex items-center p-3 cursor-pointer  rounded-md hover:shadow ${
+                        selectedRateId === provider?.objectId
+                          ? "border-2 border-blue-700 text-black"
+                          : "border-2 border-gray-300"
+                      }`}
+                      onClick={() => {
+                        setSelectedRateId(provider?.objectId);
+                        setShipment(provider?.shipment);
+                      }}
+                    >
+                      <img
+                        src={provider.providerImage200}
+                        alt={provider.provider}
+                        className="w-12 h-12 mr-4 object-cover object-center rounded-full"
+                      />
+                      <div className="flex-1">
+                        <p className="font-medium">
+                          {provider.servicelevel.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {provider.durationTerms}
+                        </p>
+                        {provider.attributes.length > 0 && (
+                          <p className="text-xs text-blue-600">
+                            {provider.attributes.join(", ")}
+                          </p>
+                        )}
+                      </div>
+                      <div className="font-semibold">
+                        {provider.currency} {provider.amount}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center mt-4 mx-auto gap-5 justify-center">
+              <div
+                className={`border border-gray-200 rounded-lg p-4 cursor-pointer ${
+                  paymentMethod === "Stripe" ? "!bg-blue-500 !text-white" : ""
+                }`}
+                onClick={() => setPaymentMethod("Stripe")}
+              >
+                Stripe
+              </div>
+              <div
+                className={`border border-gray-200 rounded-lg p-4  cursor-pointer ${
+                  paymentMethod === "Paypal" ? "!bg-blue-500 !text-white" : ""
+                }`}
+                onClick={() => setPaymentMethod("Paypal")}
+              >
+                Paypal
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
