@@ -44,11 +44,13 @@ function Header() {
   if (token) {
     decode = jwtDecode(localStorage.getItem("token"));
   }
-  
+
   const [userType, setUserType] = useState(decode?.role); // sampler, business
   const [show, setShow] = useState(true);
   const user = {
-    photoURL: profile?.data?.logo || "https://cdn-icons-png.flaticon.com/512/219/219988.png",
+    photoURL:
+      profile?.data?.logo ||
+      "https://cdn-icons-png.flaticon.com/512/219/219988.png",
     displayName: profile?.data?.bussinessName || "Guest User",
     email: profile?.data?.email || "guest@User.com",
   };
@@ -95,12 +97,21 @@ function Header() {
     </Menu>
   );
   const menuSampler = (
-    <Menu className="w-56 rounded-xl shadow-lg">
-      <div className="p-4 flex items-center gap-3">
-        <Avatar size={48} src={user?.photoURL} />
-        <div>
-          <h1 className="font-semibold text-base">{user?.displayName}</h1>
-          <h1 className="font-normal opacity-75 text-sm">{user?.email}</h1>
+    <Menu className="w-64 rounded-xl shadow-lg">
+      <div className="">
+        <div className="flex items-center gap-3 justify-center">
+          <Avatar
+            src={reviewerProfile?.data?.profile_image}
+            className="!w-12 !h-12"
+          />
+          <h1 className="font-semibold text-base">
+            {reviewerProfile?.data?.name}
+          </h1>
+        </div>
+        <div className="text-center font-bold">
+          <h1 className="font-bold opacity-75 text-sm">
+            {reviewerProfile?.data?.email}
+          </h1>
         </div>
       </div>
       <Menu.Divider />
@@ -333,8 +344,8 @@ function Header() {
                 >
                   <Avatar
                     size={40}
-                    src={user?.photoURL}
-                    className="cursor-pointer hover:scale-110 transition-all"
+                    src={reviewerProfile?.data?.profile_image}
+                    className="cursor-pointer hover:scale-110 transition-all bg-gray-500"
                   />
                 </Dropdown>
               </div>

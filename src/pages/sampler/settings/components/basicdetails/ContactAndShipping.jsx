@@ -1,4 +1,4 @@
-import { Button, Input, Modal } from "antd";
+import { Button, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -7,6 +7,7 @@ import {
   useUpdateShippingAddressMutation,
   //   useDeleteShippingAddressMutation,
 } from "../../../../../Redux/sampler/shippingAddressApis";
+import { Country } from "country-state-city";
 
 const ContactAndShipping = () => {
   const { data: shippingAddresses, isLoading } = useGetShippingAddressQuery();
@@ -20,24 +21,32 @@ const ContactAndShipping = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const [form, setForm] = useState({
-    address: "",
+    name: "",
+    street1: "",
+    street2: "",
+    company: "",
     country: "",
-    zipCode: "",
+    zip: "",
     city: "",
     state: "",
-    phoneNumber: "",
+    phone: "",
     alternativePhoneNumber: "",
+    email: "",
   });
 
   const resetForm = () => {
     setForm({
-      address: "",
+      name: "",
+      street1: "",
+      street2: "",
+      company: "",
       country: "",
-      zipCode: "",
+      zip: "",
       city: "",
       state: "",
-      phoneNumber: "",
+      phone: "",
       alternativePhoneNumber: "",
+      email: "",
     });
   };
 
@@ -146,8 +155,12 @@ const ContactAndShipping = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-gray-600">Address: </span>
-                    <span className="text-gray-800">{address.address}</span>
+                    <span className="text-gray-600">Street 1: </span>
+                    <span className="text-gray-800">{address.street1}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Street 2: </span>
+                    <span className="text-gray-800">{address.street2}</span>
                   </div>
                   <div>
                     <span className="text-gray-600">City: </span>
@@ -163,11 +176,15 @@ const ContactAndShipping = () => {
                   </div>
                   <div>
                     <span className="text-gray-600">ZIP Code: </span>
-                    <span className="text-gray-800">{address.zipCode}</span>
+                    <span className="text-gray-800">{address.zip}</span>
                   </div>
                   <div>
                     <span className="text-gray-600">Phone: </span>
-                    <span className="text-gray-800">{address.phoneNumber}</span>
+                    <span className="text-gray-800">{address.phone}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Email: </span>
+                    <span className="text-gray-800">{address.email}</span>
                   </div>
                   {address.alternativePhoneNumber && (
                     <div>
@@ -204,10 +221,21 @@ const ContactAndShipping = () => {
         <div className="space-y-4 mt-4">
           {/* Address */}
           <div>
-            <p className="text-sm text-gray-600 mb-1">Address</p>
+            <p className="text-sm text-gray-600 mb-1">Street1</p>
             <Input
-              name="address"
-              value={form?.address}
+              name="street1"
+              value={form?.street1}
+              onChange={handleChange}
+              type="text"
+              className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+              placeholder="Enter full address"
+            />
+          </div>
+          <div>
+            <p className="text-sm text-gray-600 mb-1">Street2</p>
+            <Input
+              name="street2"
+              value={form?.street2}
               onChange={handleChange}
               type="text"
               className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
@@ -219,22 +247,32 @@ const ContactAndShipping = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-600 mb-1">Country</p>
-              <select
+
+              <Select
+                showSearch
                 name="country"
                 value={form?.country}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-md bg-white pr-8 border-gray-200 outline-none h-[40px]"
-              >
-                <option value="">Select Country</option>
-                <option value="USA">United States</option>
-                <option value="Canada">Canada</option>
-              </select>
+                placeholder="Country"
+                optionFilterProp="children"
+                onChange={(value) =>
+                  handleChange({ target: { name: "country", value } })
+                }
+                filterOption={(input, option) =>
+                  option?.label.toLowerCase().includes(input.toLowerCase())
+                }
+                options={Country.getAllCountries().map((c) => ({
+                  value: c.isoCode,
+                  label: c.name,
+                }))}
+                className="!w-full custom-select !h-[40px]"
+              />
             </div>
+
             <div>
               <p className="text-sm text-gray-600 mb-1">ZIP/Postal Code</p>
               <Input
                 name="zipCode"
-                value={form?.zipCode}
+                value={form?.zip}
                 onChange={handleChange}
                 type="text"
                 className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
@@ -247,29 +285,27 @@ const ContactAndShipping = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-600 mb-1">City</p>
-              <select
+
+              <Input
                 name="city"
                 value={form?.city}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md bg-white pr-8 border-gray-200 outline-none h-[40px]"
-              >
-                <option value="">Select City</option>
-                <option value="Scranton">Scranton</option>
-                <option value="New York">New York</option>
-              </select>
+                type="tel"
+                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+                placeholder="City"
+              />
             </div>
             <div>
               <p className="text-sm text-gray-600 mb-1">State</p>
-              <select
+
+              <Input
                 name="state"
                 value={form?.state}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md bg-white pr-8 border-gray-200 outline-none h-[40px]"
-              >
-                <option value="">Select State</option>
-                <option value="Pennsylvania">Pennsylvania</option>
-                <option value="NY">New York</option>
-              </select>
+                type="tel"
+                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+                placeholder="State"
+              />
             </div>
           </div>
 
