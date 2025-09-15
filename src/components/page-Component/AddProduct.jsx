@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Form, Button, Upload, Card } from "antd";
+import { Form, Button, Upload, Card, Divider } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import FormWrapper from "../ui/FormWrapper";
@@ -56,6 +56,10 @@ function AddProduct() {
         stock: values.stock,
         tags: tags,
         description: content,
+        weight: parseFloat(values.weight),
+        length: parseFloat(values.length),
+        width: parseFloat(values.width),
+        height: parseFloat(values.height),
       }
       formData.append("data", JSON.stringify(data));
       fileList.forEach((file) => {
@@ -197,7 +201,42 @@ function AddProduct() {
               className="w-full"
             />
           </div>
+          <Divider className="!col-span-2">
+            <h1>For parcel details</h1>
+          </Divider>
 
+          <InputField
+            label="Weight (in lbs)"
+            name="weight"
+            rules={[{ required: true, message: "Please enter weight (in lbs) !" }]}
+            placeholder="Enter weight"
+            type="number"
+            className="w-full"
+          />
+          <InputField
+            label="Length (in inches)"
+            name="length"
+            rules={[{ required: true, message: "Please enter length (in inches) !" }]}
+            placeholder="Enter length"
+            type="number"
+            className="w-full"
+          />
+          <InputField
+            label="Width (in inches)"
+            name="width"
+            rules={[{ required: true, message: "Please enter width (in inches)!" }]}
+            placeholder="Enter width"
+            type="number"
+            className="w-full"
+          />
+          <InputField
+            label="Height (in inches)"
+            name="height"
+            rules={[{ required: true, message: "Please enter height (in inches)!" }]}
+            placeholder="Enter height"
+            type="number"
+            className="w-full"
+          />
           <Form.Item
             label="Item short Description"
             name="shortDescription"

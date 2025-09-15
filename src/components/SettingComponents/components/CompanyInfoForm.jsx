@@ -30,7 +30,6 @@ const CompanyInfoForm = () => {
 
     const handleSubmit = async (values) => {
         try {
-            console.log(values)
             await createBusinessStore(values).unwrap().then((res) => {
                 if (res?.success) {
                     toast.dismiss()
@@ -87,13 +86,22 @@ const CompanyInfoForm = () => {
                                 placeholder="Select Country"
                                 onChange={handleCountryChange}
                                 showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option) => {
+                                    const name = option?.children?.toString().toLowerCase() || "";
+                                    const code = option?.value?.toString().toLowerCase() || "";
+                                    const search = input.toLowerCase();
+                                    return name.includes(search) || code.includes(search);
+                                }}
                             >
                                 {countries.map((c) => (
                                     <Option key={c.isoCode} value={c.isoCode}>
-                                        {c.name}
+                                        {`${c.name} (${c.isoCode})`}
                                     </Option>
                                 ))}
                             </Select>
+
+
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -102,41 +110,53 @@ const CompanyInfoForm = () => {
                                 placeholder="Select State"
                                 onChange={handleStateChange}
                                 showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option) => {
+                                    const name = option?.children?.toString().toLowerCase() || "";
+                                    const code = option?.value?.toString().toLowerCase() || "";
+                                    const search = input.toLowerCase();
+                                    return name.includes(search) || code.includes(search);
+                                }}
                             >
                                 {states.map((s) => (
                                     <Option key={s.isoCode} value={s.isoCode}>
-                                        {s.name}
+                                        {`${s.name} (${s.isoCode})`}
                                     </Option>
                                 ))}
                             </Select>
+
+
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item name="city" label="City" rules={[{ required: true }]}>
-                            <Select placeholder="Select City" showSearch>
+                            <Select
+                                placeholder="Select City"
+                                showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    (option?.children ?? "").toString().toLowerCase().includes(input.toLowerCase())
+                                }
+                            >
                                 {cities.map((city) => (
                                     <Option key={city.name} value={city.name}>
                                         {city.name}
                                     </Option>
                                 ))}
                             </Select>
+
+
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row gutter={16}>
-                    <Col span={12}>
+                    <Col span={24}>
                         <Form.Item name="zip" label="ZIP" rules={[{ required: true }]}>
                             <Input placeholder="Enter ZIP" />
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
-                        <Form.Item name="zipCode" label="ZIP Code" rules={[{ required: true }]}>
-                            <Input type="number" placeholder="Enter ZIP Code" />
-                        </Form.Item>
-                    </Col>
                 </Row>
-
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item name="phone" label="Phone" rules={[{ required: true }]}>

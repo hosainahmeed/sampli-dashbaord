@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Form, Input, Button, Card, Select, Space, message, Tag, Popconfirm } from "antd";
 // import { UploadOutlined } from "@ant-design/icons";
 import { FaAngleLeft } from "react-icons/fa";
@@ -10,7 +10,8 @@ import toast from "react-hot-toast";
 const { Option } = Select;
 
 function AddVariant() {
-    const { productId } = useParams();
+    const { productId, name } = useParams();
+    const location = useLocation();
     const [form] = Form.useForm();
     // const [fileList, setFileList] = useState([]);
     const [editingVariant, setEditingVariant] = useState(null);
@@ -48,7 +49,6 @@ function AddVariant() {
             if (editingVariant) {
                 // update variant
                 await updateVariant({ data: formData, id: editingVariant?._id }).unwrap().then((res) => {
-                    console.log(res)
                     if (res.success) {
                         toast.dismiss()
                         toast.success(res.message)
@@ -77,7 +77,6 @@ function AddVariant() {
             setEditingVariant(null);
             refetch(); // refresh variant list
         } catch (error) {
-            console.error("❌ Error saving variant", error);
             message.error("Something went wrong!");
         }
     };
@@ -103,7 +102,6 @@ function AddVariant() {
                 }
             })
         } catch (error) {
-            console.error("❌ Error deleting variant", error);
             toast.error("Something went wrong!");
         }
     }
@@ -120,7 +118,7 @@ function AddVariant() {
 
             <h2 className="text-2xl mb-4">
                 {editingVariant ? "Update Variant" : "Add Variant"} for Product:{" "}
-                {productId}
+                {location?.state?.name}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

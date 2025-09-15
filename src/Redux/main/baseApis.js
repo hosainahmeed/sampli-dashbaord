@@ -25,6 +25,7 @@ export const baseApis = createApi({
     "businessProfile",
     "campaign",
     "businessStore",
+    "notificationSetting",
   ],
   endpoints: () => ({}),
 });
