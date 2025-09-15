@@ -97,11 +97,13 @@ function EditProduct() {
       await updateProduct({ id: location?.state?.id, data: formData }).unwrap().then((res) => {
         console.log(res)
         if (res.success) {
+          toast.dismiss()
           toast.success(res.message);
           navigate(-1);
         }
       })
     } catch (error) {
+      toast.dismiss()
       toast.error(error?.message || "Something went wrong!");
     }
   };

@@ -50,6 +50,7 @@ function AddVariant() {
                 await updateVariant({ data: formData, id: editingVariant?._id }).unwrap().then((res) => {
                     console.log(res)
                     if (res.success) {
+                        toast.dismiss()
                         toast.success(res.message)
                         form.resetFields()
                         // setFileList([])
@@ -61,6 +62,7 @@ function AddVariant() {
                 await addVariant(formData).unwrap().then((res) => {
                     console.log(res)
                     if (res.success) {
+                        toast.dismiss()
                         toast.success(res.message)
                         form.resetFields()
                         // setFileList([])

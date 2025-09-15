@@ -7,6 +7,7 @@ const { Title, Text } = Typography;
 const EmailChangeModal = ({ visible, onCancel, onContinue }) => {
   const onFinish = (values) => {
     console.log("Success:", values);
+    toast.dismiss()
     toast.success("Form submitted successfully!");
     onContinue();
   };

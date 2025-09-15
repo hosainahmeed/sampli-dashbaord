@@ -41,6 +41,7 @@ const UploadCsv = ({ setOpenCsv }) => {
 
   const handleUpload = () => {
     if (!selectedFile) {
+      toast.dismiss()
       toast.error('No file selected.');
       return;
     }
@@ -62,6 +63,7 @@ const UploadCsv = ({ setOpenCsv }) => {
     //   .catch((error) => {
     //     antMessage.error(error?.data || 'Upload failed.');
     //   });
+    toast.dismiss()
 
     toast.success('File submitted successfully (check console for data).');
   };
@@ -75,10 +77,10 @@ const UploadCsv = ({ setOpenCsv }) => {
   const columns =
     csvPreview.length > 0
       ? Object.keys(csvPreview[0]).map((key) => ({
-          title: key,
-          dataIndex: key,
-          key: key,
-        }))
+        title: key,
+        dataIndex: key,
+        key: key,
+      }))
       : [];
 
   return (

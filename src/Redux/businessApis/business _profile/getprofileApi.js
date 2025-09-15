@@ -6,10 +6,18 @@ const getProfileApi = baseApis.injectEndpoints({
       query: () => ({
         url: "/bussiness/get-profile",
         method: "GET",
-        providesTags: ["businessProfile"],
       }),
+      providesTags: ["businessProfile"],
+    }),
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/bussiness/update-bussiness-info",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["businessProfile"],
     }),
   }),
 });
 
-export const { useGetProfileQuery } = getProfileApi;
+export const { useGetProfileQuery, useUpdateProfileMutation } = getProfileApi;

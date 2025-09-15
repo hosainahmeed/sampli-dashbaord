@@ -72,7 +72,7 @@ const Register = () => {
               { required: true, message: 'Only company email is required!' },
               { type: 'email', message: 'Enter a valid email address!' },
             ]}
-            placeholder="Enter your company email address"
+            placeholder="john.doe@example.com"
             type="email"
             style={{
               width: '100%',

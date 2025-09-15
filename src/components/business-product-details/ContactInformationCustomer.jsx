@@ -11,6 +11,7 @@ function ContactInformationCustomer({ order }) {
 
   const handleSave = () => {
     console.log('Updated phone:', phone);
+    toast.dismiss()
     toast.success('Phone number updated successfully!');
   };
 
