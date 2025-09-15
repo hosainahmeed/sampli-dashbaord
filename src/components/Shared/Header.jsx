@@ -32,11 +32,14 @@ import shopInActive from "../../assets/shopInActive.svg";
 import { jwtDecode } from "jwt-decode";
 import { useGetAllCartItemsQuery } from "../../Redux/sampler/cartApis";
 import { useGetProfileQuery } from "../../Redux/businessApis/business _profile/getprofileApi";
+import { useGetReviewerProfileQuery } from "../../Redux/sampler/reviewerProfileApis";
 
 function Header() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const { data: profile, isLoading } = useGetProfileQuery();
+  const { data: reviewerProfile, isLoading: reviewerProfileLoading } =
+    useGetReviewerProfileQuery();
   let decode;
   if (token) {
     decode = jwtDecode(localStorage.getItem("token"));
@@ -229,8 +232,9 @@ function Header() {
         <>
           {/* Top navbar */}
           <div
-            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"
-              }`}
+            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${
+              visible ? "translate-y-0" : "-translate-y-full"
+            }`}
           >
             <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
               <Link to={"/sampler/campaign"}>
@@ -340,10 +344,11 @@ function Header() {
             {navItems.map((item) => (
               <Link
                 key={item.to}
-                className={`flex flex-col items-center text-xs ${location.pathname.startsWith(item.to)
-                  ? "text-blue-600"
-                  : "text-gray-600"
-                  }`}
+                className={`flex flex-col items-center text-xs ${
+                  location.pathname.startsWith(item.to)
+                    ? "text-blue-600"
+                    : "text-gray-600"
+                }`}
                 to={item.to}
               >
                 {item.icon}
