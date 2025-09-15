@@ -148,7 +148,3 @@ body::-webkit-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-.custom-select .ant-select-selector {
-  border-radius: 10px !important;
-}
