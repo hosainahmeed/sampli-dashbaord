@@ -83,7 +83,7 @@ function OrderDetails() {
           <Title level={5} className="mt-6">
             Timeline
           </Title>
-          <TimeLineCard status={status.toUpperCase()} order={order} />
+          <TimeLineCard status={status?.toUpperCase()} order={order} />
         </div>
 
         <div className="w-full xl:flex-1 flex flex-col gap-4">

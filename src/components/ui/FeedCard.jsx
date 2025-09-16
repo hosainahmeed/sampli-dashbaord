@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Avatar, Typography, Rate, Button, Modal } from 'antd';
+import { Card, Avatar, Typography, Rate, Button, Modal, Divider, Skeleton } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import { RiShareForwardLine } from 'react-icons/ri';
 import { BsThreeDots } from 'react-icons/bs';
@@ -7,13 +7,20 @@ import { CiHeart } from 'react-icons/ci';
 import { ShareSocial } from 'react-share-social';
 import { FaHeart } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { convertDate } from '../../Redux/main/server';
+import { useGetReviewerCommentsQuery } from '../../Redux/sampler/reviewApis';
+import CommentSection from './CommentSection';
 
 const { Title, Text } = Typography;
 
-const FeedCard = () => {
+const FeedCard = ({ content, reviewLoading }) => {
   const [showModal, setShowModal] = useState(false);
   const [like, setLike] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedComment, setSelectedComment] = useState(null);
+  const { data: reviewerComments, isLoading: reviewerCommentsLoading } = useGetReviewerCommentsQuery({
+    id: selectedComment?._id,
+  }, { skip: !selectedComment?._id });
   const style = {
     header: {
       borderLeft: `5px solid `,
@@ -40,41 +47,39 @@ const FeedCard = () => {
         <div className="flex">
           <Avatar
             size={40}
-            src="https://pbs.twimg.com/profile_images/1186757121024462848/IhsPGxGB_400x400.jpg"
+            src={content?.reviewer?.profile_image}
           />
           <div style={{ marginLeft: 10 }}>
             <Title level={5} style={{ margin: 0 }}>
-              Micheal Scott <Text type="secondary">@Mike67 • 23mins ago</Text>
+              {content?.reviewer?.name} <Text type="secondary">{content?.reviewer?.username} • {convertDate(content?.createdAt)}</Text>
             </Title>
             <div className="flex items-center justify-center">
               <Rate
                 disabled
-                defaultValue={2}
+                defaultValue={content?.rating}
                 style={{ fontSize: 9, marginRight: 5 }}
               />
-              <h1>2.0</h1>•
-              <h1 className="!text-black !underline" style={{ marginLeft: 10 }}>
-                Natural Glow Serum
-              </h1>
-              <h1 className="!ml-2 mt-1" style={{ color: 'green' }}>
-                $25.00
-              </h1>
-              <h1 className="!text-black !underline" style={{ marginLeft: 10 }}>
-                • Electronics
-              </h1>
+              <Text>{content?.rating}</Text>•
+              <Text className="!text-black !underline" style={{ marginLeft: 10 }}>
+                {content?.product?.name}
+              </Text>
+              <Text className="!ml-2 mt-1" style={{ color: 'green' }}>
+                ${content?.product?.price}
+              </Text>
+              <Text className="!text-black !underline" style={{ marginLeft: 10 }}>
+                • {content?.category?.name}
+              </Text>
             </div>
           </div>
         </div>
         <BsThreeDots />
       </div>
       <Text>
-        I've been using this serum for a month and the results are amazing! My
-        skin looks more radiant and the texture has improved significantly.
-        Totally worth the price!
+        {content?.description}
       </Text>
       <div style={{ position: 'relative' }}>
         <video
-          src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
+          src={content?.video}
           controls
           className="w-full rounded-3xl mt-4 overflow-hidden"
         />
@@ -83,28 +88,29 @@ const FeedCard = () => {
         className='mt-4'
       >
         <Button
-        className='!text-[#6D7486]'
+          className='!text-[#6D7486]'
           onClick={() => {
             setLike(!like);
             like ? toast.error('Unliked') : toast.success('Liked');
           }}
           type="text"
-          icon={like ? <FaHeart fill="red" /> : <CiHeart />}
+          icon={content?.isLike ? <FaHeart fill="red" /> : <CiHeart />}
         >
-          <Text type="secondary">23</Text>
+          <Text type="secondary">{content?.totalLikers}</Text>
         </Button>
         <Button
-        className='!text-[#6D7486]'
+          className='!text-[#6D7486]'
           onClick={() => {
+            setSelectedComment(content)
             setShowCommentModal(true);
           }}
           type="text"
           icon={<CommentOutlined />}
         >
-          6 comments
+          {content?.totalComments} comments
         </Button>
         <Button
-        className='!text-[#6D7486]'
+          className='!text-[#6D7486]'
           onClick={() => setShowModal(!showModal)}
           type="text"
           icon={<RiShareForwardLine />}
@@ -141,35 +147,59 @@ const FeedCard = () => {
       <Modal
         title="Comments"
         width={600}
-        position="center"
+        centered
         visible={showCommentModal}
         onCancel={() => setShowCommentModal(false)}
         footer={null}
       >
+        <div className="flex">
+          <Avatar
+            size={40}
+            src={selectedComment?.reviewer?.profile_image}
+          />
+          <div style={{ marginLeft: 10 }}>
+            <Title level={5} style={{ margin: 0 }}>
+              {selectedComment?.reviewer?.name} <Text type="secondary">{selectedComment?.reviewer?.username} • {convertDate(selectedComment?.createdAt)}</Text>
+            </Title>
+            <div className="flex items-center justify-center">
+              <Rate
+                disabled
+                defaultValue={selectedComment?.rating}
+                style={{ fontSize: 9, marginRight: 5 }}
+              />
+              <Text>{selectedComment?.rating}</Text>•
+              <Text className="!text-black !underline" style={{ marginLeft: 10 }}>
+                {selectedComment?.product?.name}
+              </Text>
+              <Text className="!ml-2 mt-1" style={{ color: 'green' }}>
+                ${selectedComment?.product?.price}
+              </Text>
+              <Text className="!text-black !underline" style={{ marginLeft: 10 }}>
+                • {selectedComment?.category?.name}
+              </Text>
+            </div>
+          </div>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ marginLeft: 10 }}>
-            <div className="flex items-start">
-              <div className="!w-[40px] bg-gray-400 !h-[20px] mr-2 rounded-full" />
-              <div>
-                <Title level={5} style={{ margin: 0 }}>
-                  Micheal Scott{' '}
-                  <Text type="secondary">@Mike67 • 23mins ago</Text>
-                </Title>
-                <Text>
-                  I've been using this serum for a month and the results are
-                  amazing! My skin looks more radiant and the texture has
-                  improved significantly. Totally worth the price!
-                </Text>
-              </div>
-            </div>
             <div style={{ position: 'relative' }}>
               <video
-                src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
+                src={selectedComment?.video}
                 controls
                 className="w-full rounded-3xl mt-4 overflow-hidden"
               />
             </div>
+            <Text style={{ marginTop: 10 }}>
+              {selectedComment?.description}
+            </Text>
           </div>
+        </div>
+        <Divider />
+        <div className=' h-[300px] scrollbar-hide overflow-y-scroll'>
+          <CommentSection
+            comments={reviewerComments?.data?.result}
+            loading={reviewerCommentsLoading}
+          />
         </div>
       </Modal>
     </Card>
