@@ -283,7 +283,7 @@ const MyPurchasesSampler = () => {
               defaultActiveKey="1"
               items={items}
               onChange={onChange}
-              className="cursor-pointer "
+              className="cursor-pointer !text-white"
               pagination={{
                 current: getAllOrder?.data?.meta?.page || page,
                 pageSize: getAllOrder?.data?.meta?.limit || pageSize,
