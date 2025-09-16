@@ -10,17 +10,19 @@ import { useCategorySectionApisQuery } from "../../Redux/sampler/categoryApis";
 import { FaAngleLeft } from "react-icons/fa";
 import JoditComponent from "../Shared/JoditComponent";
 import toast from "react-hot-toast";
-import { useCreateProductMutation } from "../../Redux/businessApis/business_product/businessCreateProduct";
+import { useCreateProductMutation, useSaveDraftProductMutation } from "../../Redux/businessApis/business_product/businessCreateProduct";
 
 function AddProduct() {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
   const [content, setContent] = useState('');
+  const [isDraft, setIsDraft] = useState(false);
   const { data: categories, isLoading: categoryLoading } = useCategorySectionApisQuery();
   const [createProduct, { isLoading: createProductLoading }] = useCreateProductMutation()
   const navigate = useNavigate();
   const [productId, setProductId] = useState(null);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [saveDraftProduct, { isLoading: saveDraftProductLoading }] = useSaveDraftProductMutation()
 
   const handleFileChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -28,56 +30,65 @@ function AddProduct() {
 
   const onFinish = async (values) => {
     try {
-      let tags = [];
-      if (content === '') {
-        throw new Error('Please enter Description!');
-      }
-      if (fileList.length === 0) {
-        throw new Error('Please upload images!');
-      }
-
-      if (!values.stock) {
-        throw new Error('Please enter stock!');
-      }
-
-      if (values.tags.includes(',')) {
-        tags = values.tags.split(',').map((tag) => tag.trim()).filter(Boolean);
+      if (isDraft) {
+        await saveDraftProduct(values).unwrap().then((res) => {
+          if (res.success) {
+            toast.dismiss()
+            toast.success(res.message)
+            navigate(-1)
+          }
+        })
       } else {
-        tags = [values.tags];
-      }
-
-      const formData = new FormData()
-      const data = {
-        name: values.name,
-        shortDescription: values.shortDescription,
-        category: values.category,
-        brand: values.brand,
-        price: values.price,
-        stock: values.stock,
-        tags: tags,
-        description: content,
-        weight: parseFloat(values.weight),
-        length: parseFloat(values.length),
-        width: parseFloat(values.width),
-        height: parseFloat(values.height),
-      }
-      formData.append("data", JSON.stringify(data));
-      fileList.forEach((file) => {
-        formData.append("product_image", file.originFileObj);
-      });
-
-      await createProduct(formData).unwrap().then((res) => {
-        console.log(res)
-        if (res.success) {
-          toast.dismiss()
-          toast.success(res.message)
-          setProductId(res?.data?._id)
-          form.resetFields()
-          setContent('')
-          setFileList([])
-          setOpenSuccessModal(true)
+        let tags = [];
+        if (content === '') {
+          throw new Error('Please enter Description!');
         }
-      })
+        if (fileList.length === 0) {
+          throw new Error('Please upload images!');
+        }
+
+        if (!values.stock) {
+          throw new Error('Please enter stock!');
+        }
+
+        if (values.tags.includes(',')) {
+          tags = values.tags.split(',').map((tag) => tag.trim()).filter(Boolean);
+        } else {
+          tags = [values.tags];
+        }
+
+        const formData = new FormData()
+        const data = {
+          name: values.name,
+          shortDescription: values.shortDescription,
+          category: values.category,
+          brand: values.brand,
+          price: values.price,
+          stock: values.stock,
+          tags: tags,
+          description: content,
+          weight: parseFloat(values.weight),
+          length: parseFloat(values.length),
+          width: parseFloat(values.width),
+          height: parseFloat(values.height),
+        }
+        formData.append("data", JSON.stringify(data));
+        fileList.forEach((file) => {
+          formData.append("product_image", file.originFileObj);
+        });
+
+        await createProduct(formData).unwrap().then((res) => {
+          if (res.success) {
+            toast.dismiss()
+            toast.success(res.message)
+            setProductId(res?.data?._id)
+            form.resetFields()
+            setContent('')
+            setFileList([])
+            setOpenSuccessModal(true)
+          }
+        })
+      }
     } catch (error) {
       console.log(error)
       toast.dismiss()
@@ -129,10 +140,13 @@ function AddProduct() {
         <div className="flex justify-between items-start md:flex-row flex-col md:items-center mb-4">
           <h2 className="text-2xl">Add New Product</h2>
           <div className="flex gap-2">
-            <Button type="default" onClick={() => form.submit()}>
+            <Button type="default" loading={saveDraftProductLoading} disabled={saveDraftProductLoading} onClick={() => {
+              setIsDraft(true)
+              form.submit()
+            }}>
               Save as Draft
             </Button>
-            <Button loading={createProductLoading} disabled={createProductLoading} type="primary" onClick={() => form.submit()}>
+            <Button loading={createProductLoading} disabled={createProductLoading || saveDraftProductLoading} type="primary" onClick={() => form.submit()}>
               Publish
             </Button>
           </div>

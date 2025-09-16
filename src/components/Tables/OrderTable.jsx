@@ -3,10 +3,13 @@ import { Table, Tag, Button, Input, Select } from 'antd';
 import { FaAngleLeft } from 'react-icons/fa';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { useGetOrderListQuery } from '../../Redux/sampler/orderApis';
 const { Option } = Select;
 const OrderTable = ({ filterStatus }) => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const { data: orderList, isLoading: orderLoading } = useGetOrderListQuery();
+  console.log(orderList);
   console.log(statusFilter);
   const allOrders = [
     {
@@ -131,7 +134,7 @@ const OrderTable = ({ filterStatus }) => {
             placeholder="Search by Order ID, Product, or Customer"
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
-            
+
           />
           <Select
             placeholder="Filter"
@@ -148,7 +151,7 @@ const OrderTable = ({ filterStatus }) => {
       <Table
         columns={columns}
         dataSource={filteredOrders}
-        scroll={{ x: 900}}
+        scroll={{ x: 900 }}
         pagination={{
           showSizeChanger: false,
           defaultPageSize: 5,
