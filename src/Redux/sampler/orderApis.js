@@ -3,8 +3,10 @@ import { baseApis } from "../main/baseApis";
 const orderApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
     getOrderList: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: `/order/get-my-orders`,
+        method: "GET",
+        params,
       }),
     }),
   }),
