@@ -220,22 +220,36 @@ const ContactAndShipping = () => {
       >
         <div className="space-y-4 mt-4">
           {/* Address */}
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Street1</p>
-            <Input
-              name="street1"
-              value={form?.street1}
-              onChange={handleChange}
-              type="text"
-              className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-              placeholder="Enter full address"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Street1</p>
+              <Input
+                name="street1"
+                value={form?.street1}
+                onChange={handleChange}
+                type="text"
+                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+                placeholder="Enter full address"
+              />
+            </div>
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Street2</p>
+              <Input
+                name="street2"
+                value={form?.street2}
+                onChange={handleChange}
+                type="text"
+                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+                placeholder="Enter full address"
+              />
+            </div>
           </div>
+
           <div>
-            <p className="text-sm text-gray-600 mb-1">Street2</p>
+            <p className="text-sm text-gray-600 mb-1">Email</p>
             <Input
-              name="street2"
-              value={form?.street2}
+              name="email"
+              value={form?.email}
               onChange={handleChange}
               type="text"
               className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
@@ -314,8 +328,8 @@ const ContactAndShipping = () => {
             <div>
               <p className="text-sm text-gray-600 mb-1">Phone number</p>
               <Input
-                name="phoneNumber"
-                value={form?.phoneNumber}
+                name="phone"
+                value={form?.phone}
                 onChange={handleChange}
                 type="tel"
                 className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
