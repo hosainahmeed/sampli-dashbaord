@@ -59,7 +59,7 @@ body::-webkit-scrollbar {
 
 .ant-pagination-item-active {
   border-radius: 50% !important;
-  background-color: white !important;
+  background-color: #2e78e9 !important;
   color: #fff !important;
   border: none !important;
   box-shadow: none !important;
