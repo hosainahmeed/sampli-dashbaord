@@ -171,7 +171,7 @@ const OrderDetails = ({ setIsClicked }) => {
       </div>
 
       <Modal
-        title=<div className="text-center text-xl">Cancel Order</div>
+        title={<div className="text-center text-xl">Cancel Order</div>}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

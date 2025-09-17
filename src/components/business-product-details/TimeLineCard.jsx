@@ -1,108 +1,111 @@
-import { Card, Divider, Space, Timeline, Typography } from 'antd';
-import React from 'react';
-import { FaRegCircle } from 'react-icons/fa';
-import { FaCircleCheck } from 'react-icons/fa6';
+import { Card, Divider, Space, Timeline, Typography } from "antd";
+import React, { useEffect, useState, useMemo } from "react";
+import { FaRegCircle } from "react-icons/fa";
+import { FaCircleCheck } from "react-icons/fa6";
 
 const { Text } = Typography;
 
-const ORDER_STATUS_MAP = {
-  PENDING: { status: 'Order processed', color: 'gray' },
-  PROCESSING: { status: 'Payment Confirmed', color: 'gray' },
-  SHIPPED: { status: 'Item shipped', color: 'gray' },
-  DELIVERED: { status: 'Delivered', color: 'gray' },
+const DELIVERY_STEP_MAP = ["Order Placed", "Payment Confirmed", "Item Shipped", "Delivered"];
+
+const DELIVERY_STATUS_MAP = {
+  "Waiting to be shipped": 0,
+  "Payment Confirmed": 1,
+  Shipped: 2,
+  Delivered: 3,
 };
 
 function TimeLineCard({ status, order }) {
-  const { timeline } = order;
+  const deliveryStatus = status || order?.deliveryStatus || "Waiting to be shipped";
+  const [currentImg, setCurrentImg] = useState(order?.product?.images?.[0] || "");
+ 
+  const currentStepIndex = useMemo(() => DELIVERY_STATUS_MAP[deliveryStatus] ?? 0, [deliveryStatus]);
+ 
+  const timelineState = useMemo(
+    () =>
+      DELIVERY_STEP_MAP.map((step, index) => ({
+        step,
+        completed: index <= currentStepIndex,
+      })),
+    [currentStepIndex]
+  );
 
-  const getTimelineState = () => {
-    const statusOrder = Object.keys(ORDER_STATUS_MAP);
-    const currentStatusIndex = statusOrder.indexOf(status);
+  const subtotal = order?.amount || 0;
+  const shipping = 10;
+  const total = subtotal + shipping;
+ 
+  useEffect(() => {
+    if (!order?.product?.images?.length) return;
 
-    return statusOrder.map((key, index) => {
-      const isCompleted = index <= currentStatusIndex;
-      return {
-        status: ORDER_STATUS_MAP[key].status,
-        color: isCompleted ? 'green' : 'gray',
-        completed: isCompleted,
-      };
-    });
-  };
+    const images = order.product.images;
+    let index = 0;
 
-  const timelineState = getTimelineState();
+    const interval = setInterval(() => {
+      index = (index + 1) % images.length;
+      setCurrentImg(images[index]);
+    }, 2000);
 
-  // Calculate the total as the sum of shipping and subtotal
-  const calculatedTotal = order.subtotal + order.shipping;
+    return () => clearInterval(interval);
+  }, [order?.product?.images]);
 
   return (
-    <div className="">
-      <Card
-        title={
-          <div className="w-full py-4 flex-col items-start justify-between">
-            <div className="w-full flex items-center justify-between mb-4">
-              <Space>
-                <img
-                  src={order.image}
-                  alt={order.name}
-                  className="w-16 h-16 rounded-lg object-cover"
-                />
-                <div className="flex flex-col ">
-                  <Text strong>{order.name}</Text>
-                  <Text type="secondary">{order.variant}</Text>
-                </div>
-              </Space>
-              <Text strong>
-                ${order.price} × {order.quantity}
-              </Text>
-              <Text strong>${order.price * order.quantity}</Text>
-            </div>
-            <Divider />
-            <div className="w-full flex flex-col justify-between">
-              <Space className="w-full justify-between">
-                <Text type="secondary">Subtotal</Text>
-                <Text type="secondary">{order.quantity} items</Text>
-                <Text>${order.subtotal}</Text>
-              </Space>
-              <Space className="w-full justify-between mt-2">
-                <Text type="secondary">Shipping</Text>
-                <Text type="secondary">Door delivery</Text>
-                <Text>${order.shipping}</Text>
-              </Space>
-              <Space className="w-full justify-between mt-2">
-                <Text strong>Total</Text>
-                <Text strong>${calculatedTotal}</Text>
-              </Space>
-            </div>
+    <Card
+      title={
+        <div className="w-full py-4 flex-col items-start justify-between">
+          <div className="w-full flex items-center justify-between mb-4">
+            <Space>
+              <img
+                src={currentImg}
+                alt={order?.product?.name}
+                className="w-16 h-16 rounded-lg object-cover"
+              />
+              <div className="flex flex-col">
+                <Text strong>{order?.product?.name}</Text>
+                <Text type="secondary">{order?.campaign?.name}</Text>
+              </div>
+            </Space>
+            <Text strong>${order?.amount}</Text>
           </div>
-        }
-        className="shadow p-4"
-      >
-        <div>
-          <Timeline>
-            {timelineState.map((event, index) => (
-              <Timeline.Item
-                key={index}
-                dot={
-                  event.completed ? (
-                    <FaCircleCheck style={{ color: event.color }} />
-                  ) : (
-                    <FaRegCircle />
-                  )
-                }
-                color={event.color}
-              >
-                <Text>{event.status}</Text>
-                <br />
-                <Text type="secondary">
-                  {timeline.find((e) => e.status === event.status)?.date ||
-                    'Pending'}
-                </Text>
-              </Timeline.Item>
-            ))}
-          </Timeline>
+
+          <Divider />
+
+          <div className="flex flex-col gap-2">
+            <Space className="w-full justify-between">
+              <Text type="secondary">Subtotal</Text>
+              <Text type="secondary">1 item</Text>
+              <Text>${subtotal}</Text>
+            </Space>
+            <Space className="w-full justify-between">
+              <Text type="secondary">Shipping</Text>
+              <Text type="secondary">Door delivery</Text>
+              <Text>${shipping}</Text>
+            </Space>
+            <Space className="w-full justify-between">
+              <Text strong>Total</Text>
+              <Text strong>${total}</Text>
+            </Space>
+          </div>
         </div>
-      </Card>
-    </div>
+      }
+      className="shadow p-4"
+    >
+      <Timeline>
+        {timelineState.map((event, i) => (
+          <Timeline.Item
+            key={i}
+            dot={event.completed ? <FaCircleCheck style={{ color: "green" }} /> : <FaRegCircle />}
+            color={event.completed ? "green" : "gray"}
+          >
+            <Text>{event.step}</Text>
+            <br />
+            <Text type="secondary">
+              {event.completed && order?.createdAt
+                ? new Date(order.createdAt).toLocaleDateString()
+                : "Pending"}
+            </Text>
+          </Timeline.Item>
+        ))}
+      </Timeline>
+    </Card>
   );
 }
 

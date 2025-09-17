@@ -14,6 +14,7 @@ const CampaignTable = () => {
   console.log(campaignsData?.data?.result)
   const navigate = useNavigate();
   const campaigns = campaignsData?.data?.result;
+  console.log(campaignsData)
   const statusColors = {
     Active: 'orange',
     Pending: 'purple',

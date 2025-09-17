@@ -10,6 +10,8 @@ import salse from '../../assets/icons/salse.svg';
 import activeSales from '../../assets/icons/active/activeSales.svg';
 import activeSetting from '../../assets/icons/active/activeSetting.svg';
 import settingIcon from '../../assets/icons/setting.svg';
+import purchasesIcon from '../../assets/icons/truck.png';
+import activePurchases from '../../assets/icons/active/truck.png';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -55,6 +57,16 @@ const Sidebar = () => {
       path: '/sales',
     },
     {
+      name: 'Campaign Shipment',
+      icon:
+        location?.pathname === '/business/purchases' ? (
+          <img className="w-5 h-5" src={activePurchases} alt="home"></img>
+        ) : (
+          <img className="w-5 h-5" src={purchasesIcon} alt="home"></img>
+        ),
+      path: '/business/purchases',
+    },
+    {
       name: 'Settings',
       icon:
         location?.pathname === '/settings' ? (
@@ -64,17 +76,17 @@ const Sidebar = () => {
         ),
       path: '/settings',
     },
+
   ];
   return (
     <div className="scrollbar h-full overflow-y-scroll space-y-6 p-3">
       {adminMenus?.map((item) => (
         <NavLink
           key={item?.path}
-          className={`${
-            location?.pathname === item?.path
+          className={`${location?.pathname === item?.path
               ? 'sidebar-button-active'
               : 'sidebar-button'
-          } text-base  hover:scale-101 transition-all`}
+            } text-base  hover:scale-101 transition-all`}
           to={item?.path}
         >
           {item?.icon} <span className="">{item?.name}</span>

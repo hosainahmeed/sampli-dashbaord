@@ -2,12 +2,13 @@ import { Button, Card, Input, Typography } from 'antd';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { CiEdit } from 'react-icons/ci';
+import { MdClose } from 'react-icons/md';
 const { Title, Text } = Typography;
 
 function ContactInformationCustomer({ order }) {
   const [isEdit, setIsEdit] = useState(false);
-  const [email] = useState(order.email);
-  const [phone, setPhone] = useState(order.phone);
+  const [email] = useState(order?.shippingAddress?.email);
+  const [phone, setPhone] = useState(order?.shippingAddress?.phone);
 
   const handleSave = () => {
     console.log('Updated phone:', phone);
@@ -22,8 +23,8 @@ function ContactInformationCustomer({ order }) {
           <Title level={3} className="mt-6">
             Contact Information
           </Title>
-          <Button onClick={() => setIsEdit(!isEdit)} className="!border-none">
-            <CiEdit className="text-2xl" />
+          <Button shape='circle' onClick={() => setIsEdit(!isEdit)} className="!border-none">
+            {isEdit ? <MdClose className="text-2xl" /> : <CiEdit className="text-2xl" />}
           </Button>
         </div>
         {isEdit ? (
@@ -46,7 +47,7 @@ function ContactInformationCustomer({ order }) {
           </>
         ) : (
           <>
-            <Text>{email}</Text>
+            <Text>{email || 'No Email'}</Text>
             <br />
             <Text type="secondary">{phone || 'No Phone number'}</Text>
           </>
