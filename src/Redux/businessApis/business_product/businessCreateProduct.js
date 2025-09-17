@@ -31,6 +31,16 @@ const businessCreateProduct = baseApis.injectEndpoints({
       },
       invalidatesTags: ["product"],
     }),
+    saveDraftProduct: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/product/save-product-as-draft`,
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["product"],
+    }),
   }),
 });
 
@@ -38,4 +48,5 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeletePorductMutation,
+  useSaveDraftProductMutation,
 } = businessCreateProduct;

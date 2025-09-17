@@ -19,6 +19,8 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import AddVariant from "../components/page-Component/AddVariant.jsx";
 import EditProduct from "../components/page-Component/EditProduct";
 import ProductDetails from "../pages/Business/Product/ProductDetails";
+import PurchasesBusiness from "../pages/Business/PurchasesBusiness/PurchasesBusiness.jsx";
+import DetailsPurchasesProduct from "../pages/Business/PurchasesBusiness/DetailsPurchasesProduct.jsx";
 
 export const businessRoutes = {
   path: "/",
@@ -54,6 +56,8 @@ export const businessRoutes = {
     {
       path: "product/:productId",
       element: <ProductDetails />,
-    }
+    },
+    { path: "/business/purchases", element: <PurchasesBusiness /> },
+    { path: "/business/purchases/:id", element: <DetailsPurchasesProduct /> },
   ],
 };

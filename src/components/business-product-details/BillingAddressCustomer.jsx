@@ -1,13 +1,20 @@
 import { Card, Typography, Space, Button } from 'antd';
 import { CiEdit } from 'react-icons/ci';
-import React from 'react';
 import { FiMap } from 'react-icons/fi';
+import React from 'react';
+
 const { Title, Text } = Typography;
 
 function BillingAddressCustomer({ order }) {
+  const address = order?.shippingAddress;
+
+  if (!address) return null;
+
+  const fullAddress = `${address.street1 || ''}, ${address.street2 || ''}, ${address.city || ''}, ${address.state || ''} ${address.zip || ''}, ${address.country || ''}`;
+
   const handleViewMap = () => {
-    const address = encodeURIComponent(order.shippingAddress.address);
-    const url = `https://www.google.com/maps?q=${address}`;
+    const encoded = encodeURIComponent(fullAddress);
+    const url = `https://www.google.com/maps?q=${encoded}`;
     window.open(url, '_blank');
   };
 
@@ -22,17 +29,37 @@ function BillingAddressCustomer({ order }) {
             <CiEdit className="text-xl" />
           </Button>
         </div>
+
         <Space direction="vertical" size="middle" className="w-full">
+          {/* Name */}
           <div className="flex items-center space-x-2">
             <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center">
               <span className="text-white">👤</span>
             </div>
-            <Text strong>{order.shippingAddress.name}</Text>
+            <Text strong>{address.name}</Text>
           </div>
-          <Text type="secondary">{order.shippingAddress.address}</Text>
-          <Text type="secondary">{order.shippingAddress.phone}</Text>
-          <Button type="link" className="mt-2 p-0" onClick={handleViewMap}>
-          <FiMap /> View Map
+
+          {/* Company */}
+          {address.company && (
+            <Text type="secondary">{address.company}</Text>
+          )}
+
+          {/* Address */}
+          <Text type="secondary">{fullAddress}</Text>
+
+          {/* Phones */}
+          <Text type="secondary">{address.phone}</Text>
+          {address.alternativePhoneNumber && (
+            <Text type="secondary">{address.alternativePhoneNumber}</Text>
+          )}
+
+          {/* View map */}
+          <Button
+            type="link"
+            className="mt-2 p-0 flex items-center gap-1"
+            onClick={handleViewMap}
+          >
+            <FiMap /> View Map
           </Button>
         </Space>
       </Card>

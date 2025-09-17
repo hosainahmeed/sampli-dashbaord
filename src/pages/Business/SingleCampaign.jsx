@@ -6,20 +6,13 @@ import CampaignPerformanceChart from '../../components/ui/CampaignPerformanceCha
 import AllFeedCard from '../../components/page-Component/AllFeedCard';
 import toast from 'react-hot-toast';
 import { useChangeCampaignStatusMutation, useGetCampaignByIdQuery } from '../../Redux/businessApis/campaign/campaignApis';
-import { useGetAllReviewQuery } from '../../Redux/sampler/reviewApis';
-
 function SingleCampaign() {
   const { id } = useLocation().state;
-  console.log(id)
   const navigate = useNavigate();
   const [changeCampaignStatus, { isLoading: changeCampaignStatusLoading }] = useChangeCampaignStatusMutation();
   const { data: campaignByIdData, isLoading: campaignByIdLoading } = useGetCampaignByIdQuery(id);
 
-  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
-    productId: id,
-  });
-  console.log(reviewList)
-  
+
   const statsData = {
     timeline: new Date(campaignByIdData?.data?.startDate).toLocaleString('default', {
       month: 'short',
@@ -65,11 +58,9 @@ function SingleCampaign() {
     }
   };
 
-  if (campaignByIdLoading) return <div className="container mx-auto">
-    <Card loading />
-  </div>;
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-8">
+
       <div
         className="flex items-center gap-2 text-[#999Eab] cursor-pointer hover:text-[#111] transition-all"
         onClick={() => navigate(-1)}
@@ -191,7 +182,6 @@ function SingleCampaign() {
         </div>
       </div>
       <CampaignPerformanceChart />
-
       <AllFeedCard />
     </div>
   );
