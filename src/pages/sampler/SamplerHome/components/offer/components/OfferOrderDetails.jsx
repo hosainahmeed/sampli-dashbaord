@@ -39,6 +39,8 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
       id,
     });
 
+  console.log(geSingleCampaignOffer);
+
   const [createPresignedUrl, { isLoading: uploadLoading }] =
     useCreateUploadApisMutation();
   const [createReview, { isLoading: reviewLoading }] =
@@ -49,38 +51,62 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
   };
 
   const handleOk = async () => {
-    console.log(thumbnailUrl);
-    if (!rating || !description || !finalVideoUrl || !thumbnailUrl || !id) {
+    if (!rating || !description || !thumbnailUrl || !id) {
       toast.error("Please fill all required fields and upload a video");
       return;
     }
-
     try {
-      const formData = new FormData();
-
-      formData.append("thumbnail", thumbnailUrl);
       const data = {
-        campaignOfferId: id,
-        description: description,
-        rating: rating,
-        video: finalVideoUrl,
+        fileType: videoFile.type,
+        fileCategory: "review_video",
       };
+      const presignedResponse = await createPresignedUrl({ data }).unwrap();
+      console.log(presignedResponse);
 
-      formData.append("data", JSON.stringify(data));
+      const presignedUrl = presignedResponse.uploadURL;
+      const finalVideoUrl = `https://sampli-bucket101.s3.us-west-2.amazonaws.com/${presignedResponse.fileName}`;
 
-      await createReview(formData).unwrap();
-      setIsModalOpen(false);
-      toast.success("Review submitted successfully!");
+      setFinalVideoUrl(finalVideoUrl);
 
-      setRating(0);
-      setDescription("");
-      setThumbnailUrl("");
-      setVideoFile(null);
-      setFinalVideoUrl("");
-      setUploadProgress(0);
+      await uploadToS3(presignedUrl, videoFile, finalVideoUrl);
+
+      if (!rating || !description || !finalVideoUrl || !thumbnailUrl || !id) {
+        toast.error("Please fill all required fields and upload a video");
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+
+        formData.append("thumbnail", thumbnailUrl);
+        const data = {
+          campaignOfferId: id,
+          description: description,
+          rating: rating,
+          video: finalVideoUrl,
+        };
+
+        formData.append("data", JSON.stringify(data));
+
+        await createReview(formData).unwrap();
+        setIsModalOpen(false);
+        toast.success("Review submitted successfully!");
+
+        setRating(0);
+        setDescription("");
+        setThumbnailUrl("");
+        setVideoFile(null);
+        setFinalVideoUrl("");
+        setUploadProgress(0);
+      } catch (error) {
+        toast.error("Failed to submit review");
+        console.error("Review submission error:", error);
+      }
     } catch (error) {
-      toast.error("Failed to submit review");
-      console.error("Review submission error:", error);
+      toast.error("Failed to upload video");
+      console.error("Video upload error:", error);
+      setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -120,7 +146,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     }
   };
 
-  const handleVideoUpload = async (file) => {
+  const handleVideoUpload = (file) => {
     console.log(file);
     const isVideo = file.type.startsWith("video/");
     if (!isVideo) {
@@ -138,26 +164,26 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     setIsUploading(true);
     setUploadProgress(0);
 
-    try {
-      const data = {
-        fileType: file.type,
-        fileCategory: "review_video",
-      };
-      const presignedResponse = await createPresignedUrl({ data }).unwrap();
-      console.log(presignedResponse);
+    // try {
+    //   const data = {
+    //     fileType: file.type,
+    //     fileCategory: "review_video",
+    //   };
+    //   const presignedResponse = await createPresignedUrl({ data }).unwrap();
+    //   console.log(presignedResponse);
 
-      const presignedUrl = presignedResponse.uploadURL;
-      const finalVideoUrl = `https://sampli-bucket101.s3.us-west-2.amazonaws.com/${presignedResponse.fileName}`;
+    //   const presignedUrl = presignedResponse.uploadURL;
+    //   const finalVideoUrl = `https://sampli-bucket101.s3.us-west-2.amazonaws.com/${presignedResponse.fileName}`;
 
-      setFinalVideoUrl(finalVideoUrl);
+    //   setFinalVideoUrl(finalVideoUrl);
 
-      await uploadToS3(presignedUrl, file, finalVideoUrl);
-    } catch (error) {
-      toast.error("Failed to upload video");
-      console.error("Video upload error:", error);
-      setIsUploading(false);
-      setUploadProgress(0);
-    }
+    //   await uploadToS3(presignedUrl, file, finalVideoUrl);
+    // } catch (error) {
+    //   toast.error("Failed to upload video");
+    //   console.error("Video upload error:", error);
+    //   setIsUploading(false);
+    //   setUploadProgress(0);
+    // }
 
     return false;
   };
