@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Card, Avatar, Typography, Rate, Button, Modal } from 'antd';
-import { CommentOutlined } from '@ant-design/icons';
-import { RiShareForwardLine } from 'react-icons/ri';
-import { BsThreeDots } from 'react-icons/bs';
-import { CiHeart } from 'react-icons/ci';
-import { ShareSocial } from 'react-share-social';
-import { FaHeart } from 'react-icons/fa';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { Card, Avatar, Typography, Rate, Button, Modal } from "antd";
+import { CommentOutlined } from "@ant-design/icons";
+import { RiShareForwardLine } from "react-icons/ri";
+import { BsThreeDots } from "react-icons/bs";
+import { CiHeart } from "react-icons/ci";
+import { ShareSocial } from "react-share-social";
+import { FaHeart } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 
@@ -21,17 +21,17 @@ const FeedCard = () => {
       paddingInlineStart: 5,
     },
     body: {
-      boxShadow: 'inset 0 0 5px #999',
+      boxShadow: "inset 0 0 5px #999",
       borderRadius: 5,
     },
     mask: {
-      backdropFilter: 'blur(10px)',
+      backdropFilter: "blur(10px)",
     },
     footer: {
-      borderTop: '1px solid #333',
+      borderTop: "1px solid #333",
     },
     content: {
-      boxShadow: '0 0 30px #999',
+      boxShadow: "0 0 30px #999",
     },
   };
   return (
@@ -56,7 +56,7 @@ const FeedCard = () => {
               <h1 className="!text-black !underline" style={{ marginLeft: 10 }}>
                 Natural Glow Serum
               </h1>
-              <h1 className="!ml-2 mt-1" style={{ color: 'green' }}>
+              <h1 className="!ml-2 mt-1" style={{ color: "green" }}>
                 $25.00
               </h1>
               <h1 className="!text-black !underline" style={{ marginLeft: 10 }}>
@@ -72,21 +72,19 @@ const FeedCard = () => {
         skin looks more radiant and the texture has improved significantly.
         Totally worth the price!
       </Text>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         <video
           src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
           controls
           className="w-full rounded-3xl mt-4 overflow-hidden"
         />
       </div>
-      <div
-        className='mt-4'
-      >
+      <div className="mt-4">
         <Button
-        className='!text-[#6D7486]'
+          className="!text-[#6D7486]"
           onClick={() => {
             setLike(!like);
-            like ? toast.error('Unliked') : toast.success('Liked');
+            like ? toast.error("Unliked") : toast.success("Liked");
           }}
           type="text"
           icon={like ? <FaHeart fill="red" /> : <CiHeart />}
@@ -94,7 +92,7 @@ const FeedCard = () => {
           <Text type="secondary">23</Text>
         </Button>
         <Button
-        className='!text-[#6D7486]'
+          className="!text-[#6D7486]"
           onClick={() => {
             setShowCommentModal(true);
           }}
@@ -104,7 +102,7 @@ const FeedCard = () => {
           6 comments
         </Button>
         <Button
-        className='!text-[#6D7486]'
+          className="!text-[#6D7486]"
           onClick={() => setShowModal(!showModal)}
           type="text"
           icon={<RiShareForwardLine />}
@@ -123,16 +121,16 @@ const FeedCard = () => {
             style={{
               ...style,
               copyContainer: {
-                border: 'none',
+                border: "none",
               },
             }}
             socialTypes={[
-              'facebook',
-              'twitter',
-              'reddit',
-              'linkedin',
-              'whatsapp',
-              'email',
+              "facebook",
+              "twitter",
+              "reddit",
+              "linkedin",
+              "whatsapp",
+              "email",
             ]}
             onSocialButtonClicked={(data) => console.log(data)}
           />
@@ -146,13 +144,13 @@ const FeedCard = () => {
         onCancel={() => setShowCommentModal(false)}
         footer={null}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ marginLeft: 10 }}>
             <div className="flex items-start">
               <div className="!w-[40px] bg-gray-400 !h-[20px] mr-2 rounded-full" />
               <div>
                 <Title level={5} style={{ margin: 0 }}>
-                  Micheal Scott{' '}
+                  Micheal Scott{" "}
                   <Text type="secondary">@Mike67 • 23mins ago</Text>
                 </Title>
                 <Text>
@@ -162,7 +160,7 @@ const FeedCard = () => {
                 </Text>
               </div>
             </div>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: "relative" }}>
               <video
                 src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
                 controls

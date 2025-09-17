@@ -26,6 +26,7 @@ export const baseApis = createApi({
     "campaign",
     "businessStore",
     "notificationSetting",
+    "campaignOffer",
   ],
   endpoints: () => ({}),
 });
