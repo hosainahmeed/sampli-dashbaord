@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import homeIcon from '../../assets/icons/home.svg';
 import activeHome from '../../assets/icons/active/activeHome.svg';
 import campaignIcon from '../../assets/icons/cam.svg';
@@ -19,12 +19,12 @@ const Bottombar = () => {
   const adminMenus = [
     {
       icon:
-        location?.pathname === '/' ? (
+        location?.pathname === '/business-dashboard' ? (
           <img className="w-5 h-5" src={activeHome} alt="home"></img>
         ) : (
           <img className="w-5 h-5" src={homeIcon} alt="home"></img>
         ),
-      path: '/',
+      path: '/business-dashboard',
     },
     {
       icon:
@@ -77,7 +77,7 @@ const Bottombar = () => {
       {open && (
         <div className="fixed bottom-0 left-0 right-0 flex xl:hidden justify-around items-center bg-[#f8f8fa] p-4 border-t border-gray-200 z-50">
           {adminMenus?.map((item) => (
-            <NavLink
+            <Link
               key={item?.path}
               className={`${
                 location?.pathname === item?.path
@@ -87,7 +87,7 @@ const Bottombar = () => {
               to={item?.path}
             >
               {item?.icon}
-            </NavLink>
+            </Link>
           ))}
           <Button shape="circle" onClick={() => setOpen(!open)}>
             <MdKeyboardArrowDown className="!text-xl" />

@@ -55,7 +55,7 @@ function ProductDetails() {
     };
 
     return (
-        <div className="container mx-auto p-4 pb-12">
+        <div className="container mx-auto pb-12">
             <h1
                 onClick={() => navigate(-1)}
                 className="text-2xl w-fit cursor-pointer flex items-center gap-2 font-semibold"><FaArrowLeft /> Product Details</h1>
@@ -168,7 +168,7 @@ function ProductDetails() {
                                 {selectedVariant && (<Card className="!mt-2">
                                     <h2 className="text-lg font-semibold">Variant Details</h2>
                                     <div>
-                                        <small className="text-lg text-gray-500">Variant Value: {selectedVariant?.variantValue} | Variant Price: ${selectedVariant?.price}</small>
+                                        <small className="text-lg text-gray-500">Variant Option: {selectedVariant?.variantOption} | Variant Value: {selectedVariant?.variantValue} | Variant Price: ${selectedVariant?.price}</small>
                                     </div>
 
                                 </Card>)}
