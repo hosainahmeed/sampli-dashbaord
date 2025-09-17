@@ -161,50 +161,59 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     }
 
     setVideoFile(file);
-    setIsUploading(true);
     setUploadProgress(0);
-
-    // try {
-    //   const data = {
-    //     fileType: file.type,
-    //     fileCategory: "review_video",
-    //   };
-    //   const presignedResponse = await createPresignedUrl({ data }).unwrap();
-    //   console.log(presignedResponse);
-
-    //   const presignedUrl = presignedResponse.uploadURL;
-    //   const finalVideoUrl = `https://sampli-bucket101.s3.us-west-2.amazonaws.com/${presignedResponse.fileName}`;
-
-    //   setFinalVideoUrl(finalVideoUrl);
-
-    //   await uploadToS3(presignedUrl, file, finalVideoUrl);
-    // } catch (error) {
-    //   toast.error("Failed to upload video");
-    //   console.error("Video upload error:", error);
-    //   setIsUploading(false);
-    //   setUploadProgress(0);
-    // }
 
     return false;
   };
 
   const uploadToS3 = async (presignedUrl, file, finalUrl) => {
     try {
-      const response = await fetch(presignedUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
-        },
-        body: file,
-      });
+      setIsUploading(true);
+      setUploadProgress(0);
+
+      const uploadWithProgress = () => {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+
+          xhr.upload.addEventListener("progress", (event) => {
+            if (event.lengthComputable) {
+              const percentComplete = Math.round(
+                (event.loaded / event.total) * 100
+              );
+              setUploadProgress(percentComplete);
+            }
+          });
+
+          xhr.addEventListener("load", () => {
+            if (xhr.status === 200) {
+              resolve(xhr);
+            } else {
+              reject(new Error(`Upload failed with status: ${xhr.status}`));
+            }
+          });
+
+          xhr.addEventListener("error", () => {
+            reject(new Error("Upload failed"));
+          });
+
+          xhr.addEventListener("abort", () => {
+            reject(new Error("Upload aborted"));
+          });
+
+          xhr.open("PUT", presignedUrl);
+          xhr.setRequestHeader("Content-Type", file.type);
+          xhr.send(file);
+        });
+      };
+
+      const response = await uploadWithProgress();
 
       console.log(response);
 
-      if (!response.ok || response.status !== 200) {
+      if (response.status !== 200) {
         throw new Error("Failed to upload to S3");
       }
 
-      toast.success("Video uploaded successfully!");
       setIsUploading(false);
       setUploadProgress(100);
     } catch (error) {
@@ -212,6 +221,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
       toast.error("Failed to upload to S3");
       setIsUploading(false);
       setUploadProgress(0);
+      throw error;
     }
   };
 
@@ -407,7 +417,6 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
         <p className="font-bold mt-4">Rating *</p>
         <div className="flex justify-center items-center">
           <Rate
-            allowHalf
             value={rating}
             onChange={setRating}
             style={{
