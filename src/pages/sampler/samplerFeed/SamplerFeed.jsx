@@ -42,6 +42,7 @@ import {
 } from "../../../Redux/sampler/reviewApis";
 import { useAddToCartMutation } from "../../../Redux/sampler/cartApis";
 import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
+import { usePostFollowUnfollowMutation } from "../../../Redux/sampler/followUnfollowApis";
 
 const { TabPane } = Tabs;
 
@@ -51,6 +52,8 @@ const SamplerFeed = () => {
   const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
     category: activeCategory,
   });
+
+  const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
 
   const { data: getMyProfile, isLoading: myProfileLoading } =
     useGetProfileApisQuery();
@@ -69,6 +72,7 @@ const SamplerFeed = () => {
   );
 
   const [createComments] = useCreateCommentMutation();
+  const [isLoadingVideo, setIsLoadingVideo] = useState(true);
   const [postCommentLike] = usePostCommentLikesMutation();
   const [reviewId, setReviewId] = useState("");
   const [replyText, setReplyText] = useState("");
@@ -126,11 +130,13 @@ const SamplerFeed = () => {
     } catch (error) {}
   };
 
-  const handleFollow = (authorHandle) => {
-    setFollowing((prev) => ({
-      ...prev,
-      [authorHandle]: !prev[authorHandle],
-    }));
+  const handleFollow = async (id) => {
+    try {
+      const res = await changeFollowUnfollow(id);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleShare = () => {
@@ -446,11 +452,9 @@ const SamplerFeed = () => {
                           : "primary"
                       }
                       ghost
-                      onClick={() => handleFollow(post?.reviewer?.username)}
+                      onClick={() => handleFollow(post?.reviewer?._id)}
                     >
-                      {following[post?.reviewer?.username]
-                        ? "Following"
-                        : "Follow"}
+                      {following[post?.reviewer?._id] ? "Following" : "Follow"}
                     </Button>
                   </div>
                 </div>
@@ -463,7 +467,19 @@ const SamplerFeed = () => {
                     style={{ paddingTop: "56.25%" }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <video src={post?.video} controls></video>
+                      {isLoadingVideo && (
+                        <div className="loader absolute">
+                          <p className="text-gray-500">Loading video...</p>
+                        </div>
+                      )}
+
+                      <video
+                        src={post?.video}
+                        controls
+                        preload="metadata"
+                        className="absolute inset-0 w-full h-full"
+                        onLoadedData={() => setIsLoadingVideo(false)}
+                      ></video>
                     </div>
                   </div>
                 )}
@@ -776,6 +792,12 @@ const SamplerFeed = () => {
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div
+                    className="text-sm font-medium border border-blue-200 px-4 py-1 rounded-full text-blue-600 cursor-pointer"
+                    onClick={() => handleFollow(user?._id)}
+                  >
+                    Follow
                   </div>
                 </div>
               ))}
