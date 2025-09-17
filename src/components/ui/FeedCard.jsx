@@ -28,17 +28,17 @@ const FeedCard = ({ content, reviewLoading }) => {
       paddingInlineStart: 5,
     },
     body: {
-      boxShadow: 'inset 0 0 5px #999',
+      boxShadow: "inset 0 0 5px #999",
       borderRadius: 5,
     },
     mask: {
-      backdropFilter: 'blur(10px)',
+      backdropFilter: "blur(10px)",
     },
     footer: {
-      borderTop: '1px solid #333',
+      borderTop: "1px solid #333",
     },
     content: {
-      boxShadow: '0 0 30px #999',
+      boxShadow: "0 0 30px #999",
     },
   };
   return (
@@ -77,21 +77,19 @@ const FeedCard = ({ content, reviewLoading }) => {
       <Text>
         {content?.description}
       </Text>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         <video
           src={content?.video}
           controls
           className="w-full rounded-3xl mt-4 overflow-hidden"
         />
       </div>
-      <div
-        className='mt-4'
-      >
+      <div className="mt-4">
         <Button
           className='!text-[#6D7486]'
           onClick={() => {
             setLike(!like);
-            like ? toast.error('Unliked') : toast.success('Liked');
+            like ? toast.error("Unliked") : toast.success("Liked");
           }}
           type="text"
           icon={content?.isLike ? <FaHeart fill="red" /> : <CiHeart />}
@@ -129,16 +127,16 @@ const FeedCard = ({ content, reviewLoading }) => {
             style={{
               ...style,
               copyContainer: {
-                border: 'none',
+                border: "none",
               },
             }}
             socialTypes={[
-              'facebook',
-              'twitter',
-              'reddit',
-              'linkedin',
-              'whatsapp',
-              'email',
+              "facebook",
+              "twitter",
+              "reddit",
+              "linkedin",
+              "whatsapp",
+              "email",
             ]}
             onSocialButtonClicked={(data) => console.log(data)}
           />

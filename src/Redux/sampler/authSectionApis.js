@@ -8,6 +8,7 @@ const authSectionApis = baseApis.injectEndpoints({
         method: "POST",
         body: data,
       }),
+     
     }),
     authSectionVerifyCode: builder.mutation({
       query: (data) => ({
