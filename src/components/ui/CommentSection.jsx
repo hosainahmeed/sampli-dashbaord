@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Typography, Skeleton, Button } from 'antd';
+import { Avatar, Typography, Skeleton, Button, Empty } from 'antd';
 import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import { convertDate } from '../../Redux/main/server';
 import { useGetCommentsRepliesQuery } from '../../Redux/sampler/reviewApis';
@@ -37,7 +37,7 @@ const CommentSection = ({ comments, loading }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      {comments?.map((comment) => (
+      {comments?.length > 0 ? comments?.map((comment) => (
         <div key={comment._id} className="flex flex-col gap-2 border-b border-gray-100 pb-3">
           {/* Comment */}
           <div className="flex gap-3">
@@ -105,7 +105,7 @@ const CommentSection = ({ comments, loading }) => {
             </div>
           )}
         </div>
-      ))}
+      )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No comments yet" />}
     </div>
   );
 };

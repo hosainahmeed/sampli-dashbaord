@@ -6,7 +6,6 @@ import {
   DatePicker,
   Card,
   Modal,
-  Alert,
   Input,
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -363,7 +362,7 @@ const TransectionOfBusiness = () => {
 
       <Modal
         title="Get paid"
-        visible={isGetPaidModalVisible}
+        open={isGetPaidModalVisible}
         onCancel={handleCancelGetPaid}
         footer={null}
         width={500}

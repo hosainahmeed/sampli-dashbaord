@@ -5,8 +5,8 @@ const { Meta } = Card;
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useBookmarkUpdateMutation } from "../../../../../Redux/sampler/productApis";
 import toast from "react-hot-toast";
-import Lottie from "react-lottie";
 import heartAnimation from "../../../../../../public/heart.json";
+import Lottie from "lottie-react";
 const CardComponent = ({ item }) => {
   const navigate = useNavigate();
 

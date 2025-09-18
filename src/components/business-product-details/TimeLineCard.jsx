@@ -1,110 +1,157 @@
-import { Card, Divider, Space, Timeline, Typography } from "antd";
-import React, { useEffect, useState, useMemo } from "react";
-import { FaRegCircle } from "react-icons/fa";
-import { FaCircleCheck } from "react-icons/fa6";
-
-const { Text } = Typography;
-
-const DELIVERY_STEP_MAP = ["Order Placed", "Payment Confirmed", "Item Shipped", "Delivered"];
-
-const DELIVERY_STATUS_MAP = {
-  "Waiting to be shipped": 0,
-  "Payment Confirmed": 1,
-  Shipped: 2,
-  Delivered: 3,
-};
-
-function TimeLineCard({ status, order }) {
-  const deliveryStatus = status || order?.deliveryStatus || "Waiting to be shipped";
-  const [currentImg, setCurrentImg] = useState(order?.product?.images?.[0] || "");
- 
-  const currentStepIndex = useMemo(() => DELIVERY_STATUS_MAP[deliveryStatus] ?? 0, [deliveryStatus]);
- 
-  const timelineState = useMemo(
-    () =>
-      DELIVERY_STEP_MAP.map((step, index) => ({
-        step,
-        completed: index <= currentStepIndex,
-      })),
-    [currentStepIndex]
-  );
-
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  Divider,
+  Space,
+  Tag,
+  Typography,
+  Row,
+  Col,
+  Image,
+} from "antd";
+import {
+  EnvironmentOutlined,
+} from "@ant-design/icons";
+import toast from "react-hot-toast";
+import { useGetShippingRatesForOfferShipmentMutation } from "../../Redux/businessApis/shipo_business_apis/shippoOfferShipmentApis";
+import ShippingProviderModal from "./ShippingProviderModal";
+const { Text, Title } = Typography;
+function TimeLineCard({ order }) {
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [getShippingRatesForOfferShipment, { isLoading: getShippingRatesForOfferShipmentLoading }] =
+    useGetShippingRatesForOfferShipmentMutation();
+  const [providerList, setProviderList] = useState(null);
+  const [isModalOpenProvider, setIsModalOpenProvider] = useState(false);
   const subtotal = order?.amount || 0;
   const shipping = 10;
   const total = subtotal + shipping;
- 
+
   useEffect(() => {
     if (!order?.product?.images?.length) return;
-
-    const images = order.product.images;
-    let index = 0;
-
     const interval = setInterval(() => {
-      index = (index + 1) % images.length;
-      setCurrentImg(images[index]);
+      setCurrentImgIndex(prevIndex =>
+        (prevIndex + 1) % order.product.images.length
+      );
     }, 2000);
 
     return () => clearInterval(interval);
   }, [order?.product?.images]);
 
-  return (
-    <Card
-      title={
-        <div className="w-full py-4 flex-col items-start justify-between">
-          <div className="w-full flex items-center justify-between mb-4">
-            <Space>
-              <img
-                src={currentImg}
-                alt={order?.product?.name}
-                className="w-16 h-16 rounded-lg object-cover"
-              />
-              <div className="flex flex-col">
-                <Text strong>{order?.product?.name}</Text>
-                <Text type="secondary">{order?.campaign?.name}</Text>
-              </div>
-            </Space>
-            <Text strong>${order?.amount}</Text>
-          </div>
-
-          <Divider />
-
-          <div className="flex flex-col gap-2">
-            <Space className="w-full justify-between">
-              <Text type="secondary">Subtotal</Text>
-              <Text type="secondary">1 item</Text>
-              <Text>${subtotal}</Text>
-            </Space>
-            <Space className="w-full justify-between">
-              <Text type="secondary">Shipping</Text>
-              <Text type="secondary">Door delivery</Text>
-              <Text>${shipping}</Text>
-            </Space>
-            <Space className="w-full justify-between">
-              <Text strong>Total</Text>
-              <Text strong>${total}</Text>
-            </Space>
-          </div>
-        </div>
+  const handleProceedToShipping = async (shippingAddressId) => {
+    try {
+      if (!shippingAddressId) {
+        throw new Error("Shipping address is required");
       }
-      className="shadow p-4"
-    >
-      <Timeline>
-        {timelineState.map((event, i) => (
-          <Timeline.Item
-            key={i}
-            dot={event.completed ? <FaCircleCheck style={{ color: "green" }} /> : <FaRegCircle />}
-            color={event.completed ? "green" : "gray"}
-          >
-            <Text>{event.step}</Text>
-            <br />
-            <Text type="secondary">
-              {event.completed && order?.createdAt
-                ? new Date(order.createdAt).toLocaleDateString()
-                : "Pending"}
-            </Text>
-          </Timeline.Item>
-        ))}
-      </Timeline>
+      const res = await getShippingRatesForOfferShipment({ id: shippingAddressId }).unwrap();
+      if (res?.success) {
+        setIsModalOpenProvider(true);
+        setProviderList(res?.data);
+      } else {
+        throw new Error(res?.message || "Failed to fetch shipping rates");
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || error?.message || error || "Failed to proceed to shipping");
+    }
+  };
+
+  const handleModalCancel = () => {
+    setIsModalOpenProvider(false);
+  };
+
+
+
+  return (
+    <Card className="order-timeline-card">
+      {/* Order Header */}
+      <div className="order-header">
+        <Row gutter={16} align="middle">
+          <Col flex="none">
+            <Image
+              width={80}
+              height={80}
+              src={order?.product?.images?.[currentImgIndex] || ""}
+              alt={order?.product?.name}
+              preview={false}
+              style={{ borderRadius: 8, objectFit: "cover" }}
+            />
+          </Col>
+          <Col flex="auto">
+            <Title level={4} style={{ margin: 0 }}>{order?.product?.name}</Title>
+            <Text type="secondary">{order?.campaign?.name}</Text>
+          </Col>
+          <Col flex="none">
+            <Title level={4} style={{ margin: 0, color: "#1890ff" }}>${order?.amount}</Title>
+          </Col>
+        </Row>
+      </div>
+
+      <Divider />
+
+      {/* Order Summary */}
+      <div className="order-summary-section">
+        <Title level={5}>Order Summary</Title>
+        <Row justify="space-between" style={{ marginTop: 16 }}>
+          <Col>
+            <Text>Subtotal (1 item)</Text>
+          </Col>
+          <Col>
+            <Text>${subtotal.toFixed(2)}</Text>
+          </Col>
+        </Row>
+        <Row justify="space-between" style={{ marginTop: 8 }}>
+          <Col>
+            <Text>Shipping</Text>
+          </Col>
+          <Col>
+            <Text>${shipping.toFixed(2)}</Text>
+          </Col>
+        </Row>
+        <Divider style={{ margin: "12px 0" }} />
+        <Row justify="space-between">
+          <Col>
+            <Text strong>Total</Text>
+          </Col>
+          <Col>
+            <Title level={4} style={{ margin: 0 }}>${total.toFixed(2)}</Title>
+          </Col>
+        </Row>
+      </div>
+
+      {/* Action Button */}
+      {order?.status === 'Accepted' && (
+        <div className="order-action-section" style={{ marginTop: 24 }}>
+          <Row justify="space-between" align="middle">
+            <Col>
+              <Space>
+                <Text>Current Status:</Text>
+                <Tag color="blue" style={{ fontSize: 14, padding: "4px 8px" }}>
+                  {order?.status}
+                </Tag>
+              </Space>
+            </Col>
+            <Col>
+              <Button
+                type="primary"
+                size="large"
+                loading={getShippingRatesForOfferShipmentLoading}
+                onClick={() => handleProceedToShipping(order?._id)}
+                icon={<EnvironmentOutlined />}
+              >
+                Proceed to Shipping
+              </Button>
+            </Col>
+          </Row>
+        </div>
+      )}
+
+      <ShippingProviderModal
+        isModalOpenProvider={isModalOpenProvider}
+        handleModalCancel={handleModalCancel}
+        providerList={providerList}
+        getShippingRatesForOfferShipmentLoading={getShippingRatesForOfferShipmentLoading}
+      />
+
     </Card>
   );
 }
