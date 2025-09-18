@@ -86,7 +86,7 @@ const SoloStoveCart = () => {
       };
       const res = await shippingRates({ data });
       setProviderList(res?.data?.data);
-
+      console.log(res?.data?.data);
       setIsModalOpen(false);
       showModalProvider();
     } catch (error) {
@@ -378,13 +378,16 @@ const SoloStoveCart = () => {
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
         onOk={handleOk}
+        okButtonProps={
+          shippingAddresses?.data?.length === 0 ? { disabled: true } : {}
+        }
         confirmLoading={shippingRatesLoading}
         onCancel={handleCancel}
         centered
       >
         <div>
           <div>
-            {shippingAddresses?.data && shippingAddresses.data.length > 0 && (
+            {shippingAddresses?.data && shippingAddresses.data.length > 0 ? (
               <div className="space-y-4">
                 {shippingAddresses.data.map((address, index) => (
                   <div
@@ -463,13 +466,25 @@ const SoloStoveCart = () => {
                   </div>
                 ))}
               </div>
+            ) : (
+              <div className="text-center">
+                <Title level={5}>No shipping addresses found.</Title>
+                <div className="flex items-center justify-center">
+                  <Link
+                    to="/sampler/settings/basic-details-settings-sampler"
+                    className="text-blue-600 px-10 py-2 border border-gray-200 rounded-3xl mx-auto "
+                  >
+                    Go to shipping address
+                  </Link>
+                </div>
+              </div>
             )}
           </div>
         </div>
       </Modal>
 
       <Modal
-        title="Which address do you want to use?"
+        title="Please select a shipping provider"
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpenProvider}
         onOk={handleOkProvider}
@@ -479,7 +494,7 @@ const SoloStoveCart = () => {
       >
         <div>
           <div>
-            {providerList?.length > 0 && (
+            {providerList?.length > 0 ? (
               <div className="mt-4">
                 <h3 className="text-lg font-semibold mb-2">
                   Shipping Options:
@@ -507,6 +522,9 @@ const SoloStoveCart = () => {
                         <p className="font-medium">
                           {provider.servicelevel.name}
                         </p>
+                        <p className="font-medium text-gray-600">
+                          Estimated Delivery: {provider.estimatedDays} days
+                        </p>
                         <p className="text-sm text-gray-500">
                           {provider.durationTerms}
                         </p>
@@ -523,26 +541,44 @@ const SoloStoveCart = () => {
                   ))}
                 </div>
               </div>
+            ) : (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Provider List:</h3>
+                <p className="text-sm text-gray-500">
+                  No provider is available for this address. Please check your
+                  address.
+                </p>
+                <div className="flex items-center justify-center">
+                  <Link
+                    to="/sampler/settings/basic-details-settings-sampler"
+                    className="text-blue-600 px-10 py-2 border border-gray-200 rounded-3xl mx-auto "
+                  >
+                    Go to shipping address
+                  </Link>
+                </div>
+              </div>
             )}
 
-            <div className="flex items-center mt-4 mx-auto gap-5 justify-center">
-              <div
-                className={`border border-gray-200 rounded-lg p-4 cursor-pointer ${
-                  paymentMethod === "Stripe" ? "!bg-blue-500 !text-white" : ""
-                }`}
-                onClick={() => setPaymentMethod("Stripe")}
-              >
-                Stripe
+            {providerList?.length > 0 && (
+              <div className="flex items-center mt-4 mx-auto gap-5 justify-center">
+                <div
+                  className={`border border-gray-200 rounded-lg p-4 cursor-pointer ${
+                    paymentMethod === "Stripe" ? "!bg-blue-500 !text-white" : ""
+                  }`}
+                  onClick={() => setPaymentMethod("Stripe")}
+                >
+                  Stripe
+                </div>
+                <div
+                  className={`border border-gray-200 rounded-lg p-4  cursor-pointer ${
+                    paymentMethod === "Paypal" ? "!bg-blue-500 !text-white" : ""
+                  }`}
+                  onClick={() => setPaymentMethod("Paypal")}
+                >
+                  Paypal
+                </div>
               </div>
-              <div
-                className={`border border-gray-200 rounded-lg p-4  cursor-pointer ${
-                  paymentMethod === "Paypal" ? "!bg-blue-500 !text-white" : ""
-                }`}
-                onClick={() => setPaymentMethod("Paypal")}
-              >
-                Paypal
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </Modal>

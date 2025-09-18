@@ -373,7 +373,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     {
       key: "2",
       label: "Reviews",
-      children: <ReviewsVideo showModal={showModal} />,
+      children: <ReviewsVideo showModal={showModal} product={geSingleCampaignOffer?.data?.product?._id} />,
     },
   ];
 
