@@ -10,7 +10,8 @@ import Lottie from "lottie-react";
 const CardComponent = ({ item }) => {
   const navigate = useNavigate();
 
-  const [bookmarkUpdate, { isLoading: bookmarkLoading }] = useBookmarkUpdateMutation();
+  const [bookmarkUpdate, { isLoading: bookmarkLoading }] =
+    useBookmarkUpdateMutation();
   const handleClickBookmark = async (product) => {
     try {
       const res = await bookmarkUpdate({
@@ -29,19 +30,11 @@ const CardComponent = ({ item }) => {
         <div>
           <button className="absolute top-4 right-4 z-10">
             {item?.isBookmark ? (
-              bookmarkLoading ? <HeartFilled
+              <HeartFilled
                 className="text-2xl font-bold !text-red-500 rounded-full p-1 "
                 onClick={() => {
                   handleClickBookmark(item?._id);
                 }}
-              /> : <Lottie
-                animationData={heartAnimation}
-                options={{
-                  loop: true,
-                  autoplay: true,
-                }}
-                height={20}
-                width={20}
               />
             ) : (
               <HeartOutlined
