@@ -1,8 +1,15 @@
-import React from 'react'
-import { FiMessageCircle, FiMoreHorizontal, FiShare2 } from 'react-icons/fi'
-import { CiHeart } from 'react-icons/ci'
+import React from "react";
+import { FiMessageCircle, FiMoreHorizontal, FiShare2 } from "react-icons/fi";
+import { CiHeart } from "react-icons/ci";
+import { useGetAllReviewQuery } from "../../../../../../Redux/sampler/reviewApis";
 
-const ReviewsVideo = ({ showModal }) => {
+const ReviewsVideo = ({ showModal, product }) => {
+  const { data: reviewList } = useGetAllReviewQuery({
+    product,
+  });
+  const reviewListProduct = reviewList?.data?.data?.result;
+
+  console.log(reviewListProduct);
   return (
     <>
       <div className=" mx-auto bg-white rounded-lg my-5">
@@ -16,77 +23,80 @@ const ReviewsVideo = ({ showModal }) => {
           </button>
         </div>
       </div>
-      <div className=" mx-auto bg-white rounded-lg border border-gray-200 p-4">
-        <div className="border-b border-gray-200 pb-4">
-          <div className="flex justify-between items-start mb-2">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden">
-                <img
-                  src={`https://picsum.photos/seed/${Math.random()}/400/300`}
-                  alt="User avatar"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <div className="flex items-center gap-1">
-                  <span className="font-medium">Micheal Scott</span>
-                  <span className="text-gray-500 text-sm">@Mike67</span>
-                  <span className="text-gray-400 text-sm">• 23mins ago</span>
+
+      {/* reviewListProduct && reviewListProduct.map((review) => (  */}
+      {
+        <div className=" mx-auto bg-white rounded-lg border border-gray-200 p-4">
+          <div className="border-b border-gray-200 pb-4">
+            <div className="flex justify-between items-start mb-2">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden">
+                  <img
+                    src={`https://picsum.photos/seed/${Math.random()}/400/300`}
+                    alt="User avatar"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex text-amber-400">
-                    <span>★</span>
-                    <span>★</span>
-                    <span className="text-gray-300">★★★</span>
+                <div>
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium">Micheal Scott</span>
+                    <span className="text-gray-500 text-sm">@Mike67</span>
+                    <span className="text-gray-400 text-sm">• 23mins ago</span>
                   </div>
-                  <span className="text-gray-600 text-sm">5.0</span>
-                  <span className="text-gray-400">•</span>
-                  <span className="text-gray-600 text-sm font-medium">
-                    Natural Glow Serum
-                  </span>
-                  <span className="text-green-500 text-sm">$25.00</span>
-                  <span className="text-gray-400">•</span>
-                  <span className="text-gray-500 text-sm">Electronics</span>
+                  <div className="flex items-center gap-2">
+                    <div className="flex text-amber-400">
+                      <span>★</span>
+                      <span>★</span>
+                      <span className="text-gray-300">★★★</span>
+                    </div>
+                    <span className="text-gray-600 text-sm">5.0</span>
+                    <span className="text-gray-400">•</span>
+                    <span className="text-gray-600 text-sm font-medium">
+                      Natural Glow Serum
+                    </span>
+                    <span className="text-green-500 text-sm">$25.00</span>
+                    <span className="text-gray-400">•</span>
+                    <span className="text-gray-500 text-sm">Electronics</span>
+                  </div>
                 </div>
               </div>
+              <button className="text-gray-400">
+                <FiMoreHorizontal size={16} />
+              </button>
             </div>
-            <button className="text-gray-400">
-              <FiMoreHorizontal size={16} />
-            </button>
-          </div>
 
-          <p className="my-3 text-gray-700">
-            I&apos;ve been using this serum for a month and the results are
-            amazing! My skin looks more radiant and the texture has improved
-            significantly. Totally worth the price!
-          </p>
+            <p className="my-3 text-gray-700">
+              I&apos;ve been using this serum for a month and the results are
+              amazing! My skin looks more radiant and the texture has improved
+              significantly. Totally worth the price!
+            </p>
 
-          <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">
-            <div className="aspect-video bg-gray-200 flex items-center justify-center">
-              <video
-                controls
-                src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
-              ></video>
+            <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">
+              <div className="aspect-video bg-gray-200 flex items-center justify-center">
+                <video
+                  controls
+                  src="https://cdn.pixabay.com/video/2022/04/02/112651-695204705_large.mp4"
+                ></video>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-4 mt-2">
-            <button className="flex items-center gap-1 text-gray-500">
-              <CiHeart size={16} />
-              <span>23</span>
-            </button>
-            <button className="flex items-center gap-1 text-gray-500">
-              <FiMessageCircle size={16} />
-              <span>8 comments</span>
-            </button>
-            <button className="flex items-center gap-1 text-gray-500">
+            <div className="flex items-center gap-4 mt-2">
+              <button className="flex items-center gap-1 text-gray-500">
+                <CiHeart size={16} />
+                <span>23</span>
+              </button>
+              <button className="flex items-center gap-1 text-gray-500">
+                <FiMessageCircle size={16} />
+                <span>8 comments</span>
+              </button>
+              {/* <button className="flex items-center gap-1 text-gray-500">
               <FiShare2 size={16} />
               <span>Share</span>
-            </button>
+            </button> */}
+            </div>
           </div>
-        </div>
 
-        <div className="pt-4">
+          {/* <div className="pt-4">
           <h3 className="font-medium mb-1">Review insights</h3>
           <p className="text-xs text-gray-500 mb-4">Only you can see this</p>
 
@@ -94,7 +104,7 @@ const ReviewsVideo = ({ showModal }) => {
             <div className="flex flex-col items-center">
               <span className="text-2xl font-semibold">504</span>
               <div className="flex items-center text-gray-500 text-sm">
-                <span className="mr-1" style={{ filter: 'grayscale(100%)' }}>
+                <span className="mr-1" style={{ filter: "grayscale(100%)" }}>
                   👁️
                 </span>
                 <span>Total Views</span>
@@ -112,7 +122,7 @@ const ReviewsVideo = ({ showModal }) => {
             <div className="flex flex-col items-center">
               <span className="text-2xl font-semibold">$30.00</span>
               <div className="flex items-center text-gray-500 text-sm">
-                <span className="mr-1" style={{ filter: 'grayscale(100%)' }}>
+                <span className="mr-1" style={{ filter: "grayscale(100%)" }}>
                   💰
                 </span>
                 <span>Sales Commissions</span>
@@ -122,17 +132,18 @@ const ReviewsVideo = ({ showModal }) => {
             <div className="flex flex-col items-center">
               <span className="text-2xl font-semibold">$5</span>
               <div className="flex items-center text-gray-500 text-sm">
-                <span className="mr-1 " style={{ filter: 'grayscale(100%)' }}>
+                <span className="mr-1 " style={{ filter: "grayscale(100%)" }}>
                   🎁
                 </span>
                 <span>Rewards</span>
               </div>
             </div>
           </div>
+        </div> */}
         </div>
-      </div>
+      }
     </>
-  )
-}
+  );
+};
 
-export default ReviewsVideo
+export default ReviewsVideo;

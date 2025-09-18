@@ -1,136 +1,12 @@
 import React, { useState } from "react";
 import { Table, Tabs, Tag } from "antd";
 import OrderDetails from "./OrderDetails";
-import productImage from "/public/product_image.svg";
 import { useGetOrderListQuery } from "../../../../../../Redux/sampler/orderApis";
 import Loader from "../../../../../loader/Loader";
 
 const onChange = (key) => {
   console.log(key);
 };
-
-// const productData = [
-//   {
-//     id: 1,
-//     name: "Ox 18 Inches Standing Plus Fan",
-//     date: "23 Mar, 2024",
-//     status: "Shipped",
-//     statusColor: "purple",
-//     image: productImage,
-//   },
-//   {
-//     id: 2,
-//     name: "Mini Portable Refillable Sprayer Atomizer Bottle 5ml",
-//     date: "23 Mar, 2024",
-//     status: "Waiting to be Shipped",
-//     statusColor: "orange",
-//     image: productImage,
-//   },
-//   {
-//     id: 3,
-//     name: "Silicone Brush To Clean The Scalp Hair Brushes - Green",
-//     date: "23 Mar, 2024",
-//     status: "Cancelled",
-//     statusColor: "gray",
-//     image: productImage,
-//   },
-//   {
-//     id: 4,
-//     name: "BENGOO G9000 Stereo Gaming Headset",
-//     date: "23 Mar, 2024",
-//     status: "Delivered",
-//     statusColor: "green",
-//     image: productImage,
-//   },
-//   {
-//     id: 5,
-//     name: "Wireless Bluetooth Earbuds",
-//     date: "23 Mar, 2024",
-//     status: "In Transit",
-//     statusColor: "blue",
-//     image: productImage,
-//   },
-//   {
-//     id: 6,
-//     name: "Ox 18 Inches Standing Plus Fan",
-//     date: "23 Mar, 2024",
-//     status: "Shipped",
-//     statusColor: "purple",
-//     image: productImage,
-//   },
-//   {
-//     id: 7,
-//     name: "Mini Portable Refillable Sprayer Atomizer Bottle 5ml",
-//     date: "23 Mar, 2024",
-//     status: "Waiting to be Shipped",
-//     statusColor: "orange",
-//     image: productImage,
-//   },
-//   {
-//     id: 8,
-//     name: "Silicone Brush To Clean The Scalp Hair Brushes - Green",
-//     date: "23 Mar, 2024",
-//     status: "Cancelled",
-//     statusColor: "gray",
-//     image: productImage,
-//   },
-//   {
-//     id: 9,
-//     name: "BENGOO G9000 Stereo Gaming Headset",
-//     date: "23 Mar, 2024",
-//     status: "Delivered",
-//     statusColor: "green",
-//     image: productImage,
-//   },
-//   {
-//     id: 10,
-//     name: "Wireless Bluetooth Earbuds",
-//     date: "23 Mar, 2024",
-//     status: "In Transit",
-//     statusColor: "blue",
-//     image: productImage,
-//   },
-//   {
-//     id: 11,
-//     name: "Mini Portable Refillable Sprayer Atomizer Bottle 5ml",
-//     date: "23 Mar, 2024",
-//     status: "Waiting to be Shipped",
-//     statusColor: "orange",
-//     image: productImage,
-//   },
-//   {
-//     id: 12,
-//     name: "Silicone Brush To Clean The Scalp Hair Brushes - Green",
-//     date: "23 Mar, 2024",
-//     status: "Cancelled",
-//     statusColor: "gray",
-//     image: productImage,
-//   },
-//   {
-//     id: 13,
-//     name: "BENGOO G9000 Stereo Gaming Headset",
-//     date: "23 Mar, 2024",
-//     status: "Delivered",
-//     statusColor: "green",
-//     image: productImage,
-//   },
-//   {
-//     id: 14,
-//     name: "Wireless Bluetooth Earbuds",
-//     date: "23 Mar, 2024",
-//     status: "In Transit",
-//     statusColor: "blue",
-//     image: productImage,
-//   },
-//   {
-//     id: 15,
-//     name: "Ox 18 Inches Standing Plus Fan",
-//     date: "23 Mar, 2024",
-//     status: "Shipped",
-//     statusColor: "purple",
-//     image: productImage,
-//   },
-// ];
 
 const MyPurchasesSampler = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -144,6 +20,7 @@ const MyPurchasesSampler = () => {
   );
 
   console.log(getAllOrder);
+  console.log("getAllOrder");
 
   const productData =
     getAllOrder?.data?.result?.map((order) => ({

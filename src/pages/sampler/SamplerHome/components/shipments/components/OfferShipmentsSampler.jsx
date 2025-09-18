@@ -11,7 +11,6 @@ const OfferShipmentsSampler = () => {
   const [limit, setLimit] = useState(10);
   const { data: getMyCampaignOffer, isLoading: campaignLoading } =
     useGetMyCampaignOfferQuery({ page, limit });
-
   const [id, setId] = useState("");
 
   const [isClicked, setIsClicked] = useState(false);
