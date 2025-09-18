@@ -50,6 +50,9 @@ const EarningsSampler = () => {
       setIsGetPaidModalVisible(false);
     } catch (error) {
       console.log(error);
+
+
+      //a
     }
   };
 
