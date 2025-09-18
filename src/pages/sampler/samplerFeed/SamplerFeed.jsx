@@ -455,19 +455,17 @@ const SamplerFeed = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type={
-                        following[post?.reviewer?.username]
-                          ? "default"
-                          : "primary"
-                      }
-                      ghost
-                      onClick={() => handleFollow(post?.reviewer?._id)}
-                    >
-                      {following[post?.reviewer?._id] ? "Following" : "Follow"}
-                    </Button>
-                  </div>
+                  {!post?.isMyReview && (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type={post?.reviewer?.isFollow ? "default" : "primary"}
+                        // ghost
+                        onClick={() => handleFollow(post?.reviewer?._id)}
+                      >
+                        {post?.reviewer?.isFollow ? "Following" : "Follow"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <p className="!my-5 text-gray-700 ">{post?.description}</p>

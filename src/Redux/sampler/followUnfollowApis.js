@@ -7,6 +7,7 @@ const followUnfollowApis = baseApis.injectEndpoints({
         url: `/follow/follow-unfollow/${id}`,
         method: "POST",
       }),
+      invalidatesTags: ["Review"],
     }),
   }),
 });
