@@ -11,6 +11,7 @@ import {
   Upload,
   Spin,
   Skeleton,
+  Empty,
 } from "antd";
 import {
   ShareAltOutlined,
@@ -49,9 +50,6 @@ const { TabPane } = Tabs;
 const SamplerFeed = () => {
   const { data: categoryList } = useCategorySectionApisQuery();
   const [activeCategory, setActiveCategory] = useState("");
-  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
-    category: activeCategory,
-  });
 
   const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
 
@@ -77,7 +75,6 @@ const SamplerFeed = () => {
   const [reviewId, setReviewId] = useState("");
   const [replyText, setReplyText] = useState("");
   const [comments, setComments] = useState(false);
-  const posts = reviewList?.data?.data?.result;
   const { data: getReviewerLikers, isLoading: likersLoading } =
     useGetReviewerLikersQuery({
       id: reviewId,
@@ -98,12 +95,20 @@ const SamplerFeed = () => {
 
   const users = getReviewerLikers?.data?.result;
 
-  const [activeTab, setActiveTab] = useState("popular");
+  const [activeTab, setActiveTab] = useState("");
 
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [following, setFollowing] = useState({});
+
+  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
+    category: activeCategory,
+    following: activeTab == "following" ? true : undefined,
+    sortBy: activeTab != "popular" ? undefined : "totalView",
+    sortOrder: activeTab != "popular" ? undefined : "desc",
+  });
+  const posts = reviewList?.data?.data?.result;
 
   const handleLike = async (postId) => {
     await reviewLikeUnlike({ id: postId });
@@ -248,6 +253,19 @@ const SamplerFeed = () => {
             <TabPane
               tab={
                 <div className="flex gap-2">
+                  {activeTab === "" ? (
+                    <img src={newActiveLogo} alt="new active" />
+                  ) : (
+                    <img src={newLogo} alt="new inactive" />
+                  )}
+                  <span>New</span>
+                </div>
+              }
+              key=""
+            />
+            <TabPane
+              tab={
+                <div className="flex gap-2">
                   {activeTab === "following" ? (
                     <img src={followingActiveLogo} alt="following active" />
                   ) : (
@@ -259,19 +277,6 @@ const SamplerFeed = () => {
               key="following"
             />
 
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "new" ? (
-                    <img src={newActiveLogo} alt="new active" />
-                  ) : (
-                    <img src={newLogo} alt="new inactive" />
-                  )}
-                  <span>New</span>
-                </div>
-              }
-              key="new"
-            />
             <TabPane
               tab={
                 <div className="flex gap-2">
@@ -292,7 +297,7 @@ const SamplerFeed = () => {
             {categoryList?.data?.map((category) => (
               <Button
                 key={category?._id}
-                type={activeCategory === category ? "primary" : "default"}
+                type={activeCategory === category?._id ? "primary" : "default"}
                 className="!rounded-full !py-5"
                 onClick={() => setActiveCategory(category?._id)}
               >
@@ -395,7 +400,13 @@ const SamplerFeed = () => {
             </div>
           )}
 
-          <div>{posts?.length == 0 && <div className="h-screen"></div>}</div>
+          <div>
+            {posts?.length == 0 && (
+              <div className="h-screen">
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              </div>
+            )}
+          </div>
           {/* Feed Posts */}
           <div className="space-y-4">
             {posts?.map((post) => (
