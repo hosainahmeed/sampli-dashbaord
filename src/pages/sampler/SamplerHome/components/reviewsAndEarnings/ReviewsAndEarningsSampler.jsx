@@ -1,112 +1,98 @@
-import React from 'react'
-import { Table, Tag } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import productImage from '/public/product_image.svg'
-
-const productData = [
-  {
-    id: 1,
-    name: 'Ox 18 Inches Standing Plus Fan',
-    date: '23 Mar, 2024',
-    ReviewEarnings: '$5',
-    Commission: '$5',
-    Total: '$10',
-    image: productImage,
-  },
-  {
-    id: 2,
-    name: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
-    date: '24 Mar, 2024',
-    ReviewEarnings: '$3',
-    Commission: '$2',
-    Total: '$5',
-    image: productImage,
-  },
-  {
-    id: 3,
-    name: 'Silicone Brush To Clean The Scalp Hair Brushes - Green',
-    date: '25 Mar, 2024',
-    ReviewEarnings: '$4',
-    Commission: '$3',
-    Total: '$7',
-    image: productImage,
-  },
-  {
-    id: 4,
-    name: 'BENGOO G9000 Stereo Gaming Headset',
-    date: '26 Mar, 2024',
-    ReviewEarnings: '$6',
-    Commission: '$4',
-    Total: '$10',
-    image: productImage,
-  },
-  {
-    id: 5,
-    name: 'Wireless Bluetooth Earbuds',
-    date: '27 Mar, 2024',
-    ReviewEarnings: '$7',
-    Commission: '$3',
-    Total: '$10',
-    image: productImage,
-  },
-]
-
-const columns = [
-  {
-    title: 'Item name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (_, text) => (
-      <div className="flex gap-2 items-center ">
-        <img src={text.image} alt={text.name} className="w-10 h-10" />
-        <h3>{text.name}</h3>
-      </div>
-    ),
-  },
-  {
-    title: <div className="text-gray-500">Date</div>,
-    dataIndex: 'date',
-    key: 'date',
-    render: (_, text) => <p className="text-gray-500">{text.date}</p>,
-  },
-  {
-    title: <div className="text-gray-500 text-center">Review Earnings</div>,
-    dataIndex: 'ReviewEarnings',
-    key: 'reviewEarnings',
-    render: (_, text) => (
-      <p className="text-gray-500 text-center">{text.ReviewEarnings}</p>
-    ),
-  },
-  {
-    title: <div className="text-gray-500 text-center">Commission</div>,
-    dataIndex: 'Commission',
-    key: 'commission',
-    render: (_, text) => (
-      <p className="text-gray-500 text-center">{text.Commission}</p>
-    ),
-  },
-  {
-    title: 'Total',
-    dataIndex: 'Total',
-    key: 'total',
-  },
-
-  {
-    title: '',
-    key: 'action',
-    render: (_, record) => (
-      <div
-        type="link"
-        className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
-      >
-        View
-      </div>
-    ),
-  },
-]
+import React from "react";
+import { Table, Tag } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import productImage from "/public/product_image.svg";
+import { useGetMyReviewsQuery } from "../../../../../Redux/sampler/profileApis";
 
 const ReviewsAndEarningsSampler = () => {
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
+
+  const { data: getMyReviewsProduct, isLoading } = useGetMyReviewsQuery();
+
+  const productData =
+    getMyReviewsProduct?.data?.data?.result?.map((item) => ({
+      id: item._id,
+      name: item.product?.name,
+      image: item.product?.images?.[0],
+      date: item.createdAt,
+      ReviewEarnings: item.amount,
+      Commission: item.totalCommissions,
+      Total: item.amount + item.totalCommissions,
+    })) || [];
+
+  const columns = [
+    {
+      title: "Item name",
+      dataIndex: "name",
+      key: "name",
+      render: (_, record) => (
+        <div className="flex gap-2 items-center">
+          <img
+            src={record.image}
+            alt={record.name}
+            className="w-10 h-10 rounded-md"
+          />
+          <h3>{record.name}</h3>
+        </div>
+      ),
+    },
+    {
+      title: <div className="text-gray-500">Date</div>,
+      dataIndex: "date",
+      key: "date",
+      render: (_, record) => (
+        <p className="text-gray-500">
+          {new Intl.DateTimeFormat("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }).format(new Date(record?.date))}
+        </p>
+      ),
+    },
+    {
+      title: <div className="text-gray-500 text-center">Review Earnings</div>,
+      dataIndex: "ReviewEarnings",
+      key: "reviewEarnings",
+      render: (_, record) => (
+        <p className="text-gray-500 text-center">${record.ReviewEarnings}</p>
+      ),
+    },
+    {
+      title: <div className="text-gray-500 text-center">Commission</div>,
+      dataIndex: "Commission",
+      key: "commission",
+      render: (_, record) => (
+        <p className="text-gray-500 text-center">${record.Commission}</p>
+      ),
+    },
+    {
+      title: "Total",
+      dataIndex: "Total",
+      key: "total",
+      render: (_, record) => (
+        <div className="mb-3">
+          {" "}
+          <b>${record.Total}</b>
+        </div>
+      ),
+    },
+    {
+      title: "",
+      key: "action",
+      render: (_, record) => (
+        <Link
+          className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
+          to={`/sampler/review/${record.id}`}
+          state={getMyReviewsProduct?.data?.data?.result?.find(
+            (item) => item._id === record.id
+          )}
+        >
+          View
+        </Link>
+      ),
+    },
+  ];
   return (
     <div className="mt-20">
       <div>
@@ -115,7 +101,7 @@ const ReviewsAndEarningsSampler = () => {
             Recent Reviews & Earnings
           </div>
           <div
-            onClick={() => Navigate('/sampler/campaign/earnings')}
+            onClick={() => Navigate("/sampler/campaign/earnings")}
             className="border whitespace-nowrap border-gray-300 px-3 py-2 text-sm text-gray-700  cursor-pointer rounded-md hover:bg-gray-100"
           >
             See all
@@ -128,6 +114,7 @@ const ReviewsAndEarningsSampler = () => {
               columns={columns}
               dataSource={productData}
               rowKey="id"
+              loading={isLoading}
               pagination={false}
               scroll={{ x: 1200 }}
             />
@@ -145,7 +132,7 @@ const ReviewsAndEarningsSampler = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ReviewsAndEarningsSampler
+export default ReviewsAndEarningsSampler;

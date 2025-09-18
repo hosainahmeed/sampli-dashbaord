@@ -220,7 +220,26 @@ const ContactAndShipping = () => {
       >
         <div className="space-y-4 mt-4">
           {/* Address */}
-          <div className="grid grid-cols-2 gap-4">
+
+          <p className="text-sm text-gray-600 mb-1">Name</p>
+          <Input
+            name="name"
+            value={form?.name}
+            onChange={handleChange}
+            type="text"
+            className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+            placeholder="Enter full address"
+          />
+          <p className="text-sm text-gray-600 mb-1">Company</p>
+          <Input
+            name="company"
+            value={form?.company}
+            onChange={handleChange}
+            type="text"
+            className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+            placeholder="Enter full address"
+          />
+          <div className="grid grid-cols-2 gap-4 mt-2">
             <div>
               <p className="text-sm text-gray-600 mb-1">Street1</p>
               <Input
@@ -285,7 +304,7 @@ const ContactAndShipping = () => {
             <div>
               <p className="text-sm text-gray-600 mb-1">ZIP/Postal Code</p>
               <Input
-                name="zipCode"
+                name="zip"
                 value={form?.zip}
                 onChange={handleChange}
                 type="text"

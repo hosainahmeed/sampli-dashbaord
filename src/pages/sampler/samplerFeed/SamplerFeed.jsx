@@ -11,6 +11,7 @@ import {
   Upload,
   Spin,
   Skeleton,
+  Empty,
 } from "antd";
 import {
   ShareAltOutlined,
@@ -42,15 +43,15 @@ import {
 } from "../../../Redux/sampler/reviewApis";
 import { useAddToCartMutation } from "../../../Redux/sampler/cartApis";
 import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
+import { usePostFollowUnfollowMutation } from "../../../Redux/sampler/followUnfollowApis";
 
 const { TabPane } = Tabs;
 
 const SamplerFeed = () => {
   const { data: categoryList } = useCategorySectionApisQuery();
   const [activeCategory, setActiveCategory] = useState("");
-  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
-    category: activeCategory,
-  });
+
+  const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
 
   const { data: getMyProfile, isLoading: myProfileLoading } =
     useGetProfileApisQuery();
@@ -69,11 +70,11 @@ const SamplerFeed = () => {
   );
 
   const [createComments] = useCreateCommentMutation();
+  const [isLoadingVideo, setIsLoadingVideo] = useState(true);
   const [postCommentLike] = usePostCommentLikesMutation();
   const [reviewId, setReviewId] = useState("");
   const [replyText, setReplyText] = useState("");
   const [comments, setComments] = useState(false);
-  const posts = reviewList?.data?.data?.result;
   const { data: getReviewerLikers, isLoading: likersLoading } =
     useGetReviewerLikersQuery({
       id: reviewId,
@@ -94,12 +95,20 @@ const SamplerFeed = () => {
 
   const users = getReviewerLikers?.data?.result;
 
-  const [activeTab, setActiveTab] = useState("popular");
+  const [activeTab, setActiveTab] = useState("");
 
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [following, setFollowing] = useState({});
+
+  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
+    category: activeCategory,
+    following: activeTab == "following" ? true : undefined,
+    sortBy: activeTab != "popular" ? undefined : "totalView",
+    sortOrder: activeTab != "popular" ? undefined : "desc",
+  });
+  const posts = reviewList?.data?.data?.result;
 
   const handleLike = async (postId) => {
     await reviewLikeUnlike({ id: postId });
@@ -126,11 +135,13 @@ const SamplerFeed = () => {
     } catch (error) {}
   };
 
-  const handleFollow = (authorHandle) => {
-    setFollowing((prev) => ({
-      ...prev,
-      [authorHandle]: !prev[authorHandle],
-    }));
+  const handleFollow = async (id) => {
+    try {
+      const res = await changeFollowUnfollow(id);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleShare = () => {
@@ -242,6 +253,19 @@ const SamplerFeed = () => {
             <TabPane
               tab={
                 <div className="flex gap-2">
+                  {activeTab === "" ? (
+                    <img src={newActiveLogo} alt="new active" />
+                  ) : (
+                    <img src={newLogo} alt="new inactive" />
+                  )}
+                  <span>New</span>
+                </div>
+              }
+              key=""
+            />
+            <TabPane
+              tab={
+                <div className="flex gap-2">
                   {activeTab === "following" ? (
                     <img src={followingActiveLogo} alt="following active" />
                   ) : (
@@ -253,19 +277,6 @@ const SamplerFeed = () => {
               key="following"
             />
 
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "new" ? (
-                    <img src={newActiveLogo} alt="new active" />
-                  ) : (
-                    <img src={newLogo} alt="new inactive" />
-                  )}
-                  <span>New</span>
-                </div>
-              }
-              key="new"
-            />
             <TabPane
               tab={
                 <div className="flex gap-2">
@@ -286,7 +297,7 @@ const SamplerFeed = () => {
             {categoryList?.data?.map((category) => (
               <Button
                 key={category?._id}
-                type={activeCategory === category ? "primary" : "default"}
+                type={activeCategory === category?._id ? "primary" : "default"}
                 className="!rounded-full !py-5"
                 onClick={() => setActiveCategory(category?._id)}
               >
@@ -389,7 +400,13 @@ const SamplerFeed = () => {
             </div>
           )}
 
-          <div>{posts?.length == 0 && <div className="h-screen"></div>}</div>
+          <div>
+            {posts?.length == 0 && (
+              <div className="h-screen">
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              </div>
+            )}
+          </div>
           {/* Feed Posts */}
           <div className="space-y-4">
             {posts?.map((post) => (
@@ -438,21 +455,17 @@ const SamplerFeed = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type={
-                        following[post?.reviewer?.username]
-                          ? "default"
-                          : "primary"
-                      }
-                      ghost
-                      onClick={() => handleFollow(post?.reviewer?.username)}
-                    >
-                      {following[post?.reviewer?.username]
-                        ? "Following"
-                        : "Follow"}
-                    </Button>
-                  </div>
+                  {!post?.isMyReview && (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type={post?.reviewer?.isFollow ? "default" : "primary"}
+                        // ghost
+                        onClick={() => handleFollow(post?.reviewer?._id)}
+                      >
+                        {post?.reviewer?.isFollow ? "Following" : "Follow"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <p className="!my-5 text-gray-700 ">{post?.description}</p>
@@ -463,7 +476,19 @@ const SamplerFeed = () => {
                     style={{ paddingTop: "56.25%" }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <video src={post?.video} controls></video>
+                      {isLoadingVideo && (
+                        <div className="loader absolute">
+                          <p className="text-gray-500">Loading video...</p>
+                        </div>
+                      )}
+
+                      <video
+                        src={post?.video}
+                        controls
+                        preload="metadata"
+                        className="absolute inset-0 w-full h-full"
+                        onLoadedData={() => setIsLoadingVideo(false)}
+                      ></video>
                     </div>
                   </div>
                 )}
@@ -776,6 +801,12 @@ const SamplerFeed = () => {
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div
+                    className="text-sm font-medium border border-blue-200 px-4 py-1 rounded-full text-blue-600 cursor-pointer"
+                    onClick={() => handleFollow(user?._id)}
+                  >
+                    Follow
                   </div>
                 </div>
               ))}

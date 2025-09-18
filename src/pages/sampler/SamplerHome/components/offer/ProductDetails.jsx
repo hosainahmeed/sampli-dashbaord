@@ -1,21 +1,33 @@
-import React, { useState, useRef } from 'react'
-import { Modal, Button, Descriptions, Carousel, Form, Input } from 'antd'
-import toast from 'react-hot-toast'
-import productImage from '/public/product_image.svg'
+import React, { useState, useRef } from "react";
+import { Modal, Button, Descriptions, Carousel, Form, Input } from "antd";
+import toast from "react-hot-toast";
+import productImage from "/public/product_image.svg";
+import {
+  useAcceptCampaignOfferMutation,
+  useGetOneCampaignQuery,
+} from "../../../../../Redux/sampler/campaignApis";
+import { useGetShippingAddressQuery } from "../../../../../Redux/sampler/shippingAddressApis";
+import { Link } from "react-router-dom";
 
-const ProductDetails = ({ visible, onCancel }) => {
-  const images = Array.from({ length: 5 }, (_, index) => ({
-    src: productImage,
-    alt: `Product Image ${index + 1}`,
-  }))
+const ProductDetails = ({ productId, visible, onCancel }) => {
+  const { data: shippingAddresses, isLoading } = useGetShippingAddressQuery();
+  const { data: getOneCampaign } = useGetOneCampaignQuery({
+    id: productId,
+  });
 
-  const [activeIndex, setActiveIndex] = useState(0)
-  const mainCarouselRef = useRef(null)
+  const [postCampaign, { isLoading: campaignLoading }] =
+    useAcceptCampaignOfferMutation();
+  const [selectAddressId, setSelectedAddressId] = useState("");
+
+  const images = getOneCampaign?.data?.product?.images;
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const mainCarouselRef = useRef(null);
 
   const onChange = (currentSlide) => {
-    console.log(currentSlide)
-    setActiveIndex(currentSlide)
-  }
+    console.log(currentSlide);
+    setActiveIndex(currentSlide);
+  };
 
   const carouselSettings = {
     dots: false,
@@ -25,25 +37,38 @@ const ProductDetails = ({ visible, onCancel }) => {
     slidesToScroll: 1,
     afterChange: onChange,
     arrows: true,
-  }
+  };
 
   const handleThumbnailClick = (index) => {
     if (mainCarouselRef.current) {
-      mainCarouselRef.current.goTo(index)
-      setActiveIndex(index)
+      mainCarouselRef.current.goTo(index);
+      setActiveIndex(index);
     }
-  }
+  };
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (page === 2) {
-      onCancel()
-      toast.success('Offer Accepted!')
+      try {
+        const data = {
+          campaign: getOneCampaign?.data?._id,
+          product: getOneCampaign?.data?.product?._id,
+          business: getOneCampaign?.data?.product?.bussiness,
+          shippingAddress: selectAddressId,
+          amount: getOneCampaign?.data?.product?.price,
+        };
+        const res = await postCampaign(data);
+        console.log(res)
+        // toast.success(res?.data?.data?.message);
+      } catch (error) {
+        console.log(error);
+      }
+      onCancel();
     } else {
-      setPage((prev) => prev + 1)
+      setPage((prev) => prev + 1);
     }
-  }
+  };
 
   return (
     <Modal
@@ -52,12 +77,12 @@ const ProductDetails = ({ visible, onCancel }) => {
       onCancel={onCancel}
       footer={null}
       width={600}
-      className="rounded-lg overflow-y-auto !h-screen !max-h-screen scrollbar-none"
+      className="rounded-lg overflow-y-auto !h-screen  "
       style={{
-        position: 'absolute',
-        top: '0',
-        right: '0',
-        transform: 'translateX(0)',
+        position: "absolute",
+        top: "0",
+        right: "0",
+        transform: "translateX(0)",
       }}
       centered
     >
@@ -66,14 +91,13 @@ const ProductDetails = ({ visible, onCancel }) => {
           <div className="flex flex-col items-center mt-10">
             <div className="w-full mb-4">
               <Carousel ref={mainCarouselRef} {...carouselSettings}>
-                {images.map((image, index) => (
+                {images?.map((image, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-center h-64"
                   >
                     <img
-                      src={image.src}
-                      alt={image.alt}
+                      src={image}
                       className="max-h-full max-w-full object-contain mx-auto"
                     />
                   </div>
@@ -82,18 +106,18 @@ const ProductDetails = ({ visible, onCancel }) => {
             </div>
 
             <div className="flex justify-center gap-2 mb-6 overflow-x-auto w-full">
-              {images.map((image, index) => (
+              {images?.map((image, index) => (
                 <div
                   key={index}
                   className={`cursor-pointer p-1 rounded transition-all ${
                     activeIndex === index
-                      ? 'border-2 border-blue-500'
-                      : 'border-2 border-transparent'
+                      ? "border-2 border-blue-500"
+                      : "border-2 border-transparent"
                   }`}
                   onClick={() => handleThumbnailClick(index)}
                 >
                   <img
-                    src={image.src}
+                    src={image}
                     alt={`Thumbnail ${index + 1}`}
                     className="h-16 w-16 object-cover"
                   />
@@ -102,154 +126,167 @@ const ProductDetails = ({ visible, onCancel }) => {
             </div>
 
             <h2 className="text-2xl font-semibold">
-              BENGOO G9000 Stereo Gaming Headset
+              {getOneCampaign?.data?.product?.name}
             </h2>
-            <p className="text-sm text-gray-500 mt-2">
-              High-quality wireless headphones with noise cancellation
-            </p>
+            <div
+              className="text-sm text-gray-500 mt-2"
+              dangerouslySetInnerHTML={{
+                __html: getOneCampaign?.data?.product?.shortDescription,
+              }}
+            />
 
             <div className="w-full mt-4">
               <Descriptions bordered column={1}>
-                <Descriptions.Item label="Manufacturer's name">
-                  Premium Wash towel
+                <Descriptions.Item label="Brand's name">
+                  {getOneCampaign?.data?.product?.brand}
                 </Descriptions.Item>
-                <Descriptions.Item label="Product Number">
-                  #12763
+                <Descriptions.Item label="Product ID">
+                  {getOneCampaign?.data?.product?._id}
                 </Descriptions.Item>
-                <Descriptions.Item label="E.T.A">2 Days</Descriptions.Item>
-                <Descriptions.Item label="Shipping from">
+                <Descriptions.Item label="END DATE">
+                  {new Intl.DateTimeFormat("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  }).format(new Date("2025-03-10T00:00:00.000Z"))}
+                </Descriptions.Item>
+                {/* <Descriptions.Item label="Shipping from">
                   Area 59, Delaware, USA
+                </Descriptions.Item> */}
+                <Descriptions.Item label="Rewards">
+                  ${getOneCampaign?.data?.amountForEachReview}
                 </Descriptions.Item>
-                <Descriptions.Item label="Rewards">$5.00</Descriptions.Item>
                 <Descriptions.Item label="Quantity">
-                  2 Bottles
+                  {getOneCampaign?.data?.numberOfReviewers}
                 </Descriptions.Item>
               </Descriptions>
             </div>
 
             <div className="w-full mt-4">
-              <h4 className="font-medium">
-                Instructions on how to use product
+              <h4 className="font-medium text-gray-600 text-xl">
+                Description of the products
               </h4>
-              <div className="overflow-y-auto h-40 scrollbar-none">
-                <ul className="list-disc pl-6 mt-2">
-                  <li>
-                    TrustRadius is a similar product review platform to G2 Crowd
-                    as it&apos;s also targeted toward B2B software businesses.
-                  </li>
-                  <li>
-                    TrustRadius is a similar product review platform to G2 Crowd
-                    as it&apos;s also targeted toward B2B software businesses.
-                  </li>
-                  <li>
-                    TrustRadius is a similar product review platform to G2 Crowd
-                    as it&apos;s also targeted toward B2B software businesses.
-                  </li>
-                  <li>
-                    TrustRadius is a similar product review platform to G2 Crowd
-                    as it&apos;s also targeted toward B2B software businesses.
-                  </li>
-                  <li>
-                    TrustRadius is a similar product review platform to G2 Crowd
-                    as it&apos;s also targeted toward B2B software businesses.
-                  </li>
-                </ul>
-              </div>
+              <div
+                className="overflow-y-auto h-40 scrollbar-none"
+                dangerouslySetInnerHTML={{
+                  __html: getOneCampaign?.data?.product?.description,
+                }}
+              />
             </div>
           </div>
         )}
 
+        {/* {
+  "campaign": "68c0f5498644386c670bcb18",
+  "product": "68bc062288e64974e368c4d6",
+  "business": "68bc03ef88e64974e368c4c3",
+  "shippingAddress": "68bea496d2be427e9654b773",
+  "amount": 4
+} */}
+
         {page === 2 && (
           <div className="flex flex-col mt-10 h-screen w-full text-gray-500">
             <h2 className="text-xl font-semibold text-black">
-              Confirm delivery address
+              Select one of your shipping addresses
             </h2>
-            <p className="text-gray-500 text-sm mb-6">
-              High-quality wireless headphones with noise cancellation
-            </p>
+            {shippingAddresses?.data && shippingAddresses.data.length > 0 ? (
+              <div className="space-y-4">
+                {shippingAddresses.data.map((address, index) => (
+                  <div
+                    key={address._id}
+                    className={` rounded-lg p-4 bg-gray-50 cursor-pointer ${
+                      selectAddressId === address?._id
+                        ? "border border-blue-500"
+                        : "border border-gray-300"
+                    }`}
+                    onClick={() => setSelectedAddressId(address?._id)}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-medium text-gray-800">
+                        Address {index + 1}
+                      </h3>
+                    </div>
 
-            {/* Form */}
-            <Form
-              layout="vertical"
-              requiredMark={false}
-              className="text-gray-500"
-            >
-              <div className="grid grid-cols-2 gap-4 w-full !text-gray-500">
-                {/* State */}
-                <Form.Item
-                  label={<div className="!text-gray-600">State</div>}
-                  name="state"
-                  className="w-full "
-                  rules={[{ required: true, message: 'State is required' }]}
-                >
-                  <Input placeholder="Enter state" />
-                </Form.Item>
-
-                {/* City */}
-                <Form.Item
-                  label={<div className="!text-gray-600">City</div>}
-                  name="city"
-                  className="w-full"
-                  rules={[{ required: true, message: 'City is required' }]}
-                >
-                  <Input placeholder="Enter city" />
-                </Form.Item>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <span className="text-gray-600">Street 1: </span>
+                        <span className="text-gray-800">{address.street1}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Street 2: </span>
+                        <span className="text-gray-800">{address.street2}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">City: </span>
+                        <span className="text-gray-800">{address.city}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">State: </span>
+                        <span className="text-gray-800">{address.state}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Country: </span>
+                        <span className="text-gray-800">{address.country}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">ZIP Code: </span>
+                        <span className="text-gray-800">{address.zip}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Phone: </span>
+                        <span className="text-gray-800">{address.phone}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Email: </span>
+                        <span className="text-gray-800">{address.email}</span>
+                      </div>
+                      {address.alternativePhoneNumber && (
+                        <div>
+                          <span className="text-gray-600">Alt Phone: </span>
+                          <span className="text-gray-800">
+                            {address.alternativePhoneNumber}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-
-              {/* Street Address */}
-              <Form.Item
-                label={<div className="!text-gray-600">Street Address</div>}
-                name="street"
-                rules={[
-                  { required: true, message: 'Street address is required' },
-                ]}
+            ) : (
+              <Link
+                to="/sampler/settings/basic-details-settings-sampler"
+                className="text-center py-8 text-gray-500"
               >
-                <Input placeholder="Enter street address" />
-              </Form.Item>
-
-              {/* Contact & Email */}
-              <div className="grid grid-cols-2 gap-4">
-                <Form.Item
-                  label={<div className="!text-gray-600">Contact Number</div>}
-                  name="contact"
-                  rules={[
-                    { required: true, message: 'Contact number is required' },
-                    { pattern: /^[0-9]+$/, message: 'Only numbers allowed' },
-                  ]}
-                >
-                  <Input placeholder="Enter contact number" />
-                </Form.Item>
-
-                <Form.Item
-                  label={<div className="!text-gray-600">Email Address</div>}
-                  name="email"
-                  rules={[
-                    { required: true, message: 'Email is required' },
-                    { type: 'email', message: 'Invalid email format' },
-                  ]}
-                >
-                  <Input placeholder="Enter email address" />
-                </Form.Item>
-              </div>
-            </Form>
+                <p>No shipping addresses found.</p>
+                <Button type="primary" className="mt-3">
+                  Add Your First Address
+                </Button>
+              </Link>
+            )}
           </div>
         )}
 
         <div className="flex justify-between w-full gap-5 mt-6">
-          <Button
+          {/* <Button
             type="default"
             onClick={onCancel}
             className="py-2 border-gray-300"
           >
             Reject Offer
-          </Button>
-          <Button type="primary" className="w-full py-2" onClick={handleClick}>
-            Continue
+          </Button> */}
+          <Button
+            type="primary"
+            className="w-full py-2"
+            onClick={handleClick}
+            loading={campaignLoading}
+            disabled={page === 2 && selectAddressId === ""}
+          >
+            {page === 1 ?  "Next" : "Accept Offer"}
           </Button>
         </div>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
-export default ProductDetails
+export default ProductDetails;

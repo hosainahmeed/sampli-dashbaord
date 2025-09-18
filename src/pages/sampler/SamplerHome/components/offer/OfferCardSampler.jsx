@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ProductDetails from "./ProductDetails";
 import { Button } from "antd";
 
-const OfferCardSampler = ({ product }) => {
+const OfferCardSampler = ({ product, processing }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -13,7 +13,7 @@ const OfferCardSampler = ({ product }) => {
     setIsModalVisible(false);
   };
   return (
-    <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+    <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow flex flex-col justify-between">
       {/* Product Image */}
       <div className=" flex justify-center w-full">
         <img
@@ -55,20 +55,48 @@ const OfferCardSampler = ({ product }) => {
       </div>
 
       {/* Offer Status Button */}
-      <div className=" cursor-pointer p-2">
-        <Button
-          onClick={showModal}
-          className={` !w-full !cursor-pointer !font-medium !text-sm !py-4 ${
-            product.status === "Offer Accepted"
-              ? "!text-blue-600 !bg-blue-100"
-              : product.status === "Offer Expired"
-              ? "!text-red-600 !bg-red-100"
-              : "!text-white !bg-blue-500"
-          }`}
-        >
-          {product.status}
-        </Button>
-        <ProductDetails visible={isModalVisible} onCancel={handleCancel} />
+      <div className="  p-2 ">
+        {product?.userOffer ? (
+          <Button
+            className={` !w-full  !font-medium !text-sm !py-4 !bg-blue-100 !cursor-not-allowed`}
+          >
+            {product?.userOffer?.status}
+          </Button>
+        ) : (
+          <Button
+            onClick={showModal}
+            className={` !w-full  !font-medium !text-sm !py-4 ${
+              product?.status === "Active"
+                ? "!text-white !bg-blue-500 !cursor-pointer"
+                : product?.status === "Scheduled"
+                ? "!cursor-not-allowed !text-black !py-6"
+                : "!text-white !bg-blue-500 "
+            } ${processing && "!cursor-not-allowed !text-black "}`}
+            disabled={product.status === "Scheduled" || processing}
+          >
+            {product.status === "Active" ? (
+              "Accept Offer"
+            ) : product.status === "Scheduled" ? (
+              <div>
+                Campaign starts on{" "}
+                <div className="text-sm text-blue-700">
+                  {new Intl.DateTimeFormat("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                  }).format(new Date(product?.startDate))}
+                </div>
+              </div>
+            ) : (
+              "Accept Offer"
+            )}
+          </Button>
+        )}
+        <ProductDetails
+          productId={product?._id}
+          visible={isModalVisible}
+          onCancel={handleCancel}
+        />
       </div>
     </div>
   );

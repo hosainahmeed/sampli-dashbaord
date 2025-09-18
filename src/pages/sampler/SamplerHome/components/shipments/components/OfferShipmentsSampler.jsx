@@ -1,252 +1,139 @@
-import React, { useState } from 'react'
-import { Table, Tabs, Tag } from 'antd'
-import OfferOrderDetails from '../../offer/components/OfferOrderDetails'
-import productImage from '/public/product_image.svg'
-
-const onChange = (key) => {
-  console.log(key)
-}
-const productData = [
-  {
-    id: 1,
-    name: 'Ox 18 Inches Standing Plus Fan',
-    date: '23 Mar, 2024',
-    status: 'Shipped',
-    statusColor: 'purple',
-    image: productImage,
-  },
-  {
-    id: 2,
-    name: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
-    date: '23 Mar, 2024',
-    status: 'Waiting to be Shipped',
-    statusColor: 'orange',
-    image: productImage,
-  },
-  {
-    id: 3,
-    name: 'Silicone Brush To Clean The Scalp Hair Brushes - Green',
-    date: '23 Mar, 2024',
-    status: 'Cancelled',
-    statusColor: 'gray',
-    image: productImage,
-  },
-  {
-    id: 4,
-    name: 'BENGOO G9000 Stereo Gaming Headset',
-    date: '23 Mar, 2024',
-    status: 'Delivered',
-    statusColor: 'green',
-    image: productImage,
-  },
-  {
-    id: 5,
-    name: 'Wireless Bluetooth Earbuds',
-    date: '23 Mar, 2024',
-    status: 'In Transit',
-    statusColor: 'blue',
-    image: productImage,
-  },
-  {
-    id: 6,
-    name: 'Ox 18 Inches Standing Plus Fan',
-    date: '23 Mar, 2024',
-    status: 'Shipped',
-    statusColor: 'purple',
-    image: productImage,
-  },
-  {
-    id: 7,
-    name: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
-    date: '23 Mar, 2024',
-    status: 'Waiting to be Shipped',
-    statusColor: 'orange',
-    image: productImage,
-  },
-  {
-    id: 8,
-    name: 'Silicone Brush To Clean The Scalp Hair Brushes - Green',
-    date: '23 Mar, 2024',
-    status: 'Cancelled',
-    statusColor: 'gray',
-    image: productImage,
-  },
-  {
-    id: 9,
-    name: 'BENGOO G9000 Stereo Gaming Headset',
-    date: '23 Mar, 2024',
-    status: 'Delivered',
-    statusColor: 'green',
-    image: productImage,
-  },
-  {
-    id: 10,
-    name: 'Wireless Bluetooth Earbuds',
-    date: '23 Mar, 2024',
-    status: 'In Transit',
-    statusColor: 'blue',
-    image: productImage,
-  },
-  {
-    id: 11,
-    name: 'Mini Portable Refillable Sprayer Atomizer Bottle 5ml',
-    date: '23 Mar, 2024',
-    status: 'Waiting to be Shipped',
-    statusColor: 'orange',
-    image: productImage,
-  },
-  {
-    id: 12,
-    name: 'Silicone Brush To Clean The Scalp Hair Brushes - Green',
-    date: '23 Mar, 2024',
-    status: 'Cancelled',
-    statusColor: 'gray',
-    image: productImage,
-  },
-  {
-    id: 13,
-    name: 'BENGOO G9000 Stereo Gaming Headset',
-    date: '23 Mar, 2024',
-    status: 'Delivered',
-    statusColor: 'green',
-    image: productImage,
-  },
-  {
-    id: 14,
-    name: 'Wireless Bluetooth Earbuds',
-    date: '23 Mar, 2024',
-    status: 'In Transit',
-    statusColor: 'blue',
-    image: productImage,
-  },
-  {
-    id: 15,
-    name: 'Ox 18 Inches Standing Plus Fan',
-    date: '23 Mar, 2024',
-    status: 'Shipped',
-    statusColor: 'purple',
-    image: productImage,
-  },
-]
+import React, { useState } from "react";
+import { Table, Tabs, Tag } from "antd";
+import OfferOrderDetails from "../../offer/components/OfferOrderDetails";
+import {
+  useGetMyCampaignOfferQuery,
+  useGetSingleOfferCampaignQuery,
+} from "../../../../../../Redux/sampler/campaignApis";
 
 const OfferShipmentsSampler = () => {
-  const [isClicked, setIsClicked] = useState(false)
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data: getMyCampaignOffer, isLoading: campaignLoading } =
+    useGetMyCampaignOfferQuery({ page, limit });
+  const [id, setId] = useState("");
+
+  const [isClicked, setIsClicked] = useState(false);
+
+  // Format API result into table rows
+  const productData =
+    getMyCampaignOffer?.data?.result?.map((item) => ({
+      id: item._id,
+      name: item.product?.name,
+      image: item.product?.images?.[0],
+      date: new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }).format(new Date(item.createdAt)),
+      status: item.deliveryStatus,
+      statusColor:
+        item.deliveryStatus === "Waiting to be shipped"
+          ? "orange"
+          : item.deliveryStatus === "Delivered"
+          ? "green"
+          : "red",
+    })) || [];
 
   const columns = [
     {
-      title: 'Item name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (_, text) => (
+      title: "Item name",
+      dataIndex: "name",
+      key: "name",
+      render: (_, record) => (
         <div className="flex gap-2 items-center">
-          <img src={text.image} alt={text.name} className="w-10 h-10" />
-          <h3>{text.name}</h3>
+          <img src={record.image} alt={record.name} className="w-10 h-10" />
+          <h3>{record.name}</h3>
         </div>
       ),
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
       render: (status, record) => (
-        <Tag color={record.statusColor} key={status}>
-          {status}
-        </Tag>
+        <Tag color={record.statusColor}>{status}</Tag>
       ),
     },
     {
-      title: '',
-      key: 'action',
+      title: "",
+      key: "action",
       render: (_, record) => (
         <div
-          type="link"
-          onClick={() => setIsClicked(true)}
+          onClick={() => {
+            setIsClicked(true);
+            setId(record.id);
+          }}
           className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
         >
           View
         </div>
       ),
     },
-  ]
+  ];
 
   const items = [
     {
-      key: '1',
-      label: (
-        <div className="flex gap-2">
-          <div>In Progress/Delivered</div>
-          <p className="text-red-400 rounded-full h-5 w-5 p-1.5 bg-red-100 border border-red-400 flex items-center justify-center">
-            4
-          </p>
-        </div>
-      ),
+      key: "1",
+      label: <div className="flex gap-2">In Progress / Delivered</div>,
       children: (
         <Table
-          key="table1"
+          loading={campaignLoading}
           columns={columns}
           dataSource={productData}
           rowKey="id"
           pagination={{
-            pageSize: 10,
-            showSizeChanger: false,
-            position: ['bottomCenter'],
+            current: page,
+            pageSize: limit,
+            total: getMyCampaignOffer?.data?.meta?.total || 0,
+            onChange: (p) => setPage(p + 1),
+            position: ["bottomCenter"],
           }}
           scroll={{ x: 1200 }}
         />
       ),
     },
-
     {
-      key: '2',
-      label: (
-        <div className="flex gap-2">
-          <div>Cancelled</div>
-          <p className="text-red-400 rounded-full h-5 w-5 p-1.5 bg-red-100 border border-red-400 flex items-center justify-center">
-            4
-          </p>
-        </div>
-      ),
+      key: "2",
+      label: <div className="flex gap-2">Cancelled</div>,
       children: (
         <Table
-          key="table2"
+          loading={campaignLoading}
           columns={columns}
-          dataSource={productData}
+          dataSource={productData.filter((item) => item.status === "Cancelled")}
           rowKey="id"
           pagination={{
-            pageSize: 10,
-            position: ['bottomCenter'],
-            showSizeChanger: false,
+            current: page,
+            pageSize: limit,
+            total: getMyCampaignOffer?.data?.meta?.total || 0,
+            onChange: (p) => setPage(p + 1),
+            position: ["bottomCenter"],
           }}
           scroll={{ x: 1200 }}
         />
       ),
     },
-  ]
+  ];
 
   return (
-    <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">
+    <div className="h-[94vh] overflow-auto scrollbar-none">
       {isClicked ? (
-        <OfferOrderDetails setIsClicked={setIsClicked} />
+        <OfferOrderDetails setIsClicked={setIsClicked} id={id} />
       ) : (
         <div>
-          <div className="flex justify-between items-center mb-5 ">
+          <div className="flex justify-between items-center mb-5">
             <div className="text-xl font-semibold">Offer Shipment</div>
           </div>
-          <Tabs
-            defaultActiveKey="1"
-            items={items}
-            onChange={onChange}
-            className="cursor-pointer"
-          />
+          <Tabs defaultActiveKey="1" items={items} className="cursor-pointer" />
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default OfferShipmentsSampler
+export default OfferShipmentsSampler;

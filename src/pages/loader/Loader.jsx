@@ -8,7 +8,7 @@ const Loader = ({ message }) => {
         <span className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
         <span className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></span>
       </div>
-      <div>{message}</div>
+      <div className="mt-5">{message}</div>
     </div>
   );
 };

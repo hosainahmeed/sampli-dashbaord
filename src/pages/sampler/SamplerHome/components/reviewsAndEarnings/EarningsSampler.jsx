@@ -1,40 +1,58 @@
-import React, { useState } from 'react'
-import ReviewsAndEarningsSampler from './ReviewsAndEarningsSampler'
-import { Alert, Button, Card, Input, Modal } from 'antd'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { LuBadgeDollarSign } from 'react-icons/lu'
-import toast from 'react-hot-toast'
-import { IoIosAlert } from 'react-icons/io'
-import { Link } from 'react-router-dom'
-import paypalImage from '../../../../../assets/paypal.svg'
-import stripeImage from '../../../../../assets/stripe.svg'
-import gift from '../../../../../assets/gift-02.svg'
-import sale from '../../../../../assets/sale-03.svg'
+import React, { useState } from "react";
+import ReviewsAndEarningsSampler from "./ReviewsAndEarningsSampler";
+import { Alert, Button, Card, Input, Modal } from "antd";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { LuBadgeDollarSign } from "react-icons/lu";
+import toast from "react-hot-toast";
+import { IoIosAlert } from "react-icons/io";
+import { Link } from "react-router-dom";
+import paypalImage from "../../../../../assets/paypal.svg";
+import stripeImage from "../../../../../assets/stripe.svg";
+import gift from "../../../../../assets/gift-02.svg";
+import sale from "../../../../../assets/sale-03.svg";
+import { useGetReviewerProfileQuery } from "../../../../../Redux/sampler/reviewerProfileApis";
+import { usePostPaymentMutation } from "../../../../../Redux/sampler/paymentApis";
 
 const EarningsSampler = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false)
-  const [withdrawAmount, setWithdrawAmount] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const { data: getMyProfile } = useGetReviewerProfileQuery();
+
+  const [createPayment, { isLoading: paymentLoading }] =
+    usePostPaymentMutation();
   const showModal = () => {
-    setIsModalVisible(true)
-  }
+    setIsModalVisible(true);
+  };
 
   const handleCancel = () => {
-    setIsModalVisible(false)
-  }
+    setIsModalVisible(false);
+  };
   const showModalGetPaid = () => {
-    setIsGetPaidModalVisible(true)
-  }
+    setIsGetPaidModalVisible(true);
+  };
 
   const handleCancelGetPaid = () => {
-    setIsGetPaidModalVisible(false)
-  }
+    setIsGetPaidModalVisible(false);
+  };
 
   const handleWithdraw = () => {
-    toast.success(`Withdrawing $${withdrawAmount}`)
-    setIsModalVisible(false)
-    setIsGetPaidModalVisible(false)
-  }
+    toast.success(`Withdrawing $${withdrawAmount}`);
+    setIsModalVisible(false);
+    setIsGetPaidModalVisible(false);
+  };
+
+  const setUpOnBoarding = async () => {
+    try {
+      const res = await createPayment();
+      console.log(res);
+      window.open(res?.data?.data, "_blank");
+      setIsGetPaidModalVisible(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="responsive-width !h-screen !mb-32 !mt-5">
       <div>
@@ -42,7 +60,7 @@ const EarningsSampler = () => {
 
         <div className="flex justify-between items-center ">
           <div>
-            Total Balance:{' '}
+            Total Balance:{" "}
             <span className="text-blue-500 text-xl font-bold">$ 0.00</span>
           </div>
 
@@ -111,10 +129,10 @@ const EarningsSampler = () => {
             </div>
           }
           type="warning"
-          style={{ marginBottom: '16px' }}
+          style={{ marginBottom: "16px" }}
         />
 
-        <Card>
+        {/* <Card>
           <div className="flex justify-between items-center  ">
             <section>
               <div className="flex items-center">
@@ -137,7 +155,7 @@ const EarningsSampler = () => {
               </Button>
             </div>
           </div>
-        </Card>
+        </Card> */}
 
         <Card className="!mt-5">
           <div className="flex justify-between items-center ">
@@ -154,16 +172,27 @@ const EarningsSampler = () => {
                 </ul>
               </div>
             </section>
-            <div>
-              <Button
-                type="primary"
-                onClick={showModalGetPaid}
-                className="!flex !items-center !justify-center gap-2"
-              >
-                Setup
-                <FaExternalLinkAlt />
-              </Button>
-            </div>
+            {!getMyProfile?.data?.isStripeAccountConnected ? (
+              <div>
+                <Button
+                  type="primary"
+                  onClick={setUpOnBoarding}
+                  className="!flex !items-center !justify-center gap-2"
+                >
+                  {paymentLoading ? "Loading..." : "Stripe setup"}
+                  <FaExternalLinkAlt />
+                </Button>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <Button type="link" size="small" danger>
+                  Edit
+                </Button>
+                <Button type="link" size="small" onClick={showModalGetPaid}>
+                  Choose
+                </Button>
+              </div>
+            )}
           </div>
         </Card>
       </Modal>
@@ -177,13 +206,13 @@ const EarningsSampler = () => {
         centered
       >
         <div className="flex flex-col items-center mb-4">
-          <LuBadgeDollarSign style={{ fontSize: 32, color: '#FF7A00' }} />
+          <LuBadgeDollarSign style={{ fontSize: 32, color: "#FF7A00" }} />
           <div className="ml-3 mt-2 max-w-[300px] w-full">
             <h3 className="text-gray-500 text-center">
               Enter the amount you wish to withdraw from your total balance.
             </h3>
             <p className="text-center">
-              Available Balance:{' '}
+              Available Balance:{" "}
               <span className="font-bold text-x text-blue-500">$426.25</span>
             </p>
           </div>
@@ -197,7 +226,7 @@ const EarningsSampler = () => {
             prefix="$"
             value={withdrawAmount}
             onChange={(e) => setWithdrawAmount(e.target.value)}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
           />
         </div>
 
@@ -206,14 +235,14 @@ const EarningsSampler = () => {
           <Button
             type="primary"
             onClick={handleWithdraw}
-            style={{ width: '100%', fontSize: '16px', fontWeight: '500' }}
+            style={{ width: "100%", fontSize: "16px", fontWeight: "500" }}
           >
             Withdraw
           </Button>
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default EarningsSampler
+export default EarningsSampler;
