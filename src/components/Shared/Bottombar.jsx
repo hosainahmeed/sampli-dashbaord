@@ -10,6 +10,8 @@ import salse from '../../assets/icons/salse.svg';
 import activeSales from '../../assets/icons/active/activeSales.svg';
 import activeSetting from '../../assets/icons/active/activeSetting.svg';
 import settingIcon from '../../assets/icons/setting.svg';
+import purchasesIcon from '../../assets/icons/truck.png';
+import activePurchases from '../../assets/icons/active/truck.png';
 import { MdKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { Button } from 'antd';
 
@@ -52,6 +54,15 @@ const Bottombar = () => {
           <img className="w-5 h-5" src={salse} alt="order"></img>
         ),
       path: '/sales',
+    },
+    {
+      icon:
+        location?.pathname === '/business/purchases' ? (
+          <img className="w-5 h-5" src={activePurchases} alt="order"></img>
+        ) : (
+          <img className="w-5 h-5" src={purchasesIcon} alt="order"></img>
+        ),
+      path: '/business/purchases',
     },
     {
       icon:

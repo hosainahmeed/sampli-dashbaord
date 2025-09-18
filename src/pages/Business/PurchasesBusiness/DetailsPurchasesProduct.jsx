@@ -1,4 +1,4 @@
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Tag, Typography } from "antd";
 import React from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -45,9 +45,9 @@ function DetailsPurchasesProduct() {
             <Title level={3} className="m-0">
               Order ID: {order?._id}
             </Title>
-            <span className="px-2 py-1 text-[10px] bg-purple-100 text-purple-600 rounded border border-purple-300">
+            <Tag color="blue">
               {order?.status}
-            </span>
+            </Tag>
           </div>
           <p className="text-gray-500 mt-2">
             {new Date(order?.createdAt).toLocaleDateString()}

@@ -6,19 +6,16 @@ import {
   DatePicker,
   Card,
   Modal,
-  Alert,
   Input,
 } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { FaAngleLeft, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 import bank from '../../../assets/bank.svg';
 import { BsExclamationOctagon } from 'react-icons/bs';
-import paypalImage from '../../../assets/paypal.svg';
-import stripeImage from '../../../assets/stripe.svg';
-import { IoIosAlert } from 'react-icons/io';
 import { LuBadgeDollarSign } from 'react-icons/lu';
 import toast from 'react-hot-toast';
+import StripeConnectModal from './StripeConnectModal';
 const { Option } = Select;
 const TransectionOfBusiness = () => {
   const [filters, setFilters] = useState({
@@ -128,10 +125,10 @@ const TransectionOfBusiness = () => {
       render: (status) => (
         <span
           className={`${status === 'Successful'
-              ? 'bg-gray-100 text-green-500'
-              : status === 'Processing'
-                ? 'bg-gray-100 text-purple-700'
-                : 'bg-gray-100 text-red-500'
+            ? 'bg-gray-100 text-green-500'
+            : status === 'Processing'
+              ? 'bg-gray-100 text-purple-700'
+              : 'bg-gray-100 text-red-500'
             } p-1 rounded-md text-sm`}
         >
           {status}
@@ -279,88 +276,11 @@ const TransectionOfBusiness = () => {
         />
       </div>
 
-      <Modal
-        title="Add withdrawal method"
-        visible={paymentModal}
-        onCancel={() => showPaymentModal(!paymentModal)}
-        footer={null}
-        width={500}
-        centered
-      >
-        <Alert
-          message={
-            <div className="flex items-start justify-start ">
-              <div>
-                <IoIosAlert className="text-xl text-orange-500 " />
-              </div>
-              <span className="ml-3">
-                The name on your withdrawal method and the name on your Sampli
-                account need to match exactly to avoid payment failures or
-                delays.
-              </span>
-            </div>
-          }
-          type="warning"
-          style={{ marginBottom: '16px' }}
-        />
-
-        <Card>
-          <div className="flex justify-between items-center  ">
-            <section>
-              <div className="flex items-center">
-                <img src={paypalImage} alt="paypal" className="w-6" />
-                <span className="ml-3">Paypal account</span>
-              </div>
-              <div>
-                <ul className="list-disc ml-13 text-gray-500">
-                  <li>Up to 1 business day</li>
-                  <li>Fees may apply</li>
-                </ul>
-              </div>
-            </section>
-            <div className="flex gap-4">
-              <Button type="link" size="small">
-                Edit
-              </Button>
-              <Button type="link" size="small" danger>
-                Remove
-              </Button>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="!mt-5">
-          <div className="flex justify-between items-center ">
-            <section>
-              <div className="flex items-center">
-                <img src={stripeImage} alt="stripe" className="w-6" />
-
-                <span className="ml-3">Stripe account</span>
-              </div>
-              <div>
-                <ul className="list-disc ml-13 text-gray-500">
-                  <li>Up to 1 business day</li>
-                  <li>Fees may apply</li>
-                </ul>
-              </div>
-            </section>
-            <div>
-              <Button
-                type="primary"
-                // onClick={showModalGetPaid}
-                className="!flex !items-center !justify-center gap-2"
-              >
-                Setup
-                <FaExternalLinkAlt />
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </Modal>
+      <StripeConnectModal paymentModal={paymentModal} showPaymentModal={showPaymentModal} />
 
       <Modal
         title="Get paid"
-        visible={isGetPaidModalVisible}
+        open={isGetPaidModalVisible}
         onCancel={handleCancelGetPaid}
         footer={null}
         width={500}

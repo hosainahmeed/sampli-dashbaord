@@ -10,23 +10,22 @@ const { Option } = Select;
 const CampaignTable = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(5); // fixed to 5
-  const { data: campaignsData, isLoading } = useGetCampaignsQuery({
-    limit: pageSize,
-    page,
-  });
-
+  const { data: campaignsData, isLoading } = useGetCampaignsQuery();
+  console.log(campaignsData?.data?.result)
   const navigate = useNavigate();
   const campaigns = campaignsData?.data?.result;
-
   const statusColors = {
     Active: 'orange',
     Pending: 'purple',
     Completed: 'green',
     Paused: 'gray',
-    Accepted: 'blue',
   };
+
+  // const filteredCampaigns = campaigns.filter(
+  //   (campaign) =>
+  //     campaign.name.toLowerCase().includes(searchText.toLowerCase()) &&
+  //     (statusFilter === 'All' || campaign.status === statusFilter)
+  // );
 
   const columns = [
     {
@@ -44,10 +43,15 @@ const CampaignTable = () => {
             />
           )}
           <div>
-            <h1 className="xl:text-sm text-xs">{record?.campaign?.name}</h1>
+            <h1 className="xl:text-sm text-xs">{text}</h1>
             <div className="flex items-center gap-2">
               <h1 className="text-xs text-[#6D7486]">
-                {new Date(record?.campaign?.endDate).toLocaleString('default', {
+                {new Date(record.startDate).toLocaleString('default', {
+                  month: 'short',
+                  day: 'numeric',
+                })}{' '}
+                -{' '}
+                {new Date(record.endDate).toLocaleString('default', {
                   month: 'short',
                   day: 'numeric',
                   year: 'numeric',
@@ -66,12 +70,25 @@ const CampaignTable = () => {
       render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
     },
     {
+      title: 'Progress',
+      dataIndex: 'progress',
+      key: 'progress',
+      width: 180,
+      render: (progress = 0, record) => (
+        <Progress
+          className="xl:text-base text-xs"
+          percent={(progress / record.total) * 100}
+          format={(percent, successPercent) => `${progress}/${record.total}`}
+        />
+      ),
+    },
+    {
       title: 'Budget',
-      dataIndex: 'amount',
-      key: 'amount',
+      dataIndex: 'budget',
+      key: 'budget',
       width: 150,
-      render: (amount) => (
-        <p className="xl:text-sm text-xs text-[#6D7486]">{amount}</p>
+      render: (budget) => (
+        <p className="xl:text-sm text-xs text-[#6D7486]">{budget}</p>
       ),
     },
     {
@@ -118,15 +135,14 @@ const CampaignTable = () => {
           <Option value="Cancelled">Cancelled</Option>
         </Select>
       </div>
-
       <Table
         columns={columns}
         loading={isLoading}
         dataSource={campaigns}
-        rowKey="_id"
-        scroll={{ x: 'max-content' }}
-        bordered
+        scroll={{ x: 1200 }}
         locale={{
+          filterConfirm: 'Confirm',
+          filterReset: 'Reset',
           emptyText: (
             <div className=" flex items-center justify-center flex-col py-28 text-center">
               <p className="text-2xl">No result found</p>
@@ -135,10 +151,6 @@ const CampaignTable = () => {
           ),
         }}
         pagination={{
-          current: page,
-          pageSize: pageSize,
-          total: campaignsData?.data?.meta?.total,
-          onChange: (newPage) => setPage(newPage),
           showSizeChanger: false,
           position: ['bottomCenter'],
           itemRender: (current, type, originalElement) => {
@@ -151,6 +163,9 @@ const CampaignTable = () => {
             }
             if (type === 'next') {
               return <h1 className="text-[#2E78E9]">Next Page</h1>;
+            }
+            if (type === 'page') {
+              return current;
             }
             return originalElement;
           },

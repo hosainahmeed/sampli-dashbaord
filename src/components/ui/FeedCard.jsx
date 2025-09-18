@@ -193,7 +193,7 @@ const FeedCard = ({ content, reviewLoading }) => {
           </div>
         </div>
         <Divider />
-        <div className=' h-[300px] scrollbar-hide overflow-y-scroll'>
+        <div className='max-h-[300px] scrollbar-hide overflow-y-scroll'>
           <CommentSection
             comments={reviewerComments?.data?.result}
             loading={reviewerCommentsLoading}
