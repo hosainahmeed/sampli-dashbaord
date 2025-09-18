@@ -7,8 +7,11 @@ import { useLocation } from 'react-router-dom';
 
 function AllFeedCard() {
   const { id } = useLocation().state;
+  const [page, setPage] = useState(1);
   const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
     productId: id,
+    limit: 4,
+    page: page,
   });
   const options = [
     { label: 'Newest', value: 'Newest' },
@@ -20,6 +23,7 @@ function AllFeedCard() {
   const cardsPerPage = 4;
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
+    setPage(page);
   }, []);
 
   return (
@@ -61,37 +65,35 @@ function AllFeedCard() {
       </div>
 
       {/* Pagination Controls */}
-      {reviewList?.data?.data?.result?.length > cardsPerPage && (
-        <div className="mt-6 flex justify-center">
-          <Pagination
-            current={currentPage}
-            total={reviewList?.data?.data?.result?.length}
-            pageSize={cardsPerPage}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-            itemRender={(current, type, originalElement) => {
-              if (type === 'prev' && current > 1) {
-                return (
-                  <button className="!border-none ">
-                    <span className="text-[#2E78E9]">Previous</span>
-                  </button>
-                );
-              }
-              if (type === 'next') {
-                return (
-                  <button className="!border-none ">
-                    <span className="text-[#2E78E9]">Next Page</span>
-                  </button>
-                );
-              }
-              if (type === 'page') {
-                return current;
-              }
-              return originalElement;
-            }}
-          />
-        </div>
-      )}
+      <div className="mt-6 flex justify-center">
+        <Pagination
+          current={currentPage}
+          total={reviewList?.data?.data?.meta?.total}
+          pageSize={cardsPerPage}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+          itemRender={(current, type, originalElement) => {
+            if (type === 'prev' && current > 1) {
+              return (
+                <button className="!border-none ">
+                  <span className="text-[#2E78E9]">Previous</span>
+                </button>
+              );
+            }
+            if (type === 'next') {
+              return (
+                <button className="!border-none ">
+                  <span className="text-[#2E78E9]">Next Page</span>
+                </button>
+              );
+            }
+            if (type === 'page') {
+              return current;
+            }
+            return originalElement;
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { Table, Button } from 'antd';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useGetOrderListQuery } from '../../Redux/sampler/orderApis';
 import { OrderTableColumn } from './OrderTableColumn';
-
 const OrderTable = () => {
   const { data: orderList, isLoading } = useGetOrderListQuery();
   const dataSource = orderList?.data?.result?.map((order) => {

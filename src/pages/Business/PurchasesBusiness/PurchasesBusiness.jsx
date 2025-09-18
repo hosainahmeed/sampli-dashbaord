@@ -83,6 +83,7 @@ const PurchasesBusiness = () => {
         loading: isLoading,
         columns,
         dataSource: productData,
+        bordered: true,
         rowKey: "key",
         pagination: {
             current: meta.page || page,
