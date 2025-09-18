@@ -26,6 +26,7 @@ import TermsAndConditions from "../pages/termsAndConditions/TermsAndConditions.j
 import ContactUs from "../pages/contactUs/ContactUs.jsx";
 import PrivacyPolicy from "../pages/privacyPolicy/PrivacyPolicy.jsx";
 import PageNotFound from "../pages/pageNotFound/PageNotFound.jsx";
+import SamplerReviewer from "../pages/sampler/SamplerHome/components/reviewsAndEarnings/SamplerReviewer.jsx";
 
 export const samplerRoutes = {
   path: "/",
@@ -79,6 +80,7 @@ export const samplerRoutes = {
     { path: "/sampler/my-profile", element: <MyProfileSampler /> },
     { path: "/sampler/shop", element: <ShopHeroPage /> },
     { path: `/sampler/shop/:id/:name`, element: <ServiceWithCategory /> },
+    { path: `/sampler/review/:id`, element: <SamplerReviewer /> },
     {
       path: `/sampler/shop/category/:name/:id`,
       element: <ServiceWithCategoryProductDetails />,
