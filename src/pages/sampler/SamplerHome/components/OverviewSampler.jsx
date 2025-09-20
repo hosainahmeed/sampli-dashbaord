@@ -1,108 +1,141 @@
-import React, { useState } from 'react'
-import { LiaShippingFastSolid } from 'react-icons/lia'
-import { SiFuturelearn } from 'react-icons/si'
-import { VscPreview } from 'react-icons/vsc'
-import { Dropdown, Menu } from 'antd'
-import { DownOutlined, FilterOutlined } from '@ant-design/icons'
-import itemsInShipment from '../../../../assets/items-in-shipment.svg'
-import totalReviews from '../../../../assets/total-reviews.svg'
-import totalEarnings from '../../../../assets/total-earnings.svg'
-
-const data = [
-  {
-    id: 1,
-    // icon: <SiFuturelearn className="text-blue-500 text-xl" />,
-    icon: totalEarnings,
-    name: 'Total Earnings',
-    earn: 2398.0,
-    currency: '$',
-    percentage: '40%',
-    type: 'Vs last month',
-    percentageType: 'decrease',
-  },
-  {
-    id: 2,
-    // icon: <VscPreview className="text-blue-500 text-xl" />,
-    icon: totalReviews,
-    name: 'Total Reviews',
-    earn: 2398,
-    percentage: '40%',
-    type: 'Vs last month',
-    percentageType: 'increase',
-  },
-  {
-    id: 3,
-    // icon: <LiaShippingFastSolid className="text-blue-500 text-xl" />,
-    icon: itemsInShipment,
-    name: 'Items in shipment',
-    earn: 34,
-    percentage: '40%',
-    type: 'Vs last month',
-    percentageType: 'increase',
-  },
-]
+import React, { useState, useMemo } from "react";
+import { Dropdown, Menu } from "antd";
+import { DownOutlined, FilterOutlined } from "@ant-design/icons";
+import itemsInShipment from "../../../../assets/items-in-shipment.svg";
+import totalReviews from "../../../../assets/total-reviews.svg";
+import totalEarnings from "../../../../assets/total-earnings.svg";
+import { useGetOverviewQuery } from "../../../../Redux/sampler/overviewApis";
 
 const OverviewSampler = () => {
-  const [selectedFilter, setSelectedFilter] = useState('This month')
+  // Default filter
+  const [selectedFilter, setSelectedFilter] = useState("thisMonth");
+  const [labelName, setLabelName] = useState("This Month");
+
+  const { data } = useGetOverviewQuery({
+    dateRange: selectedFilter,
+  });
+
+  // Create a mapping for labels
+  const filterLabels = {
+    today: "Today",
+    thisWeek: "This Week",
+    lastWeek: "Last Week",
+    thisMonth: "This Month",
+    lastMonth: "Last Month",
+    last6Months: "Last 6 Month",
+    thisYear: "This Year",
+  };
+
+  const handleMenuClick = (e) => {
+    setSelectedFilter(e.key);
+    setLabelName(filterLabels[e.key]);
+  };
 
   const menu = (
     <Menu
-      onClick={(e) => setSelectedFilter(e.key)}
+      onClick={handleMenuClick}
       items={[
-        { key: 'Today', label: 'Today' },
-        { key: 'This week', label: 'This week' },
-        { key: 'Last week', label: 'Last week' },
-        { key: 'This month', label: 'This month' },
-        { key: 'Last 6 Month', label: 'Last 6 Month' },
-        { key: 'This Year', label: 'This Year' },
+        { label: "Today", key: "today" },
+        { label: "This Week", key: "thisWeek" },
+        { label: "Last Week", key: "lastWeek" },
+        { label: "This Month", key: "thisMonth" },
+        { label: "Last Month", key: "lastMonth" },
+        { label: "Last 6 Month", key: "last6Months" },
+        { label: "This Year", key: "thisYear" },
       ]}
     />
-  )
+  );
+
+  const overviewItems = useMemo(() => {
+    if (!data?.data) return [];
+
+    return [
+      {
+        id: 1,
+        icon: totalEarnings,
+        name: "Total Earnings",
+        earn: data.data.totalEarning.value,
+        currency: "$",
+        percentage: `${data.data.totalEarning.change}%`,
+        type: `${labelName}`,
+        percentageType:
+          data.data.totalEarning.change > 0
+            ? "increase"
+            : data.data.totalEarning.change < 0
+            ? "decrease"
+            : "neutral",
+      },
+      {
+        id: 2,
+        icon: totalReviews,
+        name: "Total Reviews",
+        earn: data.data.totalReview.value,
+        percentage: `${data.data.totalReview.change}%`,
+        type: labelName,
+        percentageType:
+          data.data.totalReview.change > 0
+            ? "increase"
+            : data.data.totalReview.change < 0
+            ? "decrease"
+            : "neutral",
+      },
+      {
+        id: 3,
+        icon: itemsInShipment,
+        name: "Items in Shipment",
+        earn: data.data.itemInShipment.value,
+        percentage: `${data.data.itemInShipment.change}%`,
+        type: labelName,
+        percentageType:
+          data.data.itemInShipment.change > 0
+            ? "increase"
+            : data.data.itemInShipment.change < 0
+            ? "decrease"
+            : "neutral",
+      },
+    ];
+  }, [data, labelName]);
 
   return (
-    <div className="bg-white  rounded-xl ">
-      {/* Header Section */}
+    <div className="bg-white rounded-xl">
+      {/* Header */}
       <div className="flex justify-between items-center mt-14">
-        <h2 className="text-xl !font-semibold !mb-5">Overview</h2>
-        <Dropdown
-          className="border border-gray-300 !px-3 !py-2 !text-sm !text-gray-700  !cursor-pointer !rounded-md hover:bg-gray-100"
-          overlay={menu}
-          trigger={['click']}
-        >
+        <h2 className="text-xl font-semibold mb-5">Overview</h2>
+        <Dropdown overlay={menu} trigger={["click"]}>
           <button className="border px-3 py-1 rounded-lg flex items-center gap-2 text-gray-600 hover:bg-gray-100">
             <FilterOutlined />
-            {selectedFilter} <DownOutlined />
+            {labelName} <DownOutlined />
           </button>
         </Dropdown>
       </div>
 
-      {/* Stats Section */}
+      {/* Stats */}
       <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4">
-        {data.map((item) => (
-          <div key={item.id} className="bg-white p-4 rounded-lg shadow-sm  ">
-            <div className="flex items-center gap-2">
-              <div>
-                <div className="flex  gap-2 ">
-                  <div>
-                    <img src={item.icon} alt="icon" />
-                  </div>
-                  <p className="text-gray-500 ">{item.name}</p>
-                </div>
-              </div>
+        {overviewItems.map((item) => (
+          <div key={item.id} className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="flex gap-2 items-center mb-3">
+              <img src={item.icon} alt={item.name} className="mb-3" />
+              <p className="text-gray-500">{item.name}</p>
             </div>
-            <div className="flex  items-center  gap-3">
+            <div className="flex items-center gap-3 mt-2">
               <p className="text-xl font-semibold">
-                {item.currency ? item.currency : ''}
+                {item.currency || ""}
                 {item.earn.toLocaleString()}
               </p>
               <p
                 className={`text-sm ${
-                  item.percentageType === 'increase'
-                    ? 'text-green-500'
-                    : 'text-red-500'
+                  item.percentageType === "increase"
+                    ? "text-green-500"
+                    : item.percentageType === "decrease"
+                    ? "text-red-500"
+                    : "text-gray-500"
                 }`}
               >
-                {item.percentageType === 'increase' ? '▲' : '▼'}{' '}
+                {item.percentageType === "increase"
+                  ? "▲"
+                  : item.percentageType === "decrease"
+                  ? "▼"
+                  : ""}{" "}
                 {item.percentage}
               </p>
               <p className="text-gray-600 text-sm">{item.type}</p>
@@ -111,7 +144,7 @@ const OverviewSampler = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OverviewSampler
+export default OverviewSampler;
