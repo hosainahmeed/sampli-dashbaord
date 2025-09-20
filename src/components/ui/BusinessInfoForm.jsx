@@ -77,9 +77,9 @@ const BusinessInfoForm = () => {
             className="text-start"
           ></InputField>
           <InputField
-            label={'Trade name (Optional)'}
+            label={'DBA (Doing Business As)'}
             name="tradeName"
-            placeholder="Enter your trade name"
+            placeholder="Enter your DBA"
           ></InputField>
           <div className="flex gap-4 items-center justify-between">
             <SelectField

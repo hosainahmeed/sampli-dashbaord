@@ -139,7 +139,7 @@ const CampaignTable = () => {
         columns={columns}
         loading={isLoading}
         dataSource={campaigns}
-        scroll={{ x: 1200 }}
+        scroll={{ x: 'max-content' }}
         locale={{
           filterConfirm: 'Confirm',
           filterReset: 'Reset',

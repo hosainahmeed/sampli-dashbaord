@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Table, Tabs, Tag } from "antd";
 import { useGetCampaignPurchaseQuery } from "../../../Redux/businessApis/campaign/campaignPurchaseApis";
 import { Link } from "react-router-dom";
@@ -23,6 +23,10 @@ const transformOrders = (orders) => {
 const PurchasesBusiness = () => {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const { data, isLoading } = useGetCampaignPurchaseQuery({
         page,
@@ -133,7 +137,7 @@ const PurchasesBusiness = () => {
     // ];
 
     return (
-        <div className="h-[94vh] overflow-auto scrollbar-none p-4">
+        <div className="w-full h-[calc(100vh-10rem)] overflow-auto scrollbar-none p-4">
             <div className="text-xl font-semibold mb-5">Campaign Offer / Offer Shipment</div>
             {/* <Tabs defaultActiveKey="1" items={tabs} /> */}
             <Table {...tableProps} />

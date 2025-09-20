@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
 import planet1 from '../../../assets/Planet (1).png';
 import ProductSelection from '../Product/ProductSelection';
 import TargetAudienceForm from '../../../components/ui/TargetAudienceForm';
@@ -10,10 +8,18 @@ import ReviewLaunch from '../../../components/ui/ReviewLaunch';
 import { useCreateCampaignMutation } from '../../../Redux/businessApis/campaign/campaignApis';
 
 const ExistingProduct = () => {
-  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [createCampaign, { isLoading }] = useCreateCampaignMutation();
 
+
+  useEffect(() => {
+    const existingCampaign = localStorage.getItem('targetAudience');
+    const existingProductId = localStorage.getItem('selectedProductId');
+    if (existingCampaign || existingProductId) {
+      localStorage.removeItem('targetAudience');
+      localStorage.removeItem('selectedProductId');
+    }
+  }, []);
 
   const steps = [
     { id: 0, label: 'Product Selection', component: <ProductSelection /> },
@@ -23,6 +29,14 @@ const ExistingProduct = () => {
 
 
   const handleNext = () => {
+    if (currentStep === 1) {
+      const targetAudience = JSON.parse(localStorage.getItem('targetAudience'));
+      if (targetAudience === null) {
+        toast.dismiss()
+        toast.error('Please fill up the target audience form and save it before proceeding');
+        return;
+      }
+    }
     if (currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -126,7 +140,7 @@ const ExistingProduct = () => {
           }
           className="px-4 py-2 bg-blue-600 text-white rounded-md"
         >
-          {currentStep < steps.length - 1 ? 'Next' : 'Confirm & Publish'}
+          {currentStep < steps.length - 1 ? 'Next' : 'Confirm & Pay'}
         </Button>
       </div>
     </div>

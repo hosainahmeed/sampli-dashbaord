@@ -9,7 +9,13 @@ const orderApis = baseApis.injectEndpoints({
         params,
       }),
     }),
+    getOrderDetailsById: builder.query({
+      query: (id) => ({
+        url: `/order/get-single-order/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetOrderListQuery } = orderApis;
+export const { useGetOrderListQuery, useGetOrderDetailsByIdQuery } = orderApis;

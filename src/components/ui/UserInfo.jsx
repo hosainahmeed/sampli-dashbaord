@@ -29,7 +29,7 @@ const UserInfo = () => {
         bussinessAddress: data?.businessAddress,
         phoneNumber: data?.phone,
         website: data?.website,
-        taxtIndentificationNumber: data?.taxId
+        // taxtIndentificationNumber: data?.taxId
       }
       await addBussinessInfo(businessInfoData).unwrap().then((res) => {
         if (res.success) {
@@ -78,13 +78,13 @@ const UserInfo = () => {
             rules={[{ required: true, message: 'Please enter your website!' }]}
             placeholder="Website URL"
           />
-          <InputField
+          {/* <InputField
             className="text-start"
             label="Tax Identification number"
             name="taxId"
             rules={[{ required: true, message: 'Please enter your tax ID!' }]}
             placeholder="Tax Identification number"
-          />
+          /> */}
 
           <Button
             loading={isLoading}

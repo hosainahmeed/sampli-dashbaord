@@ -1,16 +1,27 @@
 import { Button, Card, Form } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { useEffect } from "react";
+import { useUpdateProfileMutation } from "../../Redux/businessApis/business _profile/getprofileApi";
+import toast from "react-hot-toast";
 
 function PrimaryContactInformation({ data }) {
+  const [updateProfile, { isLoading: updateProfileLoading }] = useUpdateProfileMutation();
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
       bio: data?.bio,
     })
   }, [data])
-  const onFinishForm = (values) => {
-    console.log(values);
+  const onFinishForm = async (values) => {
+    try {
+      await updateProfile(values).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.data?.message || res?.message || "Profile updated successfully");
+        }
+      })
+    } catch (error) {
+
+    }
   };
   return (
     <div>
@@ -24,14 +35,11 @@ function PrimaryContactInformation({ data }) {
           <Form.Item
             label="Bio"
             name="bio"
-            rules={[
-              { required: true, message: "Please enter your bio!" },
-            ]}
           >
             <TextArea rows={6} />
           </Form.Item>
           <Form.Item className="flex justify-end">
-            <Button type="primary" htmlType="submit" className="bg-gray-300">
+            <Button loading={updateProfileLoading} disabled={updateProfileLoading} type="primary" htmlType="submit" className="bg-gray-300">
               Save
             </Button>
           </Form.Item>
