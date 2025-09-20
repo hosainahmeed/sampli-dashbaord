@@ -1,18 +1,18 @@
-import React from 'react'
-import { Button, Typography, Form, Select } from 'antd'
-import Logo from '../../../components/ui/Logo'
-import InputField from '../../../components/ui/InputField'
-import FormWrapper from '../../../components/ui/FormWrapper'
-import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { IoMdArrowRoundBack } from 'react-icons/io'
-import { useAddAddressReviewerMutation } from '../../../Redux/sampler/authSectionApis'
-const { Title } = Typography
+import React from "react";
+import { Button, Typography, Form, Select } from "antd";
+import Logo from "../../../components/ui/Logo";
+import InputField from "../../../components/ui/InputField";
+import FormWrapper from "../../../components/ui/FormWrapper";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useAddAddressReviewerMutation } from "../../../Redux/sampler/authSectionApis";
+const { Title } = Typography;
 
 const SignUpMoreInformation = () => {
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
   const [addAddress, { isLoading: addressLoading }] =
-    useAddAddressReviewerMutation()
+    useAddAddressReviewerMutation();
 
   const onFinish = async (values) => {
     try {
@@ -21,19 +21,19 @@ const SignUpMoreInformation = () => {
         zipCode: values.zipCode,
         gender: values.gender,
         age: values.age,
-      }).unwrap()
+      }).unwrap();
       if (res.success) {
-        toast.success(res.message)
-        Navigate('/sign-up-select-all-categories')
+        toast.success(res.message);
+        Navigate("/sign-up-select-all-categories");
       } else {
-        toast.error(res.message)
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error(
-        error?.data?.message || 'Something went wrong. Please try again.'
-      )
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
@@ -60,25 +60,25 @@ const SignUpMoreInformation = () => {
           <InputField
             label="City  "
             name="city"
-            rules={[{ required: true, message: 'Please enter your city!' }]}
+            rules={[{ required: true, message: "Please enter your city!" }]}
             placeholder="city"
             style={{
-              width: '100%',
+              width: "100%",
               marginTop: 10,
               marginBottom: 10,
-              textAlign: 'start',
+              textAlign: "start",
             }}
           />
           <InputField
             label="Zip Code  "
             name="zipCode"
-            rules={[{ required: true, message: 'Please enter your zipcode!' }]}
+            rules={[{ required: true, message: "Please enter your zipcode!" }]}
             placeholder="zipcode"
             style={{
-              width: '100%',
+              width: "100%",
               marginTop: 10,
               marginBottom: 10,
-              textAlign: 'start',
+              textAlign: "start",
             }}
           />
 
@@ -88,14 +88,14 @@ const SignUpMoreInformation = () => {
             rules={[
               {
                 required: true,
-                message: 'Please select your gender!',
+                message: "Please select your gender!",
               },
             ]}
             style={{
-              width: '100%',
+              width: "100%",
               marginTop: 10,
               marginBottom: 10,
-              textAlign: 'start',
+              textAlign: "start",
             }}
           >
             <Select size="middle" placeholder="Select your gender">
@@ -111,20 +111,20 @@ const SignUpMoreInformation = () => {
             rules={[
               {
                 required: true,
-                message: 'Please select your age!',
+                message: "Please select your age!",
               },
             ]}
             style={{
-              width: '100%',
+              width: "100%",
               marginTop: 10,
               marginBottom: 10,
-              textAlign: 'start',
+              textAlign: "start",
             }}
           >
             <Select size="middle" showSearch placeholder="Select your age">
-              {Array.from({ length: 150 }).map((_, i) => (
-                <Select.Option key={i + 1} value={i + 1}>
-                  {i + 1}
+              {Array.from({ length: 133 }).map((_, i) => (
+                <Select.Option key={i + 18} value={i + 18}>
+                  {i + 18}
                 </Select.Option>
               ))}
             </Select>
@@ -142,7 +142,7 @@ const SignUpMoreInformation = () => {
         </FormWrapper>
 
         <div className="mt-4 text-gray-500 text-[14px]">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link
             to="/login"
             className="text-blue-500 hover:underline  text-[14px] transition-all"
@@ -164,7 +164,7 @@ const SignUpMoreInformation = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUpMoreInformation
+export default SignUpMoreInformation;

@@ -31,7 +31,7 @@ const AddYourSocials = ({ prev }) => {
       throw error
     }
     console.log('Submitted Values:', values)
-    Navigate('/login')
+    Navigate('/sampler/campaign')
   }
 
   return (

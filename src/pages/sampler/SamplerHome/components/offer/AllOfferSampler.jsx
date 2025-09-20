@@ -7,9 +7,6 @@ import {
   useGetMyCampaignOfferQuery,
 } from "../../../../../Redux/sampler/campaignApis";
 import Loader from "../../../../loader/Loader";
-const onChange = (key) => {
-  console.log(key);
-};
 
 const productData = [
   {
@@ -89,13 +86,23 @@ const productData = [
 const AllOfferSampler = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [status, setStatus] = useState("Processing");
   const { data: getCampaignOffer, isLoading: campaignOfferLoading } =
-    useGetMyCampaignOfferQuery();
+    useGetMyCampaignOfferQuery({
+      status: status,
+    });
   const { data: getCampaignOfferListData, isLoading: offerLoading } =
     useGetCampaignListQuery({
       page,
-      limit,
+      limit: 10,
     });
+
+  const onChange = (key) => {
+    if (key === "1") {
+      return;
+    }
+    setStatus(key);
+  };
   const items = [
     {
       key: "1",
@@ -150,7 +157,7 @@ const AllOfferSampler = () => {
       ),
     },
     {
-      key: "2",
+      key: "Processing",
       label: (
         <div className="flex gap-2">
           <div>Processing</div>
@@ -205,7 +212,66 @@ const AllOfferSampler = () => {
       ),
     },
     {
-      key: "3",
+      key: "Accepted",
+      label: (
+        <div className="flex gap-2">
+          <div>Accepted</div>
+          {/* <p className="text-red-400 rounded-full h-5 w-5 p-1.5 bg-red-100 border border-red-400 flex items-center justify-center">
+            1
+          </p> */}
+        </div>
+      ),
+      children: (
+        <div>
+          {campaignOfferLoading ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <Loader />
+            </div>
+          ) : getCampaignOffer && getCampaignOffer?.data?.result?.length > 0 ? (
+            <div>
+              <div className="grid  grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
+                {getCampaignOffer?.data?.result?.map((product) => (
+                  <OfferCardSampler
+                    key={product?._id}
+                    product={product}
+                    processing={true}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-center mt-5">
+                <Pagination
+                  current={page}
+                  onChange={(page) => setPage(page)}
+                  total={getCampaignOffer?.data?.meta?.total || 0}
+                  pageSize={limit}
+                  showSizeChanger={false}
+                  itemRender={(current, type, originalElement) => {
+                    if (type === "page") {
+                      return current;
+                    }
+                    return originalElement;
+                  }}
+                />
+              </div>
+            </div>
+          ) : campaignOfferLoading ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <Loader />
+            </div>
+          ) : (
+            <div className="text-center  flex flex-col items-center justify-center mx-auto py-10 w-full h-[60vh]">
+              <p className="font-bold text-xl">No Accepted Offers Yet</p>
+              <p className="mt-5 text-gray-500">
+                Looks like you don&apos;t have any accepted offers yet. Check
+                back soon!
+              </p>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: "Completed",
       label: (
         <div className="flex gap-2">
           <div>Completed</div>
@@ -215,20 +281,44 @@ const AllOfferSampler = () => {
         </div>
       ),
       children: (
-        <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-5 items-center flex-wrap ">
-          {productData && productData.length > 0 ? (
-            productData.map(
-              (product) =>
-                product.status === "Completed Offer" && (
-                  <OfferCardSampler key={product.id} product={product} />
-                )
-            )
+        <div>
+          {getCampaignOffer && getCampaignOffer?.data?.result?.length > 0 ? (
+            <div>
+              <div className="grid  grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
+                {getCampaignOffer?.data?.result?.map((product) => (
+                  <OfferCardSampler
+                    key={product?._id}
+                    product={product}
+                    processing={true}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-center mt-5">
+                <Pagination
+                  current={page}
+                  onChange={(page) => setPage(page)}
+                  total={getCampaignOffer?.data?.meta?.total || 0}
+                  pageSize={limit}
+                  showSizeChanger={false}
+                  itemRender={(current, type, originalElement) => {
+                    if (type === "page") {
+                      return current;
+                    }
+                    return originalElement;
+                  }}
+                />
+              </div>
+            </div>
+          ) : campaignOfferLoading ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <Loader />
+            </div>
           ) : (
-            <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[60vh]">
+            <div className="text-center  flex flex-col items-center justify-center mx-auto py-10 w-full h-[60vh]">
               <p className="font-bold text-xl">No Completed Offers Yet</p>
               <p className="mt-5 text-gray-500">
-                Looks like you don&apos;t have any completed offers at the
-                moment. Check back soon!
+                Looks like you don&apos;t have any offers that are currently
+                being completed. Check back soon!
               </p>
             </div>
           )}
@@ -236,7 +326,62 @@ const AllOfferSampler = () => {
       ),
     },
     {
-      key: "4",
+      key: "Cancelled",
+      label: (
+        <div className="flex gap-2">
+          <div>Cancelled</div>
+          {/* <p className="text-red-400 rounded-full h-5 w-5 p-1.5 bg-red-100 border border-red-400 flex items-center justify-center">
+            1
+          </p> */}
+        </div>
+      ),
+      children: (
+        <div>
+          {getCampaignOffer && getCampaignOffer?.data?.result?.length > 0 ? (
+            <div>
+              <div className="grid  grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
+                {getCampaignOffer?.data?.result?.map((product) => (
+                  <OfferCardSampler
+                    key={product?._id}
+                    product={product}
+                    processing={true}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-center mt-5">
+                <Pagination
+                  current={page}
+                  onChange={(page) => setPage(page)}
+                  total={getCampaignOffer?.data?.meta?.total || 0}
+                  pageSize={limit}
+                  showSizeChanger={false}
+                  itemRender={(current, type, originalElement) => {
+                    if (type === "page") {
+                      return current;
+                    }
+                    return originalElement;
+                  }}
+                />
+              </div>
+            </div>
+          ) : campaignOfferLoading ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <Loader />
+            </div>
+          ) : (
+            <div className="text-center  flex flex-col items-center justify-center mx-auto py-10 w-full h-[60vh]">
+              <p className="font-bold text-xl">No Cancelled Offers Yet</p>
+              <p className="mt-5 text-gray-500">
+                Looks like you don&apos;t have any offers that are currently
+                being cancelled. Check back soon!
+              </p>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: "Expired",
       label: (
         <div className="flex gap-2">
           <div>Expired</div>
@@ -246,20 +391,44 @@ const AllOfferSampler = () => {
         </div>
       ),
       children: (
-        <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
-          {productData && productData.length > 0 ? (
-            productData.map(
-              (product) =>
-                product.status === "Offer Expired" && (
-                  <OfferCardSampler key={product.id} product={product} />
-                )
-            )
+        <div>
+          {getCampaignOffer && getCampaignOffer?.data?.result?.length > 0 ? (
+            <div>
+              <div className="grid  grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1  gap-5 items-center flex-wrap ">
+                {getCampaignOffer?.data?.result?.map((product) => (
+                  <OfferCardSampler
+                    key={product?._id}
+                    product={product}
+                    processing={true}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-center mt-5">
+                <Pagination
+                  current={page}
+                  onChange={(page) => setPage(page)}
+                  total={getCampaignOffer?.data?.meta?.total || 0}
+                  pageSize={limit}
+                  showSizeChanger={false}
+                  itemRender={(current, type, originalElement) => {
+                    if (type === "page") {
+                      return current;
+                    }
+                    return originalElement;
+                  }}
+                />
+              </div>
+            </div>
+          ) : campaignOfferLoading ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <Loader />
+            </div>
           ) : (
-            <div className="text-center  flex flex-col items-center justify-center py-10 w-full h-[60vh]">
+            <div className="text-center  flex flex-col items-center justify-center mx-auto py-10 w-full h-[60vh]">
               <p className="font-bold text-xl">No Expired Offers Yet</p>
               <p className="mt-5 text-gray-500">
-                Looks like you don&apos;t have any expired offers at the moment.
-                Check back soon!
+                Looks like you don&apos;t have any offers that are currently
+                being expired. Check back soon!
               </p>
             </div>
           )}
