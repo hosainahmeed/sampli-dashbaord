@@ -7,6 +7,7 @@ import {
   Card,
   Modal,
   Input,
+  Alert
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +19,7 @@ import stripeImage from "../../../assets/stripe.svg";
 import { IoIosAlert } from "react-icons/io";
 import { LuBadgeDollarSign } from "react-icons/lu";
 import toast from "react-hot-toast";
+import { usePostPaymentMutation } from "../../../Redux/sampler/paymentApis";
 
 const { Option } = Select;
 const TransectionOfBusiness = () => {
@@ -33,7 +35,8 @@ const TransectionOfBusiness = () => {
   const [paymentModal, showPaymentModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   // const [isModalVisible, setIsModalVisible] = useState(false)
-
+  const [createPayment, { isLoading: paymentLoading }] =
+    usePostPaymentMutation();
   const navigate = useNavigate();
   const handleDateChange = (dates, dateStrings) => {
     setSelectedDateRange(dateStrings);
@@ -128,13 +131,12 @@ const TransectionOfBusiness = () => {
       key: "status",
       render: (status) => (
         <span
-          className={`${
-            status === "Successful"
-              ? "bg-gray-100 text-green-500"
-              : status === "Processing"
+          className={`${status === "Successful"
+            ? "bg-gray-100 text-green-500"
+            : status === "Processing"
               ? "bg-gray-100 text-purple-700"
               : "bg-gray-100 text-red-500"
-          } p-1 rounded-md text-sm`}
+            } p-1 rounded-md text-sm`}
         >
           {status}
         </span>
@@ -146,7 +148,20 @@ const TransectionOfBusiness = () => {
       key: "refId",
     },
   ];
-
+  const setUpOnBoarding = async () => {
+    try {
+      await createPayment().unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message || "Link created successfully")
+          window.open(res?.data, "_self");
+          setIsGetPaidModalVisible(false);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error?.message || "Something went wrong");
+    }
+  };
   return (
     <div className="">
       <div
@@ -283,7 +298,7 @@ const TransectionOfBusiness = () => {
 
       <Modal
         title="Add withdrawal method"
-        visible={paymentModal}
+        open={paymentModal}
         onCancel={() => showPaymentModal(!paymentModal)}
         footer={null}
         width={500}
@@ -306,7 +321,7 @@ const TransectionOfBusiness = () => {
           style={{ marginBottom: "16px" }}
         />
 
-        <Card>
+        {/* <Card>
           <div className="flex justify-between items-center  ">
             <section>
               <div className="flex items-center">
@@ -329,7 +344,7 @@ const TransectionOfBusiness = () => {
               </Button>
             </div>
           </div>
-        </Card>
+        </Card> */}
 
         <Card className="!mt-5">
           <div className="flex justify-between items-center ">
@@ -349,7 +364,8 @@ const TransectionOfBusiness = () => {
             <div>
               <Button
                 type="primary"
-                // onClick={showModalGetPaid}
+                loading={paymentLoading}
+                onClick={() => setUpOnBoarding()}
                 className="!flex !items-center !justify-center gap-2"
               >
                 Setup
@@ -362,7 +378,7 @@ const TransectionOfBusiness = () => {
 
       <Modal
         title="Get paid"
-        open={isGetPaidModalVisible}
+        visible={isGetPaidModalVisible}
         onCancel={handleCancelGetPaid}
         footer={null}
         width={500}
