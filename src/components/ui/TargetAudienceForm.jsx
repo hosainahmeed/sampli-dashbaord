@@ -13,7 +13,7 @@ const DynamicSelect = ({ label, options, placeholder, onChange, value, ...rest }
       <label className="block text-sm font-medium text-gray-700">{label}</label>
     )}
     <Select
-      placeholder={placeholder}
+      placeholder={placeholder || 'Select an option'}
       className="w-full"
       required
       value={value}
@@ -82,8 +82,13 @@ const TargetAudienceForm = () => {
   };
 
   const handleSubmit = () => {
-    if (!formData.name || !formData.amountForEachReview || !formData.numberOfReviewers) {
-      toast.error('Please fill in all required fields');
+    const requiredFields = ['name', 'amountForEachReview', 'numberOfReviewers', 'location', 'minAge', 'maxAge', 'gender', 'startDate', 'endDate'];
+    if (requiredFields.some(field => !formData[field])) {
+      toast.dismiss()
+      const missingFields = requiredFields.filter(field => !formData[field]);
+      const plural = missingFields.length > 1;
+      const errorMessage = `Please fill in the ${plural ? 'fields' : 'field'} ${missingFields.map(field => `"${field}"`).join(', ')}`;
+      toast.error(errorMessage);
       return;
     }
 
@@ -152,7 +157,7 @@ const TargetAudienceForm = () => {
           <DynamicSelect
             label="Age Min Range"
             placeholder="Min age"
-            options={Array.from({ length: 100 }, (_, i) => ({ label: `${i + 1}`, value: i + 1 }))}
+            options={Array.from({ length: 83 }, (_, i) => ({ label: `${i + 18}`, value: i + 18 }))}
             required
             value={formData.minAge}
             onChange={(value) => handleChange('minAge', value)}
@@ -160,7 +165,7 @@ const TargetAudienceForm = () => {
           <DynamicSelect
             label="Age Max Range"
             placeholder="Max age"
-            options={Array.from({ length: 100 }, (_, i) => ({ label: `${i + 1}`, value: i + 1 }))}
+            options={Array.from({ length: 83 }, (_, i) => ({ label: `${i + 18}`, value: i + 18 }))}
             required
             value={formData.maxAge}
             onChange={(value) => handleChange('maxAge', value)}

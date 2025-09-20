@@ -9,46 +9,48 @@ import ContactInformationCustomer from "../../../components/business-product-det
 import ShippingAddressCustomer from "../../../components/business-product-details/ShippingAddressCustomer";
 import BillingAddressCustomer from "../../../components/business-product-details/BillingAddressCustomer";
 import { GoLinkExternal } from "react-icons/go";
+import { useGetOrderDetailsByIdQuery } from "../../../Redux/sampler/orderApis";
 
 const { Text, Title } = Typography;
 
 function OrderDetails() {
   const location = useLocation();
-  const orderDetails = location.state;
+  const { orderId } = location.state;
+  const { data: orderDetails } = useGetOrderDetailsByIdQuery(orderId, { skip: !orderId });
   console.log(orderDetails);
-  const { amount, customer, date, orderId, product, status } = orderDetails;
-  const order = {
-    id: orderId,
-    status: status,
-    date: date,
-    image:
-      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
-    name: product,
-    variant: "Medium Black",
-    price: amount,
-    quantity: 1,
-    subtotal: 50.0,
-    shipping: 50.0,
-    total: 50.0,
-    timeline: [
-      { status: "Order processed", date: "23, Oct 2023", completed: true },
-      { status: "Payment Confirmed", date: "23, Oct 2023", completed: true },
-      { status: "Item shipped", date: "23, Oct 2023", completed: false },
-      { status: "Delivered", date: "23, Oct 2023", completed: false },
-    ],
-    customer: customer,
-    email: "MichaelScott@gmail.com",
-    phone: "",
-    shippingAddress: {
-      name: customer,
-      address: "rampura dhaka bangladesh",
-      phone: "+16278847",
-    },
-  };
+  // const { amount, customer, date, product, status } = orderDetails;
+  // const order = {
+  //   id: orderId,
+  //   status: status,
+  //   date: date,
+  //   image:
+  //     "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+  //   name: product,
+  //   variant: "Medium Black",
+  //   price: amount,
+  //   quantity: 1,
+  //   subtotal: 50.0,
+  //   shipping: 50.0,
+  //   total: 50.0,
+  //   timeline: [
+  //     { status: "Order processed", date: "23, Oct 2023", completed: true },
+  //     { status: "Payment Confirmed", date: "23, Oct 2023", completed: true },
+  //     { status: "Item shipped", date: "23, Oct 2023", completed: false },
+  //     { status: "Delivered", date: "23, Oct 2023", completed: false },
+  //   ],
+  //   customer: customer,
+  //   email: "MichaelScott@gmail.com",
+  //   phone: "",
+  //   shippingAddress: {
+  //     name: customer,
+  //     address: "rampura dhaka bangladesh",
+  //     phone: "+16278847",
+  //   },
+  // };
   const navigate = useNavigate();
   return (
     <div className=" p-6">
-      <div
+      {/* <div
         className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-black transition-all"
         onClick={() => navigate(-1)}
       >
@@ -105,7 +107,7 @@ function OrderDetails() {
           <ShippingAddressCustomer order={order} />
           <BillingAddressCustomer order={order} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

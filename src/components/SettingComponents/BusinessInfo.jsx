@@ -58,9 +58,9 @@ function BusinessInfo() {
               className="col-span-2"
             />
             <InputField
-              label="Trade Name (Optional)"
+              label="DBA (Doing Business As) (Optional)"
               name="tradeName"
-              placeholder="Enter trade name"
+              placeholder="Enter DBA"
               className="col-span-2"
             />
             <SelectField

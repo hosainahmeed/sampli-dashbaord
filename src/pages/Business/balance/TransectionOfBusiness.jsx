@@ -191,7 +191,7 @@ const TransectionOfBusiness = () => {
               className="flex items-center justify-center"
               type="primary"
             >
-              Get paid now
+              Withdraw
             </Button>
           </div>
         </div>

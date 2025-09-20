@@ -193,3 +193,7 @@ body::-webkit-scrollbar {
   font-weight: 600 !important;
   background: #000;
 }
+
+body {
+  scroll-behavior: smooth;
+}
