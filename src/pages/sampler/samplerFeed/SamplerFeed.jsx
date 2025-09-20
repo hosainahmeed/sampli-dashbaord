@@ -237,7 +237,7 @@ const SamplerFeed = () => {
             </div>
             <div>
               <div className="font-semibold  ">
-                {profileData?.totalFollowing}
+                {profileData?.totalReferralSales}
               </div>
               <div className="text-gray-500 ">Referrals</div>
             </div>

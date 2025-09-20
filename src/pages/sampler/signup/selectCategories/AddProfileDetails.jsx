@@ -1,171 +1,173 @@
-import { Form, Image, Input, Upload } from 'antd'
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
-import image1 from '/public/randomImage/118.png'
-import image2 from '/public/randomImage/120.png'
-import image3 from '/public/randomImage/121.png'
-import image4 from '/public/randomImage/123.png'
-import image5 from '/public/randomImage/125.png'
-import { useUpdateProfileApisMutation } from '../../../../Redux/sampler/profileApis'
+import { Form, Image, Input, Upload } from "antd";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import image1 from "/public/randomImage/118.png";
+import image2 from "/public/randomImage/120.png";
+import image3 from "/public/randomImage/121.png";
+import image4 from "/public/randomImage/123.png";
+import image5 from "/public/randomImage/125.png";
+import { useUpdateProfileApisMutation } from "../../../../Redux/sampler/profileApis";
 
-const images = [image1, image2, image3, image4, image5]
+const images = [image1, image2, image3, image4, image5];
 
 const AddProfileDetails = ({ prev, next }) => {
-  const [fileList, setFileList] = useState([])
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null)
-  const [uploading, setUploading] = useState(false)
+  const [fileList, setFileList] = useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
-  const [updateProfile, { isLoading }] = useUpdateProfileApisMutation()
+  const [updateProfile, { isLoading }] = useUpdateProfileApisMutation();
 
   const onPreview = async (file) => {
-    let src = file.url
+    let src = file.url;
     if (!src) {
       src = await new Promise((resolve) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file.originFileObj)
-        reader.onload = () => resolve(reader.result)
-      })
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
     }
-    const image = new Image()
-    image.src = src
-    const imgWindow = window.open(src)
-    imgWindow?.document.write(image.outerHTML)
-  }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
 
   const beforeUpload = (file) => {
-    const isLt500KB = file.size / 1024 < 500
+    const isLt500KB = file.size / 1024 < 500;
     if (!isLt500KB) {
-      toast.error('Avatar image must be under 500KB')
-      return false
+      toast.error("Avatar image must be under 500KB");
+      return false;
     }
 
     if (isLt500KB) {
-      setSelectedImageIndex(null)
+      setSelectedImageIndex(null);
     }
-    return false 
-  }
+    return false;
+  };
 
   const onChange = ({ fileList: newFileList }) => {
     if (newFileList.length > 0) {
-      setSelectedImageIndex(null)
+      setSelectedImageIndex(null);
     }
-    setFileList(newFileList)
-  }
+    setFileList(newFileList);
+  };
 
   const selectDefaultImage = (index) => {
-    setFileList([])
-    setSelectedImageIndex(index)
-  }
+    setFileList([]);
+    setSelectedImageIndex(index);
+  };
   const uploadImageFile = async (file) => {
-    const formData = new FormData()
-    formData.append('profile_image', file)
+    const formData = new FormData();
+    formData.append("profile_image", file);
 
     try {
-      setUploading(true)
+      setUploading(true);
 
-      const response = await updateProfile(formData).unwrap()
+      const response = await updateProfile(formData).unwrap();
 
-      toast.success('Image uploaded successfully!')
-      return response
+      // toast.success("Image uploaded successfully!");
+      return response;
     } catch (error) {
-      console.error('Upload error:', error)
-      toast.error('Failed to upload image')
-      throw error
+      console.error("Upload error:", error);
+      toast.error("Failed to upload image");
+      throw error;
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   // Convert default image to File object for FormData
   const getDefaultImageAsFile = async (imageIndex) => {
     try {
-      const response = await fetch(images[imageIndex])
-      const blob = await response.blob()
-      const filename = `default-avatar-${imageIndex + 1}.png`
-      return new File([blob], filename, { type: blob.type })
+      const response = await fetch(images[imageIndex]);
+      const blob = await response.blob();
+      const filename = `default-avatar-${imageIndex + 1}.png`;
+      return new File([blob], filename, { type: blob.type });
     } catch (error) {
-      console.error('Error converting default image:', error)
-      throw error
+      console.error("Error converting default image:", error);
+      throw error;
     }
-  }
+  };
 
   const handleFormSubmit = async (values) => {
     try {
-      setUploading(true)
-      let uploadResult = null
-      let avatarData = null
+      setUploading(true);
+      let uploadResult = null;
+      let avatarData = null;
 
       if (selectedImageIndex !== null) {
-        const defaultImageFile = await getDefaultImageAsFile(selectedImageIndex)
-        uploadResult = await uploadImageFile(defaultImageFile)
+        const defaultImageFile = await getDefaultImageAsFile(
+          selectedImageIndex
+        );
+        uploadResult = await uploadImageFile(defaultImageFile);
         avatarData = {
-          type: 'default',
+          type: "default",
           imageIndex: selectedImageIndex,
           imagePath: images[selectedImageIndex],
           uploadedUrl: uploadResult?.url || uploadResult?.data?.url || null,
-        }
+        };
       } else if (fileList.length > 0) {
-        const customFile = fileList[0].originFileObj || fileList[0]
-        uploadResult = await uploadImageFile(customFile)
+        const customFile = fileList[0].originFileObj || fileList[0];
+        uploadResult = await uploadImageFile(customFile);
         avatarData = {
-          type: 'custom',
+          type: "custom",
           fileName: customFile.name,
           fileSize: customFile.size,
           uploadedUrl: uploadResult?.url || uploadResult?.data?.url || null,
-        }
+        };
       }
 
-      const profileFormData = new FormData()
-      profileFormData.append('bio', values.bio)
+      const profileFormData = new FormData();
+      profileFormData.append("bio", values.bio);
 
       if (avatarData) {
-        profileFormData.append('avatarData', JSON.stringify(avatarData))
+        profileFormData.append("avatarData", JSON.stringify(avatarData));
         if (avatarData.uploadedUrl) {
-          profileFormData.append('avatarUrl', avatarData.uploadedUrl)
+          profileFormData.append("avatarUrl", avatarData.uploadedUrl);
         }
         // Also append the image type for backend processing
-        profileFormData.append('avatarType', avatarData.type)
-        if (avatarData.type === 'default') {
+        profileFormData.append("avatarType", avatarData.type);
+        if (avatarData.type === "default") {
           profileFormData.append(
-            'defaultImageIndex',
+            "defaultImageIndex",
             avatarData.imageIndex.toString()
-          )
+          );
         }
       }
 
-      console.log('Profile FormData prepared:', {
+      console.log("Profile FormData prepared:", {
         bio: values.bio,
         avatarData,
         uploadResult,
-      })
+      });
 
       // Send the complete profile data
       try {
-        const finalResult = await updateProfile(profileFormData).unwrap()
-        console.log('Final profile update result:', finalResult)
-        toast.success('Profile updated successfully!')
-        next()
+        const finalResult = await updateProfile(profileFormData).unwrap();
+        console.log("Final profile update result:", finalResult);
+        toast.success("Profile updated successfully!");
+        next();
       } catch (profileError) {
-        console.error('Profile update error:', profileError)
-        toast.error('Failed to update profile')
+        console.error("Profile update error:", profileError);
+        toast.error("Failed to update profile");
       }
     } catch (error) {
-      console.error('Error submitting form:', error)
-      toast.error('Failed to update profile')
+      console.error("Error submitting form:", error);
+      toast.error("Failed to update profile");
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   const customUpload = async ({ onSuccess, onError }) => {
     try {
-      onSuccess('ok')
+      onSuccess("ok");
     } catch (error) {
-      onError(error)
+      onError(error);
     }
-  }
+  };
 
-  const isProcessing = uploading || isLoading
+  const isProcessing = uploading || isLoading;
 
   return (
     <Form
@@ -187,9 +189,9 @@ const AddProfileDetails = ({ prev, next }) => {
                   onClick={() => !isProcessing && selectDefaultImage(index)}
                   className={`w-24 h-24 rounded-full overflow-hidden border cursor-pointer transition-all ${
                     selectedImageIndex === index
-                      ? 'border-blue-500 border-4 scale-105'
-                      : 'border-gray-300'
-                  } ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      ? "border-blue-500 border-4 scale-105"
+                      : "border-gray-300"
+                  } ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <img
                     src={imgSrc}
@@ -300,7 +302,7 @@ const AddProfileDetails = ({ prev, next }) => {
           <Form.Item
             name="bio"
             label="Add a bio"
-            rules={[{ required: true, message: 'Please enter your bio' }]}
+            rules={[{ required: false, message: "Please enter your bio" }]}
           >
             <Input.TextArea
               maxLength={120}
@@ -323,12 +325,12 @@ const AddProfileDetails = ({ prev, next }) => {
             className="cursor-pointer hover:!text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : 'Next'}
+            {isProcessing ? "Processing..." : "Next"}
           </button>
         </div>
       </div>
     </Form>
-  )
-}
+  );
+};
 
-export default AddProfileDetails
+export default AddProfileDetails;

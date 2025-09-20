@@ -50,6 +50,8 @@ const EarningsSampler = () => {
       setIsGetPaidModalVisible(false);
     } catch (error) {
       console.log(error);
+
+      //a
     }
   };
 
@@ -75,7 +77,7 @@ const EarningsSampler = () => {
               onClick={showModal}
               className="bg-blue-500 cursor-pointer !text-[14px] !text-white px-4 py-3 rounded-lg hover:bg-blue-600"
             >
-              + Get paid now
+              + Get Paid Now
             </button>
           </div>
         </div>
