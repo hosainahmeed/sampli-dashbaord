@@ -11,6 +11,8 @@ import toast from "react-hot-toast";
 import { useLoginMutation } from "../../Redux/authApis";
 
 import { jwtDecode } from "jwt-decode";
+import GoogleAuthButton from "../../googleAuthButton/GoogleAuthButton";
+import { FaApple } from "react-icons/fa6";
 
 const { Title } = Typography;
 
@@ -28,7 +30,7 @@ const LoginForm = () => {
                 const token = res?.data?.accessToken;
                 const decoded = jwtDecode(token);
                 localStorage.setItem("token", token);
-                console.log(decoded?.role)
+                console.log(decoded?.role);
                 if (decoded?.role === "reviewer") {
                   toast.success(res?.message);
                   if (window !== undefined) {
@@ -122,16 +124,21 @@ const LoginForm = () => {
         </FormWrapper>
 
         <Divider>Or Login with</Divider>
-        <div className="grid grid-cols-3 h-16 gap-2 space-x-4">
-          <button className="px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <AppleOutlined className="text-2xl" />
-          </button>
-          <button className="px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <GoogleOutlined className="text-2xl" />
-          </button>
-          <button className="px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <TiSocialFacebook className="text-2xl" />
-          </button>
+        <div>
+          <div className="flex items-center justify-center gap-1   text-sm px-6 py-2 rounded-md cursor-pointer">
+            <div className="border flex px-3 py-2 rounded-4xl border-gray-200 items-center justify-center gap-1">
+              <FaApple className="!text-2xl " />{" "}
+              <span className="text-gray-600">Continue with Apple</span>
+            </div>
+          </div>
+          <GoogleAuthButton />
+
+          <div className="flex items-center justify-center gap-1   text-sm px-6 py-2 rounded-md cursor-pointer">
+            <div className="border flex px-3 py-2 rounded-4xl border-gray-200 items-center justify-center gap-1">
+              <TiSocialFacebook className="!text-2xl " />{" "}
+              <span className="text-gray-600">Continue with Facebook</span>
+            </div>
+          </div>
         </div>
 
         <div className="mt-4 text-gray-500">
