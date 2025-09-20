@@ -7,29 +7,24 @@ import {
   Card,
   Modal,
   Input,
-  Alert
+  Alert,
+  Skeleton
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { FaAngleLeft, FaExternalLinkAlt } from "react-icons/fa";
 import bank from "../../../assets/bank.svg";
 import { BsExclamationOctagon } from "react-icons/bs";
-import paypalImage from "../../../assets/paypal.svg";
+// import paypalImage from "../../../assets/paypal.svg";
 import stripeImage from "../../../assets/stripe.svg";
 import { IoIosAlert } from "react-icons/io";
 import { LuBadgeDollarSign } from "react-icons/lu";
 import toast from "react-hot-toast";
 import { usePostPaymentMutation } from "../../../Redux/sampler/paymentApis";
-
-const { Option } = Select;
+import TransectionTableOfBusiness from "./TransectionTableOfBusiness";
+import { useGetBusinessMetaQuery } from "../../../Redux/businessApis/meta/bussinessMetaApis";
 const TransectionOfBusiness = () => {
-  const [filters, setFilters] = useState({
-    dateRange: "",
-    category: "",
-    status: "",
-  });
-  const balance = 200;
-  const pending = 0;
+  const { data: businessMeta, isLoading: businessMetaLoading } = useGetBusinessMetaQuery();
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [paymentModal, showPaymentModal] = useState(false);
@@ -55,99 +50,6 @@ const TransectionOfBusiness = () => {
     console.log("Selected Date Range: ", selectedDateRange);
   };
 
-  const transactionData = [
-    {
-      key: "1",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
-      amount: 5,
-      status: "Successful",
-      refId: "709692663",
-    },
-    {
-      key: "2",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
-      amount: 5,
-      status: "Successful",
-      refId: "709692663",
-    },
-    {
-      key: "3",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
-      amount: 5,
-      status: "Processing",
-      refId: "709692663",
-    },
-    {
-      key: "4",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
-      amount: 5,
-      status: "Successful",
-      refId: "709692663",
-    },
-    {
-      key: "5",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
-      amount: 5,
-      status: "Cancelled",
-      refId: "709692663",
-    },
-    {
-      key: "6",
-      date: "23 Mar, 2024",
-      item: "Mini Portable Refillable Sprayer Atomizer",
-      amount: 5,
-      status: "Cancelled",
-      refId: "709692663",
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      render: (date) => <span className="text-[#999Eab]">{date}</span>,
-      key: "date",
-    },
-    {
-      title: "Item",
-      dataIndex: "item",
-      render: (item) => <span className="text-[#111] underline">{item}</span>,
-      key: "item",
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-      render: (amount) => <p className="text-[#6D7486]">{` - $${amount}`}</p>,
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => (
-        <span
-          className={`${status === "Successful"
-            ? "bg-gray-100 text-green-500"
-            : status === "Processing"
-              ? "bg-gray-100 text-purple-700"
-              : "bg-gray-100 text-red-500"
-            } p-1 rounded-md text-sm`}
-        >
-          {status}
-        </span>
-      ),
-    },
-    {
-      title: "Ref ID",
-      dataIndex: "refId",
-      key: "refId",
-    },
-  ];
   const setUpOnBoarding = async () => {
     try {
       await createPayment().unwrap().then((res) => {
@@ -180,13 +82,19 @@ const TransectionOfBusiness = () => {
               <h1 className="text-[14px] !mt-3">Available balance</h1>
             </div>
             <div className="flex items-center gap-2">
-              <h2 className="text-[32px] font-black">${balance.toFixed(2)}</h2>
-              <h4 className="text-sm">${pending.toFixed(2)} pending</h4>
+              {businessMetaLoading ?
+                <Skeleton.Input size="default" />
+                :
+                <h2 className="text-[32px] font-black">${businessMeta?.data?.currentBalance.toFixed(2)}</h2>
+              }
+              {/* <h4 className="text-sm">${businessMeta?.data?.pendingBalance.toFixed(2)} pending</h4> */}
               <BsExclamationOctagon size={10} />
             </div>
           </div>
           <div>
             <Button
+              loading={businessMetaLoading}
+              disabled={businessMetaLoading}
               onClick={() => showPaymentModal(!paymentModal)}
               className="flex items-center justify-center"
               type="primary"
@@ -205,95 +113,7 @@ const TransectionOfBusiness = () => {
       </div>
       <div className="text-2xl font-semibold !my-6">Transaction History</div>
       <div className="mt-7">
-        <div className="flex justify-between gap-6">
-          <div className="flex gap-6 mb-6">
-            <div>
-              <Select
-                className="w-40"
-                placeholder="Date range"
-                onChange={(value) =>
-                  setFilters({ ...filters, dateRange: value })
-                }
-              >
-                <Option value="lastWeek">Last Week</Option>
-                <Option value="lastMonth">Last Month</Option>
-                <Option value="thisMonth">This Month</Option>
-                <Option value="allTimeDate">All Time</Option>
-                <Option value="customDateRange">Custom date range</Option>
-              </Select>
-
-              {filters.dateRange === "customDateRange" && (
-                <div className="mt-5 ">
-                  <div className="flex gap-6">
-                    <div className="w-40">
-                      <p className="!mb-1 !text-sm text-gray-600">From</p>
-                      <DatePicker
-                        format="MMM D, YYYY"
-                        style={{ width: "100%" }}
-                        onChange={handleDateChange}
-                      />
-                    </div>
-                    <div className="w-40">
-                      <p className="!mb-1 !text-sm text-gray-600">To</p>
-                      <DatePicker
-                        format="MMM D, YYYY"
-                        style={{ width: "100%" }}
-                        onChange={handleDateChange}
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    type="primary"
-                    onClick={handleApply}
-                    className="w-full mt-6"
-                    style={{
-                      fontSize: "16px",
-                      marginTop: "10px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Apply
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            <Select
-              className="w-40"
-              placeholder="All category"
-              onChange={(value) => setFilters({ ...filters, category: value })}
-            >
-              <Option value="allCategory">All</Option>
-              <Option value="reviewRewards">Review rewards</Option>
-              <Option value="salesCommission">Sales commission</Option>
-            </Select>
-
-            <Select
-              className="w-40"
-              placeholder="All status"
-              onChange={(value) => setFilters({ ...filters, status: value })}
-            >
-              <Option value="successful">Successful</Option>
-              <Option value="processing">Processing</Option>
-              <Option value="cancelled">Cancelled</Option>
-            </Select>
-          </div>
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            className="ml-auto !bg-transparent border !border-blue-500 !hover:bg-blue-600 !text-blue-500"
-          >
-            Download CSV
-          </Button>
-        </div>
-
-        <Table
-          columns={columns}
-          dataSource={transactionData}
-          rowKey="key"
-          pagination={false}
-        />
+        <TransectionTableOfBusiness />
       </div>
 
       <Modal
