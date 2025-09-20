@@ -84,13 +84,13 @@ function Header() {
       </Menu.Item>
       <Menu.Item
         className="md:block hidden"
-        key="3"
+        key="4"
         icon={<IoMdNotificationsOutline />}
       >
         <Link to="/all-notifications">Notification</Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="4" icon={<LogoutOutlined />} onClick={handleSignOut}>
+      <Menu.Item key="5" icon={<LogoutOutlined />} onClick={handleSignOut}>
         Log out
       </Menu.Item>
       <div className="text-center text-gray-400 text-sm p-2">v1.10</div>

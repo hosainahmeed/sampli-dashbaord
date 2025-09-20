@@ -1,12 +1,22 @@
 import React from 'react';
 import { Button, Card } from 'antd';
 import { Link } from 'react-router-dom';
+import { useGetBusinessMetaQuery } from '../../Redux/businessApis/meta/bussinessMetaApis';
 
 function SalseState() {
+  const { data: businessMeta, isLoading: businessMetaLoading } = useGetBusinessMetaQuery();
+
+  if (businessMetaLoading) {
+    return <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <Card loading key={index} />
+      ))}
+    </div>;
+  }
   const data = [
     {
       title: 'Available balance',
-      number: '12450',
+      number: parseFloat(businessMeta?.data?.currentBalance).toFixed(2),
       btn: (
         <Link to={'/business/transaction-balance'}>
           <Button>See Balance</Button>
@@ -15,39 +25,39 @@ function SalseState() {
     },
     {
       title: 'Total Orders',
-      number: 12450,
+      number: parseInt(businessMeta?.data?.totalOrder),
     },
     {
       title: 'Checkout Rate',
-      number: '45%',
+      number: `${parseFloat(businessMeta?.data?.checkoutRate).toFixed(2)}%`,
     },
   ];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-      {data.map((item, index) => (
+      {data?.map((item, index) => (
         <Card key={index} className="p-4">
           <div className="flex xl:items-end flex-col xl:flex-row justify-between">
             <div className="flex items-start justify-between flex-col h-full">
               <h2 className="text-lg font-medium uppercase text-[var(--body-text)]">
-                {item.title}
+                {item?.title}
               </h2>
               <p className="text-xl font-bold">
-                {item.title === 'Available balance' ? (
-                  <h1 className='text-3xl flex items-center'>
+                {item?.title === 'Available balance' ? (
+                  <h1 className='text-3xl flex gap-2 items-center'>
                     <span className="text-[#6D7486] text-xl">$</span>
-                    {new Intl.NumberFormat().format(parseInt(item.number))}
+                    {new Intl.NumberFormat().format(parseInt(item?.number))}
                   </h1>
-                ) : item.title === 'Checkout Rate' ? (
-                  <h1 className="text-3xl">{item.number}</h1>
+                ) : item?.title === 'Checkout Rate' ? (
+                  <h1 className="text-3xl">{item?.number}</h1>
                 ) : (
                   <h1 className="text-3xl">
-                    {new Intl.NumberFormat().format(parseInt(item.number))}
+                    {new Intl.NumberFormat().format(parseInt(item?.number))}
                   </h1>
                 )}
               </p>
             </div>
-            <div>{item.btn && item.btn}</div>
+            <div>{item?.btn && item?.btn}</div>
           </div>
         </Card>
       ))}

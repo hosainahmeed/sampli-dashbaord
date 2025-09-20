@@ -1,29 +1,47 @@
-import React from "react";
-import { jwtDecode } from "jwt-decode";
+import React, { useState, useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Spin } from "antd";
+import { jwtDecode } from "jwt-decode";
+
 
 function ProtectedRoute({ children }) {
+  const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("token");
   const location = useLocation();
-  const router = useNavigate();
-  if (!token) {
-    router("/login");
-  }
-  const decodedToken = token ? jwtDecode(token) : null;
+  const navigate = useNavigate();
 
-  if (location.pathname === "/") {
-    console.log(decodedToken?.role);
-    if (window !== undefined) {
+
+  useEffect(() => {
+    if (!token) {
+      setIsLoading(false);
+      navigate("/login");
+      return;
+    }
+
+    const decodedToken = jwtDecode(token);
+
+    if (location.pathname === "/") {
       if (decodedToken?.role === "bussinessOwner") {
         window.location.href = "/business-dashboard";
-      }
-      if (decodedToken?.role === "reviewer") {
+      } else if (decodedToken?.role === "reviewer") {
         window.location.href = "/sampler/campaign";
+      } else {
+        setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
+  }, [token, location.pathname, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
   }
 
-  return decodedToken ? children : <Navigate to="/login" />;
+  return token ? children : <Navigate to="/login" />;
 }
 
 export default ProtectedRoute;
