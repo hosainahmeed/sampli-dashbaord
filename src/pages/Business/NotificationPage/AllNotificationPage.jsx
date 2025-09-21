@@ -9,54 +9,12 @@ import {
   FaVideo,
   FaThumbsUp,
 } from "react-icons/fa";
-import { Button, Card } from "antd";
+import { Button, Card, Empty, Tooltip } from "antd";
 import { CiSettings } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useNotificationPageQuery } from "../../../Redux/businessApis/business_notifications/notificationPageApis";
+import toast from "react-hot-toast";
 
-// Dummy data (following backend INotification type)
-const dummyNotifications = [
-  {
-    receiver: "user123",
-    type: "likeOnPost",
-    title: "Someone liked your post",
-    message: "John liked your review on 'Summer Dress A-Line'",
-    data: { reviewId: "123456" },
-    isRead: false,
-    time: "10 min ago",
-  },
-  {
-    receiver: "user123",
-    type: "review",
-    title: "New Product Review Posted",
-    message: 'Sarah K. posted a video review for "Summer Dress A-Line"',
-    data: { reviewId: "654321" },
-    isRead: false,
-    time: "1 hour ago",
-  },
-  {
-    receiver: "user123",
-    type: "payment",
-    title: "Payment Processed",
-    message: "Monthly reviewer payments processed successfully",
-    data: { amount: 200 },
-    isRead: true,
-    time: "2 hours ago",
-  },
-  {
-    receiver: "user123",
-    type: "orderNotification",
-    title: "New Store Order",
-    message: "Order #12345 received for 3 items worth $150",
-    data: {
-      orderId: "999",
-      product: { id: "111", name: "T-shirt", quantity: 3 },
-    },
-    isRead: false,
-    time: "3 hours ago",
-  },
-];
-
-// helper: map type → icon
 const getIcon = (type) => {
   switch (type) {
     case "likeOnPost":
@@ -76,32 +34,38 @@ const getIcon = (type) => {
   }
 };
 
-// helper: map type → actions
-const getActions = (type) => {
+const getActions = (type, isRead) => {
   switch (type) {
     case "likeOnPost":
-      return ["View Stats", "Mark as read"];
+      return ["View Stats", isRead ? "Marked as read" : "Mark as read"];
     case "review":
-      return ["Watch Review", "Mark as read"];
+      return ["Watch Review", isRead ? "Marked as read" : "Mark as read"];
     case "orderNotification":
-      return ["View Order", "Mark as read"];
+      return ["View Order", isRead ? "Marked as read" : "Mark as read"];
     case "payment":
-      return ["See details"];
+      return ["See details", isRead ? "Marked as read" : "Mark as read"];
     default:
-      return ["Mark as read"];
+      return [isRead ? "Marked as read" : "Mark as read"];
   }
 };
 
 const AllNotificationPage = () => {
-  const [notifications, setNotifications] = useState(dummyNotifications);
-
-  // mark all likes as read
-  const markLikesAsRead = () => {
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n.type === "likeOnPost" ? { ...n, isRead: true } : n
-      )
-    );
+  const [limit, setLimit] = useState(10)
+  const { data: notificationRes, isLoading: notificationLoading } = useNotificationPageQuery({ limit })
+  const navigate = useNavigate()
+  
+  const handleAction = (type, orderId, action) => {
+    if (type === "likeOnPost" && action === "Mark as read") {
+      toast.success("Marked as read");
+    } else if (type === "review" && action === "Mark as read") {
+      toast.success("Marked as read");
+    } else if (type === "orderNotification" && action === "View Order") {
+      navigate("/sales/single-order", { state: { orderId } });
+    } else if (type === "payment" && action === "See details") {
+      toast.success("Marked as read");
+    } else {
+      toast.success("Marked as read");
+    }
   };
 
   const categories = [
@@ -114,13 +78,13 @@ const AllNotificationPage = () => {
   ];
 
   return (
-    <div className="w-full container mx-auto p-4">
+    <div className="w-full h-[calc(100vh-10rem)] container mx-auto p-4">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Notifications</h1>
         <div className="flex gap-2">
-          <Button variant="link" className="text-blue-500" onClick={markLikesAsRead}>
-            Mark all Likes as read
+          <Button variant="link" className="text-blue-500">
+            Mark all as read
           </Button>
           <Link to={"/settings"} state={{ tab: "notifications" }}>
             <Button variant="outline" className="flex items-center gap-2">
@@ -146,51 +110,57 @@ const AllNotificationPage = () => {
       </div>
 
       {/* Notifications list */}
-      <Card className="p-4">
+      <Card loading={notificationLoading} className="p-4">
         <div className="divide-y divide-gray-200">
-          {notifications.map((item, index) => (
+          {notificationRes?.data?.result?.length > 0 ? notificationRes?.data?.result?.map((item, index) => (
             <div
               key={index}
-              className={`py-4 flex items-start gap-4 ${item.isRead ? "opacity-60" : ""
+              className={`py-4 flex items-start gap-4 ${item?.isRead ? "opacity-60" : ""
                 }`}
             >
               <div className="text-xl flex-shrink-0">
-                {getIcon(item.type)}
+                {getIcon(item?.type)}
               </div>
               <div className="flex-grow">
-                <h3 className="font-medium">{item.title}</h3>
-                <p className="text-gray-600">{item.message}</p>
+                <h3 className="font-medium">{item?.title}</h3>
+                <p className="text-gray-600">{item?.message}</p>
 
                 <div className="flex gap-2">
-                  {getActions(item.type).map((action, actionIndex) => (
+                  {getActions(item?.type, item?.isRead).map((action, actionIndex) => (
                     <Button
                       key={actionIndex}
                       variant="link"
+                      type={item?.isRead ? "default" : "primary"}
                       className="text-blue-500 h-auto p-0"
-                      onClick={() => {
-                        if (action === "Mark as read") {
-                          setNotifications((prev) =>
-                            prev.map((n, i) =>
-                              i === index ? { ...n, isRead: true } : n
-                            )
-                          );
-                        }
-                      }}
+                      onClick={() => handleAction(item?.type, item?.data?.orderId, action)}
+                    //TODO: onclick mark as read
                     >
                       {action}
                     </Button>
                   ))}
                 </div>
               </div>
-              <span className="text-gray-400 text-sm">{item.time}</span>
+              <span className="text-gray-400 text-sm">{item?.time}</span>
             </div>
-          ))}
+          )) : <Empty description="No notifications" />}
         </div>
-        <div className="text-center mt-4">
-          <Button variant="link" className="text-blue-500">
-            Load more notifications
-          </Button>
-        </div>
+        {notificationRes?.data?.result?.length > 0 && <div className="text-center mt-4">
+          <Tooltip title={limit >= notificationRes?.data?.meta?.total ? "No more notifications" : ""}>
+            <Button
+              disabled={notificationLoading || limit >= notificationRes?.data?.meta?.total}
+              loading={notificationLoading}
+              onClick={() => {
+                if (limit >= notificationRes?.data?.meta?.total) {
+                  toast.dismiss()
+                  toast.error("No more notifications");
+                } else {
+                  setLimit(limit + 10);
+                }
+              }} variant="link" className="text-blue-500">
+              Load more notifications
+            </Button>
+          </Tooltip>
+        </div>}
       </Card>
     </div>
   );
