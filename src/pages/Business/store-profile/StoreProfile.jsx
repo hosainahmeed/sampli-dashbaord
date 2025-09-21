@@ -11,6 +11,7 @@ import ReviewCard from "../../../components/store-profile-component/ReviewCard";
 import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
 import { useGetBusinessProductApisQuery } from "../../../Redux/sampler/productApis";
 import { useProductReviewByIdQuery } from "../../../Redux/businessApis/business_product/productReviewApis";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -71,7 +72,9 @@ function StoreProfile() {
           </div>
         </div>
         <p className="text-[#6D7486] text-xs xl:text-base leading-7">
-          {isLoading ? <Card loading /> : profile?.data?.bio}
+          {isLoading ? <Card loading /> : profile?.data?.bio || <span>No bio available please{" "}
+            <Link to="/settings" state={{ tab: "businessInfo" }}><span className="text-blue-500 underline cursor-pointer">add</span></Link>
+            {" "}bio</span>}
         </p>
         <div className="flex md:items-center items-start md:flex-row flex-col  justify-between my-12">
           <h2 className="text-xl md:text-3xl">Items</h2>
@@ -84,11 +87,14 @@ function StoreProfile() {
             Array.from({ length: 8 }).map((_, index) => (
               <ProductLoaderCard key={index} />
             ))
-            : products?.data?.result?.map((item) => (
+            : products?.data?.result?.length > 0 ? products?.data?.result?.map((item) => (
               <CardComponent key={item?._id} item={item} setReviewId={setReviewId} />
-            ))}
+            )) : <div className="col-span-4">
+              <Empty description={<span>No products found <Link to="/product/add-product">
+                <span className="text-blue-500 underline cursor-pointer">Create product</span></Link></span>} />
+            </div>}
         </div>
-        <Pagination
+        {products?.data?.result?.length > 0 && <Pagination
           current={currentPage}
           total={products?.data?.result?.length}
           pageSize={itemsPerPage}
@@ -115,7 +121,7 @@ function StoreProfile() {
             }
             return originalElement;
           }}
-        />
+        />}
         {reviewLoading ? <Skeleton /> : <div id="review" className="flex items-start md:flex-row flex-col gap-24 justify-between">
           {review && <>
             <div className="md:flex-1 w-full md:sticky top-10">
@@ -228,7 +234,7 @@ const ProductLoaderCard = () => {
   return (
     <Card
       className="shadow-md border-[1px] overflow-hidden border-[#eee]"
-      cover={<Skeleton.Image className="!h-[250px] !w-full !object-cover"/>}
+      cover={<Skeleton.Image className="!h-[250px] !w-full !object-cover" />}
     >
       <Meta
         title={"Product Name"}

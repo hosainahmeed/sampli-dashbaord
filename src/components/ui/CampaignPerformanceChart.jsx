@@ -1,5 +1,6 @@
-import { Select } from "antd";
-import React, { useState } from "react";
+import { Select, Skeleton } from "antd";
+import React from "react";
+import { useLocation } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -8,107 +9,63 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  Legend,
 } from "recharts";
+import { useGetCampaignPerformanceQuery } from "../../Redux/businessApis/campaign/campaignApis";
 
 const { Option } = Select;
 
-const data = [
-  { name: "Jan 1", value: 5000 },
-  { name: "Jan 2", value: 1500 },
-  { name: "Jan 3", value: 4500 },
-  { name: "Jan 4", value: 5500 },
-  { name: "Jan 5", value: 3240 },
-  { name: "Jan 6", value: 5000 },
-  { name: "Jan 7", value: 1500 },
-  { name: "Jan 8", value: 4500 },
-  { name: "Jan 9", value: 5500 },
-  { name: "Jan 10", value: 3240 },
-  { name: "Jan 11", value: 5000 },
-  { name: "Jan 12", value: 1500 },
-  { name: "Jan 13", value: 4500 },
-  { name: "Jan 14", value: 5500 },
-  { name: "Jan 15", value: 3240 },
-  { name: "Jan 16", value: 5000 },
-  { name: "Jan 17", value: 1500 },
-  { name: "Jan 18", value: 4500 },
-  { name: "Jan 19", value: 5500 },
-  { name: "Jan 20", value: 3240 },
-  { name: "Jan 21", value: 5000 },
-  { name: "Jan 22", value: 1500 },
-  { name: "Jan 23", value: 4500 },
-  { name: "Jan 24", value: 5500 },
-  { name: "Jan 25", value: 3240 },
-  { name: "Jan 26", value: 5000 },
-  { name: "Jan 27", value: 1500 },
-  { name: "Jan 28", value: 4500 },
-  { name: "Jan 29", value: 5500 },
-  { name: "Jan 30", value: 3240 },
-  { name: "Jan 31", value: 5000 },
-];
-
 function CampaignPerformanceChart() {
-  const [selectedOption, setSelectedOption] = useState("This Week");
-  const [filteredData, setFilteredData] = useState(data.slice(0, 7));
+  const { id } = useLocation().state || {};
+  const [selectedOption, setSelectedOption] = React.useState("this-year");
 
-  const handleChange = (value) => {
-    setSelectedOption(value);
-    filterData(value);
-  };
+  const { data, isLoading } = useGetCampaignPerformanceQuery(
+    { id, filter: selectedOption },
+    { skip: !id }
+  );
 
-  const filterData = (option) => {
-    let filtered = [];
-    if (option === "This Week") {
-      filtered = data.slice(0, 7);
-    } else if (option === "This Month") {
-      filtered = data.slice(0, 30);
-    } else if (option === "This Year") {
-      filtered = data.filter((entry, index) => index % 10 === 0);
-    }
-    setFilteredData(filtered);
-  };
+  const chartData =
+    data?.data?.map((item) => ({
+      name: item.label,
+      spent: item.spent || 0,
+      reviews: item.reviews || 0,
+    })) || [];
 
-  const valueFormatter = (value) =>
-    `${value / 1000}${value / 1000 === 0 ? "" : "k"}`;
+  const valueFormatter = (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v);
+
+  if (isLoading)
+    return (
+      <div className="p-4 border border-gray-200 rounded-md mt-12">
+        <Skeleton active paragraph={{ rows: 8 }} />
+      </div>
+    );
 
   return (
-    <div className="border-[1px] border-[#ccc] p-4 rounded-md mt-12">
-      <div className="flex p-2 rounded-md mb-2 justify-between items-center gap-12 py-4">
-        <h1 className="text-2xl">Campaign Performance</h1>
-        <div className="flex items-center gap-4">
-          <Select
-            value={selectedOption}
-            style={{ width: 160 }}
-            onChange={handleChange}
-          >
-            <Option value="This Week">This Week</Option>
-            <Option value="This Month">This Month</Option>
-            <Option value="This Year">This Year</Option>
-          </Select>
-        </div>
+    <div className="border border-gray-200 p-4 rounded-md mt-12">
+      {/* Header */}
+      <div className="flex p-2 mb-4 justify-between items-center">
+        <h1 className="text-2xl font-semibold">Campaign Performance</h1>
+        <Select
+          loading={isLoading}
+          value={selectedOption}
+          style={{ width: 160 }}
+          onChange={setSelectedOption}
+        >
+          <Option value="this-week">This Week</Option>
+          <Option value="this-month">This Month</Option>
+          <Option value="this-year">This Year</Option>
+        </Select>
       </div>
+
+      {/* Chart */}
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart width={40} height={300} data={filteredData}>
-          <CartesianGrid horizontal={true} vertical={false} stroke="#ccc" />
-          <XAxis
-            dataKey="name"
-            tick={{ fontSize: 12 }}
-            interval={4}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis
-            tick={{ fontSize: 12 }}
-            tickFormatter={valueFormatter}
-            tickLine={false}
-            axisLine={false}
-          />
-          <Tooltip cursor={{ fill: "transparent" }} />
-          <Bar
-            dataKey="value"
-            fill="#2563EB"
-            radius={[4, 4, 0, 0]}
-            barSize={30}
-          />
+        <BarChart data={chartData}>
+          <CartesianGrid horizontal vertical={false} stroke="#eee" />
+          <XAxis dataKey="name" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+          <YAxis tick={{ fontSize: 12 }} tickFormatter={valueFormatter} tickLine={false} axisLine={false} />
+          <Tooltip cursor={{ fill: "transparent" }} formatter={(val) => val.toLocaleString()} />
+          <Bar dataKey="spent" fill="#2563EB" radius={[4, 4, 0, 0]} barSize={30} />
+          <Bar dataKey="reviews" fill="#F59E0B" radius={[4, 4, 0, 0]} barSize={30} />
         </BarChart>
       </ResponsiveContainer>
     </div>

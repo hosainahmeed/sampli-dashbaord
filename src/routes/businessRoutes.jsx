@@ -19,9 +19,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import AddVariant from "../components/page-Component/AddVariant";
 import EditProduct from "../components/page-Component/EditProduct";
 import ProductDetails from "../pages/Business/Product/ProductDetails";
-import PurchasesBusiness from "../pages/Business/PurchasesBusiness/PurchasesBusiness";
 import DetailsPurchasesProduct from "../pages/Business/PurchasesBusiness/DetailsPurchasesProduct";
 import OrderSuccess from "../pages/Business/order/OrderSuccess";
+import PurchasesBusiness from "../pages/Business/PurchasesBusiness/PurchasesBusiness";
 
 export const businessRoutes = {
   path: "/",
@@ -55,7 +55,7 @@ export const businessRoutes = {
       element: <TransectionOfBusiness />,
     },
     {
-      path: "product/:productId",
+      path: "/product/:productId",
       element: <ProductDetails />,
     },
     { path: "/business/purchases", element: <PurchasesBusiness /> },

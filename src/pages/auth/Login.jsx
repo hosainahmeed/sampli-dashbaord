@@ -1,18 +1,15 @@
 import React from "react";
 import { Button, Typography, Divider } from "antd";
-import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
-import "antd/dist/reset.css";
 import Logo from "../../components/ui/Logo";
-import { TiSocialFacebook } from "react-icons/ti";
 import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useLoginMutation } from "../../Redux/authApis";
-
 import { jwtDecode } from "jwt-decode";
 import GoogleAuthButton from "../../googleAuthButton/GoogleAuthButton";
-import { FaApple } from "react-icons/fa6";
+import fb from "../../assets/socialsLogo/facebook.svg";
+import apple from "../../assets/socialsLogo/apple.png";
 
 const { Title } = Typography;
 
@@ -118,24 +115,25 @@ const LoginForm = () => {
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10 }}
+            size="large"
+            shape="round"
           >
             Continue with Email
           </Button>
         </FormWrapper>
 
         <Divider>Or Login with</Divider>
+        <GoogleAuthButton loginForm={true} />
         <div>
-          <div className="flex items-center justify-center gap-1   text-sm px-6 py-2 rounded-md cursor-pointer">
-            <div className="border flex px-3 py-2 rounded-4xl border-gray-200 items-center justify-center gap-1">
-              <FaApple className="!text-2xl " />{" "}
+          <div className="flex items-center justify-between gap-1 text-sm py-2 rounded-md cursor-pointer">
+            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
+              <img src={apple} alt="" className="w-5 h-5" />{" "}
               <span className="text-gray-600">Continue with Apple</span>
             </div>
           </div>
-          <GoogleAuthButton />
-
-          <div className="flex items-center justify-center gap-1   text-sm px-6 py-2 rounded-md cursor-pointer">
-            <div className="border flex px-3 py-2 rounded-4xl border-gray-200 items-center justify-center gap-1">
-              <TiSocialFacebook className="!text-2xl " />{" "}
+          <div className="flex items-center justify-center gap-1   text-sm py-2 rounded-md cursor-pointer">
+            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
+              <img src={fb} alt="" className="w-5 h-5" />{" "}
               <span className="text-gray-600">Continue with Facebook</span>
             </div>
           </div>

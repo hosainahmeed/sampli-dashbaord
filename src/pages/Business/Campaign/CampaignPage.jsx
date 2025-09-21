@@ -11,6 +11,7 @@ function CampaignPage() {
     <div>
       <Helmet>
         <title>Sampli Business Portal || Campaign</title>
+        <meta name="description" content="Campaign" />
       </Helmet>
       <div className=" flex items-start md:items-center justify-between md:flex-row flex-col mb-4">
         <h1 className="text-2xl !font-semibold">Campaign</h1>

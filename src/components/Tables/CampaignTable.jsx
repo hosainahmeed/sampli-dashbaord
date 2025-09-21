@@ -1,114 +1,38 @@
 import React, { useState } from 'react';
-import { Table, Tag, Progress, Input, Button, Select } from 'antd';
+import { Table, Input, Button, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useGetCampaignsQuery } from '../../Redux/businessApis/campaign/campaignApis';
+import { CampaignTableColumn } from './CampaignTableColumn';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
 const CampaignTable = () => {
   const [searchText, setSearchText] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
-  const { data: campaignsData, isLoading } = useGetCampaignsQuery();
-  console.log(campaignsData?.data?.result)
+  const [statusFilter, setStatusFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const navigate = useNavigate();
+
+  const { data: campaignsData, isLoading } = useGetCampaignsQuery({
+    searchTerm: searchText,
+    limit: pageSize,
+    page: currentPage,
+    seatchTerm: searchText,
+    ...(statusFilter !== 'All' && { status: statusFilter }),
+  });
+
+  console.log(campaignsData?.data?.meta)
   const campaigns = campaignsData?.data?.result;
   const statusColors = {
     Active: 'orange',
     Pending: 'purple',
     Completed: 'green',
     Paused: 'gray',
+    Scheduled: 'blue',
+    Cancelled: 'gray',
   };
-
-  // const filteredCampaigns = campaigns.filter(
-  //   (campaign) =>
-  //     campaign.name.toLowerCase().includes(searchText.toLowerCase()) &&
-  //     (statusFilter === 'All' || campaign.status === statusFilter)
-  // );
-
-  const columns = [
-    {
-      title: 'Campaign Name',
-      dataIndex: 'name',
-      key: 'name',
-      width: 350,
-      render: (text, record) => (
-        <span className="flex gap-2 items-center">
-          {record?.product?.images && (
-            <img
-              className="w-8 xl:w-12 rounded-sm h-6 xl:h-8 object-cover"
-              src={record?.product?.images[0]}
-              alt="Campaign"
-            />
-          )}
-          <div>
-            <h1 className="xl:text-sm text-xs">{text}</h1>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xs text-[#6D7486]">
-                {new Date(record.startDate).toLocaleString('default', {
-                  month: 'short',
-                  day: 'numeric',
-                })}{' '}
-                -{' '}
-                {new Date(record.endDate).toLocaleString('default', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}
-              </h1>
-            </div>
-          </div>
-        </span>
-      ),
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      width: 120,
-      render: (status) => <Tag color={statusColors[status]}>{status}</Tag>,
-    },
-    {
-      title: 'Progress',
-      dataIndex: 'progress',
-      key: 'progress',
-      width: 180,
-      render: (progress = 0, record) => (
-        <Progress
-          className="xl:text-base text-xs"
-          percent={(progress / record.total) * 100}
-          format={(percent, successPercent) => `${progress}/${record.total}`}
-        />
-      ),
-    },
-    {
-      title: 'Budget',
-      dataIndex: 'budget',
-      key: 'budget',
-      width: 150,
-      render: (budget) => (
-        <p className="xl:text-sm text-xs text-[#6D7486]">{budget}</p>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      width: 120,
-      render: (text, record) => (
-        <Button
-          type="default"
-          className="!border-blue-500 !text-blue-500 hover:bg-gray-100"
-          onClick={() => {
-            navigate(`single-campaign`, { state: { id: record._id } });
-          }}
-        >
-          View
-        </Button>
-      ),
-    },
-  ];
-
   return (
     <div className="py-12">
       <h2 className="my-3 text-2xl font-semibold">Campaign</h2>
@@ -133,33 +57,35 @@ const CampaignTable = () => {
           <Option value="Completed">Completed</Option>
           <Option value="Paused">Paused</Option>
           <Option value="Cancelled">Cancelled</Option>
+          <Option value="Expired">Expired</Option>
         </Select>
       </div>
       <Table
-        columns={columns}
+        columns={CampaignTableColumn({ statusColors, navigate })}
         loading={isLoading}
         dataSource={campaigns}
         scroll={{ x: 'max-content' }}
+        rowKey={(campaign) => campaign?._id}
         locale={{
           filterConfirm: 'Confirm',
           filterReset: 'Reset',
           emptyText: (
-            <div className=" flex items-center justify-center flex-col py-28 text-center">
+            <div className="flex items-center justify-center flex-col py-28 text-center">
               <p className="text-2xl">No result found</p>
               <p>Try clearing the filters or changing your input</p>
             </div>
           ),
         }}
         pagination={{
+          current: campaignsData?.data?.meta?.page || 1,
+          pageSize: campaignsData?.data?.meta?.limit || 5,
+          total: campaignsData?.data?.meta?.total || 0,
           showSizeChanger: false,
           position: ['bottomCenter'],
+          onChange: (page) => setCurrentPage(page),
           itemRender: (current, type, originalElement) => {
             if (type === 'prev' && current > 1) {
-              return (
-                <Button className="!border-none ">
-                  <FaAngleLeft />
-                </Button>
-              );
+              return <Button className="!border-none"><FaAngleLeft /></Button>;
             }
             if (type === 'next') {
               return <h1 className="text-[#2E78E9]">Next Page</h1>;
@@ -170,9 +96,11 @@ const CampaignTable = () => {
             return originalElement;
           },
         }}
+
       />
+
     </div>
-  );
+  )
 };
 
 export default CampaignTable;

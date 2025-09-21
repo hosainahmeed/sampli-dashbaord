@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Input, Form, Button } from "antd";
-import { LiaEyeSlashSolid, LiaEyeSolid } from "react-icons/lia";
+import React from "react";
+import { Input, Form } from "antd";
 
 const InputField = ({
   label,
@@ -8,26 +7,20 @@ const InputField = ({
   rules,
   placeholder,
   type = "text",
+  size = "large",
   ...props
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
   return (
     <Form.Item label={label} name={name} rules={rules} {...props}>
-      <Input
-        size="large"
-        className="!h-8 !w-full"
-        type={showPassword ? "text" : type}
+      {type === "password" ? <Input.Password
+        size={size}
+        type={type}
         placeholder={placeholder}
-        suffix={
-          type === "password" && (
-            <Button
-              type="link"
-              icon={showPassword ? <LiaEyeSlashSolid /> : <LiaEyeSolid />}
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          )
-        }
-      />
+      /> : <Input
+        size={size}
+        type={type}
+        placeholder={placeholder}
+      />}
     </Form.Item>
   );
 };

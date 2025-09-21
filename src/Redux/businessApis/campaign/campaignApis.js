@@ -41,6 +41,28 @@ const campaignApis = baseApis.injectEndpoints({
       }),
       invalidatesTags: ["campaign"],
     }),
+    getCampaignStatus: builder.query({
+      query: () => ({
+        url: `/campaign/get-campaign-stats`,
+        method: "GET",
+      }),
+      providesTags: ["campaignStats"],
+    }),
+    getCampaignSummary: builder.query({
+      query: (id) => ({
+        url: `/campaign/get-campaign-summary/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["campaignStats"],
+    }),
+    getCampaignPerformance: builder.query({
+      query: ({ id, filter }) => ({
+        url: `/campaign/get-campaign-performance/${id}`,
+        method: "GET",
+        params: { filter },
+      }),
+      providesTags: ["campaignStats"],
+    }),
   }),
 });
 
@@ -50,4 +72,7 @@ export const {
   useCreateCampaignMutation,
   useUpdateCampaignMutation,
   useChangeCampaignStatusMutation,
+  useGetCampaignStatusQuery,
+  useGetCampaignSummaryQuery,
+  useGetCampaignPerformanceQuery,
 } = campaignApis;

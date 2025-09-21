@@ -18,7 +18,6 @@ function DetailsPurchasesProduct() {
   const { id } = useLocation().state;
   const { data, isLoading } = useGetCampaignPurchaseByIdQuery(id);
   const order = data?.data;
-
   const navigate = useNavigate();
 
   if (isLoading) return (
@@ -55,7 +54,10 @@ function DetailsPurchasesProduct() {
         </div>
 
         <div className="flex gap-2">
-          <Button>Go to item</Button>
+          <Button
+            disabled={isLoading || !order?.product?._id}
+            onClick={() => navigate(`/product/${order?.product?._id}`, { state: { productId: order?.product?._id } })}
+          >Go to item</Button>
           <Button type="primary" className="flex items-center">
             Track Item
             <GoLinkExternal className="text-blue-700 ml-1" />

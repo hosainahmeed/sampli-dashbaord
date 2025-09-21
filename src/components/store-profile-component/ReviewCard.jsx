@@ -59,11 +59,13 @@ const ReviewCard = ({ r, reviewLoading }) => {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <img
-          src={r?.reviewer?.profile_image}
-          alt={r?.reviewer?.name}
-          className="rounded-full mr-3 w-12 h-12 object-cover"
-        />
+        <div className='rounded-full mr-3 w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 overflow-hidden'>
+          <img
+            src={r?.reviewer?.profile_image}
+            alt={r?.reviewer?.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
         <div className="flex justify-between items-center w-full">
           <div>
             <span style={{ fontWeight: 'bold' }}>{r?.reviewer?.name}</span>

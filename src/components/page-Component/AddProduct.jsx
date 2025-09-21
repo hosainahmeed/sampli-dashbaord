@@ -129,7 +129,7 @@ function AddProduct() {
         </Card>
       }
       <div
-        className="flex items-center gap-2 mb-12 text-[#999Eab] cursor-pointer hover:text-[#111] transition-all"
+        className="flex items-center gap-2 text-[#999Eab] cursor-pointer hover:text-[#111] transition-all"
         onClick={() => navigate(-1)}
       >
         <FaAngleLeft />

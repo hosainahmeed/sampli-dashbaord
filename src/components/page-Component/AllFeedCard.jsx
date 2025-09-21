@@ -9,7 +9,7 @@ function AllFeedCard() {
   const { id } = useLocation().state;
   const [page, setPage] = useState(1);
   const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
-    productId: id,
+    campaign: id,
     limit: 4,
     page: page,
   });
@@ -31,13 +31,15 @@ function AllFeedCard() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         {reviewLoading ? <Skeleton.Input size="small" /> : <h1 className="text-2xl font-semibold mb-4 md:mb-0">Reviews</h1>}
-        {reviewLoading ? <Skeleton.Input size="small" /> : <SelectField
-          className="w-full md:w-40"
-          name="feed"
-          rules={[{ required: true }]}
-          options={options}
-          placeholder="Sort by"
-        />}
+        {reviewLoading ? <Skeleton.Input size="small" /> :
+          <SelectField
+            disabled={reviewList?.data?.data?.result?.length === 0}
+            className="w-full md:w-40"
+            name="feed"
+            rules={[{ required: true }]}
+            options={options}
+            placeholder="Sort by"
+          />}
       </div>
 
       {/* Feed Cards Grid */}
@@ -57,7 +59,7 @@ function AllFeedCard() {
               <Card loading key={index} />
             )) : reviewList?.data?.data?.result?.map((review) => (
               <div key={review?._id}>
-                <FeedCard content={review} reviewLoading={reviewLoading} />
+                <FeedCard content={review} />
               </div>
             ))}
           </div>
@@ -65,7 +67,7 @@ function AllFeedCard() {
       </div>
 
       {/* Pagination Controls */}
-      <div className="mt-6 flex justify-center">
+      {reviewList?.data?.data?.result?.length > 0 && <div className="mt-6 flex justify-center">
         <Pagination
           current={currentPage}
           total={reviewList?.data?.data?.meta?.total}
@@ -93,7 +95,7 @@ function AllFeedCard() {
             return originalElement;
           }}
         />
-      </div>
+      </div>}
     </div>
   );
 }

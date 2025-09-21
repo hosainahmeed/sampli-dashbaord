@@ -9,7 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuthSectionSignupMutation } from "../../../Redux/sampler/authSectionApis";
 import GoogleAuthButton from "../../../googleAuthButton/GoogleAuthButton";
-import { FaApple } from "react-icons/fa6";
+import apple from "../../../assets/socialsLogo/apple.png";
+import fb from "../../../assets/socialsLogo/facebook.svg";
 
 const { Title } = Typography;
 
@@ -53,7 +54,7 @@ const Signup = () => {
         </Title>
         <div className="flex mb-6 flex-col items-start">
           <Title level={2}>Sign Up </Title>
-          <h1 className="text-[var(--body-text)] leading-0">
+          <h1 className="text-[var(--body-text)]">
             Create an account to access all features on Sampli
           </h1>
         </div>
@@ -95,6 +96,8 @@ const Signup = () => {
             type="primary"
             htmlType="submit"
             className="w-full"
+            shape="round"
+            size="large"
             style={{ marginTop: 10 }}
             loading={isLoading}
           >
@@ -103,18 +106,17 @@ const Signup = () => {
         </FormWrapper>
 
         <Divider className="!text-xs !text-gray-500">Or Signup with</Divider>
+        <GoogleAuthButton role={"reviewer"} />
         <div>
-          <div className="flex items-center justify-center gap-1   text-sm px-6 py-2 rounded-md cursor-pointer">
-            <div className="border flex px-3 py-2 rounded-4xl border-gray-200 items-center justify-center gap-1">
-              <FaApple className="!text-2xl " />{" "}
+          <div className="flex items-center justify-between gap-1 text-sm py-2 rounded-md cursor-pointer">
+            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
+              <img src={apple} alt="" className="w-5 h-5" />{" "}
               <span className="text-gray-600">Continue with Apple</span>
             </div>
           </div>
-          <GoogleAuthButton role="reviewer" />
-
-          <div className="flex items-center justify-center gap-1   text-sm px-6 py-2 rounded-md cursor-pointer">
-            <div className="border flex px-3 py-2 rounded-4xl border-gray-200 items-center justify-center gap-1">
-              <TiSocialFacebook className="!text-2xl " />{" "}
+          <div className="flex items-center justify-center gap-1   text-sm py-2 rounded-md cursor-pointer">
+            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
+              <img src={fb} alt="" className="w-5 h-5" />{" "}
               <span className="text-gray-600">Continue with Facebook</span>
             </div>
           </div>

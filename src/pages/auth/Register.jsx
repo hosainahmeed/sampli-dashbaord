@@ -9,6 +9,9 @@ import FormWrapper from '../../components/ui/FormWrapper'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useRegisterAsBusinessMutation } from '../../Redux/authApis'
+import GoogleAuthButton from '../../googleAuthButton/GoogleAuthButton'
+import apple from '../../assets/socialsLogo/apple.png'
+import fb from '../../assets/socialsLogo/facebook.svg'
 const { Title, Text } = Typography
 
 const Register = () => {
@@ -52,18 +55,7 @@ const Register = () => {
           </h1>
         </div>
 
-        <div className="grid grid-cols-3 h-16 gap-2 space-x-4">
-          <button className="px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <AppleOutlined className="text-2xl" />
-          </button>
-          <button className="px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <GoogleOutlined className="text-2xl" />
-          </button>
-          <button className="px-6 flex items-center justify-center  py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <TiSocialFacebook className="text-2xl" />
-          </button>
-        </div>
-        <Divider>Or sign up with</Divider>
+
         <FormWrapper onFinish={onFinish}>
           <InputField
             label="Email address"
@@ -101,6 +93,8 @@ const Register = () => {
           <Button
             loading={registerLoading}
             disabled={registerLoading}
+            size='large'
+            shape='round'
             type="primary"
             htmlType="submit"
             className="w-full"
@@ -109,7 +103,24 @@ const Register = () => {
             Continue with Email
           </Button>
         </FormWrapper>
-
+        <Divider>Or sign up with</Divider>
+        <div className="grid grid-cols-1 gap-2 space-x-4">
+          <GoogleAuthButton role={"bussinessOwner"} />
+          <div>
+            <div className="flex items-center justify-between gap-1 text-sm py-2 rounded-md cursor-pointer">
+              <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
+                <img src={apple} alt="" className="w-5 h-5" />{" "}
+                <span className="text-gray-600">Continue with Apple</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-1   text-sm py-2 rounded-md cursor-pointer">
+              <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
+                <img src={fb} alt="" className="w-5 h-5" />{" "}
+                <span className="text-gray-600">Continue with Facebook</span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="mt-4 text-gray-500">
           Already have an account?{' '}
           <Link

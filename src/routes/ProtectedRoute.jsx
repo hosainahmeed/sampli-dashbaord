@@ -3,13 +3,11 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { jwtDecode } from "jwt-decode";
 
-
 function ProtectedRoute({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (!token) {
@@ -36,7 +34,7 @@ function ProtectedRoute({ children }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Spin size="large" tip="Loading..." />
+        <Spin spinning={isLoading} size="large" />
       </div>
     );
   }

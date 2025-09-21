@@ -22,7 +22,7 @@ import CommentSection from "./CommentSection";
 
 const { Title, Text } = Typography;
 
-const FeedCard = ({ content, reviewLoading }) => {
+const FeedCard = ({ content }) => {
   const [showModal, setShowModal] = useState(false);
   const [like, setLike] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
