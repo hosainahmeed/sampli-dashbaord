@@ -8,12 +8,13 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
 });
 
-export const productTableColumn = ({ statusColors, handleDelete, handleView }) => {
+export const productTableColumn = ({ statusColors, handleDelete, handleView, filterStatus }) => {
     const getActionItems = useMemo(() => (record) => [
         {
             key: 'view',
             label: (
                 <Button
+                    disabled={filterStatus === "draft"}
                     type="text"
                     size='small'
                     className="!w-full !text-left !p-0"
@@ -29,7 +30,7 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView }) =
                 <Popconfirm
                     title="Are you sure you want to delete this product?"
                     onConfirm={() => handleDelete(record._id)}>
-                    <Button
+                    <Button            
                         size='small'
                         type="text"
                         className="w-full text-left p-0 text-red-500 hover:text-red-600"
@@ -42,15 +43,15 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView }) =
         {
             key: 'edit',
             label: (
-                <Link to={`/edit-product/${record._id}`} state={{ id: record?._id }}>
+                <Link to={`/edit-product/${record._id}`} state={{ id: record?._id, ...filterStatus === "draft" && { status: "draft" } }} >
                     <Button
                         size='small'
                         type="text"
                         className="w-full text-left p-0 text-blue-500 hover:text-blue-600"
                     >
-                        Edit Product
+                        {filterStatus === "draft" ? "Draft to Product" : "Edit Product"}
                     </Button>
-                </Link>
+                </Link >
             ),
         },
         {

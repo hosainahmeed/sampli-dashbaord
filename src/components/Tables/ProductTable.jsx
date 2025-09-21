@@ -93,7 +93,8 @@ const ProductTable = ({ filterStatus }) => {
         columns={productTableColumn({
           statusColors,
           handleDelete,
-          handleView
+          handleView,
+          filterStatus
         })}
         dataSource={products?.data?.result}
         rowKey="_id"

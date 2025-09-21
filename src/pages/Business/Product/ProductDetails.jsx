@@ -58,7 +58,7 @@ function ProductDetails() {
         <div className="container mx-auto pb-12">
             <h1
                 onClick={() => navigate(-1)}
-                className="text-2xl w-fit cursor-pointer flex items-center gap-2 font-semibold"><FaArrowLeft /> Product Details</h1>
+                className="text-xl w-fit cursor-pointer flex items-center gap-2"><FaArrowLeft />Back to products</h1>
             <div className="flex flex-col md:flex-row gap-10">
                 <div>
                     <div className="aspect-square p-2 border w-[200px] h-[200px] md:w-[400px] md:h-[400px]  border-gray-200 rounded-xl overflow-hidden">

@@ -30,8 +30,46 @@ function AddProduct() {
 
   const onFinish = async (values) => {
     try {
+
+      let tags = [];
+      if (content === '' && !isDraft) {
+        throw new Error('Please enter Description!');
+      }
+      if (fileList.length === 0 && !isDraft) {
+        throw new Error('Please upload images!');
+      }
+
+      if (!values?.stock && !isDraft) {
+        throw new Error('Please enter stock!');
+      }
+
+      if (values?.tags && values?.tags.includes(',')) {
+        tags = values?.tags.split(',').map((tag) => tag.trim()).filter(Boolean);
+      } else {
+        tags = [values?.tags];
+      }
+
+      const formData = new FormData()
+      const data = {
+        name: values?.name,
+        shortDescription: values?.shortDescription,
+        category: values?.category,
+        brand: values?.brand,
+        price: values?.price,
+        stock: values?.stock,
+        tags: tags,
+        description: content,
+        weight: parseFloat(values?.weight),
+        length: parseFloat(values?.length),
+        width: parseFloat(values?.width),
+        height: parseFloat(values?.height),
+      }
+      formData.append("data", JSON.stringify(data));
+      fileList.forEach((file) => {
+        formData.append("product_image", file.originFileObj);
+      });
       if (isDraft) {
-        await saveDraftProduct(values).unwrap().then((res) => {
+        await saveDraftProduct(formData).unwrap().then((res) => {
           if (res.success) {
             toast.dismiss()
             toast.success(res.message)
@@ -39,44 +77,6 @@ function AddProduct() {
           }
         })
       } else {
-        let tags = [];
-        if (content === '') {
-          throw new Error('Please enter Description!');
-        }
-        if (fileList.length === 0) {
-          throw new Error('Please upload images!');
-        }
-
-        if (!values.stock) {
-          throw new Error('Please enter stock!');
-        }
-
-        if (values.tags.includes(',')) {
-          tags = values.tags.split(',').map((tag) => tag.trim()).filter(Boolean);
-        } else {
-          tags = [values.tags];
-        }
-
-        const formData = new FormData()
-        const data = {
-          name: values.name,
-          shortDescription: values.shortDescription,
-          category: values.category,
-          brand: values.brand,
-          price: values.price,
-          stock: values.stock,
-          tags: tags,
-          description: content,
-          weight: parseFloat(values.weight),
-          length: parseFloat(values.length),
-          width: parseFloat(values.width),
-          height: parseFloat(values.height),
-        }
-        formData.append("data", JSON.stringify(data));
-        fileList.forEach((file) => {
-          formData.append("product_image", file.originFileObj);
-        });
-
         await createProduct(formData).unwrap().then((res) => {
           if (res.success) {
             toast.dismiss()
@@ -89,6 +89,7 @@ function AddProduct() {
           }
         })
       }
+
     } catch (error) {
       console.log(error)
       toast.dismiss()
@@ -161,7 +162,7 @@ function AddProduct() {
             <InputField
               label="Item Name"
               name="name"
-              rules={[{ required: true, message: "Please enter item name!" }]}
+              rules={[{ required: isDraft ? false : true, message: "Please enter item name!" }]}
               placeholder="Enter item name"
               type="text"
               className="w-full"
@@ -170,7 +171,7 @@ function AddProduct() {
               loading={categoryLoading}
               label="Category"
               name="category"
-              rules={[{ required: true, message: "Please select a category!" }]}
+              rules={[{ required: isDraft ? false : true, message: "Please select a category!" }]}
               options={categories?.data?.map((category) => ({
                 value: category?._id,
                 label: category?.name,
@@ -183,7 +184,7 @@ function AddProduct() {
             <InputField
               label="Brand"
               name="brand"
-              rules={[{ required: true, message: "Please enter brand name!" }]}
+              rules={[{ required: isDraft ? false : true, message: "Please enter brand name!" }]}
               placeholder="Enter brand name"
               type="text"
               className="w-full"
@@ -191,7 +192,7 @@ function AddProduct() {
             <InputField
               label="Stock"
               name="stock"
-              rules={[{ required: true, message: "Please enter stock!" }]}
+              rules={[{ required: isDraft ? false : true, message: "Please enter stock!" }]}
               placeholder="Enter stock"
               type="number"
               className="w-full"
@@ -201,7 +202,7 @@ function AddProduct() {
             <InputField
               label="Price"
               name="price"
-              rules={[{ required: true, message: "Please enter price!" }]}
+              rules={[{ required: isDraft ? false : true, message: "Please enter price!" }]}
               placeholder="Enter price"
               type="number"
               className="w-full"
@@ -209,7 +210,7 @@ function AddProduct() {
             <InputField
               label={<span>Tags <small className="text-[#999Eab]">(please enter tags separated by commas)</small></span>}
               name="tags"
-              rules={[{ required: true, message: "Please enter tags!" }]}
+              rules={[{ required: isDraft ? false : true, message: "Please enter tags!" }]}
               placeholder="Enter tags"
               type="text"
               className="w-full"
@@ -222,7 +223,7 @@ function AddProduct() {
           <InputField
             label="Weight (in lbs)"
             name="weight"
-            rules={[{ required: true, message: "Please enter weight (in lbs) !" }]}
+            rules={[{ required: isDraft ? false : true, message: "Please enter weight (in lbs) !" }]}
             placeholder="Enter weight"
             type="number"
             className="w-full"
@@ -230,7 +231,7 @@ function AddProduct() {
           <InputField
             label="Length (in inches)"
             name="length"
-            rules={[{ required: true, message: "Please enter length (in inches) !" }]}
+            rules={[{ required: isDraft ? false : true, message: "Please enter length (in inches) !" }]}
             placeholder="Enter length"
             type="number"
             className="w-full"
@@ -238,7 +239,7 @@ function AddProduct() {
           <InputField
             label="Width (in inches)"
             name="width"
-            rules={[{ required: true, message: "Please enter width (in inches)!" }]}
+            rules={[{ required: isDraft ? false : true, message: "Please enter width (in inches)!" }]}
             placeholder="Enter width"
             type="number"
             className="w-full"
@@ -246,7 +247,7 @@ function AddProduct() {
           <InputField
             label="Height (in inches)"
             name="height"
-            rules={[{ required: true, message: "Please enter height (in inches)!" }]}
+            rules={[{ required: isDraft ? false : true, message: "Please enter height (in inches)!" }]}
             placeholder="Enter height"
             type="number"
             className="w-full"
@@ -254,7 +255,7 @@ function AddProduct() {
           <Form.Item
             label="Item short Description"
             name="shortDescription"
-            rules={[{ required: true, message: "Please enter item description!" }]}
+            rules={[{ required: isDraft ? false : true, message: "Please enter item description!" }]}
             className="col-span-2"
           >
             <TextArea rows={6} placeholder="Enter item description" />

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Form, Button, Upload, Card, Divider } from "antd";
+import { Form, Button, Upload, Card, Divider, Skeleton } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../ui/FormWrapper";
@@ -10,7 +10,7 @@ import { useCategorySectionApisQuery } from "../../Redux/sampler/categoryApis";
 import { FaAngleLeft } from "react-icons/fa";
 import JoditComponent from "../Shared/JoditComponent";
 import toast from "react-hot-toast";
-import { useUpdateProductMutation } from "../../Redux/businessApis/business_product/businessCreateProduct";
+import { usePublishProductFromDraftMutation, useUpdateProductMutation } from "../../Redux/businessApis/business_product/businessCreateProduct";
 import { useGetSingleProductApisQuery } from "../../Redux/sampler/productApis";
 
 function EditProduct() {
@@ -20,14 +20,15 @@ function EditProduct() {
   const [content, setContent] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { data: singleProduct } = useGetSingleProductApisQuery(
+  console.log(location?.state?.status)
+  const { data: singleProduct, isLoading: singleProductLoading } = useGetSingleProductApisQuery(
     { id: location?.state?.id },
     { skip: !location?.state?.id }
   );
 
   const { data: categories, isLoading: categoryLoading } = useCategorySectionApisQuery();
   const [updateProduct, { isLoading: updateProductLoading }] = useUpdateProductMutation();
+  const [publishProductFromDraft, { isLoading: publishProductFromDraftLoading }] = usePublishProductFromDraftMutation();
 
   useEffect(() => {
     if (singleProduct) {
@@ -102,19 +103,29 @@ function EditProduct() {
         }
       });
 
-      await updateProduct({ id: location?.state?.id, data: formData }).unwrap().then((res) => {
-        if (res.success) {
-          toast.dismiss()
-          toast.success(res.message);
-          navigate(-1);
-        }
-      })
+      if (location?.state?.status === "draft") {
+        await publishProductFromDraft(location?.state?.id).unwrap().then((res) => {
+          if (res.success) {
+            toast.dismiss()
+            toast.success(res.message);
+            navigate(-1);
+          }
+        })
+      } else {
+        await updateProduct({ id: location?.state?.id, data: formData }).unwrap().then((res) => {
+          if (res.success) {
+            toast.dismiss()
+            toast.success(res.message);
+            navigate(-1);
+          }
+        })
+      }
+
     } catch (error) {
       toast.dismiss()
       toast.error(error?.message || "Something went wrong!");
     }
   };
-
   return (
     <React.Fragment>
       <div
@@ -127,15 +138,15 @@ function EditProduct() {
 
       <div className="w-full max-w-screen-lg mx-auto">
         <div className="flex justify-between items-start md:flex-row flex-col md:items-center mb-4">
-          <h2 className="text-2xl">Edit Product</h2>
-          <Button
-            loading={updateProductLoading}
-            disabled={updateProductLoading}
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <h2 className="text-2xl">Edit Product</h2>}
+          {singleProductLoading ? <Skeleton.Button /> : <Button
+            loading={location?.state?.status === "draft" ? publishProductFromDraftLoading : updateProductLoading}
+            disabled={location?.state?.status === "draft" ? publishProductFromDraftLoading : updateProductLoading}
             type="primary"
             onClick={() => form.submit()}
           >
-            Update
-          </Button>
+            {location?.state?.status === "draft" ? "Draft to Product" : "Update"}
+          </Button>}
         </div>
 
         <FormWrapper
@@ -144,15 +155,15 @@ function EditProduct() {
           className="border-[0.2px] border-[#eee]  gap-2 grid grid-cols-2 rounded-2xl !p-4"
         >
           <div className="flex items-center col-span-2 gap-2">
-            <InputField
+            {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
               label="Item Name"
               name="name"
               rules={[{ required: true, message: "Please enter item name!" }]}
               placeholder="Enter item name"
               type="text"
               className="w-full"
-            />
-            <SelectField
+            />}
+            {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <SelectField
               loading={categoryLoading}
               label="Category"
               name="category"
@@ -164,38 +175,38 @@ function EditProduct() {
 
               placeholder="Select category"
               className="w-full"
-            />
+            />}
           </div>
 
           <div className="flex items-center col-span-2 gap-2">
-            <InputField
+            {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
               label="Brand"
               name="brand"
               rules={[{ required: true, message: "Please enter brand name!" }]}
               placeholder="Enter brand name"
               type="text"
               className="w-full"
-            />
-            <InputField
+            />}
+            {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
               label="Stock"
               name="stock"
               rules={[{ required: true, message: "Please enter stock!" }]}
               placeholder="Enter stock"
               type="number"
               className="w-full"
-            />
+            />}
           </div>
 
           <div className="flex items-center col-span-2 gap-2">
-            <InputField
+            {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
               label="Price"
               name="price"
               rules={[{ required: true, message: "Please enter price!" }]}
               placeholder="Enter price"
               type="number"
               className="w-full"
-            />
-            <InputField
+            />}
+            {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
               label={
                 <span>
                   Tags <small className="text-[#999Eab]">(separated by commas)</small>
@@ -206,55 +217,55 @@ function EditProduct() {
               placeholder="Enter tags"
               type="text"
               className="w-full"
-            />
+            />}
           </div>
           <Divider className="!col-span-2">
             <h1>For parcel details</h1>
           </Divider>
 
-          <InputField
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
             label="Weight (in lbs)"
             name="weight"
             rules={[{ required: true, message: "Please enter weight (in lbs) !" }]}
             placeholder="Enter weight"
             type="number"
             className="w-full"
-          />
-          <InputField
+          />}
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
             label="Length (in inches)"
             name="length"
             rules={[{ required: true, message: "Please enter length (in inches) !" }]}
             placeholder="Enter length"
             type="number"
             className="w-full"
-          />
-          <InputField
+          />}
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
             label="Width (in inches)"
             name="width"
             rules={[{ required: true, message: "Please enter width (in inches)!" }]}
             placeholder="Enter width"
             type="number"
             className="w-full"
-          />
-          <InputField
+          />}
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <InputField
             label="Height (in inches)"
             name="height"
             rules={[{ required: true, message: "Please enter height (in inches)!" }]}
             placeholder="Enter height"
             type="number"
             className="w-full"
-          />
+          />}
 
-          <Form.Item
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <Form.Item
             label="Item short Description"
             name="shortDescription"
             rules={[{ required: true, message: "Please enter item description!" }]}
             className="col-span-2"
           >
             <TextArea rows={6} placeholder="Enter item description" />
-          </Form.Item>
+          </Form.Item>}
 
-          <Form.Item label="Upload Images" className="col-span-2">
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <Form.Item label="Upload Images" className="col-span-2">
             <Upload
               multiple
               listType="picture-card"
@@ -272,11 +283,11 @@ function EditProduct() {
                 Upload Images
               </div>
             </Upload>
-          </Form.Item>
+          </Form.Item>}
 
-          <div className="col-span-2">
+          {singleProductLoading ? <Skeleton.Input style={{ width: "100%" }} /> : <div className="col-span-2">
             <JoditComponent content={content} setContent={setContent} title="Description" />
-          </div>
+          </div>}
         </FormWrapper>
       </div>
     </React.Fragment>
