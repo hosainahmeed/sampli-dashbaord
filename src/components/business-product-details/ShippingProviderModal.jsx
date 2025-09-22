@@ -1,21 +1,21 @@
-import { Button, Modal, Spin, Alert, List, Tag, Radio, Space, Typography } from 'antd'
+import { Button, Modal, Spin, Alert, List, Tag, Typography } from 'antd'
 import React, { useState } from 'react'
-import { DollarOutlined, EnvironmentOutlined, } from '@ant-design/icons';
+import { EnvironmentOutlined, } from '@ant-design/icons';
 import toast from 'react-hot-toast';
-import stripeIcon from '../../assets/stripe.svg'
-import paypalIcon from '../../assets/paypal.svg'
-import { useLocation, useNavigate } from 'react-router-dom';
+import paypalIcon from '../../assets/payment-icon/PayPal.png'
+import stripeIcon from '../../assets/payment-icon/Stripe.png'
+import { useLocation } from 'react-router-dom';
 import { useConfirmShippingMutation } from '../../Redux/businessApis/campaign/campaignProceedDeliveryApis';
 
-const { Text, Title, Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 function ShippingProviderModal({ isModalOpenProvider, handleModalCancel, providerList, getShippingRatesForOfferShipmentLoading }) {
     const { id } = useLocation().state;
     const [confirmShipping, { isLoading: confirmShippingLoading }] = useConfirmShippingMutation();
     const [selectedRateId, setSelectedRateId] = useState(null);
     const [selectedProvider, setSelectedProvider] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(null);
-    const navigate = useNavigate();
+    const [paymentMethod, setPaymentMethod] = useState("Stripe"); // Paypal ** Stripe
+
 
     const handleConfirmShipping = async () => {
         try {
@@ -137,27 +137,24 @@ function ShippingProviderModal({ isModalOpenProvider, handleModalCancel, provide
 
                         {selectedRateId && (
                             <div style={{ marginTop: 24 }}>
-                                <Title level={5}>Payment Method</Title>
-                                <Radio.Group
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                    value={paymentMethod}
-                                    style={{ width: "100%", marginTop: 8 }}
-                                >
-                                    <Space direction="vertical" style={{ width: "100%" }}>
-                                        <Radio value="Stripe" style={{ width: "100%", padding: 12, borderRadius: 8 }}>
-                                            <Space>
-                                                <img src={stripeIcon} alt="Stripe" style={{ width: 20, height: 20, objectFit: "contain" }} />
-                                                <Text>Pay with Stripe</Text>
-                                            </Space>
-                                        </Radio>
-                                        <Radio value="Paypal" style={{ width: "100%", padding: 12, borderRadius: 8 }}>
-                                            <Space>
-                                                <img src={paypalIcon} alt="Paypal" style={{ width: 20, height: 20, objectFit: "contain" }} />
-                                                <Text>Pay with PayPal</Text>
-                                            </Space>
-                                        </Radio>
-                                    </Space>
-                                </Radio.Group>
+                                <Title level={3}>Payment Method</Title>
+                                <small className='!mb-3'>Please select a payment method (selected: {paymentMethod})</small>
+                                <div className="w-full !mt-2 flex items-center h-16 gap-2">
+                                    <div
+                                        onClick={() => setPaymentMethod("Paypal")}
+                                        className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Paypal" ? "bg-blue-200 !border-2 !border-[#1890FF]" : ""}`}>
+                                        <img src={paypalIcon} alt="Paypal"
+                                            className="w-full h-full object-contain"
+                                        />
+                                    </div>
+                                    <div
+                                        onClick={() => setPaymentMethod("Stripe")}
+                                        className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Stripe" ? "bg-blue-200 !border-2 !border-[#1890FF]" : ""}`}>
+                                        <img src={stripeIcon} alt={stripe}
+                                            className="w-full h-full object-contain"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </>

@@ -23,13 +23,15 @@ import toast from "react-hot-toast";
 import { usePostPaymentMutation } from "../../../Redux/sampler/paymentApis";
 import TransectionTableOfBusiness from "./TransectionTableOfBusiness";
 import { useGetBusinessMetaQuery } from "../../../Redux/businessApis/meta/bussinessMetaApis";
+import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
 const TransectionOfBusiness = () => {
   const { data: businessMeta, isLoading: businessMetaLoading } = useGetBusinessMetaQuery();
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [paymentModal, showPaymentModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
+  const { data: profileData, isLoading: profileLoading } = useGetProfileQuery();
   // const [isModalVisible, setIsModalVisible] = useState(false)
-  const [createPayment, { isLoading: paymentLoading }] =
+  const [createPayment] =
     usePostPaymentMutation();
   const navigate = useNavigate();
 
@@ -111,6 +113,7 @@ const TransectionOfBusiness = () => {
 
       <Modal
         title="Add withdrawal method"
+        loading={profileLoading}
         open={paymentModal}
         onCancel={() => showPaymentModal(!paymentModal)}
         footer={null}
@@ -175,15 +178,26 @@ const TransectionOfBusiness = () => {
               </div>
             </section>
             <div>
-              <Button
-                type="primary"
-                loading={paymentLoading}
-                onClick={() => setUpOnBoarding()}
-                className="!flex !items-center !justify-center gap-2"
-              >
-                Setup
-                <FaExternalLinkAlt />
-              </Button>
+              {!profileData?.data?.isStripeAccountConnected ?
+                <div className="flex gap-4">
+                  <Button type="link" size="small">
+                    Edit
+                  </Button>
+                  <Button type="link" size="small" danger>
+                    Remove
+                  </Button>
+                </div>
+                :
+                <Button
+                  type="primary"
+                  loading={createOnboardingLoading}
+                  onClick={handleCreateOnboarding}
+                  className="!flex !items-center !justify-center gap-2"
+                >
+                  Setup
+                  <FaExternalLinkAlt />
+                </Button>
+              }
             </div>
           </div>
         </Card>
@@ -191,7 +205,7 @@ const TransectionOfBusiness = () => {
 
       <Modal
         title="Get paid"
-        visible={isGetPaidModalVisible}
+        open={isGetPaidModalVisible}
         onCancel={handleCancelGetPaid}
         footer={null}
         width={500}
