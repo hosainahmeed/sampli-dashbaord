@@ -25,7 +25,6 @@ import TransectionTableOfBusiness from "./TransectionTableOfBusiness";
 import { useGetBusinessMetaQuery } from "../../../Redux/businessApis/meta/bussinessMetaApis";
 const TransectionOfBusiness = () => {
   const { data: businessMeta, isLoading: businessMetaLoading } = useGetBusinessMetaQuery();
-  const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [paymentModal, showPaymentModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
@@ -33,9 +32,7 @@ const TransectionOfBusiness = () => {
   const [createPayment, { isLoading: paymentLoading }] =
     usePostPaymentMutation();
   const navigate = useNavigate();
-  const handleDateChange = (dates, dateStrings) => {
-    setSelectedDateRange(dateStrings);
-  };
+
   const handleCancelGetPaid = () => {
     setIsGetPaidModalVisible(false);
   };
@@ -44,10 +41,6 @@ const TransectionOfBusiness = () => {
     toast.success(`Withdrawing $${withdrawAmount}`);
     showPaymentModal(false);
     setIsGetPaidModalVisible(false);
-  };
-
-  const handleApply = () => {
-    console.log("Selected Date Range: ", selectedDateRange);
   };
 
   const setUpOnBoarding = async () => {

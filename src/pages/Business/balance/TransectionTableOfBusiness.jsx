@@ -44,10 +44,7 @@ function TransectionTableOfBusiness() {
 
     const handleDownloadCSV = useCallback(async () => {
         setCsvLoading(true);
-
-
         try {
-
             toast.dismiss()
             toast.loading("Starting data retrieval for CSV export...");
 
@@ -63,7 +60,6 @@ function TransectionTableOfBusiness() {
             if (!response.ok) {
                 throw new Error(`Server returned ${response.status}`);
             }
-
             toast.dismiss()
             toast.loading("Processing transaction data...");
 
