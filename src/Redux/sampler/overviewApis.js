@@ -9,6 +9,13 @@ const overviewApis = baseApis.injectEndpoints({
         params,
       }),
     }),
+    getOverview: builder.query({
+      query: (params) => ({
+        url: `/meta/get-reviewer-meta-data`,
+        method: "GET",
+        params,
+      }),
+    }),
   }),
 });
 
