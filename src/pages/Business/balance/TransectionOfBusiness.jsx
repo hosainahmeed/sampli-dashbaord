@@ -8,7 +8,8 @@ import {
   Modal,
   Input,
   Alert,
-  Skeleton
+  Skeleton,
+  Tag
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -24,12 +25,14 @@ import { usePostPaymentMutation } from "../../../Redux/sampler/paymentApis";
 import TransectionTableOfBusiness from "./TransectionTableOfBusiness";
 import { useGetBusinessMetaQuery } from "../../../Redux/businessApis/meta/bussinessMetaApis";
 import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
+import { useUpdateConnectedAccountMutation } from "../../../Redux/businessApis/stripesConnected/stripecreateOnboardingApis";
 const TransectionOfBusiness = () => {
   const { data: businessMeta, isLoading: businessMetaLoading } = useGetBusinessMetaQuery();
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [paymentModal, showPaymentModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const { data: profileData, isLoading: profileLoading } = useGetProfileQuery();
+  const [updateConnectedAccount, { isLoading: updateConnectedAccountLoading }] = useUpdateConnectedAccountMutation();
   // const [isModalVisible, setIsModalVisible] = useState(false)
   const [createPayment] =
     usePostPaymentMutation();
@@ -59,6 +62,19 @@ const TransectionOfBusiness = () => {
       toast.error(error?.data?.message || error?.message || "Something went wrong");
     }
   };
+  const handleUpdateConnectedAccount = async () => {
+    try {
+      await updateConnectedAccount().unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message || "Connected account updated successfully")
+          window.open(res?.data?.link, "_self");
+        }
+      })
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error?.message || "Something went wrong")
+    }
+  }
   return (
     <div className="">
       <div
@@ -167,25 +183,19 @@ const TransectionOfBusiness = () => {
             <section>
               <div className="flex items-center">
                 <img src={stripeImage} alt="stripe" className="w-6" />
-
                 <span className="ml-3">Stripe account</span>
-              </div>
-              <div>
-                <ul className="list-disc ml-13 text-gray-500">
-                  <li>Up to 1 business day</li>
-                  <li>Fees may apply</li>
-                </ul>
               </div>
             </section>
             <div>
               {!profileData?.data?.isStripeAccountConnected ?
                 <div className="flex gap-4">
-                  <Button type="link" size="small">
+                  <Button
+                    loading={updateConnectedAccountLoading}
+                    onClick={() => handleUpdateConnectedAccount()}
+                    type="default" size="small">
                     Edit
                   </Button>
-                  <Button type="link" size="small" danger>
-                    Remove
-                  </Button>
+                  <Tag color="green">Connected</Tag>
                 </div>
                 :
                 <Button

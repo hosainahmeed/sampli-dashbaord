@@ -1,14 +1,12 @@
 import React from "react";
-import { Form, Input, Button, Typography, Divider } from "antd";
-import { AppleOutlined, GoogleOutlined } from "@ant-design/icons";
+import { Button, Typography } from "antd";
 import "antd/dist/reset.css";
 import Logo from "../../components/ui/Logo";
-import { TiSocialFacebook } from "react-icons/ti";
 import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
 import { Link } from "react-router-dom";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const ForgetPassword = () => {
   const onFinish = (values) => {
@@ -40,7 +38,7 @@ const ForgetPassword = () => {
               { required: true, message: "Please enter your email!" },
               { type: "email", message: "Enter a valid email address!" },
             ]}
-            placeholder="MichealScott@gmail.com"
+            placeholder="john@example.com"
             type="email"
             style={{
               width: "100%",
@@ -49,41 +47,17 @@ const ForgetPassword = () => {
               textAlign: "start",
             }}
           />
-
-          <div className="flex items-center justify-end">
-            <Link to="/login" className="text-blue-500">
-              Return to login
-            </Link>
-          </div>
           <Button
+            size="large"
             type="primary"
             htmlType="submit"
             className="w-full"
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 10, marginBottom: 10 }}
           >
             Continue
           </Button>
         </FormWrapper>
-
-        <Divider>Or Login with</Divider>
-        <div className="flex justify-center gap-2 space-x-4">
-          <button className="px-6 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <AppleOutlined />
-          </button>
-          <button className="px-6 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <GoogleOutlined />
-          </button>
-          <button className="px-6 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-150">
-            <TiSocialFacebook />
-          </button>
-        </div>
-
-        <div className="mt-4 text-gray-500">
-          New to Sampli?{" "}
-          <Link to="/choose-role" className="text-blue-500">
-            Get started
-          </Link>
-        </div>
+        <Link to="/login" className="text-blue-500 hover:underline">Return to Login</Link>
       </div>
     </div>
   );

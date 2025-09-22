@@ -49,7 +49,8 @@ function OrderDetails() {
   // };
   const navigate = useNavigate();
   return (
-    <div className=" p-6">
+    <div className="">
+      <h1>Order Details</h1>
       {/* <div
         className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-black transition-all"
         onClick={() => navigate(-1)}

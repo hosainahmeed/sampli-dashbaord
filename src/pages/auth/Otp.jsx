@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, use } from "react";
-import { Typography, Input, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Typography, Input, Button, Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/ui/Logo";
 
@@ -7,9 +7,7 @@ const { Title, Text } = Typography;
 
 const OTPVerification = () => {
   const router = useNavigate();
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(30);
-  const inputsRef = useRef([]);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -18,31 +16,12 @@ const OTPVerification = () => {
     }
   }, [timeLeft]);
 
-  const handleChange = (index, value) => {
-    if (!/^\d*$/.test(value)) return;
-
-    let newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    if (value && index < 5) {
-      inputsRef.current[index + 1].focus();
-    }
-  };
-
-  const handleKeyDown = (index, e) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputsRef.current[index - 1].focus();
-    }
-  };
-
   const handleResend = () => {
-    setOtp(["", "", "", "", "", ""]);
     setTimeLeft(30);
   };
 
-  const handleContinue = () => {
-    console.log("OTP:", otp.join(""));
+  const handleContinue = (values) => {
+    console.log("OTP:", values?.verifyCode);
     router("/reset-password");
   };
 
@@ -64,28 +43,22 @@ const OTPVerification = () => {
           </h1>
         </div>
 
-        <div className="flex justify-center gap-2 my-4">
-          {otp.map((value, index) => (
-            <Input
-              key={index}
-              ref={(el) => (inputsRef.current[index] = el)}
-              maxLength={1}
-              value={value}
-              onChange={(e) => handleChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              className="text-center text-xl w-12 h-12 border-2 border-blue-400"
-            />
-          ))}
-        </div>
-
-        <Button
-          type="primary"
-          className="w-full"
-          disabled={otp.includes("")}
-          onClick={handleContinue}
-        >
-          Continue
-        </Button>
+        <Form onFinish={handleContinue}>
+          <Form.Item name={"verifyCode"} rules={[{ required: true }]}>
+            <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              // loading={isLoading}
+              type="primary"
+              htmlType="submit"
+              className="w-full"
+              size="large"
+            >
+              Continue
+            </Button>
+          </Form.Item>
+        </Form>
 
         <div className="mt-3">
           {timeLeft > 0 ? (

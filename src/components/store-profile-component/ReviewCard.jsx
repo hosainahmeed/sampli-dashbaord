@@ -5,7 +5,6 @@ import React from 'react';
 // import { useSpring, animated } from 'react-spring';
 
 const ReviewCard = ({ r, reviewLoading }) => {
-  console.log(reviewLoading)
   // const [isReplying, setIsReplying] = useState(false);
   // const [reply, setReply] = useState('');
 

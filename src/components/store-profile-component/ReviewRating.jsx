@@ -1,13 +1,11 @@
 import React from "react";
 
 const ReviewRating = ({ rating }) => {
-  // Calculate total reviews
   const totalReviews = Object.values(rating.starCounts).reduce(
     (sum, count) => sum + count,
     0
   );
 
-  // Map starCounts to numeric keys for easy loop
   const ratingDistribution = {
     5: rating.starCounts.fiveStar || 0,
     4: rating.starCounts.fourStar || 0,
@@ -22,7 +20,7 @@ const ReviewRating = ({ rating }) => {
   };
 
   return (
-    <div>
+    <div className="!mt-4">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-4xl font-bold">{rating.averageRating.toFixed(1)}</span>
         <span>⭐</span>

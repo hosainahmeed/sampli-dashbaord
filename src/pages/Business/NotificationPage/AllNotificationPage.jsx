@@ -34,47 +34,49 @@ const getIcon = (type) => {
   }
 };
 
-const getActions = (type, isRead) => {
-  switch (type) {
-    case "likeOnPost":
-      return ["View Stats", isRead ? "Marked as read" : "Mark as read"];
-    case "review":
-      return ["Watch Review", isRead ? "Marked as read" : "Mark as read"];
-    case "orderNotification":
-      return ["View Order", isRead ? "Marked as read" : "Mark as read"];
-    case "payment":
-      return ["See details", isRead ? "Marked as read" : "Mark as read"];
-    case "campaign":
-      return ["See details", isRead ? "Marked as read" : "Mark as read"];
-    case "shipping":
-      return ["See details", isRead ? "Marked as read" : "Mark as read"];
-    default:
-      return [isRead ? "Marked as read" : "Mark as read"];
-  }
-};
+// const getActions = (type, isRead) => {
+//   switch (type) {
+//     case "likeOnPost":
+//       return ["View Stats", isRead ? "Marked as read" : "Mark as read"];
+//     case "review":
+//       return ["Watch Review", isRead ? "Marked as read" : "Mark as read"];
+//     case "orderNotification":
+//       return ["View Order", isRead ? "Marked as read" : "Mark as read"];
+//     case "payment":
+//       return ["See details", isRead ? "Marked as read" : "Mark as read"];
+//     case "campaign":
+//       return ["See details", isRead ? "Marked as read" : "Mark as read"];
+//     case "shipping":
+//       return ["See details", isRead ? "Marked as read" : "Mark as read"];
+//     default:
+//       return [isRead ? "Marked as read" : "Mark as read"];
+//   }
+// };
 
 const AllNotificationPage = () => {
   const [limit, setLimit] = useState(10)
   const { data: notificationRes, isLoading: notificationLoading } = useNotificationPageQuery({ limit })
   const navigate = useNavigate()
 
-  const handleAction = (type, orderId, action) => {
-    if (type === "likeOnPost" && action === "Mark as read") {
-      toast.success("Marked as read");
-    } else if (type === "review" && action === "Mark as read") {
-      toast.success("Marked as read");
-    } else if (type === "orderNotification" && action === "View Order") {
-      navigate("/sales/single-order", { state: { orderId } });
-    } else if (type === "payment" && action === "See details") {
-      toast.success("Marked as read");
-    } else if (type === "campaign" && action === "See details") {
-      toast.success("Marked as read");
-    } else if (type === "shipping" && action === "See details") {
-      toast.success("Marked as read");
-    } else {
-      toast.success("Marked as read");
-    }
-  };
+  // const handleAction = (type, orderId, action) => {
+  //   if (type === "likeOnPost" && action === "Mark as read") {
+  //     toast.success("Marked as read");
+  //   } else if (type === "review" && action === "Mark as read") {
+  //     toast.success("Marked as read");
+  //   } else if (type === "orderNotification" && action === "View Order") {
+  //     navigate("/sales/single-order", { state: { orderId } });
+  //   } else if (type === "payment" && action === "See details") {
+  //     toast.success("Marked as read");
+  //   } else if (type === "campaign" && action === "See details") {
+  //     toast.success("Marked as read");
+  //   } else if (type === "shipping" && action === "See details") {
+  //     toast.success("Marked as read");
+  //   } else if (type === "general" && action === "Mark as read") {
+  //     toast.success("Marked as read");
+  //   } else {
+  //     toast.success("Marked as read");
+  //   }
+  // };
 
   const categories = [
     { icon: <FaBell size={18} />, label: "All" },
@@ -91,9 +93,9 @@ const AllNotificationPage = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Notifications</h1>
         <div className="flex gap-2">
-          <Button variant="link" className="text-blue-500">
+          {/* <Button variant="link" className="text-blue-500">
             Mark all as read
-          </Button>
+          </Button> */}
           <Link to={"/settings"} state={{ tab: "notifications" }}>
             <Button variant="outline" className="flex items-center gap-2">
               <CiSettings size={18} />
@@ -133,7 +135,7 @@ const AllNotificationPage = () => {
                 <h3 className="font-medium">{item?.title}</h3>
                 <p className="text-gray-600">{item?.message}</p>
 
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   {getActions(item?.type, item?.isRead).map((action, actionIndex) => (
                     <Button
                       key={actionIndex}
@@ -146,7 +148,7 @@ const AllNotificationPage = () => {
                       {action}
                     </Button>
                   ))}
-                </div>
+                </div> */}
               </div>
               <span className="text-gray-400 text-sm">{item?.time}</span>
             </div>

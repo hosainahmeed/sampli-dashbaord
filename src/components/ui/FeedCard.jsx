@@ -73,18 +73,18 @@ const FeedCard = ({ content }) => {
                 defaultValue={content?.rating}
                 style={{ fontSize: 9, marginRight: 5 }}
               />
-              <Text>{content?.rating}</Text>•
+              <Text>{content?.rating}</Text> •
               <Text
-                className="!text-black !underline"
+                className="!text-[#6D7486] !underline"
                 style={{ marginLeft: 10 }}
               >
                 {content?.product?.name}
-              </Text>
+              </Text> •
               <Text className="!ml-2 mt-1" style={{ color: "green" }}>
                 ${content?.product?.price}
               </Text>
               <Text
-                className="!text-black !underline"
+                className="!text-[#6D7486] !underline"
                 style={{ marginLeft: 10 }}
               >
                 • {content?.category?.name}
@@ -92,14 +92,13 @@ const FeedCard = ({ content }) => {
             </div>
           </div>
         </div>
-        <BsThreeDots />
       </div>
-      <Text>{content?.description}</Text>
-      <div style={{ position: "relative" }}>
+      <p className="line-clamp-2">{content?.description}</p>
+      <div className="mt-4 shadow w-full rounded-3xl aspect-video h-auto md:h-[400px]">
         <video
           src={content?.video}
           controls
-          className="w-full rounded-3xl mt-4 overflow-hidden"
+          className="w-full h-full rounded-3xl aspect-video mt-4 overflow-hidden"
         />
       </div>
       <div className="mt-4">
@@ -125,14 +124,14 @@ const FeedCard = ({ content }) => {
         >
           {content?.totalComments} comments
         </Button>
-        <Button
+        {/* <Button
           className="!text-[#6D7486]"
           onClick={() => setShowModal(!showModal)}
           type="text"
           icon={<RiShareForwardLine />}
         >
           Share
-        </Button>
+        </Button> */}
         <Modal
           title="Share this post"
           position="center"
@@ -205,11 +204,11 @@ const FeedCard = ({ content }) => {
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ marginLeft: 10 }}>
-            <div style={{ position: "relative" }}>
+            <div className="mt-4 h-[300px]">
               <video
                 src={selectedComment?.video}
                 controls
-                className="w-full rounded-3xl mt-4 overflow-hidden"
+                className="w-full h-full rounded-3xl aspect-video mt-4 overflow-hidden"
               />
             </div>
             <Text style={{ marginTop: 10 }}>

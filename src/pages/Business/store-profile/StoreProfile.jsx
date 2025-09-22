@@ -94,7 +94,7 @@ function StoreProfile() {
                 <span className="text-blue-500 underline cursor-pointer">Create product</span></Link></span>} />
             </div>}
         </div>
-        {products?.data?.result?.length > 0 && <Pagination
+        {products?.data?.result?.length > itemsPerPage && <Pagination
           current={currentPage}
           total={products?.data?.result?.length}
           pageSize={itemsPerPage}
@@ -122,22 +122,22 @@ function StoreProfile() {
             return originalElement;
           }}
         />}
-        {reviewLoading ? <Skeleton /> : <div id="review" className="flex items-start md:flex-row flex-col gap-24 justify-between">
+        {reviewLoading ? <Skeleton style={{marginTop:"48px"}} /> : <div id="review" className="flex !mt-12 items-start md:flex-row flex-col gap-24 justify-between">
           {review && <>
-            <div className="md:flex-1 w-full md:sticky top-10">
+            <div className="md:flex-1 w-full md:sticky top-10 !mt-4">
               <ReviewRating rating={reviewDatas?.data} />
             </div>
             <div className="mx-auto font-sans w-full md:flex-1">
               <div className="w-full flex items-center gap-3 justify-between">
                 <div className="flex gap-2">
-                  <SelectField
+                  {/* <SelectField
                     placeholder={"Recommended"}
                     className="!w-full reconmended-ant-select "
                     options={[
                       { label: "Recommended", value: "yes" },
                       { label: "Not Recommended", value: "no" },
                     ]}
-                  ></SelectField>
+                  ></SelectField> */}
                   <SelectField
                     placeholder={"All stars"}
                     className="!w-full"
@@ -150,7 +150,6 @@ function StoreProfile() {
                     ]}
                   ></SelectField>
                 </div>
-                <div></div>
               </div>
               {review?.length > 0 ? review?.map((review) => (
                 <ReviewCard key={review?._id} r={review} reviewLoading={reviewLoading} />
@@ -203,8 +202,8 @@ const CardComponent = ({ item, setReviewId }) => {
       className="shadow-md cursor-pointer border-[1px] overflow-hidden border-[#eee]"
       cover={
         <img
-          className="lg:h-[250px] sm:h-[200px] h-[180px] object-contain md:object-cover xl:h-[300px]"
-          alt="example"
+          className="lg:h-[250px] sm:h-[200px] h-[180px] object-contain xl:h-[300px]"
+          alt={item?.name}
           src={item?.images[0]}
         />
       }

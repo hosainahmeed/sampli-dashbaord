@@ -23,7 +23,6 @@ const CampaignTable = () => {
     ...(statusFilter !== 'All' && { status: statusFilter }),
   });
 
-  console.log(campaignsData?.data?.meta)
   const campaigns = campaignsData?.data?.result;
   const statusColors = {
     Active: 'orange',

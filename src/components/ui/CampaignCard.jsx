@@ -1,10 +1,7 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Card } from 'antd';
 
 function CampaignCard({ data }) {
-  console.log(data);
-
   return (
     <Card className="transition-shadow duration-300 p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg">
       <p className="text-sm xl:text-base text-gray-500 font-medium mb-4">
@@ -18,13 +15,12 @@ function CampaignCard({ data }) {
           <p className="font-semibold text-gray-800 !mt-3">{data?.count}</p>
         )}
         <p
-          className={`text-xs ml-2 p-1 rounded-md ${
-            data?.change.includes('-')
-              ? 'bg-red-100 text-red-500'
-              : 'bg-green-100 text-green-500'
-          }`}
+          className={`text-xs ml-2 p-1 rounded-md ${data?.change < 0
+            ? 'bg-red-100 text-red-500'
+            : 'bg-green-100 text-green-500'
+            }`}
         >
-          {data?.change}
+          {`${data?.change} %`}
         </p>
       </div>
 

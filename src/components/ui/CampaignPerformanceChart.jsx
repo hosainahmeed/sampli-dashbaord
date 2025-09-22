@@ -9,7 +9,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  Legend,
 } from "recharts";
 import { useGetCampaignPerformanceQuery } from "../../Redux/businessApis/campaign/campaignApis";
 

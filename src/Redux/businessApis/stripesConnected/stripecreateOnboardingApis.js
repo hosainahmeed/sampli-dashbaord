@@ -8,7 +8,16 @@ const stripecreateOnboardingApis = baseApis.injectEndpoints({
         method: "POST",
       }),
     }),
+    updateConnectedAccount: builder.mutation({
+      query: () => ({
+        url: "/stripe/update-connected-account",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useCreateOnboardingMutation } = stripecreateOnboardingApis;
+export const {
+  useCreateOnboardingMutation,
+  useUpdateConnectedAccountMutation,
+} = stripecreateOnboardingApis;
