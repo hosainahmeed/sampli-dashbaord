@@ -210,9 +210,9 @@ function Header() {
             <img src={brandlogo} alt="brand logo" />
           </Link>
           <div className="flex items-center gap-4 text-2xl">
-            <Button shape="circle" className="!p-0 !m-0">
+            {/* <Button shape="circle" className="!p-0 !m-0">
               <BsQuestionLg />
-            </Button>
+            </Button> */}
             <Link
               to="/all-notifications"
               className="hover:scale-120 hidden md:block transition-all  "

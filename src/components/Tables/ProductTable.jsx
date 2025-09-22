@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import UploadCsv from '../page-Component/UploadCsv';
 import { FaAngleLeft, FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { useGetProfileQuery } from '../../Redux/businessApis/business _profile/getprofileApi';
-import { useGetBusinessProductApisQuery } from '../../Redux/sampler/productApis';
+import { useChangeProductStatusMutation, useGetBusinessProductApisQuery, useSoftDeleteProductMutation } from '../../Redux/sampler/productApis';
 import { productTableColumn } from './ProductTableColumn';
 import { useDeletePorductMutation } from '../../Redux/businessApis/business_product/businessCreateProduct';
 import toast from 'react-hot-toast';
@@ -29,6 +29,9 @@ const ProductTable = ({ filterStatus }) => {
   }, {
     skip: !profile?.data?._id,
   });
+  const [softDeleteProduct, { isLoading: softDeleting }] = useSoftDeleteProductMutation()
+
+  const [changeProductStatus, { isLoading: statusChanging }] = useChangeProductStatusMutation()
 
   const statusColors = {
     Active: 'orange',
@@ -40,10 +43,10 @@ const ProductTable = ({ filterStatus }) => {
   const handleDelete = useCallback(async (productId) => {
     try {
       await deleteProduct(productId).unwrap().then((res) => {
-        if (res.success) {
-          toast.success(res.message)
+        if (res?.success) {
+          toast.success(res?.message || "Product deleted successfully")
         } else {
-          throw new Error(res.message)
+          throw new Error(res?.message || "Something went wrong")
         }
       })
     } catch (error) {
@@ -55,6 +58,33 @@ const ProductTable = ({ filterStatus }) => {
     navigate(`/product/${productId}`, { state: { productId } })
   };
 
+  const handleArchive = useCallback(async (productId) => {
+    try {
+      await softDeleteProduct(productId).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message || "Product archived successfully")
+        } else {
+          throw new Error(res?.message || "Something went wrong")
+        }
+      })
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong")
+    }
+  }, [])
+
+  const handleArchiveActive = async (productId) => {
+    try {
+      await changeProductStatus({ id: productId, data: { status: "active" } }).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message || "Product archived successfully")
+        } else {
+          throw new Error(res?.message || "Something went wrong")
+        }
+      })
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong")
+    }
+  }
 
   return (
     <div className="pb-12">
@@ -94,7 +124,11 @@ const ProductTable = ({ filterStatus }) => {
           statusColors,
           handleDelete,
           handleView,
-          filterStatus
+          filterStatus,
+          handleArchive,
+          handleArchiveActive,
+          softDeleting,
+          statusChanging,
         })}
         dataSource={products?.data?.result}
         rowKey="_id"

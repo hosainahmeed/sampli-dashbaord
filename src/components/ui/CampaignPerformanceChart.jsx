@@ -41,10 +41,10 @@ function CampaignPerformanceChart() {
     );
 
   return (
-    <div className="border border-gray-200 p-4 rounded-md mt-12">
+    <div className="border border-gray-200 md:p-4 rounded-md mt-12">
       {/* Header */}
       <div className="flex p-2 mb-4 justify-between items-center">
-        <h1 className="text-2xl font-semibold">Campaign Performance</h1>
+        <h1 className="text-sm md:text-2xl font-semibold">Campaign Performance</h1>
         <Select
           loading={isLoading}
           value={selectedOption}

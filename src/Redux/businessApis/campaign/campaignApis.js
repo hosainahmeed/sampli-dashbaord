@@ -53,7 +53,7 @@ const campaignApis = baseApis.injectEndpoints({
         url: `/campaign/get-campaign-summary/${id}`,
         method: "GET",
       }),
-      providesTags: ["campaignStats"],
+      providesTags: ["campaignStats","campaign"],
     }),
     getCampaignPerformance: builder.query({
       query: ({ id, filter }) => ({

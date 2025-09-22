@@ -53,6 +53,21 @@ const productApis = baseApis.injectEndpoints({
       }),
       providesTags: ["Bookmark"],
     }),
+    softDeleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `/product/soft-delete-product/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Bookmark", "product", "businessProfile"],
+    }),
+    changeProductStatus: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/product/change-status/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Bookmark", "product", "businessProfile", "product"],
+    }),
   }),
 });
 
@@ -64,4 +79,6 @@ export const {
   useBookmarkUpdateMutation,
   useGetVariantProductApisQuery,
   useGetAllProductsQuery,
+  useSoftDeleteProductMutation,
+  useChangeProductStatusMutation,
 } = productApis;

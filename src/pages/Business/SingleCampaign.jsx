@@ -49,7 +49,7 @@ function SingleCampaign() {
   const StatCard = React.memo(({ label, children }) => (
     <div className="flex flex-col p-6 gap-3 border border-[#999Eab]">
       <h1 className="uppercase text-xs sm:text-sm text-gray-500">{label}</h1>
-      <div className="text-xs xl:text-lg font-semibold">{children}</div>
+      <div className="text-lg lg:text-2xl font-semibold">{children}</div>
     </div>
   ));
 
@@ -67,7 +67,7 @@ function SingleCampaign() {
         <h1 className="text-2xl xl:text-4xl font-bold mt-6">{campaign?.name}</h1>
         <div className="flex items-center gap-3 mt-4 xl:mt-0">
           <Button loading={campaignLoading} onClick={handleEdit}>Edit Campaign</Button>
-          <Button
+          {campaign?.status !== "Scheduled" && <Button
             loading={statusChanging || campaignLoading}
             onClick={() =>
               handleStatusChange(
@@ -78,7 +78,7 @@ function SingleCampaign() {
             type={campaign?.status === "Active" ? "default" : "primary"}
           >
             {campaign?.status === "Active" ? "Pause Campaign" : "Resume Campaign"}
-          </Button>
+          </Button>}
         </div>
       </div>
 
@@ -103,9 +103,9 @@ function SingleCampaign() {
 
           <StatCard label="Budget">
             <span className="xl:text-sm text-xs text-[#6D7486]">
-              <Tooltip title="Budget Spent"><span className='text-black'>{(campaign?.budget?.spent).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span></Tooltip>{" "}
+              <Tooltip title="Budget Spent"><span className='text-black text-lg lg:text-2xl'>{(campaign?.budget?.spent).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span></Tooltip>{" "}
               of{" "}
-              <Tooltip title="Budget Total"><span>{(campaign?.budget?.total).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span></Tooltip>
+              <Tooltip title="Budget Total"><span className='text-black text-lg lg:text-2xl'>{(campaign?.budget?.total).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span></Tooltip>
             </span>
           </StatCard>
 

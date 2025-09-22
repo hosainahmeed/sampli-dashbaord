@@ -8,7 +8,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
 });
 
-export const productTableColumn = ({ statusColors, handleDelete, handleView, filterStatus }) => {
+export const productTableColumn = ({ statusColors, handleDelete, handleView, filterStatus, handleArchive, handleArchiveActive, softDeleting, statusChanging }) => {
     const getActionItems = useMemo(() => (record) => [
         {
             key: 'view',
@@ -30,7 +30,7 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
                 <Popconfirm
                     title="Are you sure you want to delete this product?"
                     onConfirm={() => handleDelete(record._id)}>
-                    <Button            
+                    <Button
                         size='small'
                         type="text"
                         className="w-full text-left p-0 text-red-500 hover:text-red-600"
@@ -68,6 +68,28 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
                 </Link>
             ),
         },
+
+        {
+            key: 'archive',
+            label: (
+                <Button
+                    size='small'
+                    type="text"
+                    loading={statusChanging || softDeleting}
+                    className="w-full text-left p-0 text-blue-500 hover:text-blue-600"
+                    onClick={() => {
+                        if (filterStatus === "archived") {
+                            handleArchiveActive(record._id)
+                        } else {
+                            handleArchive(record._id)
+                        }
+                    }}
+                >
+                    {filterStatus === "archived" ? "Unarchive" : "Archive"}
+                </Button>
+            ),
+        },
+
     ], [handleDelete, handleView]);
 
     // Memoize columns to prevent unnecessary re-renders

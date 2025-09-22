@@ -44,6 +44,10 @@ const getActions = (type, isRead) => {
       return ["View Order", isRead ? "Marked as read" : "Mark as read"];
     case "payment":
       return ["See details", isRead ? "Marked as read" : "Mark as read"];
+    case "campaign":
+      return ["See details", isRead ? "Marked as read" : "Mark as read"];
+    case "shipping":
+      return ["See details", isRead ? "Marked as read" : "Mark as read"];
     default:
       return [isRead ? "Marked as read" : "Mark as read"];
   }
@@ -53,7 +57,7 @@ const AllNotificationPage = () => {
   const [limit, setLimit] = useState(10)
   const { data: notificationRes, isLoading: notificationLoading } = useNotificationPageQuery({ limit })
   const navigate = useNavigate()
-  
+
   const handleAction = (type, orderId, action) => {
     if (type === "likeOnPost" && action === "Mark as read") {
       toast.success("Marked as read");
@@ -62,6 +66,10 @@ const AllNotificationPage = () => {
     } else if (type === "orderNotification" && action === "View Order") {
       navigate("/sales/single-order", { state: { orderId } });
     } else if (type === "payment" && action === "See details") {
+      toast.success("Marked as read");
+    } else if (type === "campaign" && action === "See details") {
+      toast.success("Marked as read");
+    } else if (type === "shipping" && action === "See details") {
       toast.success("Marked as read");
     } else {
       toast.success("Marked as read");
