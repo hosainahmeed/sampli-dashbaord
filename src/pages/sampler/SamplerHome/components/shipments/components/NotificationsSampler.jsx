@@ -8,10 +8,11 @@ import { Card, Pagination } from "antd";
 
 const icons = {
   review: <GrGift className="w-5 mr-2 mt-1" />,
-  "Review Request": <IoIosStarOutline className="w-5 mr-2 mt-1" />,
-  "Order Shipped": <FaTruck className="w-5 mr-2 mt-1" />,
-  "Payment Received": <FiDollarSign className="w-5 mr-2 mt-1" />,
-  "New Comment": <FaRegComment className="w-5 mr-2 mt-1" />,
+  review: <IoIosStarOutline className="w-5 mr-2 mt-1" />,
+  orderNotification: <FaTruck className="w-5 mr-2 mt-1" />,
+  payment: <FiDollarSign className="w-5 mr-2 mt-1" />,
+  commentOnPost: <FaRegComment className="w-5 mr-2 mt-1" />,
+  
 };
 
 const NotificationCard = ({ notification }) => {
@@ -45,7 +46,7 @@ const NotificationCard = ({ notification }) => {
           )}
         </div>
 
-        {product && (
+        {product?.name && (
           <div className="flex items-center justify-between border p-2 mt-3 border-gray-200 rounded-md">
             <div className="flex items-center gap-2">
               {product.images?.[0] && (

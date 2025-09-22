@@ -9,14 +9,14 @@ const overviewApis = baseApis.injectEndpoints({
         params,
       }),
     }),
-    getOverview: builder.query({
-      query: (params) => ({
-        url: `/meta/get-reviewer-meta-data`,
+    getEarningsReviewer: builder.query({
+      query: () => ({
+        url: `/meta/get-reviewer-earning-meta-data`,
         method: "GET",
-        params,
       }),
     }),
   }),
 });
 
-export const { useGetOverviewQuery } = overviewApis;
+export const { useGetOverviewQuery, useGetEarningsReviewerQuery } =
+  overviewApis;

@@ -12,12 +12,14 @@ import gift from "../../../../../assets/gift-02.svg";
 import sale from "../../../../../assets/sale-03.svg";
 import { useGetReviewerProfileQuery } from "../../../../../Redux/sampler/reviewerProfileApis";
 import { usePostPaymentMutation } from "../../../../../Redux/sampler/paymentApis";
+import { useGetEarningsReviewerQuery } from "../../../../../Redux/sampler/overviewApis";
 
 const EarningsSampler = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const { data: getMyProfile } = useGetReviewerProfileQuery();
+  const { data: getEarningSampler } = useGetEarningsReviewerQuery();
 
   const [createPayment, { isLoading: paymentLoading }] =
     usePostPaymentMutation();
@@ -62,8 +64,10 @@ const EarningsSampler = () => {
 
         <div className="flex justify-between items-center ">
           <div>
-            Total Balance:{" "}
-            <span className="text-blue-500 text-xl font-bold">$ 0.00</span>
+            Current Balance:{" "}
+            <span className="text-blue-500 text-xl font-bold">
+              ${getMyProfile?.data?.currentBalance}
+            </span>
           </div>
 
           <div className="flex items-center gap-5">
@@ -89,8 +93,9 @@ const EarningsSampler = () => {
               <span className="text-lg font-semibold">Review rewards</span>
             </div>
             <div className="flex justify-between items-center">
-              <div className="text-2xl font-bold">$0.00</div>
-              <div className="text-gray-500 text-sm">Pending: $0.00</div>
+              <div className="text-2xl font-bold">
+                ${getEarningSampler?.data?.reviewRewards}
+              </div>
             </div>
           </div>
 
@@ -101,8 +106,9 @@ const EarningsSampler = () => {
               <span className="text-lg font-semibold">Sales Commissions</span>
             </div>
             <div className="flex justify-between items-center">
-              <div className="text-2xl font-bold">$0.00</div>
-              <div className="text-gray-500 text-sm">Pending: $0.00</div>
+              <div className="text-2xl font-bold">
+                ${getEarningSampler?.data?.salesCommissions}
+              </div>
             </div>
           </div>
         </div>
