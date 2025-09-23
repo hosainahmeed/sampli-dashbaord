@@ -32,7 +32,7 @@ const ReviewLaunch = () => {
           <p className="font-medium">Campaign name</p>
           <p>{campaignDetails?.name || 'N/A'}</p>
           <p className="font-medium">Target audience size</p>
-          <p>{campaignDetails?.audienceSize} Reviewers</p>
+          <p>{campaignDetails?.numberOfReviewers} Reviewers</p>
           <p className="font-medium">Cost</p>
           <p>${campaignDetails?.amountForEachReview} per review</p>
           <p className="font-medium">Timeline</p>

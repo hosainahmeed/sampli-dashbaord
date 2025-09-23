@@ -51,7 +51,7 @@ const genderOptions = [
   { label: 'Both', value: 'both' },
   { label: 'Other', value: 'other' },
 ];
-
+// 'male', 'female', 'other', 'both
 const TargetAudienceForm = () => {
   const [formData, setFormData] = useState({
     name: '',
