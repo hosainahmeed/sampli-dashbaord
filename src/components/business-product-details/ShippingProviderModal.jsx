@@ -2,7 +2,7 @@ import { Button, Modal, Spin, Alert, List, Tag, Typography } from 'antd'
 import React, { useState } from 'react'
 import { EnvironmentOutlined, } from '@ant-design/icons';
 import toast from 'react-hot-toast';
-import paypalIcon from '../../assets/payment-icon/PayPal.png'
+// import paypalIcon from '../../assets/payment-icon/PayPal.png'
 import stripeIcon from '../../assets/payment-icon/Stripe.png'
 import { useLocation } from 'react-router-dom';
 import { useConfirmShippingMutation } from '../../Redux/businessApis/campaign/campaignProceedDeliveryApis';
@@ -140,17 +140,17 @@ function ShippingProviderModal({ isModalOpenProvider, handleModalCancel, provide
                                 <Title level={3}>Payment Method</Title>
                                 <small className='!mb-3'>Please select a payment method (selected: {paymentMethod})</small>
                                 <div className="w-full !mt-2 flex items-center h-16 gap-2">
-                                    <div
+                                    {/* <div
                                         onClick={() => setPaymentMethod("Paypal")}
                                         className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Paypal" ? "bg-blue-200 !border-2 !border-[#1890FF]" : ""}`}>
                                         <img src={paypalIcon} alt="Paypal"
                                             className="w-full h-full object-contain"
                                         />
-                                    </div>
+                                    </div> */}
                                     <div
                                         onClick={() => setPaymentMethod("Stripe")}
                                         className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Stripe" ? "bg-blue-200 !border-2 !border-[#1890FF]" : ""}`}>
-                                        <img src={stripeIcon} alt={stripe}
+                                        <img src={stripeIcon} alt="Stripe"
                                             className="w-full h-full object-contain"
                                         />
                                     </div>

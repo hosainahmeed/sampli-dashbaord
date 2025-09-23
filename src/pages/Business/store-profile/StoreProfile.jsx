@@ -212,7 +212,7 @@ const CardComponent = ({ item, setReviewId }) => {
         title={item?.name}
         description={
           <>
-            <p>{item?.shortDescription}</p>
+            <p className="line-clamp-1">{item?.shortDescription}</p>
             <div className="flex justify-between items-center mt-2">
               <span className="text-xl font-semibold !text-black">
                 ${item?.price}
