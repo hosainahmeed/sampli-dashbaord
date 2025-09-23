@@ -4,7 +4,7 @@ import { FiDollarSign } from "react-icons/fi";
 import { GrGift } from "react-icons/gr";
 import { IoIosStarOutline } from "react-icons/io";
 import { useGetProductsNotificationsQuery } from "../../../../../../Redux/sampler/notificationsApis";
-import { Card, Pagination } from "antd";
+import { Card, Empty, Pagination } from "antd";
 
 const icons = {
   review: <GrGift className="w-5 mr-2 mt-1" />,
@@ -12,7 +12,6 @@ const icons = {
   orderNotification: <FaTruck className="w-5 mr-2 mt-1" />,
   payment: <FiDollarSign className="w-5 mr-2 mt-1" />,
   commentOnPost: <FaRegComment className="w-5 mr-2 mt-1" />,
-  
 };
 
 const NotificationCard = ({ notification }) => {
@@ -91,17 +90,29 @@ const NotificationsSampler = () => {
     <div className="h-[94vh] overflow-auto scrollbar-none">
       <h1 className="text-xl font-semibold mb-6">Notifications</h1>
       <div>
-        {notificationData?.data?.result?.map((notification) => (
-          <NotificationCard
-            key={notification._id}
-            notification={notification}
-          />
-        ))}
+        {notificationData?.data?.result?.length > 0 ? (
+          notificationData?.data?.result?.map((notification) => (
+            <NotificationCard
+              key={notification._id}
+              notification={notification}
+            />
+          ))
+        ) : (
+          <div>
+            <div className="flex items-center justify-center">
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description="No data found"
+              />
+            </div>
+          </div>
+        )}
         <Pagination
           current={page}
           onChange={(page) => setPage(page + 10)}
           defaultPageSize={10}
           total={notificationData?.data?.meta?.total}
+          hideOnSinglePage
           showSizeChanger={false}
           className="!my-12 flex items-center justify-center"
         />
