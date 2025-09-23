@@ -15,7 +15,7 @@ const CampaignTable = () => {
   const [pageSize, setPageSize] = useState(5);
   const navigate = useNavigate();
 
-  const { data: campaignsData, isLoading } = useGetCampaignsQuery({
+  const { data: campaignsData, isLoading, isFetching } = useGetCampaignsQuery({
     searchTerm: searchText,
     limit: pageSize,
     page: currentPage,
@@ -49,6 +49,7 @@ const CampaignTable = () => {
           defaultValue="All"
           onChange={setStatusFilter}
           style={{ width: 120, marginBottom: 16 }}
+          loading={isFetching || isLoading}
         >
           <Option value="All">All</Option>
           <Option value="Active">Active</Option>
@@ -61,7 +62,7 @@ const CampaignTable = () => {
       </div>
       <Table
         columns={CampaignTableColumn({ statusColors, navigate })}
-        loading={isLoading}
+        loading={isFetching || isLoading}
         dataSource={campaigns}
         scroll={{ x: 'max-content' }}
         rowKey={(campaign) => campaign?._id}
