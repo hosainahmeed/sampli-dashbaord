@@ -1,3 +1,4 @@
+import { Avatar } from "antd";
 import React from "react";
 
 const ReviewCardSampler = ({ review }) => {
@@ -30,13 +31,16 @@ const ReviewCardSampler = ({ review }) => {
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img
-          src={reviewerImage}
-          alt={reviewerName}
-          className="rounded-full mr-3 w-12 h-12 object-cover"
-        />
+        <div>
+          <Avatar
+            size={60}
+            src={reviewerImage}
+            alt={reviewerName}
+            className=" w-full h-full  object-cover object-center"
+          />
+        </div>
         <div className="flex justify-between items-center w-full">
-          <div>
+          <div className="ml-3">
             <span style={{ fontWeight: "bold" }}>{reviewerName}</span>
             <div>{renderStars(rating)}</div>
           </div>

@@ -116,31 +116,31 @@ const MyPurchasesSampler = () => {
       ),
     },
 
-    {
-      key: "2",
-      label: (
-        <div className="flex gap-2">
-          <div>Cancelled/Returned</div>
-          {/* <p className="text-red-400 rounded-full h-5 w-5 p-1.5 bg-red-100 border border-red-400 flex items-center justify-center">
-            4
-          </p> */}
-        </div>
-      ),
-      children: (
-        <Table
-          key="table2"
-          columns={columns}
-          dataSource={productData}
-          rowKey="id"
-          pagination={{
-            pageSize: 10,
-            position: ["bottomCenter"],
-            showSizeChanger: false,
-          }}
-          scroll={{ x: 1200 }}
-        />
-      ),
-    },
+    // {
+    //   key: "2",
+    //   label: (
+    //     <div className="flex gap-2">
+    //       <div>Cancelled/Returned</div>
+    //       {/* <p className="text-red-400 rounded-full h-5 w-5 p-1.5 bg-red-100 border border-red-400 flex items-center justify-center">
+    //         4
+    //       </p> */}
+    //     </div>
+    //   ),
+    //   children: (
+    //     <Table
+    //       key="table2"
+    //       columns={columns}
+    //       dataSource={productData}
+    //       rowKey="id"
+    //       pagination={{
+    //         pageSize: 10,
+    //         position: ["bottomCenter"],
+    //         showSizeChanger: false,
+    //       }}
+    //       scroll={{ x: 1200 }}
+    //     />
+    //   ),
+    // },
   ];
   return (
     <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">

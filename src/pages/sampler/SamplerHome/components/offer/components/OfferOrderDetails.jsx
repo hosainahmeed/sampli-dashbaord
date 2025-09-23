@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Steps, Button, Modal, Rate, Tabs, Upload, Progress } from "antd";
+import { Steps, Button, Modal, Rate, Tabs, Upload, Progress, Tag } from "antd";
 import {
   ShoppingCartOutlined,
   CheckCircleOutlined,
@@ -260,11 +260,30 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                 </div>
               </div>
               <div>
-                <strong className="text-black text-sm">Status</strong>
+                <strong className="text-black text-sm">Delivery Status</strong>
                 <div>
                   <span className="rounded-full">
                     {geSingleCampaignOffer?.data?.deliveryStatus}
                   </span>
+                </div>
+              </div>
+              <div>
+                <strong className="text-black text-sm">Status</strong>
+                <div className="mt-2">
+                  <Tag
+                    className="px-5 py-2 rounded-full "
+                    color={
+                      geSingleCampaignOffer?.data?.status === "Processing"
+                        ? "orange"
+                        : geSingleCampaignOffer?.data?.status === "Accepted"
+                        ? "green"
+                        : geSingleCampaignOffer?.data?.status === "Cancelled"
+                        ? "red"
+                        : "blue"
+                    }
+                  >
+                    {geSingleCampaignOffer?.data?.status}
+                  </Tag>
                 </div>
               </div>
             </div>
@@ -299,12 +318,18 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             </div>
             <div>
               <div className="flex gap-2">
-                <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
+                {/* <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
                   Track Item
                   <GoLinkExternal className="text-blue-700" />
-                </button>
+                </button> */}
                 <Button
-                  className="!bg-blue-500 !text-white"
+                  disabled={
+                    geSingleCampaignOffer?.data?.status !== "Processing"
+                  }
+                  className={
+                    geSingleCampaignOffer?.data?.status !== "Processing" &&
+                    "!bg-blue-500 !text-white"
+                  }
                   onClick={showModal}
                 >
                   Upload Review
@@ -313,7 +338,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             </div>
           </div>
 
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <h4 className="font-semibold">Order History</h4>
             <Steps current={1} direction="vertical" className="mt-4">
               <Step
@@ -337,9 +362,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                 icon={<CheckCircleOutlined />}
               />
             </Steps>
-          </div>
+          </div> */}
 
-          <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
+          {/* <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
           <div className="grid grid-cols-3 gap-8">
             <div className="flex items-start gap-2">
               <img src={phone} alt="contact" className="w-[20px]" />
@@ -366,14 +391,19 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                 <p className="text-sm text-gray-500">Door Delivery</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       ),
     },
     {
       key: "2",
       label: "Reviews",
-      children: <ReviewsVideo showModal={showModal} product={geSingleCampaignOffer?.data?.product?._id} />,
+      children: (
+        <ReviewsVideo
+          showModal={showModal}
+          product={geSingleCampaignOffer?.data?.product?._id}
+        />
+      ),
     },
   ];
 

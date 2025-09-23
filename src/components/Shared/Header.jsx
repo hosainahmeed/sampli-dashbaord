@@ -98,8 +98,8 @@ function Header() {
   );
   const menuSampler = (
     <Menu className="w-64 rounded-xl shadow-lg">
-      <div className="">
-        <div className="flex items-center gap-3 justify-center">
+      <div className="px-3 py-2">
+        <div className="flex items-center gap-1 justify-start">
           <Avatar
             src={reviewerProfile?.data?.profile_image}
             className="!w-12 !h-12"
@@ -108,7 +108,7 @@ function Header() {
             {reviewerProfile?.data?.name}
           </h1>
         </div>
-        <div className="text-center font-bold">
+        <div className="font-bold">
           <h1 className="font-bold opacity-75 text-sm">
             {reviewerProfile?.data?.email}
           </h1>

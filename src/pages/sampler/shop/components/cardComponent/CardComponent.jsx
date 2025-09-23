@@ -9,7 +9,7 @@ import heartAnimation from "../../../../../../public/heart.json";
 import Lottie from "lottie-react";
 const CardComponent = ({ item }) => {
   const navigate = useNavigate();
-
+  console.log("item=======================%%%%", item);
   const [bookmarkUpdate, { isLoading: bookmarkLoading }] =
     useBookmarkUpdateMutation();
   const handleClickBookmark = async (product) => {
@@ -61,10 +61,7 @@ const CardComponent = ({ item }) => {
         title={item?.name}
         description={
           <div className="flex justify-between flex-col  h-[100px]">
-            <div
-              className="text-sm text-gray-600"
-              dangerouslySetInnerHTML={{ __html: item?.description }}
-            />
+            {item?.shortDescription && <p className="line-clamp-2">{item?.shortDescription}</p>}
             <div className="flex gap-3 items-center mt-1 text-[18px] ">
               <span className=" font-semibold text-black">${item?.price}</span>
               {/* <span className="text-gray-500 line-through ">

@@ -128,26 +128,35 @@ const OverviewSampler = () => {
               <p className="text-gray-500">{item.name}</p>
             </div>
             <div className="flex items-center gap-3 mt-2">
-              <p className="text-xl font-semibold">
-                {isFetching ? "Loading..." : item.currency || ""}
-                {item.earn.toLocaleString()}
-              </p>
-              <p
-                className={`text-sm ${
-                  item.percentageType === "increase"
-                    ? "text-green-500"
-                    : item.percentageType === "decrease"
-                    ? "text-red-500"
-                    : "text-gray-500"
-                }`}
-              >
-                {item.percentageType === "increase"
-                  ? "▲"
-                  : item.percentageType === "decrease"
-                  ? "▼"
-                  : ""}{" "}
-                {item.percentage}
-              </p>
+              {isFetching ? (
+                <div className="mb-4">
+                  <Spin />
+                </div>
+              ) : (
+                <>
+                  <p className="text-xl font-semibold">
+                    {item.currency || ""}
+                    {item.earn.toLocaleString()}
+                  </p>
+
+                  <p
+                    className={`text-sm ${
+                      item.percentageType === "increase"
+                        ? "text-green-500"
+                        : item.percentageType === "decrease"
+                        ? "text-red-500"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {item.percentageType === "increase"
+                      ? "▲"
+                      : item.percentageType === "decrease"
+                      ? "▼"
+                      : ""}{" "}
+                    {item.percentage}
+                  </p>
+                </>
+              )}
               <p className="text-gray-600 text-sm">{item.type}</p>
             </div>
           </div>
