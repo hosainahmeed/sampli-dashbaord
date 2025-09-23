@@ -40,7 +40,8 @@ const OfferDataSampler = () => {
 
   const productData = getAllOffers?.data?.result;
 
-  console.log(getAllOffers)
+
+
   return (
     <div className="">
       <div className="flex justify-between items-center mb-5 mt-14 ">

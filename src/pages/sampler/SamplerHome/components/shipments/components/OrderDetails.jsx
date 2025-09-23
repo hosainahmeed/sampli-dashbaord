@@ -71,7 +71,7 @@ const OrderDetails = ({ setIsClicked }) => {
               </p>
             </div>
           </div>
-          <div>
+          {/* <div>
             <div className="flex gap-2">
               <Button onClick={showModal}>Cancel Order</Button>
               <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
@@ -79,10 +79,10 @@ const OrderDetails = ({ setIsClicked }) => {
                 <GoLinkExternal className="text-blue-700" />
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
 
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <h4 className="font-semibold">Order History</h4>
           <Steps current={1} direction="vertical" className="mt-4">
             <Step
@@ -106,9 +106,9 @@ const OrderDetails = ({ setIsClicked }) => {
               icon={<CheckCircleOutlined />}
             />
           </Steps>
-        </div>
+        </div> */}
 
-        <div className="flex justify-between bg-gray-100 py-5 px-1 border-y border-gray-400 my-5">
+        {/* <div className="flex justify-between bg-gray-100 py-5 px-1 border-y border-gray-400 my-5">
           <div>
             Return period:{' '}
             <span className="text-gray-500">Mar 23 - Mar 30 2024</span>
@@ -122,9 +122,9 @@ const OrderDetails = ({ setIsClicked }) => {
               Return item
             </Link>
           </div>
-        </div>
+        </div> */}
 
-        <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
+        {/* <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
         <div className="grid grid-cols-3 gap-8">
           <div>
             <h5 className="font-medium">Contact Information</h5>
@@ -142,9 +142,9 @@ const OrderDetails = ({ setIsClicked }) => {
             <h5 className="font-xl">Shipping Method</h5>
             <p className="text-sm text-gray-500">Door Delivery</p>
           </div>
-        </div>
+        </div> */}
 
-        <div className="grid grid-cols-3 gap-8 mt-5">
+        {/* <div className="grid grid-cols-3 gap-8 mt-5">
           <div>
             <h5 className="font-xl">Billing Address</h5>
             <p className="text-sm text-gray-500">Maurice Swift</p>
@@ -167,7 +167,7 @@ const OrderDetails = ({ setIsClicked }) => {
               <span>Total: $23.00</span>
             </h5>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <Modal

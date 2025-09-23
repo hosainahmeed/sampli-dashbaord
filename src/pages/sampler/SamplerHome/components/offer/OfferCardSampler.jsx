@@ -44,6 +44,7 @@ const OfferCardSampler = ({ product, processing }) => {
                 : product?.campaign?.amountForEachReview}
             </span>
           </span>
+
           <span className="text-gray-700">
             <span className="text-gray-500 ">Due:</span>{" "}
             <span className="text-black">
@@ -64,6 +65,7 @@ const OfferCardSampler = ({ product, processing }) => {
           </span>
         </div>
       </div>
+      {/* <div>Campaign Name :{product?.name}</div> */}
 
       {/* Offer Status Button */}
       <div className="  p-2 ">

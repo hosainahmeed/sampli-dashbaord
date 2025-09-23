@@ -15,7 +15,7 @@ const TransactionHistorySampler = () => {
 
   const [category, setCategory] = useState("");
   const { data: getAllMyTransaction, isLoading } = useGetMyTransactionQuery({
-    transactionReason: category,
+    ...(category !== "" && { transactionReason: category }),
   });
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [loading, setLoading] = useState(false);

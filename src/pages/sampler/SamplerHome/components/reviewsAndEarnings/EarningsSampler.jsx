@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import ReviewsAndEarningsSampler from "./ReviewsAndEarningsSampler";
-import { Alert, Button, Card, Input, Modal } from "antd";
+import {
+  Alert,
+  Button,
+  Card,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Tag,
+} from "antd";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { LuBadgeDollarSign } from "react-icons/lu";
 import toast from "react-hot-toast";
@@ -13,13 +22,31 @@ import sale from "../../../../../assets/sale-03.svg";
 import { useGetReviewerProfileQuery } from "../../../../../Redux/sampler/reviewerProfileApis";
 import { usePostPaymentMutation } from "../../../../../Redux/sampler/paymentApis";
 import { useGetEarningsReviewerQuery } from "../../../../../Redux/sampler/overviewApis";
+import { useUpdateConnectedAccountMutation } from "../../../../../Redux/businessApis/stripesConnected/stripecreateOnboardingApis";
+import { FormInput } from "lucide-react";
+import { useWithdrawPostMutation } from "../../../../../Redux/sampler/withDrawApis";
 
 const EarningsSampler = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [choose, setChoose] = useState(false);
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const { data: getMyProfile } = useGetReviewerProfileQuery();
   const { data: getEarningSampler } = useGetEarningsReviewerQuery();
+  const [updateConnectedAccount, { isLoading: updateConnectedAccountLoading }] =
+    useUpdateConnectedAccountMutation();
+
+  const [isModalOpenWithdraw, setIsModalOpenWithdraw] = useState(false);
+  const showModalWithdraw = () => {
+    setIsModalOpenWithdraw(true);
+  };
+
+  const handleCancelWithdraw = () => {
+    setIsModalOpenWithdraw(false);
+  };
+
+  const [postWithdraw, { isLoading: withdrawLoading }] =
+    useWithdrawPostMutation();
 
   const [createPayment, { isLoading: paymentLoading }] =
     usePostPaymentMutation();
@@ -52,8 +79,53 @@ const EarningsSampler = () => {
       setIsGetPaidModalVisible(false);
     } catch (error) {
       console.log(error);
+    }
+  };
 
-      //a
+  const handleUpdateConnectedAccount = async () => {
+    try {
+      await updateConnectedAccount()
+        .unwrap()
+        .then((res) => {
+          if (res?.success) {
+            toast.success(
+              res?.message || "Connected account updated successfully"
+            );
+            window.open(res?.data?.link, "_blank", "noopener,noreferrer");
+          }
+        });
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.data?.message || error?.message || "Something went wrong"
+      );
+    }
+  };
+
+  const handleOkWithdraw = async (value) => {
+    try {
+      const data = { amount: Number(value?.price) };
+      await postWithdraw(data)
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          if (res?.success) {
+            toast.success(
+              res?.data?.message || res?.message || "Withdraw success"
+            );
+          } else {
+            toast.error(res?.data?.Buttonmessage || res?.message || "Something went wrong");
+            throw new Error(
+              res?.data?.message || res?.message || "Something went wrong"
+            );
+          }
+          setIsModalOpenWithdraw(false);
+        });
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error?.message || "Something went wrong"
+      );
+      console.log(error);
     }
   };
 
@@ -192,15 +264,34 @@ const EarningsSampler = () => {
                 </Button>
               </div>
             ) : (
-              <div className="flex gap-4">
-                <Button type="link" size="small" danger>
-                  Edit
-                </Button>
-                <Button type="link" size="small" onClick={showModalGetPaid}>
+              <>
+                <div className="flex gap-4">
+                  <Button
+                    loading={updateConnectedAccountLoading}
+                    onClick={() => handleUpdateConnectedAccount()}
+                    type="default"
+                    size="small"
+                  >
+                    Edit
+                  </Button>
+                  {/* <Button type="link" size="small" onClick={showModalGetPaid}>
                   Choose
-                </Button>
-              </div>
+                </Button> */}
+                  <Tag color="green">Connected</Tag>
+                </div>
+              </>
             )}
+          </div>
+          <div className="flex justify-end ">
+            <Button
+              type="primary"
+              onClick={() => {
+                showModalWithdraw();
+                handleCancel();
+              }}
+            >
+              Choose
+            </Button>
           </div>
         </Card>
       </Modal>
@@ -248,6 +339,61 @@ const EarningsSampler = () => {
             Withdraw
           </Button>
         </div>
+      </Modal>
+
+      <Modal
+        title="Withdraw Amount"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalOpenWithdraw}
+        onOk={handleOkWithdraw}
+        onCancel={handleCancelWithdraw}
+        footer={null}
+        centered
+      >
+        <Form
+          requiredMark={false}
+          layout="vertical"
+          onFinish={handleOkWithdraw}
+        >
+          <Form.Item
+            name="price"
+            label="Price"
+            rules={[
+              {
+                required: true,
+                message: "Please enter minimum price of $1!",
+                min: 1,
+                validator: (_, value) =>
+                  value >= 1
+                    ? Promise.resolve()
+                    : Promise.reject("Minimum 1 dollar"),
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <div className="flex justify-end gap-2 w-full">
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={withdrawLoading}
+                style={{ width: "100%" }}
+              >
+                Submit
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="default"
+                onClick={handleCancelWithdraw}
+                style={{ width: "100%" }}
+              >
+                Cancel
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
       </Modal>
     </div>
   );

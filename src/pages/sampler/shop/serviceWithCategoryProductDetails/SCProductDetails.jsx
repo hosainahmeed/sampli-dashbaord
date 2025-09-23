@@ -29,6 +29,8 @@ const SCProductDetails = ({ referral }) => {
   });
 
   const product = getSingleProduct?.data;
+
+  console.log("==============================", getSingleProduct);
   const variants = getVariantProduct?.data || [];
 
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -346,59 +348,62 @@ const SCProductDetails = ({ referral }) => {
               {selectedVariant && ` - $${selectedVariant.price}`}
             </Button>
           </div>
+        </div>
+      </div>
 
-          <Collapse
-            defaultActiveKey={["1"]}
-            className="bg-gray-50 border-0 rounded-lg mt-5"
-          >
-            <Panel header="About item" key="1" className="border-0 ">
-              <div className="flex items-center justify-between mb-4">
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: product?.description }}
-                  />
-                </div>
+      <div>
+        <Collapse
+          defaultActiveKey={["1"]}
+          className="bg-gray-50 border-0 rounded-lg mt-5 w-full"
+        >
+          <Panel header="About item" key="1" className="border-0">
+            <div className="flex items-center justify-between mb-4">
+              <div className="space-y-2 text-sm text-gray-600 ">
+                <div
+                  className=" space-y-2 text-sm text-gray-600 "
+                  dangerouslySetInnerHTML={{ __html: product?.description }}
+                />
               </div>
-            </Panel>
-          </Collapse>
+            </div>
+          </Panel>
+        </Collapse>
 
-          <Collapse
-            defaultActiveKey={["2"]}
-            className="bg-gray-50 border-0 rounded-lg !mt-5"
-          >
-            <Panel header="About seller" key="1" className="border-0">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={product?.bussiness?.logo}
-                    alt={product?.bussiness?.bussinessName}
-                    className="w-20 h-20 rounded-full"
-                  />
-                  <span className="font-medium">
-                    {product?.bussiness?.bussinessName}
-                  </span>
-                </div>
-                <Button
+        <Collapse
+          defaultActiveKey={["2"]}
+          className="bg-gray-50 border-0 rounded-lg !mt-5"
+        >
+          <Panel header="About seller" key="1" className="border-0">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <img
+                  src={product?.bussiness?.logo}
+                  alt={product?.bussiness?.bussinessName}
+                  className="w-20 h-20 rounded-full"
+                />
+                <span className="font-medium">
+                  {product?.bussiness?.bussinessName}
+                </span>
+              </div>
+              {/* <Button
                   type="link"
                   className="text-blue-500 hover:text-blue-600"
                 >
                   Follow Store
-                </Button>
-              </div>
+                </Button> */}
+            </div>
 
-              <div className="space-y-2 text-gray-600">
-                <div className="flex items-center gap-2">
-                  <IdcardOutlined className="text-gray-400" />
-                  <span>Business phone number</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <PhoneOutlined className="text-gray-400" />
-                  <span>{product?.bussiness?.phoneNumber}</span>
-                </div>
+            <div className="space-y-2 text-gray-600">
+              <div className="flex items-center gap-2">
+                <IdcardOutlined className="text-gray-400" />
+                <span>Business phone number</span>
               </div>
-            </Panel>
-          </Collapse>
-        </div>
+              <div className="flex items-center gap-2">
+                <PhoneOutlined className="text-gray-400" />
+                <span>{product?.bussiness?.phoneNumber}</span>
+              </div>
+            </div>
+          </Panel>
+        </Collapse>
       </div>
 
       <Modal

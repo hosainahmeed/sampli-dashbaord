@@ -27,12 +27,21 @@ const OfferShipmentsSampler = () => {
         day: "2-digit",
       }).format(new Date(item.createdAt)),
       status: item.deliveryStatus,
+      sstatus: item.status,
       statusColor:
         item.deliveryStatus === "Waiting to be shipped"
           ? "orange"
           : item.deliveryStatus === "Delivered"
           ? "green"
           : "red",
+      sstatusColor:
+        item.status === "Processing"
+          ? "orange"
+          : item.status === "Accepted"
+          ? "green"
+          : item.status === "Cancelled"
+          ? "red"
+          : "blue",
     })) || [];
 
   const columns = [
@@ -53,11 +62,19 @@ const OfferShipmentsSampler = () => {
       key: "date",
     },
     {
-      title: "Status",
+      title: "Delivery Status",
       dataIndex: "status",
       key: "status",
       render: (status, record) => (
         <Tag color={record.statusColor}>{status}</Tag>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "sstatus",
+      key: "sstatus",
+      render: (sstatus, record) => (
+        <Tag color={record.sstatusColor}>{sstatus}</Tag>
       ),
     },
     {
@@ -98,26 +115,26 @@ const OfferShipmentsSampler = () => {
         />
       ),
     },
-    {
-      key: "2",
-      label: <div className="flex gap-2">Cancelled</div>,
-      children: (
-        <Table
-          loading={campaignLoading}
-          columns={columns}
-          dataSource={productData.filter((item) => item.status === "Cancelled")}
-          rowKey="id"
-          pagination={{
-            current: page,
-            pageSize: limit,
-            total: getMyCampaignOffer?.data?.meta?.total || 0,
-            onChange: (p) => setPage(p + 1),
-            position: ["bottomCenter"],
-          }}
-          scroll={{ x: 1200 }}
-        />
-      ),
-    },
+    // {
+    //   key: "2",
+    //   label: <div className="flex gap-2">Cancelled</div>,
+    //   children: (
+    //     <Table
+    //       loading={campaignLoading}
+    //       columns={columns}
+    //       dataSource={productData.filter((item) => item.status === "Cancelled")}
+    //       rowKey="id"
+    //       pagination={{
+    //         current: page,
+    //         pageSize: limit,
+    //         total: getMyCampaignOffer?.data?.meta?.total || 0,
+    //         onChange: (p) => setPage(p + 1),
+    //         position: ["bottomCenter"],
+    //       }}
+    //       scroll={{ x: 1200 }}
+    //     />
+    //   ),
+    // },
   ];
 
   return (
