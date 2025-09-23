@@ -14,6 +14,7 @@ const profileApis = baseApis.injectEndpoints({
         url: "/reviewer/get-profile",
         method: "GET",
       }),
+      providesTags: ["ReviewerProfile"],
     }),
     getMyReviews: builder.query({
       query: (params) => ({
