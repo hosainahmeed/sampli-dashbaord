@@ -31,6 +31,7 @@ export const baseApis = createApi({
     "campaignStats",
     "campaignAnalysis",
     "businessNotification",
+    "Notification",
   ],
   endpoints: () => ({}),
 });

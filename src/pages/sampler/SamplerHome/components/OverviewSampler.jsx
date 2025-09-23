@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Dropdown, Menu } from "antd";
+import { Card, Dropdown, Menu, Spin } from "antd";
 import { DownOutlined, FilterOutlined } from "@ant-design/icons";
 import itemsInShipment from "../../../../assets/items-in-shipment.svg";
 import totalReviews from "../../../../assets/total-reviews.svg";
@@ -11,7 +11,7 @@ const OverviewSampler = () => {
   const [selectedFilter, setSelectedFilter] = useState("thisMonth");
   const [labelName, setLabelName] = useState("This Month");
 
-  const { data } = useGetOverviewQuery({
+  const { data, isLoading, isFetching } = useGetOverviewQuery({
     dateRange: selectedFilter,
   });
 
@@ -96,6 +96,16 @@ const OverviewSampler = () => {
     ];
   }, [data, labelName]);
 
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Card loading key={index} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-xl">
       {/* Header */}
@@ -104,7 +114,7 @@ const OverviewSampler = () => {
         <Dropdown overlay={menu} trigger={["click"]}>
           <button className="border px-3 py-1 rounded-lg flex items-center gap-2 text-gray-600 hover:bg-gray-100">
             <FilterOutlined />
-            {labelName} <DownOutlined />
+            {isFetching ? "Loading..." : labelName} <DownOutlined />
           </button>
         </Dropdown>
       </div>
@@ -114,12 +124,12 @@ const OverviewSampler = () => {
         {overviewItems.map((item) => (
           <div key={item.id} className="bg-white p-4 rounded-lg shadow-sm">
             <div className="flex gap-2 items-center mb-3">
-              <img src={item.icon} alt={item.name} className="mb-3" />
+              {<img src={item.icon} alt={item.name} className="mb-3" />}
               <p className="text-gray-500">{item.name}</p>
             </div>
             <div className="flex items-center gap-3 mt-2">
               <p className="text-xl font-semibold">
-                {item.currency || ""}
+                {isFetching ? "Loading..." : item.currency || ""}
                 {item.earn.toLocaleString()}
               </p>
               <p

@@ -37,13 +37,24 @@ const OfferCardSampler = ({ product, processing }) => {
         <div className="flex justify-between items-center text-sm mt-2">
           <span className="text-gray-700">
             <span className="text-gray-500 ">Rewards:</span>{" "}
-            <span className="text-black">${product?.amountForEachReview}</span>
+            <span className="text-black">
+              $
+              {product?.amountForEachReview
+                ? product?.amountForEachReview
+                : product?.campaign?.amountForEachReview}
+            </span>
           </span>
           <span className="text-gray-700">
             <span className="text-gray-500 ">Due:</span>{" "}
             <span className="text-black">
               {`${Math.ceil(
-                Math.abs(new Date(product.endDate) - new Date()) /
+                Math.abs(
+                  new Date(
+                    product?.endDate
+                      ? product?.endDate
+                      : product?.campaign?.endDate
+                  ) - new Date()
+                ) /
                   1000 /
                   60 /
                   60 /
@@ -63,34 +74,38 @@ const OfferCardSampler = ({ product, processing }) => {
             {product?.userOffer?.status}
           </Button>
         ) : (
-          <Button
-            onClick={showModal}
-            className={` !w-full  !font-medium !text-sm !py-4 ${
-              product?.status === "Active"
-                ? "!text-white !bg-blue-500 !cursor-pointer"
-                : product?.status === "Scheduled"
-                ? "!cursor-not-allowed !text-black !py-6"
-                : "!text-white !bg-blue-500 "
-            } ${processing && "!cursor-not-allowed !text-black "}`}
-            disabled={product.status === "Scheduled" || processing}
-          >
-            {product.status === "Active" ? (
-              "Accept Offer"
-            ) : product.status === "Scheduled" ? (
-              <div>
-                Campaign starts on{" "}
-                <div className="text-sm text-blue-700">
-                  {new Intl.DateTimeFormat("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "2-digit",
-                  }).format(new Date(product?.startDate))}
-                </div>
-              </div>
-            ) : (
-              "Accept Offer"
+          <div>
+            {!processing && (
+              <Button
+                onClick={showModal}
+                className={` !w-full  !font-medium !text-sm !py-4 ${
+                  product?.status === "Active"
+                    ? "!text-white !bg-blue-500 !cursor-pointer"
+                    : product?.status === "Scheduled"
+                    ? "!cursor-not-allowed !text-black !py-6"
+                    : "!text-white !bg-blue-500 "
+                } ${processing && "!cursor-not-allowed !text-black "}`}
+                disabled={product.status === "Scheduled" || processing}
+              >
+                {product.status === "Active" ? (
+                  "Accept Offer"
+                ) : product.status === "Scheduled" ? (
+                  <div>
+                    Campaign starts on{" "}
+                    <div className="text-sm text-blue-700">
+                      {new Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "2-digit",
+                      }).format(new Date(product?.startDate))}
+                    </div>
+                  </div>
+                ) : (
+                  "Accept Offer"
+                )}
+              </Button>
             )}
-          </Button>
+          </div>
         )}
         <ProductDetails
           productId={product?._id}
