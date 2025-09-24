@@ -28,8 +28,8 @@ function DashboardHome() {
           </div>
         </Col>
         <hr />
-        <CampaignAnalytics />
         <SalesAnalytics />
+        <CampaignAnalytics />
       </Row>
     </div>
   );

@@ -1,112 +1,210 @@
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Typography, Timeline, Tag } from "antd";
 import React from "react";
-import { FaAngleLeft } from "react-icons/fa";
+import { FaAngleLeft, FaDownload } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FiShoppingBag } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
-import TimeLineCard from "../../../components/business-product-details/TimeLineCard";
+import { GoLinkExternal } from "react-icons/go";
+import { CheckCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import ContactInformationCustomer from "../../../components/business-product-details/ContactInformationCustomer";
 import ShippingAddressCustomer from "../../../components/business-product-details/ShippingAddressCustomer";
-import BillingAddressCustomer from "../../../components/business-product-details/BillingAddressCustomer";
-import { GoLinkExternal } from "react-icons/go";
-import { useGetOrderDetailsByIdQuery } from "../../../Redux/sampler/orderApis";
+import { useGetOrderDetailsByIdQuery, useTrackOrderQuery } from "../../../Redux/sampler/orderApis";
 
 const { Text, Title } = Typography;
 
 function OrderDetails() {
   const location = useLocation();
   const { orderId } = location.state;
-  const { data: orderDetails } = useGetOrderDetailsByIdQuery(orderId, { skip: !orderId });
-  console.log(orderDetails);
-  // const { amount, customer, date, product, status } = orderDetails;
-  // const order = {
-  //   id: orderId,
-  //   status: status,
-  //   date: date,
-  //   image:
-  //     "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
-  //   name: product,
-  //   variant: "Medium Black",
-  //   price: amount,
-  //   quantity: 1,
-  //   subtotal: 50.0,
-  //   shipping: 50.0,
-  //   total: 50.0,
-  //   timeline: [
-  //     { status: "Order processed", date: "23, Oct 2023", completed: true },
-  //     { status: "Payment Confirmed", date: "23, Oct 2023", completed: true },
-  //     { status: "Item shipped", date: "23, Oct 2023", completed: false },
-  //     { status: "Delivered", date: "23, Oct 2023", completed: false },
-  //   ],
-  //   customer: customer,
-  //   email: "MichaelScott@gmail.com",
-  //   phone: "",
-  //   shippingAddress: {
-  //     name: customer,
-  //     address: "rampura dhaka bangladesh",
-  //     phone: "+16278847",
-  //   },
-  // };
+  const { data: orderDetails, isLoading: orderLoading } = useGetOrderDetailsByIdQuery(orderId, { skip: !orderId });
+  const { data: trackOrder } = useTrackOrderQuery(orderId, { skip: !orderId });
+
   const navigate = useNavigate();
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'delivered':
+        return 'green';
+      case 'transit':
+        return 'blue';
+      case 'processing':
+        return 'orange';
+      case 'waiting to be shipped':
+        return 'purple';
+      default:
+        return 'default';
+    }
+  };
+
+  const getTimelineItems = () => {
+    const trackingHistory = trackOrder?.data?.trackingData?.tracking_history || [];
+    const currentStatus = trackOrder?.data?.trackingData?.tracking_status;
+
+    // Create timeline items from tracking history
+    const items = trackingHistory.map((item, index) => ({
+      dot: item.status === 'DELIVERED' ? <CheckCircleOutlined style={{ color: '#52c41a' }} /> :
+        item.status === 'TRANSIT' ? <ClockCircleOutlined style={{ color: '#1890ff' }} /> :
+          <ClockCircleOutlined style={{ color: '#faad14' }} />,
+      children: (
+        <div>
+          <div className="font-medium">
+            {item.status === 'UNKNOWN' ? 'Order processed' :
+              item.status === 'TRANSIT' ? 'Item shipped' :
+                item.status === 'DELIVERED' ? 'Delivered' : item.status}
+          </div>
+          <div className="text-gray-500 text-sm">
+            {formatDate(item.status_date)}
+          </div>
+          <div className="text-gray-600 text-sm mt-1">
+            {item.status_details}
+          </div>
+          {item.location && (
+            <div className="text-gray-500 text-xs">
+              {item.location.city}, {item.location.state} {item.location.zip}
+            </div>
+          )}
+        </div>
+      )
+    }));
+
+    return items.reverse(); // Show latest first
+  };
+
   return (
-    <div className="">
-      <h1>Order Details</h1>
-      {/* <div
-        className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-black transition-all"
+    <div className="p-6">
+      <div
+        className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-black transition-all mb-4"
         onClick={() => navigate(-1)}
       >
         <FaAngleLeft />
         <Text className="text-lg">Back</Text>
       </div>
-      <div className="flex justify-between border-b pb-4 border-gray-200 mt-4">
+
+      <div className="flex justify-between items-start border-b pb-4 border-gray-200">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 mb-2">
             <Title level={3} className="m-0">
-              Order ID: {order.id}
+              Order ID: #{orderDetails?.data?._id}
             </Title>
-            <span className="px-2 py-1 text-[10px] bg-purple-100 text-purple-600 rounded border border-purple-300">
-              {order.status}
-            </span>
+            <Tag color={getStatusColor(orderDetails?.data?.deliveryStatus)}>
+              {orderDetails?.data?.deliveryStatus || 'Processing'}
+            </Tag>
           </div>
-          <p className="text-gray-500 mt-2">{order.date}</p>
+          <p className="text-gray-500">
+            {formatDate(orderDetails?.data?.createdAt)}
+          </p>
         </div>
+
         <div className="flex gap-2">
-          <Button>Go to item</Button>
-          <Button type="primary" className="flex items-center">
+          <Button type="default" onClick={() => {
+            if (orderDetails?.data?.shipping?.labelUrl) {
+              const a = document.createElement('a');
+              a.href = orderDetails?.data?.shipping?.labelUrl;
+              a.download = orderDetails?.data?.shipping?.labelUrl.split('/').pop();
+              a.click();
+            }
+          }}
+            className="flex items-center">
+            Download shipping label
+            <FaDownload className="text-blue-700" />
+          </Button>
+          <Button onClick={() => {
+            if (orderDetails?.data?.shipping?.trackingUrl) {
+              window.open(orderDetails?.data?.shipping?.trackingUrl, '_blank');
+            }
+          }} type="primary" className="flex items-center">
             Track Item
             <GoLinkExternal className="text-blue-700" />
           </Button>
         </div>
       </div>
-      <Title className="!mt-4" level={4}>
+
+      <Title className="mt-6 mb-4" level={4}>
         Order Item
       </Title>
-      <div className="flex !mt-12 justify-between xl:flex-row flex-col items-start gap-4">
-        <div className="w-full xl:flex-1">
-          <Title level={5} className="mt-6">
+
+      <div className="mb-8">
+        {orderLoading ? (
+          <Card
+            loading
+            title="Order Item"
+            className="mb-8"
+          />
+        ) : orderDetails?.data?.items?.map((item) => (
+          <OrderItem key={item._id} item={item} orderDetails={orderDetails?.data} />
+        ))}
+      </div>
+
+
+      {/* <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-12">
+       <div>
+          <Title level={4} className="mb-4">
             Timeline
           </Title>
-          <TimeLineCard status={status?.toUpperCase()} order={order} />
+          <Card className="p-4">
+            {trackOrder?.data?.trackingData ? (
+              <Timeline items={getTimelineItems()} />
+            ) : (
+              <div className="text-gray-500">
+                <Timeline
+                  items={[
+                    {
+                      dot: <CheckCircleOutlined style={{ color: '#52c41a' }} />,
+                      children: (
+                        <div>
+                          <div className="font-medium">Order processed</div>
+                          <div className="text-gray-500 text-sm">
+                            {formatDate(orderDetails?.data?.createdAt)}
+                          </div>
+                        </div>
+                      )
+                    },
+                    {
+                      dot: <ClockCircleOutlined style={{ color: '#faad14' }} />,
+                      children: (
+                        <div>
+                          <div className="font-medium">Payment Confirmed</div>
+                          <div className="text-gray-500 text-sm">
+                            {formatDate(orderDetails?.data?.createdAt)}
+                          </div>
+                        </div>
+                      )
+                    }
+                  ]}
+                />
+              </div>
+            )}
+          </Card>
         </div>
 
-        <div className="w-full xl:flex-1 flex flex-col gap-4">
-          <Card className="shadow p-4">
-            <Title level={3} className="mt-6">
+       <div className="space-y-4">
+          <Card className="p-4">
+            <Title level={4} className="mb-4">
               Customer
             </Title>
-            <div className="flex items-center text-[var(--body-text-2)] justify-start gap-2">
-              <LuUserRound />
-              <h1 className="!mt-2">{order.customer}</h1>
-            </div>
-            <div className="flex items-center text-[var(--body-text-2)] justify-start gap-2">
-              <FiShoppingBag />
-              <h1 className="!mt-2">1 order</h1>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-700">
+                <LuUserRound />
+                <span>{orderDetails?.data?.customer || 'Micheal Scott'}</span>
+              </div>
+              <div className="flex items-center gap-2 text-gray-700">
+                <FiShoppingBag />
+                <span>1 order</span>
+              </div>
             </div>
           </Card>
 
-          <ContactInformationCustomer order={order} />
-          <ShippingAddressCustomer order={order} />
-          <BillingAddressCustomer order={order} />
+          <ContactInformationCustomer order={orderDetails?.data} />
+          <ShippingAddressCustomer order={orderDetails?.data} />
         </div>
       </div> */}
     </div>
@@ -114,3 +212,64 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
+
+const OrderItem = ({ item, orderDetails }) => {
+  console.log(orderDetails?.deliveryFee)
+  const formatPrice = (price) => {
+    return `$${(price / 100).toFixed(2)}`;
+  };
+
+  return (
+    <Card className="mb-4">
+      <div className="flex items-start gap-4">
+        <div className="w-16 h-16 rounded-lg border border-gray-200 p-2 flex-shrink-0">
+          <img
+            className="w-full h-full object-contain"
+            src={item?.product?.images?.[0]}
+            alt={item?.product?.name}
+          />
+        </div>
+
+        <div className="flex-1">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-medium text-gray-900 mb-1">
+                {item?.product?.name}
+              </h3>
+              <p className="text-gray-500 text-sm">
+                Medium Black
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="font-medium">
+                $ {parseFloat(item?.price).toFixed(2)} x {item?.quantity}
+              </div>
+              <div className="font-semibold">
+                $ {parseFloat(item?.price * item?.quantity).toFixed(2)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>Subtotal</span>
+            <span>{item?.quantity} items</span>
+            <span>$ {parseFloat(orderDetails?.subTotal).toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span>Shipping</span>
+            <span>$ {parseFloat(orderDetails?.deliveryFee).toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between font-semibold pt-2 border-t border-gray-400">
+            <span>Total</span>
+            <span></span>
+            <span>$ {parseFloat(orderDetails?.totalPrice).toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};

@@ -1,9 +1,6 @@
 import React from 'react';
 import {
-  Form,
-  Input,
   Button,
-  Select,
   Typography,
   Divider,
 } from 'antd';
@@ -30,15 +27,16 @@ export const SectorOptions = [
   { value: 'Beauty', label: 'Beauty' },
   { value: 'Apparel', label: 'Apparel' },
   { value: 'Footwear', label: 'Footwear' },
-  { value: 'PersonalCare', label: 'Personal Care' },
-  { value: 'HomeAppliances', label: 'Home Appliances' },
-  { value: 'FoodAndBeverage', label: 'Food & Beverage' },
+  { value: 'Personal Care', label: 'Personal Care' },
+  { value: 'Home appliances', label: 'Home appliances' },
+  { value: 'Food & Beverage', label: 'Food & Beverage' },
   { value: 'Pets', label: 'Pets' },
-  { value: 'KidsBaby', label: 'Kids & Baby' },
+  { value: 'Kids & Baby', label: 'Kids & Baby' },
   { value: 'Jewelry', label: 'Jewelry' },
   { value: 'Women', label: 'Women' },
   { value: 'Men', label: 'Men' },
 ];
+
 
 const BusinessInfoForm = () => {
   const location = useLocation()

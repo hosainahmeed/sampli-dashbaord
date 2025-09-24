@@ -1,21 +1,8 @@
-import { Button, Card, Input, Typography } from 'antd';
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { CiEdit } from 'react-icons/ci';
-import { MdClose } from 'react-icons/md';
+import React from 'react';
+import { Card, Typography } from 'antd';
 const { Title, Text } = Typography;
 
 function ContactInformationCustomer({ order }) {
-  const [isEdit, setIsEdit] = useState(false);
-  const [email] = useState(order?.shippingAddress?.email);
-  const [phone, setPhone] = useState(order?.shippingAddress?.phone);
-
-  const handleSave = () => {
-    console.log('Updated phone:', phone);
-    toast.dismiss()
-    toast.success('Phone number updated successfully!');
-  };
-
   return (
     <div>
       <Card className="shadow p-4">
@@ -23,35 +10,12 @@ function ContactInformationCustomer({ order }) {
           <Title level={3} className="mt-6">
             Contact Information
           </Title>
-          <Button shape='circle' onClick={() => setIsEdit(!isEdit)} className="!border-none">
-            {isEdit ? <MdClose className="text-2xl" /> : <CiEdit className="text-2xl" />}
-          </Button>
         </div>
-        {isEdit ? (
-          <>
-            <Input
-              value={email}
-              disabled
-              style={{ cursor: 'not-allowed' }}
-              className="!mb-2"
-            />
-            <Input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="Enter your phone number"
-              className="!mb-2"
-            />
-            <Button type="primary" onClick={handleSave}>
-              Save
-            </Button>
-          </>
-        ) : (
-          <>
-            <Text>{email || 'No Email'}</Text>
-            <br />
-            <Text type="secondary">{phone || 'No Phone number'}</Text>
-          </>
-        )}
+        <>
+          <Text>{order?.shippingAddress?.email || 'No Email'}</Text>
+          <br />
+          <Text type="secondary">{order?.shippingAddress?.phone || 'No Phone number'}</Text>
+        </>
       </Card>
     </div>
   );

@@ -25,9 +25,6 @@ function ShippingAddressCustomer({ order }) {
           <Title level={4} className="mt-0">
             Shipping Address
           </Title>
-          <Button className="!border-none">
-            <CiEdit className="text-xl" />
-          </Button>
         </div>
 
         <Space direction="vertical" size="middle" className="w-full">

@@ -157,7 +157,7 @@ function ShippingProviderModal({
                   Please select a payment method (selected: {paymentMethod})
                 </small>
                 <div className="w-full !mt-2 flex items-center h-16 gap-2">
-                  <div
+                  {/* <div
                     onClick={() => setPaymentMethod("Paypal")}
                     className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${
                       paymentMethod === "Paypal"
@@ -170,7 +170,7 @@ function ShippingProviderModal({
                       alt="Paypal"
                       className="w-full h-full object-contain"
                     />
-                  </div>
+                  </div> */}
                   <div
                     onClick={() => setPaymentMethod("Stripe")}
                     className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${
@@ -181,7 +181,7 @@ function ShippingProviderModal({
                   >
                     <img
                       src={stripeIcon}
-                      alt={stripe}
+                      alt="stripe"
                       className="w-full h-full object-contain"
                     />
                   </div>

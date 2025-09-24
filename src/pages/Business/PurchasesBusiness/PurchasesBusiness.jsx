@@ -8,8 +8,11 @@ const transformOrders = (orders) => {
         key: item._id,
         name: item.product?.name,
         image: item.product?.images?.[0],
+        campaign: item.campaign,
         date: new Date(item.createdAt).toLocaleDateString(),
         status: item.status,
+        deliveryStatus: item.deliveryStatus,
+        shipping: item.shipping,
         statusColor:
             item.status === "Accepted"
                 ? "green"
@@ -28,7 +31,7 @@ const PurchasesBusiness = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const { data, isLoading } = useGetCampaignPurchaseQuery({
+    const { data, isLoading, isFetching } = useGetCampaignPurchaseQuery({
         page,
         limit: pageSize,
     });
@@ -39,7 +42,7 @@ const PurchasesBusiness = () => {
 
     const columns = [
         {
-            title: "Item name",
+            title: "Product",
             dataIndex: "name",
             key: "name",
             render: (_, record) => (
@@ -49,9 +52,32 @@ const PurchasesBusiness = () => {
                         alt={record.name}
                         className="w-10 h-10 rounded object-cover"
                     />
-                    <div className="flex items-center">
-                        <h3 className="text-sm font-medium">{record.name}</h3>
-                    </div>
+                    <h3 className="text-sm font-medium">{record.name}</h3>
+                </div>
+            ),
+        },
+        {
+            title: "Campaign",
+            dataIndex: "campaign",
+            key: "campaign",
+            render: (_, record) => (
+                <div className="flex flex-col gap-1 items-start">
+                    <span className="text-lg font-medium"> {record.campaign?.name}</span>
+                    <span className="text-sm font-normal text-gray-400">Campaign Status: <h1 className="text-xs" color={record.statusColor}>{record?.status}</h1></span>
+                </div>
+            ),
+        },
+        {
+            title: "Shipping",
+            dataIndex: "shipping",
+            key: "shipping",
+            render: (shipping) => (
+                <div className="flex flex-col gap-1 items-start">
+                    <span className="text-lg font-medium">Amount: {shipping.amount}</span>
+                    <span className="text-sm font-normal text-gray-400">Status: <Tag size="small" color="orange">{shipping.status}</Tag></span>
+                    {shipping.trackingNumber && (
+                        <span className="text-sm font-normal text-gray-400">Tracking: {shipping.trackingNumber}</span>
+                    )}
                 </div>
             ),
         },
@@ -59,14 +85,6 @@ const PurchasesBusiness = () => {
             title: "Date",
             dataIndex: "date",
             key: "date",
-        },
-        {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            render: (status, record) => (
-                <Tag color={record.statusColor}>{status}</Tag>
-            ),
         },
         {
             title: "",
@@ -78,21 +96,22 @@ const PurchasesBusiness = () => {
                     >
                         View
                     </Button>
-                </Link >
+                </Link>
             ),
         },
     ];
 
+
     const tableProps = {
-        loading: isLoading,
+        loading: isLoading || isFetching,
         columns,
         dataSource: productData,
         bordered: true,
         rowKey: "key",
         pagination: {
-            current: meta.page || page,
-            pageSize: meta.limit || pageSize,
-            total: meta.total || 0,
+            current: meta?.page || page,
+            pageSize: meta?.limit || pageSize,
+            total: meta?.total || 0,
             onChange: (newPage, newSize) => {
                 setPage(newPage);
                 setPageSize(newSize);
@@ -123,23 +142,9 @@ const PurchasesBusiness = () => {
         scroll: { x: 1000 },
     };
 
-    // const tabs = [
-    //     {
-    //         key: "1",
-    //         label: "In Progress / Delivered",
-    //         children: <Table {...tableProps} />,
-    //     },
-    //     {
-    //         key: "2",
-    //         label: "Cancelled / Returned",
-    //         children: <Table {...tableProps} />,
-    //     },
-    // ];
-
     return (
         <div className="w-full h-[calc(100vh-10rem)] overflow-auto scrollbar-none p-4">
             <div className="text-xl font-semibold mb-5">Campaign Offer / Offer Shipment</div>
-            {/* <Tabs defaultActiveKey="1" items={tabs} /> */}
             <Table {...tableProps} />
         </div>
     );

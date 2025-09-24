@@ -1,22 +1,46 @@
 import React from "react";
-import {  Button, Typography } from "antd";
+import { Button, Typography } from "antd";
 import "antd/dist/reset.css";
 import Logo from "../../components/ui/Logo";
 import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthResetPasswordMutation } from "../../Redux/authApis";
+import toast from "react-hot-toast";
 
 const { Title } = Typography;
 
 const ResetPassword = () => {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-
-  const onFinish = (values) => {
-    if (values.password !== values.confirmPassword) {
-      return Promise.reject(new Error("Passwords do not match!"));
+  const [resetPassword, { isLoading: resetPasswordLoading }] = useAuthResetPasswordMutation();
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      if (values.password !== values.confirmPassword) {
+        return Promise.reject(new Error("Passwords do not match!"));
+      }
+      const email = localStorage.getItem("email");
+      if (!email) {
+        throw new Error("Email not found!");
+      }
+      const data = {
+        email: email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      }
+      await resetPassword(data).unwrap().then((response) => {
+        if (response?.success) {
+          localStorage.setItem("token", response?.data?.accessToken);
+          navigate("/");
+          toast.success(response?.message || "Password reset successfully!");
+        } else {
+          throw new Error(response?.message || "Something went wrong!");
+        }
+      })
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong!");
     }
-    console.log("Success:", values);
   };
 
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -88,18 +112,15 @@ const ResetPassword = () => {
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10 }}
+            loading={resetPasswordLoading}
           >
             Confirm
           </Button>
         </FormWrapper>
-        <div className="mt-12 text-gray-500">
-          <Link to="/help" className="mr-3">
-            Help
+        <div className="mt-3 text-gray-500">
+          <Link to="/login" className="mr-3 hover:underline">
+            Back to Login
           </Link>
-          <Link to="/privacy" className="mr-3">
-            Privacy
-          </Link>
-          <Link to="/terms">Terms</Link>
         </div>
       </div>
     </div>

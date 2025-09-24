@@ -8,7 +8,15 @@ const bussinessMetaApis = baseApis.injectEndpoints({
         method: "GET",
       }),
     }),
+    getBusinessSalesMeta: builder.query({
+      query: (params) => ({
+        url: "/meta/get-business-sales-meta-data",
+        method: "GET",
+        params,
+      }),
+    }),
   }),
 });
 
-export const { useGetBusinessMetaQuery } = bussinessMetaApis;
+export const { useGetBusinessMetaQuery, useGetBusinessSalesMetaQuery } =
+  bussinessMetaApis;

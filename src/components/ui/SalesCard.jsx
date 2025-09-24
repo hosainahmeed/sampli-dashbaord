@@ -11,16 +11,14 @@ function SalesCard({ data }) {
 
       {/* Value & Change */}
       <div className="text-lg xl:text-2xl flex items-center mb-4">
-        <p className="font-semibold text-gray-800">{data?.value}</p>
+        <p className="font-semibold text-2xl text-gray-800">{data?.value}</p>
         {data?.change && (
           <p
-            className={`text-xs ml-2 p-1 rounded-md ${
-              data?.change.includes('-')
-                ? 'bg-red-100 text-red-500'
+            className={`text-xs ml-2 p-1 rounded-md ${data?.change < 0 ? 'bg-red-100 text-red-500'
                 : 'bg-green-100 text-green-500'
-            } font-semibold text-gray-800 !-mt-3`}
+              } font-semibold text-gray-800 !-mt-3`}
           >
-            {data?.change}
+            {`${data?.change} %`}
           </p>
         )}
       </div>
