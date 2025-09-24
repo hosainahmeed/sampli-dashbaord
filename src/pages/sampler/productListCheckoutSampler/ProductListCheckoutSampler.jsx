@@ -569,14 +569,14 @@ const SoloStoveCart = () => {
                 >
                   Stripe
                 </div>
-                <div
+                {/* <div
                   className={`border border-gray-200 rounded-lg p-4  cursor-pointer ${
                     paymentMethod === "Paypal" ? "!bg-blue-500 !text-white" : ""
                   }`}
                   onClick={() => setPaymentMethod("Paypal")}
                 >
                   Paypal
-                </div>
+                </div> */}
               </div>
             )}
           </div>

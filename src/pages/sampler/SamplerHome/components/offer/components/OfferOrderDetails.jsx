@@ -20,6 +20,7 @@ import {
   useCreateReviewMutation,
   useCreateUploadApisMutation,
 } from "../../../../../../Redux/sampler/videoUploadApis";
+import { useGetOrderDetailsByIdQuery } from "../../../../../../Redux/sampler/orderApis";
 
 const { Step } = Steps;
 
@@ -38,8 +39,8 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     useGetSingleOfferCampaignQuery({
       id,
     });
+ 
 
-  console.log(geSingleCampaignOffer);
 
   const [createPresignedUrl, { isLoading: uploadLoading }] =
     useCreateUploadApisMutation();
@@ -318,10 +319,10 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             </div>
             <div>
               <div className="flex gap-2">
-                {/* <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
+                <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
                   Track Item
                   <GoLinkExternal className="text-blue-700" />
-                </button> */}
+                </button>
                 <Button
                   disabled={
                     geSingleCampaignOffer?.data?.status !== "Processing"
@@ -338,7 +339,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             </div>
           </div>
 
-          {/* <div className="mt-6">
+          <div className="mt-6">
             <h4 className="font-semibold">Order History</h4>
             <Steps current={1} direction="vertical" className="mt-4">
               <Step
@@ -362,9 +363,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                 icon={<CheckCircleOutlined />}
               />
             </Steps>
-          </div> */}
+          </div>
 
-          {/* <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
+          <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
           <div className="grid grid-cols-3 gap-8">
             <div className="flex items-start gap-2">
               <img src={phone} alt="contact" className="w-[20px]" />
@@ -391,7 +392,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                 <p className="text-sm text-gray-500">Door Delivery</p>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       ),
     },

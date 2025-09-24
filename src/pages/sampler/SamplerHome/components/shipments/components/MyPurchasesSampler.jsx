@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Table, Tabs, Tag } from "antd";
 import OrderDetails from "./OrderDetails";
-import { useGetOrderListQuery } from "../../../../../../Redux/sampler/orderApis";
+import {
+  useGetOrderDetailsByIdQuery,
+  useGetOrderListQuery,
+} from "../../../../../../Redux/sampler/orderApis";
 import Loader from "../../../../../loader/Loader";
 
 const onChange = (key) => {
@@ -18,9 +21,7 @@ const MyPurchasesSampler = () => {
       limit: pageSize,
     }
   );
-
-  console.log(getAllOrder);
-  console.log("getAllOrder");
+  const [id, setId] = useState("");
 
   const productData =
     getAllOrder?.data?.result?.map((order) => ({
@@ -32,6 +33,7 @@ const MyPurchasesSampler = () => {
       length: order?.items?.length,
       date: new Date(order.createdAt).toLocaleDateString(),
       status: order.deliveryStatus || "Unknown",
+      price: order.items?.[0]?.price || "0.00",
       statusColor:
         order.paymentStatus === "Success"
           ? "green"
@@ -65,14 +67,10 @@ const MyPurchasesSampler = () => {
       key: "date",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status, record) => (
-        <Tag color={record.statusColor} key={status}>
-          {status}
-        </Tag>
-      ),
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (_, record) => <div>${record.price}</div>,
     },
     {
       title: "",
@@ -81,7 +79,10 @@ const MyPurchasesSampler = () => {
         <div
           type="link"
           className="border text-blue-500 border-blue-500 px-2 py-1 cursor-pointer rounded-md hover:bg-gray-100 flex items-center justify-center"
-          onClick={() => setIsClicked(true)}
+          onClick={() => {
+            setIsClicked(true);
+            setId(record.key);
+          }}
         >
           View
         </div>
@@ -145,7 +146,7 @@ const MyPurchasesSampler = () => {
   return (
     <div className="h-[94vh] overflow-auto scroll-y-auto scrollbar-none">
       {isClicked ? (
-        <OrderDetails setIsClicked={setIsClicked} />
+        <OrderDetails setIsClicked={setIsClicked} id={id} />
       ) : (
         <div>
           <div className="flex justify-between items-center mb-5 ">
