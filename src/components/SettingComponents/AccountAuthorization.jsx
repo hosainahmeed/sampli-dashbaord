@@ -6,16 +6,16 @@ function AccountAuthorization() {
   const applestatus = "not";
   return (
     <div>
-      <Card title="Account authorization">
+      <Card style={{ opacity: 0.5 }} title="Account authorization (under development)">
         <div className="flex-center-between">
           <div>
             <h1>Google</h1>
             <p>Connected. You can choose to log in with Google.</p>
           </div>
           <div>
-            {status === "Connected" ? (
+            {status !== "not" ? (
               <div className="py-3 px-6 rounded-full border-[1px] border-[#387ced]">
-                Connected
+                under development
               </div>
             ) : (
               <Button>Connect</Button>
@@ -28,9 +28,9 @@ function AccountAuthorization() {
             <p>Not connected. You can choose to log in with Apple.</p>
           </div>
           <div>
-            {applestatus === "Connected" ? (
+            {applestatus === "not" ? (
               <div className="py-3 px-6 rounded-full border-[1px] border-[#387ced]">
-                Connected
+                under development
               </div>
             ) : (
               <Button>Connect</Button>

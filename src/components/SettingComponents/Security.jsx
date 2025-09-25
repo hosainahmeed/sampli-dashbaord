@@ -56,10 +56,10 @@ function Security() {
       </Card>
 
       {/* Other Components */}
-      <AccountAuthorization />
-      <div className="!mt-4">
+      {/* <AccountAuthorization /> */}
+      {/* <div className="!mt-4">
         <DeleteAccountCard />
-      </div>
+      </div> */}
 
       {/* Modals */}
       <ChangePasswordModal
