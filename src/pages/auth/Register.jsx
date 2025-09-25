@@ -106,7 +106,7 @@ const Register = () => {
         <Divider>Or sign up with</Divider>
         <div className="grid grid-cols-1 gap-2 space-x-4">
           <GoogleAuthButton role={"bussinessOwner"} />
-          <div>
+          {/* <div>
             <div className="flex items-center justify-between gap-1 text-sm py-2 rounded-md cursor-pointer">
               <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
                 <img src={apple} alt="" className="w-5 h-5" />{" "}
@@ -119,7 +119,7 @@ const Register = () => {
                 <span className="text-gray-600">Continue with Facebook</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="mt-4 text-gray-500">
           Already have an account?{' '}

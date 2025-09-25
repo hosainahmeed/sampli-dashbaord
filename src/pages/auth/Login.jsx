@@ -10,6 +10,7 @@ import { jwtDecode } from "jwt-decode";
 import GoogleAuthButton from "../../googleAuthButton/GoogleAuthButton";
 import fb from "../../assets/socialsLogo/facebook.svg";
 import apple from "../../assets/socialsLogo/apple.png";
+import { FaApple } from "react-icons/fa";
 
 const { Title } = Typography;
 
@@ -124,20 +125,22 @@ const LoginForm = () => {
 
         <Divider>Or Login with</Divider>
         <GoogleAuthButton loginForm={true} />
-        <div>
+        {/* <div>
           <div className="flex items-center justify-between gap-1 text-sm py-2 rounded-md cursor-pointer">
-            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
-              <img src={apple} alt="" className="w-5 h-5" />{" "}
-              <span className="text-gray-600">Continue with Apple</span>
+            <div className="border hover:bg-[#F0F5FE] flex px-1 py-2 rounded-4xl w-full border-gray-200 items-start justify-start gap-1">
+              <div className="bg-amber-500 w-8 h-8 rounded-full overflow-hidden p-2">
+                <FaApple />
+              </div>
+              <span className="text-gray-600 text-center w-full">Continue with Apple</span>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-1   text-sm py-2 rounded-md cursor-pointer">
-            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
-              <img src={fb} alt="" className="w-5 h-5" />{" "}
-              <span className="text-gray-600">Continue with Facebook</span>
+          <div className="flex items-center justify-start gap-1   text-sm py-2 rounded-md cursor-pointer">
+            <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-start gap-1">
+              <img src={fb} alt="" className="w-5 h-5" />
+              <span className="text-gray-600 text-center w-full">Continue with Facebook</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-4 text-gray-500">
           New to Sampli?{" "}

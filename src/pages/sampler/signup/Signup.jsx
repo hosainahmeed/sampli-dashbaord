@@ -107,7 +107,7 @@ const Signup = () => {
 
         <Divider className="!text-xs !text-gray-500">Or Signup with</Divider>
         <GoogleAuthButton role={"reviewer"} />
-        <div>
+        {/* <div>
           <div className="flex items-center justify-between gap-1 text-sm py-2 rounded-md cursor-pointer">
             <div className="border hover:bg-[#F0F5FE] flex px-3 py-2 rounded-4xl w-full border-gray-200 items-center justify-center gap-1">
               <img src={apple} alt="" className="w-5 h-5" />{" "}
@@ -120,7 +120,7 @@ const Signup = () => {
               <span className="text-gray-600">Continue with Facebook</span>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="mt-4 text-gray-500 text-[14px]">
           Already have an account?{" "}
           <Link
