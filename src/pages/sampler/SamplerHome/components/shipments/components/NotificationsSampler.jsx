@@ -8,7 +8,7 @@ import { Card, Empty, Pagination } from "antd";
 
 const icons = {
   review: <GrGift className="w-5 mr-2 mt-1" />,
-  review: <IoIosStarOutline className="w-5 mr-2 mt-1" />,
+  reviewer: <IoIosStarOutline className="w-5 mr-2 mt-1" />,
   orderNotification: <FaTruck className="w-5 mr-2 mt-1" />,
   payment: <FiDollarSign className="w-5 mr-2 mt-1" />,
   commentOnPost: <FaRegComment className="w-5 mr-2 mt-1" />,
