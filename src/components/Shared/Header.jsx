@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Dropdown, Menu, Badge } from "antd";
 import { CiHeart, CiStar } from "react-icons/ci";
-import { BsQuestionLg } from "react-icons/bs";
 import { IoMdArrowDropdown, IoMdNotificationsOutline } from "react-icons/io";
 import {
   UserOutlined,
@@ -11,17 +10,13 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import brandlogo from "../../assets/logo/BrandLogo.svg";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GrNotes } from "react-icons/gr";
 import {
-  MdKeyboardArrowDown,
   MdOutlineAttachMoney,
-  MdOutlineCampaign,
-  MdOutlineKeyboardArrowUp,
   MdRssFeed,
 } from "react-icons/md";
-import { LuShoppingCart } from "react-icons/lu";
 import ShoppingCartSampler from "../../pages/sampler/shoppingCartSampler/ShoppingCartSampler";
 import campaignIcon from "../../assets/campaign.svg";
 import feedInactive from "../../assets/cam.svg";
@@ -30,12 +25,10 @@ import campaignInActive from "../../assets/campaignInActive.svg";
 import shopIcon from "../../assets/shopIcon.png";
 import shopInActive from "../../assets/shopInActive.svg";
 import { jwtDecode } from "jwt-decode";
-import { useGetAllCartItemsQuery } from "../../Redux/sampler/cartApis";
 import { useGetProfileQuery } from "../../Redux/businessApis/business _profile/getprofileApi";
 import { useGetReviewerProfileQuery } from "../../Redux/sampler/reviewerProfileApis";
 
 function Header() {
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const { data: profile, isLoading } = useGetProfileQuery();
   const { data: reviewerProfile, isLoading: reviewerProfileLoading } =

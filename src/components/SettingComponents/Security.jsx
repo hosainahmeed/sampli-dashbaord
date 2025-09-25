@@ -15,9 +15,8 @@ function Security() {
     success: false,
     changePass: false,
   });
-
+  
   const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
-
   const handlePasswordUpdate = async (values) => {
     try {
       const res = await updatePassword({ data: values }).unwrap();
@@ -41,20 +40,7 @@ function Security() {
   return (
     <div>
       <Title level={3}>Security</Title>
-
-      {/* General Section */}
       <Card className="!mb-4">
-        <Title level={3}>General</Title>
-
-        <div className="flex-center-between">
-          <div>
-            <Title level={4}>Email address</Title>
-            <Text type="secondary">MichealScott@gmail.com</Text>
-          </div>
-        </div>
-
-        <Divider />
-
         <div className="flex-center-between mt-3">
           <div>
             <Title level={4}>Password</Title>
