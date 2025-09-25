@@ -230,7 +230,7 @@ const ContactAndShipping = () => {
             className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
             placeholder="Enter full address"
           />
-          <p className="text-sm text-gray-600 mb-1">Company</p>
+          <p className="text-sm text-gray-600 mb-1 !mt-4">Company</p>
           <Input
             name="company"
             value={form?.company}
