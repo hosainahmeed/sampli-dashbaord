@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { Button, Card, Empty, Tooltip } from "antd";
 import { CiSettings } from "react-icons/ci";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNotificationPageQuery } from "../../../Redux/businessApis/business_notifications/notificationPageApis";
 import toast from "react-hot-toast";
 
@@ -55,8 +55,28 @@ const getIcon = (type) => {
 
 const AllNotificationPage = () => {
   const [limit, setLimit] = useState(10)
-  const { data: notificationRes, isLoading: notificationLoading } = useNotificationPageQuery({ limit })
-  const navigate = useNavigate()
+  const [type, setType] = useState("")
+  const { data: notificationRes, isLoading: notificationLoading } = useNotificationPageQuery({
+    limit,
+    ...(type !== "" && { type })
+  })
+  // LIKE: 'likeOnPost',
+  // COMMENT: 'commentOnPost',
+  // MENTION: 'mention',
+  // FOLLOW: 'newFollower',
+  // REPLY: 'mention',
+  // ORDER: 'orderNotification',
+  // ORDER_SHIPPED: 'orderNotification',
+  // REVIEW: 'review',
+  // REVIEW_REQUEST: 'reviewRequest',
+  // REVIEW_PRODUCT_SHIPPED: 'reviewProductShipped',
+  // PAYMENT: 'payment',
+  // SHIPPING: 'shipping',
+  // ANNOUNCEMENT: 'general',
+  // SYSTEM_UPDATE: 'general',
+  // GENERAL: 'general',
+  // PAYMENT_RECEIVED: 'customerNotification',
+
 
   // const handleAction = (type, orderId, action) => {
   //   if (type === "likeOnPost" && action === "Mark as read") {
@@ -79,12 +99,12 @@ const AllNotificationPage = () => {
   // };
 
   const categories = [
-    { icon: <FaBell size={18} />, label: "All" },
-    { icon: <FaStar size={18} />, label: "Reviews" },
-    { icon: <FaBullhorn size={18} />, label: "Campaign" },
-    { icon: <FaDollarSign size={18} />, label: "Payments" },
-    { icon: <FaShoppingCart size={18} />, label: "Orders" },
-    { icon: <FaTruck size={18} />, label: "Shipping" },
+    { icon: <FaBell size={18} />, value: "", label: "All" },
+    { icon: <FaStar size={18} />, value: "review", label: "Reviews" },
+    { icon: <FaBullhorn size={18} />, value: "campaign", label: "Campaign" },
+    { icon: <FaDollarSign size={18} />, value: "payment", label: "Payments" },
+    { icon: <FaShoppingCart size={18} />, value: "orderNotification", label: "Orders" },
+    { icon: <FaTruck size={18} />, value: "shipping", label: "Shipping" },
   ];
 
   return (
@@ -112,6 +132,7 @@ const AllNotificationPage = () => {
             key={index}
             variant={index === 0 ? "default" : "outline"}
             className="flex items-center gap-2"
+            onClick={() => setType(category.value)}
           >
             {category.icon}
             <span>{category.label}</span>
