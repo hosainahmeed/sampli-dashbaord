@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Carousel, Typography, Card, Timeline, Tag, Button, Skeleton, Empty } from "antd";
 import { FaAngleLeft, FaDownload } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGetOrderDetailsByIdQuery, useTrackOrderQuery } from "../../../Redux/sampler/orderApis";
+import { useGetOrderDetailsByIdQuery, useGetOrderTrackOrderByIdQuery } from "../../../Redux/sampler/orderApis";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import ContactInformationCustomer from "../../../components/business-product-details/ContactInformationCustomer";
@@ -64,11 +64,11 @@ const OrderDetails = () => {
   const navigate = useNavigate();
 
   const { data: orderDetails, isLoading: orderLoading } = useGetOrderDetailsByIdQuery(orderId, { skip: !orderId });
-  const { data: trackOrder, isLoading: trackLoading } = useTrackOrderQuery(orderId, { skip: !orderId });
+  const { data: trackOrder, isLoading: trackLoading } = useGetOrderTrackOrderByIdQuery(orderId, { skip: !orderId });
 
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-
+  
   useEffect(() => {
     if (!orderLoading) {
       setActiveIndex(0);
