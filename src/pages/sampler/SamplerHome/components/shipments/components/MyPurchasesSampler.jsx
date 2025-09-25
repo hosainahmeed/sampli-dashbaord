@@ -33,7 +33,7 @@ const MyPurchasesSampler = () => {
       length: order?.items?.length,
       date: new Date(order.createdAt).toLocaleDateString(),
       status: order.deliveryStatus || "Unknown",
-      price: order.items?.[0]?.price || "0.00",
+      price: order.totalPrice || "0.00",
       statusColor:
         order.paymentStatus === "Success"
           ? "green"

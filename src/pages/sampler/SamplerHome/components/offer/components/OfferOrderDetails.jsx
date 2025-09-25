@@ -5,8 +5,10 @@ import {
   CheckCircleOutlined,
   InboxOutlined,
   PlusOutlined,
+  CarOutlined,
+  DeliveredProcedureOutlined,
 } from "@ant-design/icons";
-import { MdArrowBack } from "react-icons/md";
+import { MdArrowBack, MdEmail, MdOutlineMarkEmailUnread } from "react-icons/md";
 import toast from "react-hot-toast";
 import Dragger from "antd/es/upload/Dragger";
 import ReviewsVideo from "./ReviewsVideo";
@@ -14,13 +16,20 @@ import { GoLinkExternal } from "react-icons/go";
 import phone from "../../../../../../assets/phone.svg";
 import contact from "../../../../../../assets/contact.svg";
 import shipping from "../../../../../../assets/shipping.svg";
-import { useGetSingleOfferCampaignQuery } from "../../../../../../Redux/sampler/campaignApis";
+import {
+  useGetSingleOfferCampaignQuery,
+  useGetSingleOfferCampaignTrackQuery,
+} from "../../../../../../Redux/sampler/campaignApis";
 import Loader from "../../../../../loader/Loader";
 import {
   useCreateReviewMutation,
   useCreateUploadApisMutation,
 } from "../../../../../../Redux/sampler/videoUploadApis";
-import { useGetOrderDetailsByIdQuery } from "../../../../../../Redux/sampler/orderApis";
+import {
+  useGetOrderDetailsByIdQuery,
+  useGetOrderTrackOrderByIdQuery,
+} from "../../../../../../Redux/sampler/orderApis";
+import { Contact } from "lucide-react";
 
 const { Step } = Steps;
 
@@ -39,8 +48,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     useGetSingleOfferCampaignQuery({
       id,
     });
- 
 
+  const { data: getOrderDetails } = useGetSingleOfferCampaignQuery({ id });
+  const { data: getOrderTrack } = useGetSingleOfferCampaignTrackQuery({ id });
 
   const [createPresignedUrl, { isLoading: uploadLoading }] =
     useCreateUploadApisMutation();
@@ -238,6 +248,19 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
     console.log(key);
   };
 
+  const statusMap = {
+    UNKNOWN: { title: "Order reviewing", icon: <ShoppingCartOutlined /> },
+    PROCESSED: { title: "Processing order", icon: <CheckCircleOutlined /> },
+    TRANSIT: { title: "Item shipped", icon: <CarOutlined /> },
+    OUT_FOR_DELIVERY: { title: "Out for delivery", icon: <CarOutlined /> },
+    DELIVERED: { title: "Delivered", icon: <DeliveredProcedureOutlined /> },
+    RETURNED: {
+      title: "Returned to sender",
+      icon: <MdOutlineMarkEmailUnread />,
+    },
+    FAILURE: { title: "Delivery failed", icon: <MdEmail /> },
+  };
+
   const items = [
     {
       key: "1",
@@ -319,10 +342,43 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             </div>
             <div>
               <div className="flex gap-2">
-                <button className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md">
-                  Track Item
-                  <GoLinkExternal className="text-blue-700" />
-                </button>
+                <div className="flex gap-2">
+                  {/* <Button onClick={showModal}>Cancel Order</Button> */}
+                  {getOrderDetails?.data?.shipping?.labelUrl && (
+                    <Button
+                      onClick={() => {
+                        const url = getOrderDetails?.data?.shipping?.labelUrl;
+                        console.log(url);
+                        if (!url) return;
+                        window.open(url, "_blank");
+                      }}
+                    >
+                      Download Label
+                    </Button>
+                  )}
+                  {getOrderTrack === undefined ? (
+                    <button
+                      onClick={() => toast.error("Order is not shipped yet")}
+                      className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md"
+                    >
+                      Track Item
+                      <GoLinkExternal className="text-blue-700" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        window.open(
+                          getOrderDetails?.data?.shipping?.trackingUrl,
+                          "_blank"
+                        )
+                      }
+                      className="border flex items-center gap-2 text-nowrap !text-[14px] hover:bg-gray-100 cursor-pointer border-blue-500 px-3 py-1 !text-blue-500 rounded-md"
+                    >
+                      Track Item
+                      <GoLinkExternal className="text-blue-700" />
+                    </button>
+                  )}
+                </div>
                 <Button
                   disabled={
                     geSingleCampaignOffer?.data?.status !== "Processing"
@@ -341,32 +397,46 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
 
           <div className="mt-6">
             <h4 className="font-semibold">Order History</h4>
-            <Steps current={1} direction="vertical" className="mt-4">
-              <Step
-                title="Order reviewing"
-                description="23, Oct 2023"
-                icon={<ShoppingCartOutlined className="!text-green-500" />}
-              />
-              <Step
-                title="Processing order"
-                description="Pending"
-                icon={<CheckCircleOutlined className="!text-green-500" />}
-              />
-              <Step
-                title="Item shipped"
-                description="Pending"
-                icon={<CheckCircleOutlined />}
-              />
-              <Step
-                title="Delivered"
-                description="Pending"
-                icon={<CheckCircleOutlined />}
-              />
-            </Steps>
+            {getOrderTrack === undefined ? (
+              <div>Product is not shipped yet</div>
+            ) : (
+              getOrderTrack?.data?.trackingData?.tracking_history && (
+                <Steps
+                  current={
+                    getOrderTrack?.data?.trackingData?.tracking_history
+                      ?.length - 1
+                  }
+                  direction="vertical"
+                  className="mt-4"
+                >
+                  {getOrderTrack?.data?.trackingData?.tracking_history?.map(
+                    (item) => {
+                      const statusInfo = statusMap[item.status] || {
+                        title: item.status,
+                        icon: <CheckCircleOutlined />,
+                      };
+
+                      return (
+                        <Step
+                          key={item.object_id}
+                          title={statusInfo.title}
+                          description={new Intl.DateTimeFormat("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "2-digit",
+                          }).format(new Date(item.status_date))}
+                          icon={statusInfo.icon}
+                        />
+                      );
+                    }
+                  )}
+                </Steps>
+              )
+            )}
           </div>
 
-          <h4 className="font-semibold text-xl !mb-5">Shipping Information</h4>
-          <div className="grid grid-cols-3 gap-8">
+          <h4 className="font-semibold text-xl !mb-5 !mt-12">Shipping Information</h4>
+          {/* <div className="grid grid-cols-3 gap-8">
             <div className="flex items-start gap-2">
               <img src={phone} alt="contact" className="w-[20px]" />
               <div>
@@ -390,6 +460,42 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
               <div>
                 <h5 className="font-xl">Shipping Method</h5>
                 <p className="text-sm text-gray-500">Door Delivery</p>
+              </div>
+            </div>
+          </div> */}
+
+          <div className="">
+            {/* Shipping Address */}
+            <div className="flex justify-between  w-full">
+              <div>
+                <h5 className="text-lg font-semibold mb-2">Shipping Address</h5>
+                <p className="text-sm text-gray-700 font-medium">
+                  Name: {getOrderDetails?.data?.shippingAddress?.name}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {getOrderDetails?.data?.shippingAddress?.street1}
+                  {getOrderDetails?.data?.shippingAddress?.street2 &&
+                    `, ${getOrderDetails?.data?.shippingAddress?.street2}`}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {getOrderDetails?.data?.shippingAddress?.city},{" "}
+                  {getOrderDetails?.data?.shippingAddress?.state}{" "}
+                  {getOrderDetails?.data?.shippingAddress?.zip},{" "}
+                  {getOrderDetails?.data?.shippingAddress?.country}
+                </p>
+              </div>
+              <div>
+                <h5 className="text-lg font-semibold mb-2">
+                  Contact Information
+                </h5>
+                <p className="text-sm text-gray-500 mt-2 flex gap-2 items-center">
+                  <Contact className="text-[10px]" />{" "}
+                  {getOrderDetails?.data?.shippingAddress?.phone}
+                </p>
+                <p className="text-sm text-gray-500 flex gap-2 items-center">
+                  <MdOutlineMarkEmailUnread className="!text-[25px]" />{" "}
+                  {getOrderDetails?.data?.shippingAddress?.email}
+                </p>
               </div>
             </div>
           </div>

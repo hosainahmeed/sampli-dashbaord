@@ -24,6 +24,13 @@ const campaignApis = baseApis.injectEndpoints({
       }),
       providesTags: ["campaignOffer"],
     }),
+    getSingleOfferCampaignTrack: builder.query({
+      query: ({ id }) => ({
+        url: `/campaign-offer/track-offer-shipment/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["campaignOffer"],
+    }),
     getMyCampaignOffer: builder.query({
       query: (params) => ({
         url: `/campaign-offer/get-my-campaign-offer`,
@@ -49,4 +56,5 @@ export const {
   useGetMyCampaignOfferQuery,
   useGetSingleOfferCampaignQuery,
   useAcceptCampaignOfferMutation,
+  useGetSingleOfferCampaignTrackQuery,
 } = campaignApis;
