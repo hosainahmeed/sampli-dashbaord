@@ -93,7 +93,7 @@ function Header() {
       <Menu.Item key="5" icon={<LogoutOutlined />} onClick={handleSignOut}>
         Log out
       </Menu.Item>
-      <div className="text-center text-gray-400 text-sm p-2">v1.10</div>
+      {/* <div className="text-center text-gray-400 text-sm p-2">v1.10</div> */}
     </Menu>
   );
   const menuSampler = (

@@ -5,8 +5,10 @@ import { jwtDecode } from "jwt-decode";
 import google from "../assets/socialsLogo/google.png";
 import "./googleButton.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const GoogleAuthButton = ({ role, loginForm }) => {
+  const navigate = useNavigate();
   const [googleLogin] = useGoogleLoginMutation();
   const handleGoogleSuccess = async (credentialResponse) => {
     if (!role && !loginForm) throw new Error("Role is required");
@@ -17,38 +19,52 @@ const GoogleAuthButton = ({ role, loginForm }) => {
         token: credentialResponse.credential,
         role: role,
       };
-      const res = await googleLogin({ data }).unwrap();
-      if (res?.data?.accessToken) {
-        localStorage.setItem("token", res?.data?.accessToken);
-        const decoded = jwtDecode(res?.data?.accessToken);
+      await googleLogin({ data }).unwrap().then((res) => {
+        if (res?.success) {
+          if (res?.data?.accessToken) {
+            localStorage.setItem("token", res?.data?.accessToken);
+            const decoded = jwtDecode(res?.data?.accessToken);
 
-        if (loginForm) {
-          if (decoded?.role === "reviewer" && role !== "reviewer") {
-            window.location.href = "/sampler/campaign";
+            if (loginForm) {
+              if (decoded?.role === "reviewer" && role !== "reviewer") {
+                window.location.href = "/sampler/campaign";
+              }
+              if (decoded?.role === "bussinessOwner" && role !== "bussinessOwner") {
+                window.location.href = "/business-dashboard";
+              }
+            }
+
+            if (decoded?.role === "reviewer" && role !== "reviewer" && res?.data?.isNewUser === true) {
+              window.location.href = "/sampler/campaign";
+            }
+
+            if (decoded?.role === "bussinessOwner" && role !== "bussinessOwner" && res?.data?.isNewUser === true) {
+              window.location.href = "/business-dashboard";
+            }
+
+            if (decoded?.role === "reviewer" && role === "reviewer" && res?.data?.isNewUser !== true) {
+              window.location.href = "/sign-up-more-info";
+            }
+
+            if (decoded?.role === "bussinessOwner" && role === "bussinessOwner" && res?.data?.isNewUser !== true) {
+              window.location.href = "/business-info";
+            }
           }
-          if (decoded?.role === "bussinessOwner" && role !== "bussinessOwner") {
-            window.location.href = "/business-dashboard";
-          }
+        } else {
+          throw new Error(res?.message || "Something went wrong");
         }
+      })
 
-        if (decoded?.role === "reviewer" && role !== "reviewer" && res?.data?.isNewUser === true) {
-          window.location.href = "/sampler/campaign";
-        }
 
-        if (decoded?.role === "bussinessOwner" && role !== "bussinessOwner" && res?.data?.isNewUser === true) {
-          window.location.href = "/business-dashboard";
-        }
-
-        if (decoded?.role === "reviewer" && role === "reviewer" && res?.data?.isNewUser !== true) {
-          window.location.href = "/sign-up-more-info";
-        }
-
-        if (decoded?.role === "bussinessOwner" && role === "bussinessOwner" && res?.data?.isNewUser !== true) {
-          window.location.href = "/business-info";
-        }
-      }
     } catch (error) {
+      toast.dismiss();
       toast.error(error?.data?.message || error?.message || error?.error || "Something went wrong");
+      console.log("===========error", error)
+      if (error?.data?.message === "User validation failed: role: Path `role` is required." && error?.status === 503) {
+        toast.dismiss();
+        toast.error("Please select a role for proceed");
+        navigate("/choose-role");
+      }
     }
   };
 
