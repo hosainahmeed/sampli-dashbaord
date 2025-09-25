@@ -31,7 +31,7 @@ function DetailsPurchasesProduct() {
     <div className="p-6">
 
       <div
-        className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-black transition-all"
+        className="flex items-center w-fit gap-2 text-gray-500 cursor-pointer hover:text-black transition-all"
         onClick={() => navigate(-1)}
       >
         <FaAngleLeft />
@@ -42,11 +42,8 @@ function DetailsPurchasesProduct() {
         <div>
           <div className="flex items-center gap-2">
             <Title level={3} className="m-0">
-              Order ID: {order?._id}
+              Campaign ID: #{order?._id}
             </Title>
-            <Tag color="blue">
-              {order?.status}
-            </Tag>
           </div>
           <p className="text-gray-500 mt-2">
             {new Date(order?.createdAt).toLocaleDateString()}
@@ -87,8 +84,8 @@ function DetailsPurchasesProduct() {
             </div>
           </Card>
 
-          <ContactInformationCustomer order={order} />
-          <ShippingAddressCustomer order={order} />
+          {order?.shippingAddress && <ContactInformationCustomer order={order} />}
+          {order?.shippingAddress && <ShippingAddressCustomer order={order} />}
           {/* <BillingAddressCustomer order={order} /> */}
         </div>
       </div>

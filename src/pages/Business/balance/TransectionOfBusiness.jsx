@@ -34,7 +34,7 @@ const TransectionOfBusiness = () => {
   const { data: profileData, isLoading: profileLoading } = useGetProfileQuery();
   const [updateConnectedAccount, { isLoading: updateConnectedAccountLoading }] = useUpdateConnectedAccountMutation();
   // const [isModalVisible, setIsModalVisible] = useState(false)
-  const [createPayment] =
+  const [createPayment, { isLoading: createOnboardingLoading }] =
     usePostPaymentMutation();
   const navigate = useNavigate();
 
@@ -62,6 +62,7 @@ const TransectionOfBusiness = () => {
       toast.error(error?.data?.message || error?.message || "Something went wrong");
     }
   };
+
   const handleUpdateConnectedAccount = async () => {
     try {
       await updateConnectedAccount().unwrap().then((res) => {
@@ -75,6 +76,7 @@ const TransectionOfBusiness = () => {
       toast.error(error?.data?.message || error?.message || "Something went wrong")
     }
   }
+  console.log(profileData?.data?.isStripeAccountConnected)
   return (
     <div className="">
       <div
@@ -187,7 +189,7 @@ const TransectionOfBusiness = () => {
               </div>
             </section>
             <div>
-              {!profileData?.data?.isStripeAccountConnected ?
+              {profileData?.data?.isStripeAccountConnected ?
                 <div className="flex gap-4">
                   <Button
                     loading={updateConnectedAccountLoading}
@@ -201,7 +203,7 @@ const TransectionOfBusiness = () => {
                 <Button
                   type="primary"
                   loading={createOnboardingLoading}
-                  onClick={handleCreateOnboarding}
+                  onClick={() => setUpOnBoarding()}
                   className="!flex !items-center !justify-center gap-2"
                 >
                   Setup
@@ -210,6 +212,17 @@ const TransectionOfBusiness = () => {
               }
             </div>
           </div>
+          {profileData?.data?.isStripeAccountConnected && <div className="flex justify-end ">
+            <Button
+              type="primary"
+              onClick={() => {
+                showModalWithdraw();
+                handleCancel();
+              }}
+            >
+              Choose
+            </Button>
+          </div>}
         </Card>
       </Modal>
 

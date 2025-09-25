@@ -1,11 +1,11 @@
-import { Button, Modal, Spin, Alert, List, Tag, Typography } from 'antd'
-import React, { useState } from 'react'
-import { EnvironmentOutlined, } from '@ant-design/icons';
-import toast from 'react-hot-toast';
-import paypalIcon from '../../assets/payment-icon/PayPal.png'
-import stripeIcon from '../../assets/payment-icon/Stripe.png'
-import { useLocation } from 'react-router-dom';
-import { useConfirmShippingMutation } from '../../Redux/businessApis/campaign/campaignProceedDeliveryApis';
+import { Button, Modal, Spin, Alert, List, Tag, Typography } from "antd";
+import React, { useState } from "react";
+import { EnvironmentOutlined } from "@ant-design/icons";
+import toast from "react-hot-toast";
+import paypalIcon from "../../assets/payment-icon/PayPal.png";
+import stripeIcon from "../../assets/payment-icon/Stripe.png";
+import { useLocation } from "react-router-dom";
+import { useConfirmShippingMutation } from "../../Redux/businessApis/campaign/campaignProceedDeliveryApis";
 
 const { Title, Paragraph } = Typography;
 
@@ -150,41 +150,60 @@ function ShippingProviderModal({
               )}
             />
 
-                        {selectedRateId && (
-                            <div style={{ marginTop: 24 }}>
-                                <Title level={3}>Payment Method</Title>
-                                <small className='!mb-3'>Please select a payment method (selected: {paymentMethod})</small>
-                                <div className="w-full !mt-2 flex items-center h-16 gap-2">
-                                    <div
-                                        onClick={() => setPaymentMethod("Paypal")}
-                                        className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Paypal" ? "bg-blue-200 !border-2 !border-[#1890FF]" : ""}`}>
-                                        <img src={paypalIcon} alt="Paypal"
-                                            className="w-full h-full object-contain"
-                                        />
-                                    </div>
-                                    <div
-                                        onClick={() => setPaymentMethod("Stripe")}
-                                        className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Stripe" ? "bg-blue-200 !border-2 !border-[#1890FF]" : ""}`}>
-                                        <img src={stripeIcon} alt={stripe}
-                                            className="w-full h-full object-contain"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </>
-                ) : (
-                    <div style={{ textAlign: "center", padding: "24px 0" }}>
-                        <EnvironmentOutlined style={{ fontSize: 48, color: "#ccc", marginBottom: 16 }} />
-                        <Title level={4}>No Shipping Options Available</Title>
-                        <Paragraph type="secondary" style={{ marginBottom: 24 }}>
-                            No provider is available for this address. Please try again or change the address.
-                        </Paragraph>
-                    </div>
-                )}
-            </Spin>
-        </Modal>
-    )
+            {selectedRateId && (
+              <div style={{ marginTop: 24 }}>
+                <Title level={3}>Payment Method</Title>
+                <small className="!mb-3">
+                  Please select a payment method (selected: {paymentMethod})
+                </small>
+                <div className="w-full !mt-2 flex items-center h-16 gap-2">
+                  {/* <div
+                    onClick={() => setPaymentMethod("Paypal")}
+                    className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${
+                      paymentMethod === "Paypal"
+                        ? "bg-blue-200 !border-2 !border-[#1890FF]"
+                        : ""
+                    }`}
+                  >
+                    <img
+                      src={paypalIcon}
+                      alt="Paypal"
+                      className="w-full h-full object-contain"
+                    />
+                  </div> */}
+                  <div
+                    onClick={() => setPaymentMethod("Stripe")}
+                    className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${
+                      paymentMethod === "Stripe"
+                        ? "bg-blue-200 !border-2 !border-[#1890FF]"
+                        : ""
+                    }`}
+                  >
+                    <img
+                      src={stripeIcon}
+                      alt="stripe"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={{ textAlign: "center", padding: "24px 0" }}>
+            <EnvironmentOutlined
+              style={{ fontSize: 48, color: "#ccc", marginBottom: 16 }}
+            />
+            <Title level={4}>No Shipping Options Available</Title>
+            <Paragraph type="secondary" style={{ marginBottom: 24 }}>
+              No provider is available for this address. Please try again or
+              change the address.
+            </Paragraph>
+          </div>
+        )}
+      </Spin>
+    </Modal>
+  );
 }
 
 export default ShippingProviderModal;

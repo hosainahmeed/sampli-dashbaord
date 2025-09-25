@@ -1,41 +1,41 @@
 import React from "react";
 import { Modal, Form, Input, Button } from "antd";
 
-const ChangePasswordModal = ({ visible, onCancel, onOk }) => {
+const ChangePasswordModal = ({ open, onCancel, onSubmit, loading }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = React.useState(false);
 
-  const handleSubmit = async () => {
-    try {
-      const values = await form.validateFields();
-      setLoading(true);
-      await onOk(values);
+  const handleFinish = async (values) => {
+    const fieldErrors = await onSubmit(values);
+    if (fieldErrors) {
+      Object.entries(fieldErrors).forEach(([field, message]) => {
+        form.setFields([{ name: field, errors: [message] }]);
+      });
+    } else {
       form.resetFields();
-      onCancel();
-    } catch (error) {
-      console.log("Validation failed:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <Modal
       title="Change Password"
-      visible={visible}
+      open={open}
       onCancel={onCancel}
       footer={null}
+      destroyOnClose
     >
-      <Form requiredMark={false} form={form} layout="vertical" onFinish={handleSubmit}>
-        {/* <Form.Item
-          label="Current Password"
-          name="currentPassword"
-          rules={[
-            { required: true, message: "Please enter your current password" },
-          ]}
+      <Form
+        form={form}
+        layout="vertical"
+        requiredMark={false}
+        onFinish={handleFinish}
+      >
+        <Form.Item
+          label="Old Password"
+          name="oldPassword"
+          rules={[{ required: true, message: "Please enter your old password" }]}
         >
-          <Input.Password placeholder="Enter password" />
-        </Form.Item> */}
+          <Input.Password placeholder="Enter old password" />
+        </Form.Item>
 
         <Form.Item
           label="New Password"
@@ -45,12 +45,12 @@ const ChangePasswordModal = ({ visible, onCancel, onOk }) => {
             { min: 8, message: "Password must be at least 8 characters" },
           ]}
         >
-          <Input.Password placeholder="Enter password" />
+          <Input.Password placeholder="Enter new password" />
         </Form.Item>
 
         <Form.Item
-          label="Confirm Password"
-          name="confirmPassword"
+          label="Confirm New Password"
+          name="confirmNewPassword"
           dependencies={["newPassword"]}
           rules={[
             { required: true, message: "Please confirm your password" },
@@ -64,7 +64,7 @@ const ChangePasswordModal = ({ visible, onCancel, onOk }) => {
             }),
           ]}
         >
-          <Input.Password placeholder="Enter password" />
+          <Input.Password placeholder="Confirm new password" />
         </Form.Item>
 
         <Form.Item>

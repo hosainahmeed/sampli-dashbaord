@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Typography, Input, Button, Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/ui/Logo";
+import { useAuthVerifyResetOtpMutation } from "../../Redux/authApis";
+import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 
 const OTPVerification = () => {
-  const router = useNavigate();
+  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(30);
-
+  const [verifyOtp, { isLoading: verifyOtpLoading }] = useAuthVerifyResetOtpMutation();
   useEffect(() => {
     if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
@@ -20,9 +22,27 @@ const OTPVerification = () => {
     setTimeLeft(30);
   };
 
-  const handleContinue = (values) => {
-    console.log("OTP:", values?.verifyCode);
-    router("/reset-password");
+  const handleContinue = async (values) => {
+    try {
+      const email = localStorage.getItem("email")
+      if (!email) {
+        throw new Error("Email not found!");
+      }
+      const data = {
+        email: email,
+        resetCode: parseInt(values?.verifyCode),
+      };
+      await verifyOtp(data).unwrap().then((response) => {
+        if (response?.success) {
+          toast.success(response?.message || "Otp sent successfully!");
+          navigate("/reset-password");
+        } else {
+          throw new Error(response?.message || "Something went wrong!");
+        }
+      })
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong!");
+    }
   };
 
   return (

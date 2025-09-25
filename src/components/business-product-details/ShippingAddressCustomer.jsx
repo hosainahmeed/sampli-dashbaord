@@ -7,11 +7,8 @@ const { Title, Text } = Typography;
 
 function ShippingAddressCustomer({ order }) {
   const address = order?.shippingAddress;
-
   if (!address) return null;
-
   const fullAddress = `${address.street1 || ''}, ${address.street2 || ''}, ${address.city || ''}, ${address.state || ''} ${address.zip || ''}, ${address.country || ''}`;
-
   const handleViewMap = () => {
     const encoded = encodeURIComponent(fullAddress);
     const url = `https://www.google.com/maps?q=${encoded}`;
@@ -25,9 +22,6 @@ function ShippingAddressCustomer({ order }) {
           <Title level={4} className="mt-0">
             Shipping Address
           </Title>
-          <Button className="!border-none">
-            <CiEdit className="text-xl" />
-          </Button>
         </div>
 
         <Space direction="vertical" size="middle" className="w-full">

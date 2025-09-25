@@ -4,13 +4,28 @@ import "antd/dist/reset.css";
 import Logo from "../../components/ui/Logo";
 import InputField from "../../components/ui/InputField";
 import FormWrapper from "../../components/ui/FormWrapper";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthForgetPasswordMutation } from "../../Redux/authApis";
+import toast from "react-hot-toast";
 const { Title } = Typography;
 
 const ForgetPassword = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const [forgetPassword, { isLoading: forgetPasswordLoading }] = useAuthForgetPasswordMutation();
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      await forgetPassword(values).unwrap().then((response) => {
+        if (response?.success) {
+          localStorage.setItem("email", values?.email);
+          toast.success(response?.message || "Otp sent successfully!");
+          navigate("/otp");
+        } else {
+          throw new Error(response?.message || "Something went wrong!");
+        }
+      })
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong!");
+    }
   };
 
   return (
@@ -53,6 +68,7 @@ const ForgetPassword = () => {
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10, marginBottom: 10 }}
+            loading={forgetPasswordLoading}
           >
             Continue
           </Button>

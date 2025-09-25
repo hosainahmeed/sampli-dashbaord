@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
-import { Select, DatePicker } from 'antd';
+import { Select, DatePicker, Card, Skeleton } from 'antd';
 import SalesCard from '../ui/SalesCard';
 import dollar from '../../assets/icons/dollar.svg';
+import { useGetBusinessSalesMetaQuery } from '../../Redux/businessApis/meta/bussinessMetaApis';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 function CampaignAnalytics() {
-  const [selectedOption, setSelectedOption] = useState('This Week');
-  const [customDateRange, setCustomDateRange] = useState(null);
-  console.log(customDateRange)
-  const number = 3434;
+  const [selectedOption, setSelectedOption] = useState('today');
+  const { data: salesMeta, isLoading: salesMetaLoading, isFetching: salesMetaFetching } = useGetBusinessSalesMetaQuery({
+    dateRange: selectedOption,
+  });
+  if (salesMetaLoading) {
+    const array = Array.from({ length: 3 });
+    return (
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {array.map((_, index) => (
+          <Card loading key={index} />
+        ))}
+      </div>
+    );
+  }
   const datas = [
     {
       title: 'Total Revenue',
@@ -18,41 +29,39 @@ function CampaignAnalytics() {
           <small className="text-[#6D7486] flex items-center gap-2">
             <img className="w-4 h-4" src={dollar} alt="$" />
           </small>
-          {number.toLocaleString('en-US', {
+          {salesMetaFetching ? "loading..." : salesMeta?.data?.totalRevenue?.value?.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}
         </div>
       ),
-      change: '+30%',
-      orders: 342,
-      avgOrderValue: '$340',
+      change: salesMetaFetching ? "loading..." : salesMeta?.data?.totalRevenue?.change?.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
     },
     {
-      title: 'Total View',
-      value: 334,
-      change: '+30%',
-      conversionRate: '2.76%',
-      avgTimeOnProfile: '4:32',
+      title: 'Total Orders',
+      value: salesMetaFetching ? "loading..." : salesMeta?.data?.totalOrders?.value,
+      change: salesMetaFetching ? "loading..." : salesMeta?.data?.totalOrders?.change?.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
     },
     {
-      title: 'Orders',
-      value: 34,
-      change: '+30%',
-      checkoutRate: '42%',
-      cartAbandonment: '42%',
+      title: 'Average Order Value',
+      value: salesMetaFetching ? "loading..." : salesMeta?.data?.avgOrderValue?.value?.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      change: salesMetaFetching ? "loading..." : salesMeta?.data?.avgOrderValue?.change?.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
     },
   ];
   const handleChange = (value) => {
     setSelectedOption(value);
-    if (value !== 'Custom Date Range') {
-      setCustomDateRange(null);
-    }
-  };
-
-  const handleDateChange = (dates) => {
-    setCustomDateRange(dates);
-    console.log('Selected Date Range:', dates);
   };
 
   return (
@@ -64,23 +73,21 @@ function CampaignAnalytics() {
             value={selectedOption}
             style={{ width: 160 }}
             onChange={handleChange}
+            loading={salesMetaFetching || salesMetaLoading}
           >
-            <Option value="This Week">This Week</Option>
-            <Option value="Last Week">Last Week</Option>
-            <Option value="This Month">This Month</Option>
-            <Option value="Last Month">Last Month</Option>
-            <Option value="Custom Date Range">Custom Date Range</Option>
+            <Option value="today">Today</Option>
+            <Option value="thisWeek">This Week</Option>
+            <Option value="lastWeek">Last Week</Option>
+            <Option value="thisMonth">This Month</Option>
+            <Option value="lastMonth">Last Month</Option>
+            <Option value="thisYear">This Year</Option>
+            <Option value="lastYear">Last Year</Option>
           </Select>
-
-          {/* Show Date Picker when "Custom Date Range" is selected */}
-          {selectedOption === 'Custom Date Range' && (
-            <RangePicker onChange={handleDateChange} />
-          )}
         </div>
       </div>
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {datas.map((data) => (
+        {datas?.map((data) => (
           <SalesCard key={data.title} data={data} />
         ))}
       </div>

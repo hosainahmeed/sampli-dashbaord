@@ -121,7 +121,7 @@ function AddProduct() {
 
           <div>
             <h1 className="text-xl font-semibold">Product added successfully!</h1>
-            <p className="text-sm">Are you want to add variant?</p>
+            <p className="text-sm">Would you like to add a variant to this product?</p>
           </div>
           <div className="flex justify-end w-full gap-2 mt-4">
             <Button onClick={() => setOpenSuccessModal(false)} type="default">No</Button>

@@ -1,177 +1,93 @@
 import React, { useState } from 'react';
 import { Button, Card, Divider, Typography } from 'antd';
 import { FaAngleRight } from 'react-icons/fa';
-import EmailChangeModal from '../Security/EmailChangeModal';
-import PasswordChangeModal from '../Security/PasswordChangeModal';
 import SuccessModal from '../Security/SuccessModal';
-import OtpModal from '../Security/OtpModal';
 import ChangePasswordModal from '../Security/ChangePasswordModal';
-import PasswordChangeEmailModal from '../Security/PasswordChangeEmailModal';
-import PasswordChangeOptModal from '../Security/PasswordChangeOptModal';
 import AccountAuthorization from './AccountAuthorization';
-import NewEmainModal from '../Security/NewEmainModal';
 import DeleteAccountCard from '../Security/DeleteAccountCard';
+import { useUpdatePasswordMutation } from '../../Redux/authApis';
+import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
 
 function Security() {
   const [modalState, setModalState] = useState({
-    emailModal: false,
-    passwordModal: false,
-    newEmailModal: false,
-    otpModal: false,
-    successModal: false,
-    passwordEmail: false,
-    passwordEmailOtp: false,
-    changePassModal: false,
+    success: false,
+    changePass: false,
   });
 
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
 
-  const handleResend = () => {
-    console.log('Resending OTP...');
-    // Add your OTP resend logic here
-  };
+  const handlePasswordUpdate = async (values) => {
+    try {
+      const res = await updatePassword({ data: values }).unwrap();
 
-  const handleContinue = () => {
-    console.log('OTP:', otp.join(''));
-    setModalState({ ...modalState, otpModal: false, successModal: true });
-  };
-  const handleContinuePassOtp = () => {
-    console.log('OTP:', otp.join(''));
-    setModalState({
-      ...modalState,
-      passwordEmailOtp: false,
-      changePassModal: true,
-    });
+      if (res?.success) {
+        toast.dismiss();
+        toast.success(res?.message || "Password updated successfully!");
+        setModalState({ changePass: false, success: true });
+        localStorage.removeItem("token");
+      }else{
+        throw new Error(res?.message || "Something went wrong!");
+      }
+    } catch (error) {
+      if (error?.data?.fieldErrors) {
+        return error.data.fieldErrors;
+      }
+      toast.error(error?.data?.message || error?.message || "Something went wrong!");
+    }
   };
 
   return (
     <div>
       <Title level={3}>Security</Title>
+
+      {/* General Section */}
       <Card className="!mb-4">
         <Title level={3}>General</Title>
+
         <div className="flex-center-between">
           <div>
             <Title level={4}>Email address</Title>
             <Text type="secondary">MichealScott@gmail.com</Text>
           </div>
-          <Button
-            onClick={() => setModalState({ ...modalState, emailModal: true })}
-            shape="circle"
-          >
-            <FaAngleRight />
-          </Button>
         </div>
-        <Divider></Divider>
+
+        <Divider />
+
         <div className="flex-center-between mt-3">
           <div>
             <Title level={4}>Password</Title>
             <Text>Change your password</Text>
           </div>
           <Button
-            onClick={() =>
-              setModalState({ ...modalState, passwordEmail: true })
-            }
+            onClick={() => setModalState((p) => ({ ...p, changePass: true }))}
             shape="circle"
           >
             <FaAngleRight />
           </Button>
         </div>
       </Card>
+
+      {/* Other Components */}
       <AccountAuthorization />
       <div className="!mt-4">
         <DeleteAccountCard />
       </div>
-      <EmailChangeModal
-        visible={modalState.emailModal}
-        onCancel={() => setModalState({ ...modalState, emailModal: false })}
-        onContinue={() =>
-          setModalState({
-            ...modalState,
-            emailModal: false,
-            newEmailModal: true,
-          })
-        }
-      />
 
-      <PasswordChangeModal
-        visible={modalState.passwordModal}
-        onCancel={() => setModalState({ ...modalState, passwordModal: false })}
-        onContinue={() =>
-          setModalState({
-            ...modalState,
-            passwordModal: false,
-            newEmailModal: true,
-          })
-        }
-      />
-
-      <NewEmainModal
-        visible={modalState.newEmailModal}
-        onCancel={() => setModalState({ ...modalState, newEmailModal: false })}
-        onContinue={() =>
-          setModalState({ ...modalState, newEmailModal: false, otpModal: true })
-        }
-      />
-
-      <OtpModal
-        visible={modalState.otpModal}
-        onCancel={() => setModalState({ ...modalState, otpModal: false })}
-        onContinue={handleContinue}
-        onResend={handleResend}
-        otp={otp}
-        setOtp={setOtp}
+      {/* Modals */}
+      <ChangePasswordModal
+        open={modalState.changePass}
+        onCancel={() => setModalState((p) => ({ ...p, changePass: false }))}
+        onSubmit={handlePasswordUpdate}
+        loading={isLoading}
       />
 
       <SuccessModal
-        visible={modalState.successModal}
-        onCancel={() => setModalState({ ...modalState, successModal: false })}
-      />
-      {/* password chnages modals */}
-      <PasswordChangeEmailModal
-        visible={modalState.passwordEmail}
-        onCancel={() => setModalState({ ...modalState, passwordEmail: false })}
-        onContinue={() =>
-          setModalState({
-            ...modalState,
-            passwordEmail: false,
-            passwordEmailOtp: true,
-            // changePassModal: true,
-          })
-        }
-        
-      />
-      <PasswordChangeOptModal
-        visible={modalState.passwordEmailOtp}
-        onCancel={() =>
-          setModalState({ ...modalState, passwordEmailOtp: false })
-        }
-        onContinue={handleContinuePassOtp}
-        onResend={handleResend}
-        otp={otp}
-        setOtp={setOtp}
-        
-      />
-      <ChangePasswordModal
-        visible={modalState.changePassModal}
-        onCancel={() =>
-          setModalState({ ...modalState, changePassModal: false })
-        }
-        onOk={async (values) => {
-          try {
-            console.log(values);
-            // if (response.status === 200) {
-              setModalState({
-                ...modalState,
-                changePassModal: false,
-                successModal: true,
-              });
-            // }
-          } catch (error) {
-            console.log('Error changing password:', error);
-          }
-        }}
+        open={modalState.success}
+        onCancel={() => setModalState((p) => ({ ...p, success: false }))}
+        title="Password Updated Successfully!"
+        description="Your password has been changed successfully. Use your new password next time you sign in."
       />
     </div>
   );

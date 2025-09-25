@@ -3,9 +3,10 @@ import { baseApis } from "../../main/baseApis";
 const campaignPurchaseApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
     getCampaignPurchase: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/campaign-offer/get-my-campaign-offer",
         method: "GET",
+        params,
       }),
       providesTags: ["campaignPurchase"],
     }),

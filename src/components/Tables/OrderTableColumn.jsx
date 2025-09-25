@@ -40,18 +40,6 @@ export const OrderTableColumn = () => [
     render: (amount) => <span>${amount.toFixed(2)}</span>,
   },
   {
-    title: 'Fulfillment',
-    dataIndex: 'deliveryStatus',
-    key: 'deliveryStatus',
-    render: (status) => <Tag>{status}</Tag>,
-  },
-  {
-    title: 'Payment',
-    dataIndex: 'paymentMethod',
-    key: 'paymentMethod',
-    render: (status) => <Tag>{status}</Tag>,
-  },
-  {
     title: 'Action',
     key: 'action',
     render: (_, record) => (

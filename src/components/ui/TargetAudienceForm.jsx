@@ -104,6 +104,24 @@ const TargetAudienceForm = () => {
       timeline,
     };
 
+    if (finalData?.startDate > finalData?.endDate) {
+      toast.dismiss();
+      toast.error('Start date cannot be greater than end date');
+      return;
+    }
+
+    const start = new Date(finalData?.startDate);
+    const end = new Date(finalData?.endDate);
+
+    const diffInMs = end - start;
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+    if (diffInDays < 21) {
+      toast.dismiss();
+      toast.error('The duration between start and end date must be at least 3 weeks (21 days)');
+      return;
+    }
+
     localStorage.setItem('targetAudience', JSON.stringify(finalData));
     toast.success('Data saved successfully!');
   };

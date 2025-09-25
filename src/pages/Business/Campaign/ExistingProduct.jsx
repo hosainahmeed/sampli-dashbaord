@@ -29,6 +29,13 @@ const ExistingProduct = () => {
 
 
   const handleNext = () => {
+
+    if (currentStep === 0 && !localStorage.getItem('selectedProductId')) {
+      toast.dismiss()
+      toast.error('Please select a product before proceeding');
+      return;
+    }
+
     if (currentStep === 1) {
       const targetAudience = JSON.parse(localStorage.getItem('targetAudience'));
       if (targetAudience === null) {

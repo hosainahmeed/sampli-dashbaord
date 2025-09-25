@@ -61,10 +61,10 @@ function StoreProfile() {
                 // year: "numeric",
               })}`}
             </h1>
-            <h1 className="flex items-center gap-2">
+            {/* <h1 className="flex items-center gap-2">
               <CiStar />
               {isLoading ? <Skeleton.Input size="small" /> : "99% positive feedback"}
-            </h1>
+            </h1> */}
             <h1 className="flex items-center gap-2">
               <AiOutlineUser />
               {isLoading ? <Skeleton.Input size="small" /> : profile?.data?.followers?.length || 0} followers

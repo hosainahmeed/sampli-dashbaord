@@ -51,9 +51,9 @@ const Documentation = ({ data }) => {
     setFileList(filteredFiles);
   };
 
-  const handleFileRemove = (setFileList) => () => {
-    setFileList([]);
-  };
+  // const handleFileRemove = (setFileList) => () => {
+  //   setFileList([]);
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -96,14 +96,14 @@ const Documentation = ({ data }) => {
           {certificateFileList.length > 0 ? (
             <div className="border border-gray-300 rounded-lg p-3 bg-gray-100">
               {renderPreview(certificateFileList[0])}
-              <div className="flex justify-end gap-2 mt-2">
+              {/* <div className="flex justify-end gap-2 mt-2">
                 <Button
                   type="link"
                   onClick={handleFileRemove(setCertificateFileList)}
                 >
                   Delete
                 </Button>
-              </div>
+              </div> */}
             </div>
           ) : (
             <Upload
@@ -124,14 +124,14 @@ const Documentation = ({ data }) => {
           {licenseFileList.length > 0 ? (
             <div className="border border-gray-300 rounded-lg p-3 bg-gray-100">
               {renderPreview(licenseFileList[0])}
-              <div className="flex justify-end gap-2 mt-2">
+              {/* <div className="flex justify-end gap-2 mt-2">
                 <Button
                   type="link"
                   onClick={handleFileRemove(setLicenseFileList)}
                 >
                   Delete
                 </Button>
-              </div>
+              </div> */}
             </div>
           ) : (
             <Upload

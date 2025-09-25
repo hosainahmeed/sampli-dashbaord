@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { jwtDecode } from "jwt-decode";
+import logo from "../assets/logo/logo.svg";
 
 function ProtectedRoute({ children }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,7 @@ function ProtectedRoute({ children }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Spin spinning={isLoading} size="large" />
+        <img className="w-16 h-16 object-contain animate-spin animation: 2s linear infinite" src={logo} alt="sampli-logo" />
       </div>
     );
   }

@@ -46,7 +46,7 @@ function Header() {
   }
 
   const [userType, setUserType] = useState(decode?.role); // sampler, business
-  const [show, setShow] = useState(true);
+  // const [show, setShow] = useState(true);
   const user = {
     photoURL:
       profile?.data?.logo ||
@@ -217,7 +217,7 @@ function Header() {
               to="/all-notifications"
               className="hover:scale-120 hidden md:block transition-all  "
             >
-              <Badge dot={show}>
+              <Badge dot={false}>
                 <Button shape="circle">
                   <IoMdNotificationsOutline />
                 </Button>
