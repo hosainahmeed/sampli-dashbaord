@@ -7,11 +7,8 @@ const { Title, Text } = Typography;
 
 function ShippingAddressCustomer({ order }) {
   const address = order?.shippingAddress;
-
   if (!address) return null;
-
   const fullAddress = `${address.street1 || ''}, ${address.street2 || ''}, ${address.city || ''}, ${address.state || ''} ${address.zip || ''}, ${address.country || ''}`;
-
   const handleViewMap = () => {
     const encoded = encodeURIComponent(fullAddress);
     const url = `https://www.google.com/maps?q=${encoded}`;

@@ -11,10 +11,10 @@ const productApis = baseApis.injectEndpoints({
       providesTags: ["Bookmark", "product"],
     }),
     getBusinessProductApis: builder.query({
-      query: ({ id, status, searchTerm, sort }) => ({
+      query: ({ id, status, searchTerm, sort, category }) => ({
         url: `/product/get-all-product?bussiness=${id}`,
         method: "GET",
-        params: { status, searchTerm, sort },
+        params: { status, searchTerm, sort, category },
       }),
       providesTags: ["Bookmark", "product", "businessProfile"],
     }),

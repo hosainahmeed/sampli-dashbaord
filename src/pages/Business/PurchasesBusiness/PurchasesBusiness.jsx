@@ -63,7 +63,7 @@ const PurchasesBusiness = () => {
             render: (_, record) => (
                 <div className="flex flex-col gap-1 items-start">
                     <span className="text-lg font-medium"> {record.campaign?.name}</span>
-                    <span className="text-sm font-normal text-gray-400">Campaign Status: <h1 className="text-xs" color={record.statusColor}>{record?.status}</h1></span>
+                    <span className="text-sm flex gap-2 font-normal text-gray-400">Campaign Status: <Tag className="text-xs" color={record.statusColor}>{record?.status}</Tag></span>
                 </div>
             ),
         },
