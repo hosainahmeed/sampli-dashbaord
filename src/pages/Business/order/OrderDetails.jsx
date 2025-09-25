@@ -63,12 +63,12 @@ const OrderDetails = () => {
   const { orderId } = location.state || {};
   const navigate = useNavigate();
 
-  const { data: orderDetails, isLoading: orderLoading } = useGetOrderDetailsByIdQuery(orderId, { skip: !orderId });
-  const { data: trackOrder, isLoading: trackLoading } = useGetOrderTrackOrderByIdQuery(orderId, { skip: !orderId });
+  const { data: orderDetails, isLoading: orderLoading } = useGetOrderDetailsByIdQuery({ id: orderId }, { skip: !orderId });
+  const { data: trackOrder, isLoading: trackLoading } = useGetOrderTrackOrderByIdQuery({ id: orderId }, { skip: !orderId });
 
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   useEffect(() => {
     if (!orderLoading) {
       setActiveIndex(0);
