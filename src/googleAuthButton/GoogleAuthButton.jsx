@@ -80,14 +80,14 @@ const GoogleAuthButton = ({ role, loginForm }) => {
       toast.dismiss();
       toast.error(
         error?.data?.message ||
-        error?.message ||
-        error?.error ||
-        "Something went wrong"
+          error?.message ||
+          error?.error ||
+          "Something went wrong"
       );
       console.log("===========error", error);
       if (
         error?.data?.message ===
-        "User validation failed: role: Path `role` is required." &&
+          "User validation failed: role: Path `role` is required." &&
         error?.status === 503
       ) {
         toast.dismiss();
@@ -101,22 +101,25 @@ const GoogleAuthButton = ({ role, loginForm }) => {
     console.log(error);
     toast.error(
       error?.data?.message ||
-      error?.message ||
-      error?.error ||
-      "Something went wrong"
+        error?.message ||
+        error?.error ||
+        "Something went wrong"
     );
   };
 
   return (
-    <GoogleLogin
-      onSuccess={handleGoogleSuccess}
-      onError={handleGoogleError}
-      useOneTap={false}
-      theme="filled_blue"
-      text="continue_with"
-      size="large"
-      shape="circle"
-    />
+    <div className="flex items-center justify-center">
+      <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={handleGoogleError}
+        useOneTap={false}
+        theme="filled_black"
+        text="continue_with"
+        size="large"
+        width={300}
+        shape="circle"
+      />
+    </div>
   );
 };
 
