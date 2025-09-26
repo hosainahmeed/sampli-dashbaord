@@ -56,7 +56,7 @@ const SelectAllCategories = () => {
   return (
     <div>
       <div className="responsive-width  flex items-center justify-center h-screen ">
-        <div className="p-6 border  border-gray-200 h-[70vh] bg-gray-200/50 rounded-lg w-full flex flex-col">
+        <div className="p-6 border  border-gray-200 h-auto bg-gray-200/50 rounded-lg w-full flex flex-col">
           <Steps current={current} className="mb-6">
             {steps.map((step, index) => (
               <Step key={index} title={step.title} />

@@ -18,6 +18,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
         city: values.city,
         phone: values.phone,
         state: values.state,
+        email: values.email,
         alternativePhoneNumber: values.altPhone,
       }).unwrap();
       if (res.success) {
@@ -45,7 +46,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
         onFinish={handleFormSubmit}
         requiredMark={false}
       >
-        <div className="!flex !flex-col !justify-between h-[425px]">
+        <div className="!flex !flex-col !justify-between h-auto">
           <div>
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item
@@ -68,6 +69,16 @@ const ContactAndShippingInformation = ({ prev, next }) => {
                 className="w-full"
               >
                 <Input placeholder="Enter your company name" />
+              </Form.Item>
+            </div>
+            <div className="flex w-full gap-5 items-center justify-between">
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[{ required: true, message: "Please enter your email" }]}
+                className="w-full"
+              >
+                <Input placeholder="Enter your email" />
               </Form.Item>
             </div>
 
