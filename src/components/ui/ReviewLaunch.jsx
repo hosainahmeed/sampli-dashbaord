@@ -34,7 +34,7 @@ const ReviewLaunch = () => {
           <p className="font-medium">Target audience size</p>
           <p>{campaignDetails?.numberOfReviewers} Reviewers</p>
           <p className="font-medium">Cost</p>
-          <p>${campaignDetails?.amountForEachReview} per review</p>
+          <p>{campaignDetails?.reviewType === 'image' ? '$5' : '$10'} per review</p>
           <p className="font-medium">Timeline</p>
           <p>{dateFormatter.format(new Date(campaignDetails?.startDate))} - {dateFormatter.format(new Date(campaignDetails?.endDate))}</p>
           <p className="font-medium">Location</p>
@@ -78,19 +78,19 @@ const ReviewLaunch = () => {
         <div className="mt-4 text-gray-700">
           <div className="flex justify-between mb-2">
             <p>
-              Base Reviews ({campaignDetails?.numberOfReviewers} × $
-              {campaignDetails?.amountForEachReview})
+              Base Reviews ({campaignDetails?.numberOfReviewers} × 
+              {campaignDetails?.reviewType === 'image' ? '$5' : '$10'})
             </p>
             <p>
-              ${campaignDetails?.numberOfReviewers * campaignDetails?.amountForEachReview}
+              ${campaignDetails?.numberOfReviewers * (campaignDetails?.reviewType === 'image' ? 5 : 10)}
             </p>
           </div>
           <div className="flex justify-between mb-2">
             <p>Platform Fee (10%)</p>
             <p>
               $
-              {(campaignDetails?.numberOfReviewers *
-                campaignDetails?.amountForEachReview *
+              {((campaignDetails?.numberOfReviewers *
+                (campaignDetails?.reviewType === 'image' ? 5 : 10)) *
                 0.1).toFixed(2)}
             </p>
           </div>
@@ -98,8 +98,8 @@ const ReviewLaunch = () => {
             <p>Grand total</p>
             <p>
               $
-              {(campaignDetails?.numberOfReviewers *
-                campaignDetails?.amountForEachReview *
+              {((campaignDetails?.numberOfReviewers *
+                (campaignDetails?.reviewType === 'image' ? 5 : 10)) *
                 1.1).toFixed(2)}
             </p>
           </div>

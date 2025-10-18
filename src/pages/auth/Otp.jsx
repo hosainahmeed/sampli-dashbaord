@@ -22,9 +22,9 @@ const OTPVerification = () => {
     setTimeLeft(30);
   };
 
+  const email = localStorage.getItem("email")
   const handleContinue = async (values) => {
     try {
-      const email = localStorage.getItem("email")
       if (!email) {
         throw new Error("Email not found!");
       }
@@ -58,21 +58,26 @@ const OTPVerification = () => {
           </Title>
           <h1 className="text-base font-extralight text-[var(--body-text)]">
             We sent a 6-digit One Time Password to{" "}
-            <strong className="text-[#111]">micheal@gmail.com</strong>. Please
+            <strong className="text-[#111]">{email ?? "example@gmail.com"}</strong>. Please
             input it below.
           </h1>
         </div>
 
         <Form onFinish={handleContinue}>
-          <Form.Item className="flex items-center justify-center" name={"verifyCode"} rules={[{ required: true }]}>
-            <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
+          <Form.Item className="!w-full !flex !justify-center" name={"verifyCode"} rules={[{ required: true }]}>
+            <Input.OTP
+              className="!w-full !h-[50px] !mt-[10px]"
+              variant="outlined"
+              length={5}
+              size="middle"
+            />
           </Form.Item>
           <Form.Item>
             <Button
               // loading={isLoading}
               type="primary"
               htmlType="submit"
-              className="w-full"
+              className="w-full !mt-[10px]"
               size="large"
             >
               Continue
