@@ -93,7 +93,7 @@ const BusinessSendOtp = () => {
                 </div>
 
                 <Form onFinish={handleContinue}>
-                    <Form.Item name={"verifyCode"} rules={[{ required: true }]}>
+                    <Form.Item className="flex items-center justify-center flex-col" name={"verifyCode"} rules={[{ required: true }]}>
                         <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
                     </Form.Item>
                     <Form.Item>
