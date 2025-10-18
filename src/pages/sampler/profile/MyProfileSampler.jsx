@@ -14,8 +14,8 @@ import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
 import { Tabs } from "antd";
 import { CiStar } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
-import AllLikes from "./allLikes";
 import AllComments from "./AllComments";
+import AllLike from "./AllLike";
 
 const MyProfileSampler = () => {
   const items = [
@@ -44,7 +44,7 @@ const MyProfileSampler = () => {
           <AiOutlineLike className=" text-2xl" /> Liked
         </div>
       ),
-      children: <AllLikes />,
+      children: <AllLike />,
     },
   ];
   const { data: profileData, isLoading } = useGetProfileApisQuery();

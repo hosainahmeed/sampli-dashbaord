@@ -87,13 +87,13 @@ const BusinessSendOtp = () => {
                                 {' '}
                                 {location?.state?.email || "hosainahmed@gmail.com"}
                             </strong>{' '}
-                            please input the OTP below
+                            please input the One Time Password below
                         </div>
                     </h1>
                 </div>
 
                 <Form onFinish={handleContinue}>
-                    <Form.Item name={"verifyCode"} rules={[{ required: true }]}>
+                    <Form.Item className="flex items-center justify-center flex-col" name={"verifyCode"} rules={[{ required: true }]}>
                         <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
                     </Form.Item>
                     <Form.Item>
@@ -115,7 +115,7 @@ const BusinessSendOtp = () => {
                             className="text-blue-500 cursor-pointer text-[14px] hover:text-blue-800"
                             onClick={handleResend}
                         >
-                            {resendLoading ? 'Loading...' : '  Resend OTP'}
+                            {resendLoading ? 'Loading...' : '  Resend One Time Password'}
                         </h1>
                     )}
                 </div>
