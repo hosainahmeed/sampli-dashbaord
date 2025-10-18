@@ -64,7 +64,7 @@ const ExistingProduct = () => {
     return {
       product: productId,
       name: campaignData?.name,
-      amountForEachReview: parseInt(campaignData?.amountForEachReview),
+      reviewType: campaignData?.reviewType,
       numberOfReviewers: parseInt(campaignData?.numberOfReviewers),
       minAge: parseInt(campaignData?.minAge),
       maxAge: parseInt(campaignData?.maxAge),
@@ -82,7 +82,7 @@ const ExistingProduct = () => {
     const requiredKeys = [
       'product',
       'name',
-      'amountForEachReview',
+      'reviewType',
       'numberOfReviewers',
       'minAge',
       'maxAge',

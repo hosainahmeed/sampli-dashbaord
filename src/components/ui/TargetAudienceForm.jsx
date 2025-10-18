@@ -13,6 +13,7 @@ const DynamicSelect = ({ label, options, placeholder, onChange, value, ...rest }
       <label className="block text-sm font-medium text-gray-700">{label}</label>
     )}
     <Select
+      size='large'
       placeholder={placeholder || 'Select an option'}
       className="w-full"
       required
@@ -55,7 +56,7 @@ const genderOptions = [
 const TargetAudienceForm = () => {
   const [formData, setFormData] = useState({
     name: '',
-    amountForEachReview: '',
+    reviewType: '',
     numberOfReviewers: '',
     location: '',
     minAge: '',
@@ -82,7 +83,7 @@ const TargetAudienceForm = () => {
   };
 
   const handleSubmit = () => {
-    const requiredFields = ['name', 'amountForEachReview', 'numberOfReviewers', 'location', 'minAge', 'maxAge', 'gender', 'startDate', 'endDate'];
+    const requiredFields = ['name', 'reviewType', 'numberOfReviewers', 'location', 'minAge', 'maxAge', 'gender', 'startDate', 'endDate'];
     if (requiredFields.some(field => !formData[field])) {
       toast.dismiss()
       const missingFields = requiredFields.filter(field => !formData[field]);
@@ -144,23 +145,31 @@ const TargetAudienceForm = () => {
           onChange={(e) => handleChange('name', e.target.value)}
         />
 
-        <div className="grid grid-cols-2 gap-4">
-          <InputField
-            label="Amount Paid for Each Review"
-            placeholder="$5"
-            required
-            type='number'
-            value={formData.amountForEachReview}
-            onChange={(e) => handleChange('amountForEachReview', e.target.value)}
-          />
-          <InputField
-            label="Number of Reviewers"
-            placeholder="Number of Reviewers"
-            required
-            type='number'
-            value={formData.numberOfReviewers}
-            onChange={(e) => handleChange('numberOfReviewers', e.target.value)}
-          />
+        <div className="grid grid-cols-2  gap-4">
+          <div className='col-span-2'>
+            <DynamicSelect
+              label="Review Type"
+              placeholder="Review Type"
+              options={[
+                { label: 'Image ($5 each)', value: 'image' },
+                { label: 'Video ($10 each)', value: 'video' },
+              ]}
+              required
+              value={formData.reviewType}
+              onChange={(value) => handleChange('reviewType', value)}
+            />
+
+          </div>
+          <div className='col-span-2'>
+            <InputField
+              label="Number of Reviewers"
+              placeholder="Number of Reviewers"
+              required
+              type='number'
+              value={formData.numberOfReviewers}
+              onChange={(e) => handleChange('numberOfReviewers', e.target.value)}
+            />
+          </div>
         </div>
 
         <InputField
