@@ -41,7 +41,7 @@ const OTPVerification = () => {
         }
       })
     } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
+      toast.error(error?.data?.message || error?.message || "Something went wrong!");
     }
   };
 
@@ -57,14 +57,14 @@ const OTPVerification = () => {
             Reset Password
           </Title>
           <h1 className="text-base font-extralight text-[var(--body-text)]">
-            We sent a 6-digit OTP to{" "}
+            We sent a 6-digit One Time Password to{" "}
             <strong className="text-[#111]">micheal@gmail.com</strong>. Please
             input it below.
           </h1>
         </div>
 
         <Form onFinish={handleContinue}>
-          <Form.Item name={"verifyCode"} rules={[{ required: true }]}>
+          <Form.Item className="flex items-center justify-center" name={"verifyCode"} rules={[{ required: true }]}>
             <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
           </Form.Item>
           <Form.Item>
@@ -85,12 +85,12 @@ const OTPVerification = () => {
             <Text>00:{timeLeft < 10 ? `0${timeLeft}` : timeLeft}</Text>
           ) : (
             <h1 className="text-blue-500 cursor-pointer" onClick={handleResend}>
-              Resend OTP
+              Resend One time Password
             </h1>
           )}
         </div>
 
-        <div className="mt-4 text-gray-500">
+        {/* <div className="mt-4 text-gray-500">
           <Link to="/help" className="mr-3">
             Help
           </Link>
@@ -98,7 +98,7 @@ const OTPVerification = () => {
             Privacy
           </Link>
           <Link to="/terms">Terms</Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

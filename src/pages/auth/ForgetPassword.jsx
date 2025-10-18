@@ -24,7 +24,7 @@ const ForgetPassword = () => {
         }
       })
     } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
+      toast.error(error?.data?.message || error?.message || "Something went wrong!");
     }
   };
 

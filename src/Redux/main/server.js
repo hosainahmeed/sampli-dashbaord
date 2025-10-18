@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 // export const url = `http://10.10.20.9:3500`; // Hosain ahmed server
->>>>>>> 19567f0af7b7e665dfc2d2e3ecf32f3fcc81b661
-export const url = `https://rnj64vmh-3500.inc1.devtunnels.ms`; // Hosain ahmed server
+export const url = `http://10.10.20.9:3500`; // Hosain ahmed server
 
 export const convertDate = (date) => {
   const createdAt = new Date(date);
