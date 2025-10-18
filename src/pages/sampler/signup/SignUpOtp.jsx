@@ -105,7 +105,7 @@ const SignUpOtp = () => {
                 {" "}
                 {location?.state?.email}
               </strong>{" "}
-              please input the OTP below
+              please input the One Time Password below
             </div>
           </h1>
         </div>
@@ -141,7 +141,7 @@ const SignUpOtp = () => {
               className="text-blue-500 cursor-pointer text-[14px] hover:text-blue-800"
               onClick={handleResend}
             >
-              {resendLoading ? "Loading..." : "  Resend OTP"}
+              {resendLoading ? "Loading..." : "  Resend One Time Password"}
             </h1>
           )}
         </div>

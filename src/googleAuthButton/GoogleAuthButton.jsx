@@ -113,7 +113,7 @@ const GoogleAuthButton = ({ role, loginForm }) => {
         onSuccess={handleGoogleSuccess}
         onError={handleGoogleError}
         useOneTap={false}
-        theme="filled_black"
+        theme="outline"
         text="continue_with"
         size="large"
         width={300}
