@@ -11,9 +11,10 @@ import toast from "react-hot-toast";
 const { Option } = Select;
 
 const genderOptions = [
-  { label: "Male", value: "male" },
-  { label: "Female", value: "female" },
-  { label: "Other", value: "other" },
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
+  { label: 'Both', value: 'both' },
+  { label: 'Other', value: 'other' },
 ];
 
 function EditCampaign() {
