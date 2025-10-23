@@ -52,15 +52,14 @@ const genderOptions = [
   { label: 'Both', value: 'both' },
   { label: 'Other', value: 'other' },
 ];
-// 'male', 'female', 'other', 'both
 const TargetAudienceForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    reviewType: '',
-    numberOfReviewers: '',
-    location: '',
-    minAge: '',
-    maxAge: '',
+    name: null,
+    reviewType: null,
+    numberOfReviewers: null,
+    location: null,
+    minAge: null,
+    maxAge: null,
     gender: 'male',
     startDate: null,
     endDate: null,
@@ -70,11 +69,13 @@ const TargetAudienceForm = () => {
     const saved = localStorage.getItem('targetAudience');
     if (saved) {
       const parsed = JSON.parse(saved);
-      setFormData({
-        ...parsed,
-        startDate: parsed.startDate ? dayjs(parsed.startDate) : null,
-        endDate: parsed.endDate ? dayjs(parsed.endDate) : null,
-      });
+      if (parsed) {
+        setFormData({
+          ...parsed,
+          startDate: parsed.startDate ? dayjs(parsed.startDate) : null,
+          endDate: parsed.endDate ? dayjs(parsed.endDate) : null,
+        });
+      }
     }
   }, []);
 
