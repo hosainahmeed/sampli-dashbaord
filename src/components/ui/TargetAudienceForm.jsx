@@ -4,7 +4,8 @@ import InputField from './InputField';
 import FormWrapper from './FormWrapper';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
-
+import { CountrySelect, StateSelect, CitySelect } from "react-country-state-city";
+import "react-country-state-city/dist/react-country-state-city.css";
 const { Option } = Select;
 
 const DynamicSelect = ({ label, options, placeholder, onChange, value, ...rest }) => (
@@ -53,13 +54,21 @@ const genderOptions = [
   { label: 'Other', value: 'other' },
 ];
 const TargetAudienceForm = () => {
+  const [country, setCountry] = useState(null);
+  const [state, setState] = useState(null);
+  const [city, setCity] = useState(null);
+
+
   const [formData, setFormData] = useState({
     name: null,
     reviewType: null,
     numberOfReviewers: null,
-    location: null,
+    country: null,
+    state: null,
+    city: null,
     minAge: null,
     maxAge: null,
+    location: null,
     gender: 'male',
     startDate: null,
     endDate: null,
@@ -94,6 +103,12 @@ const TargetAudienceForm = () => {
       return;
     }
 
+    if ((country && state && city) === null) {
+      toast.dismiss()
+      toast.error('Please select country, state, and city');
+      return;
+    }
+
     const timeline =
       formData.startDate && formData.endDate
         ? `${formData.startDate.format('MMM DD, YYYY')} - ${formData.endDate.format('MMM DD, YYYY')}`
@@ -101,6 +116,9 @@ const TargetAudienceForm = () => {
 
     const finalData = {
       ...formData,
+      country: country?.name,
+      state: state?.name,
+      city: city?.name,
       startDate: formData.startDate ? formData.startDate.toISOString() : null,
       endDate: formData.endDate ? formData.endDate.toISOString() : null,
       timeline,
@@ -152,8 +170,8 @@ const TargetAudienceForm = () => {
               label="Review Type"
               placeholder="Review Type"
               options={[
-                { label: 'Image ($5 each)', value: 'image' },
-                { label: 'Video ($10 each)', value: 'video' },
+                { label: 'Image', value: 'image' },
+                { label: 'Video', value: 'video' },
               ]}
               required
               value={formData.reviewType}
@@ -172,7 +190,39 @@ const TargetAudienceForm = () => {
             />
           </div>
         </div>
-
+        <div>
+          <h1>Select Country</h1>
+          <CountrySelect
+            containerClassName="form-group"
+            inputClassName="outline-none !border-none"
+            onChange={(_country) => setCountry(_country)}
+            onTextChange={(_txt) => console.log(_txt)}
+            placeHolder="Select Country"
+          />
+        </div>
+        <div>
+          <h1>Select State</h1>
+          <StateSelect
+            countryid={country?.id}
+            containerClassName="form-group"
+            inputClassName="outline-none !border-none"
+            onChange={(_state) => setState(_state)}
+            onTextChange={(_txt) => console.log(_txt)}
+            defaultValue={state}
+            placeHolder="Select State"
+          />
+        </div>
+        <div>
+          <h1>Select City</h1>
+          <CitySelect
+            countryid={country?.id}
+            inputClassName="outline-none !border-none"
+            stateid={state?.id}
+            onChange={(_city) => setCity(_city)}
+            defaultValue={city}
+            placeHolder="Select City"
+          />
+        </div>
         <InputField
           label="Location"
           placeholder="Location"

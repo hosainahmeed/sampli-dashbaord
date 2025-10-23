@@ -71,6 +71,9 @@ const ExistingProduct = () => {
       startDate: campaignData?.startDate,
       endDate: campaignData?.endDate,
       gender: campaignData?.gender,
+      country: campaignData?.country,
+      state: campaignData?.state,
+      city: campaignData?.city,
       location: campaignData?.location,
       paymentMethod: 'Stripe',
     };

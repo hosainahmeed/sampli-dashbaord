@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row } from 'antd';
 import CampaignAnalytics from '../../../components/page-Component/CampaignAnalytics';
 import SalesAnalytics from '../../../components/page-Component/SalesAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { useGetProfileQuery } from '../../../Redux/businessApis/business _profile/getprofileApi';
 
+
 function DashboardHome() {
   const { data: profile, isLoading: profileLoading } = useGetProfileQuery();
+
   return (
     <div className="scrollbar px-2">
       <Helmet>
         <title>Sampli Business Portal || Home</title>
       </Helmet>
+    
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <div className="mb-4">
