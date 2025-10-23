@@ -81,7 +81,7 @@ const ContactInfo = () => {
             loading={isLoading}
             disabled={isLoading}
           >
-            Continue with Email
+            Continue
           </Button>
         </FormWrapper>
       </div>

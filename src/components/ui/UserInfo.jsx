@@ -94,7 +94,7 @@ const UserInfo = () => {
             className="w-full"
             style={{ marginTop: 10 }}
           >
-            Continue with Email
+            Continue
           </Button>
         </FormWrapper>
       </div>
