@@ -57,7 +57,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
               >
                 <Input placeholder="Enter your name" />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 label="Company name"
                 name="company"
                 rules={[
@@ -69,7 +69,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
                 className="w-full"
               >
                 <Input placeholder="Enter your company name" />
-              </Form.Item>
+              </Form.Item> */}
             </div>
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item

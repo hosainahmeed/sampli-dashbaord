@@ -21,7 +21,8 @@ const Signup = () => {
   const onFinish = async (values) => {
     try {
       const payload = {
-        name: values.fullname,
+        name: values.firstName + " " + values.lastName,
+        lastName: values.lastName,
         username: values.username,
         email: values.email,
         password: values.password,
@@ -60,13 +61,26 @@ const Signup = () => {
         </div>
 
         <FormWrapper onFinish={onFinish}>
-          <InputField
-            label="Full Name"
-            name="fullname"
-            rules={[{ required: true, message: "Please enter your name!" }]}
-            placeholder="John Doe"
-            type="text"
-          />
+          <div className="flex justify-between">
+            <InputField
+              label="First Name"
+              name="firstName"
+              rules={[
+                { required: true, message: "Please enter your first name!" },
+              ]}
+              placeholder="John"
+              type="text"
+            />
+            <InputField
+              label="Last Name"
+              name="lastName"
+              rules={[
+                { required: true, message: "Please enter your last name!" },
+              ]}
+              placeholder="Doe"
+              type="text"
+            />
+          </div>
           <InputField
             label="Username"
             name="username"

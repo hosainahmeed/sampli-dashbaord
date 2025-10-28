@@ -44,7 +44,11 @@ const LoginForm = () => {
             }
           });
       } catch (error) {
-        toast.error(error?.data?.message || error?.message || 'something went wrong while sign in!');
+        toast.error(
+          error?.data?.message ||
+            error?.message ||
+            "something went wrong while sign in!"
+        );
       }
     }
   };
@@ -119,7 +123,8 @@ const LoginForm = () => {
             size="large"
             shape="round"
           >
-            Continue with Email
+            {/* Continue with Email */}
+            Continue
           </Button>
         </FormWrapper>
 
