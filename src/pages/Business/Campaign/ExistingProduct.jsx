@@ -11,7 +11,6 @@ const ExistingProduct = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [createCampaign, { isLoading }] = useCreateCampaignMutation();
 
-
   useEffect(() => {
     const existingCampaign = localStorage.getItem('targetAudience');
     const existingProductId = localStorage.getItem('selectedProductId');
@@ -20,6 +19,23 @@ const ExistingProduct = () => {
       localStorage.removeItem('selectedProductId');
     }
   }, []);
+  
+useEffect(() => {
+  const handleBeforeUnload = (e) => {
+    const selectedProduct = localStorage.getItem("selectedProductId");
+    const audience = localStorage.getItem("targetAudience");
+    if (selectedProduct || audience) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
+  };
+
+  window.addEventListener("beforeunload", handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  };
+}, []);
 
   const steps = [
     { id: 0, label: 'Product Selection', component: <ProductSelection /> },
@@ -92,7 +108,7 @@ const ExistingProduct = () => {
       'startDate',
       'endDate',
       'gender',
-      'location',
+      // 'location',
       'paymentMethod',
     ];
 

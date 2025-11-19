@@ -61,7 +61,7 @@ const Signup = () => {
         </div>
 
         <FormWrapper onFinish={onFinish}>
-          <div className="flex justify-between">
+          <div className="flex gap-2 justify-between">
             <InputField
               label="First Name"
               name="firstName"
@@ -70,6 +70,7 @@ const Signup = () => {
               ]}
               placeholder="John"
               type="text"
+              className="w-full"
             />
             <InputField
               label="Last Name"
@@ -79,6 +80,7 @@ const Signup = () => {
               ]}
               placeholder="Doe"
               type="text"
+              className="w-full"
             />
           </div>
           <InputField
@@ -91,6 +93,7 @@ const Signup = () => {
           <InputField
             label="Email address"
             name="email"
+            size="large"
             rules={[
               { required: true, message: "Please enter your email!" },
               { type: "email", message: "Enter a valid email address!" },
@@ -145,7 +148,7 @@ const Signup = () => {
           </Link>
         </div>
 
-        <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5">
+        {/* <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5">
           <Link to="/" className="text-blue-500 hover:underline transition-all">
             Help
           </Link>
@@ -155,7 +158,7 @@ const Signup = () => {
           <Link to="/" className="text-blue-500 hover:underline transition-all">
             Terms
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

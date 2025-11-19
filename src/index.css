@@ -127,9 +127,9 @@ body::-webkit-scrollbar {
   color: #6d7486 !important;
 }
 
-.ant-select-selector {
+/* .ant-select-selector {
   border-radius: 50px !important;
-}
+} */
 
 .ant-switch-checked {
   background-color: #36d96f !important;

@@ -32,8 +32,8 @@ const ResetPassword = () => {
       await resetPassword(data).unwrap().then((response) => {
         if (response?.success) {
           localStorage.setItem("token", response?.data?.accessToken);
-          navigate("/");
           toast.success(response?.message || "Password reset successfully!");
+          navigate("/");
         } else {
           throw new Error(response?.message || "Something went wrong!");
         }

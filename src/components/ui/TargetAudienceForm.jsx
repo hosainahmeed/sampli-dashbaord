@@ -4,11 +4,11 @@ import InputField from './InputField';
 import FormWrapper from './FormWrapper';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
-import { CountrySelect, StateSelect, CitySelect } from "react-country-state-city";
+import { CountrySelect, StateSelect, CitySelect, GetCountries } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 const { Option } = Select;
 
-const DynamicSelect = ({ label, options, placeholder, onChange, value, ...rest }) => (
+const DynamicSelect = ({ label, options, placeholder, onChange, style = false, value, ...rest }) => (
   <div>
     {label && (
       <label className="block text-sm font-medium text-gray-700">{label}</label>
@@ -18,6 +18,7 @@ const DynamicSelect = ({ label, options, placeholder, onChange, value, ...rest }
       placeholder={placeholder || 'Select an option'}
       className="w-full"
       required
+      style={{ style }}
       value={value}
       onChange={onChange}
       {...rest}
@@ -57,7 +58,7 @@ const TargetAudienceForm = () => {
   const [country, setCountry] = useState(null);
   const [state, setState] = useState(null);
   const [city, setCity] = useState(null);
-
+  const [countriesList, setCountriesList] = useState([]);
 
   const [formData, setFormData] = useState({
     name: null,
@@ -68,11 +69,19 @@ const TargetAudienceForm = () => {
     city: null,
     minAge: null,
     maxAge: null,
-    location: null,
+    // location: null,
     gender: 'male',
     startDate: null,
     endDate: null,
   });
+
+  useEffect(() => {
+    GetCountries().then((_countries) => {
+      const data = _countries.filter((cn) => cn?.name === 'United States')
+      setCountriesList(data)
+    });
+  }, [])
+
 
   useEffect(() => {
     const saved = localStorage.getItem('targetAudience');
@@ -93,7 +102,9 @@ const TargetAudienceForm = () => {
   };
 
   const handleSubmit = () => {
-    const requiredFields = ['name', 'reviewType', 'numberOfReviewers', 'location', 'minAge', 'maxAge', 'gender', 'startDate', 'endDate'];
+    const requiredFields = ['name', 'reviewType', 'numberOfReviewers',
+      // 'location',
+      'minAge', 'maxAge', 'gender', 'startDate', 'endDate'];
     if (requiredFields.some(field => !formData[field])) {
       toast.dismiss()
       const missingFields = requiredFields.filter(field => !formData[field]);
@@ -103,7 +114,7 @@ const TargetAudienceForm = () => {
       return;
     }
 
-    if ((country && state && city) === null) {
+    if ((country && state) === null) {
       toast.dismiss()
       toast.error('Please select country, state, and city');
       return;
@@ -118,7 +129,7 @@ const TargetAudienceForm = () => {
       ...formData,
       country: country?.name,
       state: state?.name,
-      city: city?.name,
+      city: city?.name || '',
       startDate: formData.startDate ? formData.startDate.toISOString() : null,
       endDate: formData.endDate ? formData.endDate.toISOString() : null,
       timeline,
@@ -192,18 +203,35 @@ const TargetAudienceForm = () => {
         </div>
         <div>
           <h1>Select Country</h1>
-          <CountrySelect
+          {/* <CountrySelect
             containerClassName="form-group"
             inputClassName="outline-none !border-none"
-            onChange={(_country) => setCountry(_country)}
+            onChange={(_country) => {
+              setCountry(_country)
+            }}
+            defaultValue={{ id: "US", name: "United States" }}
             onTextChange={(_txt) => console.log(_txt)}
             placeHolder="Select Country"
+          /> */}
+          <Select
+            onChange={(e) => {
+              setCountry(e)
+            }}
+            size='large'
+            placeholder='please select country'
+            className='!border-none w-full '
+            options={countriesList.map((item) => (
+              {
+                label: item?.name,
+                value: item?.id,
+              }
+            ))}
           />
         </div>
         <div>
           <h1>Select State</h1>
           <StateSelect
-            countryid={country?.id}
+            countryid={country}
             containerClassName="form-group"
             inputClassName="outline-none !border-none"
             onChange={(_state) => setState(_state)}
@@ -215,21 +243,22 @@ const TargetAudienceForm = () => {
         <div>
           <h1>Select City</h1>
           <CitySelect
-            countryid={country?.id}
+            countryid={country}
             inputClassName="outline-none !border-none"
             stateid={state?.id}
             onChange={(_city) => setCity(_city)}
             defaultValue={city}
+            multiple={true}
             placeHolder="Select City"
           />
         </div>
-        <InputField
+        {/* <InputField
           label="Location"
           placeholder="Location"
           required
           value={formData.location}
           onChange={(e) => handleChange('location', e.target.value)}
-        />
+        /> */}
 
         <div className="grid grid-cols-2 gap-4">
           <DynamicSelect
