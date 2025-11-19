@@ -290,7 +290,7 @@ const SoloStoveCart = () => {
                   </Table.Summary.Row>
 
                   {/* Row 2 - Delivery Fee */}
-                  <Table.Summary.Row>
+                  {/* <Table.Summary.Row>
                     <Table.Summary.Cell index={0} colSpan={3}>
                       <Text strong style={{ fontSize: 16 }}>
                         Delivery Fee:
@@ -301,7 +301,7 @@ const SoloStoveCart = () => {
                         ${cart?.deliveryFee?.toFixed(2) || "0.00"}
                       </Text>
                     </Table.Summary.Cell>
-                  </Table.Summary.Row>
+                  </Table.Summary.Row> */}
 
                   {/* Row 3 - Grand Total */}
                   <Table.Summary.Row>

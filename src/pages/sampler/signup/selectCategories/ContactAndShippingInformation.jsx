@@ -176,13 +176,13 @@ const ContactAndShippingInformation = ({ prev, next }) => {
               >
                 <Input placeholder="Enter your phone number" />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 label="Alternate Phone number"
                 name="altPhone"
                 className="w-full"
               >
                 <Input placeholder="Enter your alternate phone number" />
-              </Form.Item>
+              </Form.Item> */}
             </div>
           </div>
           <div className="flex justify-between text-[16px]">

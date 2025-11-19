@@ -7,17 +7,23 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useAddAddressReviewerMutation } from "../../../Redux/sampler/authSectionApis";
+import { City, State } from "country-state-city";
 const { Title } = Typography;
 
 const SignUpMoreInformation = () => {
   const Navigate = useNavigate();
   const [addAddress, { isLoading: addressLoading }] =
     useAddAddressReviewerMutation();
+  const states = State.getStatesOfCountry("US");
+
+  const [selectedState, setSelectedState] = React.useState(null);
+  const [filteredCities, setFilteredCities] = React.useState([]);
 
   const onFinish = async (values) => {
     try {
       const res = await addAddress({
-        city: values.city,
+        state: selectedState,
+        city: values.city || "",
         zipCode: values.zipCode,
         gender: values.gender,
         age: values.age,
@@ -57,18 +63,60 @@ const SignUpMoreInformation = () => {
         </div>
 
         <FormWrapper onFinish={onFinish}>
-          <InputField
-            label="City  "
+          {/* Select State */}
+          <Form.Item
+            name="state"
+            label="State"
+            rules={[{ required: true, message: "Please select your state!" }]}
+          >
+            <Select
+              showSearch
+              placeholder={
+                <div className="flex items-start justify-start">
+                  Select state
+                </div>
+              }
+              onChange={(value) => {
+                setSelectedState(value);
+                const cities = City.getCitiesOfState("US", value);
+                setFilteredCities(cities);
+              }}
+              className="flex items-start"
+            >
+              {states.map((state) => (
+                <Select.Option key={state.isoCode} value={state.isoCode}>
+                  {state.name} ({state.isoCode})
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          {/* Select City */}
+          <Form.Item
             name="city"
-            rules={[{ required: true, message: "Please enter your city!" }]}
-            placeholder="city"
-            style={{
-              width: "100%",
-              marginTop: 10,
-              marginBottom: 10,
-              textAlign: "start",
-            }}
-          />
+            label="City"
+            rules={[{ required: false, message: "Please select your city!" }]}
+          >
+            <Select
+              showSearch
+              placeholder={
+                <div className="flex items-start justify-start">
+                  {selectedState ? "Select city" : "Select state first"}
+                </div>
+              }
+              disabled={!selectedState}
+            >
+              {filteredCities.map((city) => (
+                <Select.Option
+                  key={city.name}
+                  value={`${city.name}, ${city.stateCode}`}
+                >
+                  {city.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
           <InputField
             label="Zip Code  "
             name="zipCode"
