@@ -5,12 +5,16 @@ import toast from 'react-hot-toast';
 import { useGetProfileQuery } from '../../../Redux/businessApis/business _profile/getprofileApi';
 import { useGetBusinessProductApisQuery } from '../../../Redux/sampler/productApis';
 import { useCategorySectionApisQuery } from '../../../Redux/sampler/categoryApis';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCampaignData } from '../../../Redux/slices/CampaingSlice';
 
 const ProductSelection = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const { data: profile } = useGetProfileQuery();
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const dispatch = useDispatch()
+  const campaignData = useSelector((state) => state.campaign);
+
   const { data: productData, isLoading: productLoading, isFetching } = useGetBusinessProductApisQuery({
     id: profile?.data?._id,
     searchTerm: search,
@@ -18,30 +22,17 @@ const ProductSelection = () => {
   }, {
     skip: !profile?.data?._id,
   });
-  const { data: categoryData, isLoading: categoryLoading } = useCategorySectionApisQuery();
-  useEffect(() => {
-    const savedId = localStorage.getItem('selectedProductId');
-    if (savedId && productData?.data?.result?.length) {
-      const savedProduct = productData.data.result.find(p => p._id === savedId);
-      if (savedProduct) setSelectedProduct(savedProduct);
-    }
-  }, [productData]);
 
+  const { data: categoryData, isLoading: categoryLoading } = useCategorySectionApisQuery();
 
   const handleSelect = (product) => {
-    if (selectedProduct?._id === product._id) {
-      setSelectedProduct(null);
-      localStorage.removeItem('selectedProductId');
-    } else {
-      setSelectedProduct(product);
-      localStorage.setItem('selectedProductId', product._id);
-      toast.success(`Selected ${product?.name}`);
-    }
+    dispatch(setCampaignData({
+      product: product._id,
+    }))
   };
 
-
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg">
       <h2 className="text-2xl font-semibold mb-2 text-center">
         Choose Existing Product
       </h2>
@@ -87,7 +78,7 @@ const ProductSelection = () => {
             <Card key={product?._id} className="p-4">
               <div className="flex w-full justify-between items-center">
                 <div className="flex items-center space-x-4">
-                  <div className="w-24 h-24 rounded-xl overflow-hidden">
+                  <div className="w-12 h-12 rounded-xl overflow-hidden">
                     <img
                       className="w-full h-full object-cover"
                       src={product.images[0]}
@@ -103,7 +94,7 @@ const ProductSelection = () => {
                 </div>
                 <div>
                   <Radio
-                    checked={selectedProduct?._id === product._id}
+                    checked={campaignData?.product === product._id}
                     onChange={() => handleSelect(product)}
                   />
                 </div>

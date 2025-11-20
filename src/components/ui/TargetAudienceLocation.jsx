@@ -1,76 +1,3 @@
-// import React, { useState } from 'react';
-// import ProductTable from '../../../components/Tables/ProductTable';
-// import { Button, Modal, Tabs } from 'antd';
-// import { Link } from 'react-router-dom';
-// import { FiPlus } from 'react-icons/fi';
-// // import UploadCsv from '../../../components/page-Component/UploadCsv';
-// import { Helmet } from 'react-helmet-async';
-
-// function ProductPage() {
-//   // const [openCsv, setOpenCsv] = useState(false);
-//   const items = [
-//     {
-//       label: 'All',
-//       key: 'all',
-//       children: <ProductTable filterStatus="" />,
-//     },
-//     {
-//       label: 'Active',
-//       key: 'active',
-//       children: <ProductTable filterStatus="active" />,
-//     },
-//     {
-//       label: 'Draft',
-//       key: 'draft',
-//       children: <ProductTable filterStatus="draft" />,
-//     },
-//     {
-//       label: 'Archived',
-//       key: 'archived',
-//       children: <ProductTable filterStatus="archived" />,
-//     },
-//   ];
-//   return (
-//     <div>
-//       <Helmet>
-//         <title>Sampli Business Portal || Product</title>
-//       </Helmet>
-//       <div className="flex md:items-center items-start md:flex-row flex-col justify-between">
-//         <h2 className="my-3 text-2xl !font-semibold">Product</h2>
-//         <div className="flex-center-center gap-2">
-//           {/* <Button
-//             onClick={() => {
-//               setOpenCsv(true);
-//             }}
-//             type="default"
-//             className="flex items-center justify-center"
-//           >
-//             Upload CSV
-//           </Button> */}
-//           <Link to="/product/add-product">
-//             <Button className="flex items-center justify-center" type="primary">
-//               <FiPlus />
-//               Add products
-//             </Button>
-//           </Link>
-//         </div>
-//       </div>
-//       <Tabs className="!mt-4" items={items} />
-//       {/* <Modal
-//         centered
-//         footer={null}
-//         open={openCsv}
-//         onCancel={() => setOpenCsv(false)}
-//         title="Upload CSV File"
-//         width={'fit-content'}
-//       >
-//         <UploadCsv setOpenCsv={setOpenCsv} />
-//       </Modal> */}
-//     </div>
-//   );
-// }
-
-// export default ProductPage;
 import React, { useState, useEffect } from 'react';
 import { 
   Card, 
@@ -80,13 +7,15 @@ import {
   Space,
   Tag,
 } from 'antd';
-import { getCountry, getState, getCity } from '../../../lib/getDataFromCountryApis';
+import { getCountry, getState, getCity } from '../../lib/getDataFromCountryApis';
+import { useDispatch } from 'react-redux';
+import { setCampaignData } from '../../Redux/slices/CampaingSlice';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 
-function ProductPage() {
+function TargetAudienceLocation() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -99,6 +28,7 @@ function ProductPage() {
     cities: false
   });
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -114,7 +44,11 @@ function ProductPage() {
           );
           if (usCountry) {
             setCountries([usCountry]);
-            setSelectedCountry(usCountry.id.toString());
+            const countryId = usCountry.id.toString();
+            setSelectedCountry(countryId);
+            dispatch(setCampaignData({
+              country: usCountry.name
+            }));
           } else {
             setError('United States not found in country list');
           }
@@ -128,7 +62,7 @@ function ProductPage() {
     };
 
     loadCountries();
-  }, []);
+  }, [dispatch]);
 
 
   useEffect(() => {
@@ -193,24 +127,27 @@ function ProductPage() {
     loadCitiesForStates();
   }, [selectedCountry, selectedStates]);
 
-  const handleStateChange = (values) => {
-    setSelectedStates(values);
+  const handleStateChange = (stateIds) => {
+    setSelectedStates(stateIds);
+    const stateNames = states
+      .filter(state => stateIds.includes(state.id))
+      .map(state => state.name);
+    
+    dispatch(setCampaignData({
+      state: stateNames,
+      city: [] 
+    }));
   };
 
-  const handleCityChange = (values) => {
-    setSelectedCities(values);
-  };
-
-  const getSelectedStateNames = () => {
-    return selectedStates.map(stateId => 
-      states.find(state => state.id === stateId)?.name
-    ).filter(Boolean);
-  };
-
-  const getSelectedCityNames = () => {
-    return selectedCities.map(cityId => 
-      cities.find(city => city.id === cityId)?.name
-    ).filter(Boolean);
+  const handleCityChange = (cityIds) => {
+    setSelectedCities(cityIds);
+    const cityNames = cities
+      .filter(city => cityIds.includes(city.id))
+      .map(city => city.name);
+    
+    dispatch(setCampaignData({
+      city: cityNames
+    }));
   };
 
   const filterOption = (input, option) => {
@@ -269,16 +206,6 @@ function ProductPage() {
                 </Option>
               ))}
             </Select>
-            {getSelectedStateNames().length > 0 && (
-              <div style={{ marginTop: 8 }}>
-                <Text type="secondary">Selected: </Text>
-                {getSelectedStateNames().map((stateName, index) => (
-                  <Tag key={index} color="green" style={{ margin: '2px' }}>
-                    {stateName}
-                  </Tag>
-                ))}
-              </div>
-            )}
           </div>
           <div>
             <Text strong>Cities</Text>
@@ -306,16 +233,6 @@ function ProductPage() {
                 </Option>
               ))}
             </Select>
-            {getSelectedCityNames().length > 0 && (
-              <div style={{ marginTop: 8 }}>
-                <Text type="secondary">Selected: </Text>
-                {getSelectedCityNames().map((cityName, index) => (
-                  <Tag key={index} color="blue" style={{ margin: '2px' }}>
-                    {cityName}
-                  </Tag>
-                ))}
-              </div>
-            )}
           </div>
         </Space>
       </Card>
@@ -323,4 +240,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default TargetAudienceLocation
