@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Select,  
-  Alert, 
-  Typography, 
+import {
+  Card,
+  Select,
+  Alert,
+  Typography,
   Space,
   Tag,
 } from 'antd';
 import { getCountry, getState, getCity } from '../../lib/getDataFromCountryApis';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCampaignData } from '../../Redux/slices/CampaingSlice';
 
 const { Title, Text } = Typography;
@@ -29,6 +29,7 @@ function TargetAudienceLocation() {
   });
   const [error, setError] = useState('');
   const dispatch = useDispatch();
+  const campaignData = useSelector((state) => state.campaign);
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -37,7 +38,7 @@ function TargetAudienceLocation() {
       try {
         const countryData = await getCountry();
         if (countryData) {
-          const usCountry = countryData.find((country) => 
+          const usCountry = countryData.find((country) =>
             country.name.toLowerCase().includes('united states') ||
             country.name.toLowerCase().includes('usa') ||
             country.name.toLowerCase().includes('u.s.a')
@@ -68,14 +69,14 @@ function TargetAudienceLocation() {
   useEffect(() => {
     const loadStates = async () => {
       if (!selectedCountry) return;
-      
+
       setLoading(prev => ({ ...prev, states: true }));
       setError('');
       setStates([]);
       setCities([]);
       setSelectedStates([]);
       setSelectedCities([]);
-      
+
       try {
         const stateData = await getState(selectedCountry);
         if (stateData) {
@@ -102,22 +103,21 @@ function TargetAudienceLocation() {
 
       setLoading(prev => ({ ...prev, cities: true }));
       setError('');
-      
+
       try {
-        const citiesPromises = selectedStates.map(stateId => 
+        const citiesPromises = selectedStates.map(stateId =>
           getCity(selectedCountry, stateId)
         );
-        
+
         const citiesResults = await Promise.all(citiesPromises);
         const allCities = citiesResults.flat().filter(Boolean);
-        
-        const uniqueCities = allCities.filter((city, index, self) => 
+
+        const uniqueCities = allCities.filter((city, index, self) =>
           index === self.findIndex(c => c.id === city.id)
         );
-        
+
         setCities(uniqueCities);
       } catch (error) {
-        console.error('Failed to load cities:', error);
         setError('Failed to load cities for selected states');
       } finally {
         setLoading(prev => ({ ...prev, cities: false }));
@@ -132,10 +132,10 @@ function TargetAudienceLocation() {
     const stateNames = states
       .filter(state => stateIds.includes(state.id))
       .map(state => state.name);
-    
+
     dispatch(setCampaignData({
       state: stateNames,
-      city: [] 
+      city: []
     }));
   };
 
@@ -144,7 +144,7 @@ function TargetAudienceLocation() {
     const cityNames = cities
       .filter(city => cityIds.includes(city.id))
       .map(city => city.name);
-    
+
     dispatch(setCampaignData({
       city: cityNames
     }));
@@ -156,7 +156,7 @@ function TargetAudienceLocation() {
 
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: '24px' }}>
-      <Card 
+      <Card
         title={
           <Space>
             <Title level={4} style={{ margin: 0 }}>Location Selection</Title>
@@ -213,11 +213,11 @@ function TargetAudienceLocation() {
               mode="multiple"
               style={{ width: '100%', marginTop: 8 }}
               placeholder={
-                selectedStates.length === 0 
-                  ? "Please select states first" 
-                  : loading.cities 
-                  ? "Loading cities..." 
-                  : "Select cities"
+                selectedStates.length === 0
+                  ? "Please select states first"
+                  : loading.cities
+                    ? "Loading cities..."
+                    : "Select cities"
               }
               value={selectedCities}
               onChange={handleCityChange}

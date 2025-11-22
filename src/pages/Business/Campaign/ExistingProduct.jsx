@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, message } from 'antd';
+import { Button, Card, message, Modal } from 'antd';
 import TargetAudienceLocation from '../../../components/ui/TargetAudienceLocation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductSelection from '../Product/ProductSelection';
 import TargetAudienceForm from '../../../components/ui/TargetAudienceForm';
 import dayjs from 'dayjs';
@@ -28,6 +28,7 @@ const ExistingProduct = () => {
   const campaignData = useSelector((state) => state.campaign);
   const [current, setCurrent] = useState(0);
   const [createCampaign, { isLoading }] = useCreateCampaignMutation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -45,7 +46,7 @@ const ExistingProduct = () => {
     };
   }, []);
 
-  const next = () => {
+  const next = async () => {
     if (!campaignData?.product && current === 0 || campaignData?.product === null || campaignData?.product === '') {
       message.error('Please select a product before proceeding');
       return;
@@ -74,6 +75,32 @@ const ExistingProduct = () => {
           return;
         }
       }
+
+      return new Promise((resolve) => {
+        Modal.confirm({
+          title: 'Important: Data Submission Confirmation',
+          content: (
+            <div>
+              <p>You are about to submit your campaign details. Please confirm that:</p>
+              <ul style={{ paddingLeft: 20 }}>
+                <li>All information is accurate and complete</li>
+                <li>You understand that you won't be able to go back to edit after submission</li>
+              </ul>
+              <p>Would you like to proceed to the next step?</p>
+            </div>
+          ),
+          okText: 'Yes, Proceed',
+          cancelText: 'No, Let me check again',
+          onOk: () => {
+            setCurrent(current + 1);
+            resolve(true);
+          },
+          onCancel: () => {
+            resolve(false);
+          },
+          width: 600
+        });
+      });
     }
 
     if (current === 2 && campaignData?.product) {
@@ -82,13 +109,37 @@ const ExistingProduct = () => {
         message.error('Please select a location before proceeding');
         return;
       }
+      return new Promise((resolve) => {
+        Modal.confirm({
+          title: 'Important: Data Submission Confirmation',
+          content: (
+            <div>
+              <p>Are you sure you want to proceed to the next step?</p>
+              <ul style={{ paddingLeft: 20 }}>
+                <li>You have selected the correct state and city</li>
+              </ul>
+            </div>
+          ),
+          okText: 'Yes, Proceed',
+          cancelText: 'No, Let me check again',
+          onOk: () => {
+            setCurrent(current + 1);
+            resolve(true);
+          },
+          onCancel: () => {
+            resolve(false);
+          },
+          width: 600
+        });
+      });
     }
-
     setCurrent(current + 1);
   };
 
   const prev = () => {
-    setCurrent(current - 1);
+    if (current > 0 && current < 3) {
+      setCurrent(current - 1);
+    }
   };
 
   const validatePayload = (data) => {
@@ -116,8 +167,6 @@ const ExistingProduct = () => {
     }
   };
 
-
-
   const handleSubmit = async () => {
     try {
       validatePayload(campaignData);
@@ -142,7 +191,7 @@ const ExistingProduct = () => {
       <div className='w-xl mx-auto h-[70vh] overflow-y-auto scrollbar'>{steps[current].content}</div>
       <div className='mx-auto w-xl mt-12'>
 
-        {current > 0 && (
+        {current > 0 && current < 2 && (
           <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
             Previous
           </Button>

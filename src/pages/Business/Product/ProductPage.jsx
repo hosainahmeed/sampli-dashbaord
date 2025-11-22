@@ -1,324 +1,71 @@
-// import React, { useState } from 'react';
-// import ProductTable from '../../../components/Tables/ProductTable';
-// import { Button, Modal, Tabs } from 'antd';
-// import { Link } from 'react-router-dom';
-// import { FiPlus } from 'react-icons/fi';
-// // import UploadCsv from '../../../components/page-Component/UploadCsv';
-// import { Helmet } from 'react-helmet-async';
-
-// function ProductPage() {
-//   // const [openCsv, setOpenCsv] = useState(false);
-//   const items = [
-//     {
-//       label: 'All',
-//       key: 'all',
-//       children: <ProductTable filterStatus="" />,
-//     },
-//     {
-//       label: 'Active',
-//       key: 'active',
-//       children: <ProductTable filterStatus="active" />,
-//     },
-//     {
-//       label: 'Draft',
-//       key: 'draft',
-//       children: <ProductTable filterStatus="draft" />,
-//     },
-//     {
-//       label: 'Archived',
-//       key: 'archived',
-//       children: <ProductTable filterStatus="archived" />,
-//     },
-//   ];
-//   return (
-//     <div>
-//       <Helmet>
-//         <title>Sampli Business Portal || Product</title>
-//       </Helmet>
-//       <div className="flex md:items-center items-start md:flex-row flex-col justify-between">
-//         <h2 className="my-3 text-2xl !font-semibold">Product</h2>
-//         <div className="flex-center-center gap-2">
-//           {/* <Button
-//             onClick={() => {
-//               setOpenCsv(true);
-//             }}
-//             type="default"
-//             className="flex items-center justify-center"
-//           >
-//             Upload CSV
-//           </Button> */}
-//           <Link to="/product/add-product">
-//             <Button className="flex items-center justify-center" type="primary">
-//               <FiPlus />
-//               Add products
-//             </Button>
-//           </Link>
-//         </div>
-//       </div>
-//       <Tabs className="!mt-4" items={items} />
-//       {/* <Modal
-//         centered
-//         footer={null}
-//         open={openCsv}
-//         onCancel={() => setOpenCsv(false)}
-//         title="Upload CSV File"
-//         width={'fit-content'}
-//       >
-//         <UploadCsv setOpenCsv={setOpenCsv} />
-//       </Modal> */}
-//     </div>
-//   );
-// }
-
-// export default ProductPage;
-import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Select,  
-  Alert, 
-  Typography, 
-  Space,
-  Tag,
-} from 'antd';
-import { getCountry, getState, getCity } from '../../../lib/getDataFromCountryApis';
-
-const { Title, Text } = Typography;
-const { Option } = Select;
-
+import React, { useState } from 'react';
+import ProductTable from '../../../components/Tables/ProductTable';
+import { Button, Modal, Tabs } from 'antd';
+import { Link } from 'react-router-dom';
+import { FiPlus } from 'react-icons/fi';
+// import UploadCsv from '../../../components/page-Component/UploadCsv';
+import { Helmet } from 'react-helmet-async';
 
 function ProductPage() {
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedStates, setSelectedStates] = useState([]);
-  const [selectedCities, setSelectedCities] = useState([]);
-  const [loading, setLoading] = useState({
-    countries: false,
-    states: false,
-    cities: false
-  });
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const loadCountries = async () => {
-      setLoading(prev => ({ ...prev, countries: true }));
-      setError('');
-      try {
-        const countryData = await getCountry();
-        if (countryData) {
-          const usCountry = countryData.find((country) => 
-            country.name.toLowerCase().includes('united states') ||
-            country.name.toLowerCase().includes('usa') ||
-            country.name.toLowerCase().includes('u.s.a')
-          );
-          if (usCountry) {
-            setCountries([usCountry]);
-            setSelectedCountry(usCountry.id.toString());
-          } else {
-            setError('United States not found in country list');
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load countries:', error);
-        setError('Failed to load countries');
-      } finally {
-        setLoading(prev => ({ ...prev, countries: false }));
-      }
-    };
-
-    loadCountries();
-  }, []);
-
-
-  useEffect(() => {
-    const loadStates = async () => {
-      if (!selectedCountry) return;
-      
-      setLoading(prev => ({ ...prev, states: true }));
-      setError('');
-      setStates([]);
-      setCities([]);
-      setSelectedStates([]);
-      setSelectedCities([]);
-      
-      try {
-        const stateData = await getState(selectedCountry);
-        if (stateData) {
-          setStates(stateData);
-        }
-      } catch (error) {
-        console.error('Failed to load states:', error);
-        setError('Failed to load states');
-      } finally {
-        setLoading(prev => ({ ...prev, states: false }));
-      }
-    };
-
-    loadStates();
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    const loadCitiesForStates = async () => {
-      if (selectedStates.length === 0) {
-        setCities([]);
-        setSelectedCities([]);
-        return;
-      }
-
-      setLoading(prev => ({ ...prev, cities: true }));
-      setError('');
-      
-      try {
-        const citiesPromises = selectedStates.map(stateId => 
-          getCity(selectedCountry, stateId)
-        );
-        
-        const citiesResults = await Promise.all(citiesPromises);
-        const allCities = citiesResults.flat().filter(Boolean);
-        
-        const uniqueCities = allCities.filter((city, index, self) => 
-          index === self.findIndex(c => c.id === city.id)
-        );
-        
-        setCities(uniqueCities);
-      } catch (error) {
-        console.error('Failed to load cities:', error);
-        setError('Failed to load cities for selected states');
-      } finally {
-        setLoading(prev => ({ ...prev, cities: false }));
-      }
-    };
-
-    loadCitiesForStates();
-  }, [selectedCountry, selectedStates]);
-
-  const handleStateChange = (values) => {
-    setSelectedStates(values);
-  };
-
-  const handleCityChange = (values) => {
-    setSelectedCities(values);
-  };
-
-  const getSelectedStateNames = () => {
-    return selectedStates.map(stateId => 
-      states.find(state => state.id === stateId)?.name
-    ).filter(Boolean);
-  };
-
-  const getSelectedCityNames = () => {
-    return selectedCities.map(cityId => 
-      cities.find(city => city.id === cityId)?.name
-    ).filter(Boolean);
-  };
-
-  const filterOption = (input, option) => {
-    return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-  };
-
+  // const [openCsv, setOpenCsv] = useState(false);
+  const items = [
+    {
+      label: 'All',
+      key: 'all',
+      children: <ProductTable filterStatus="" />,
+    },
+    {
+      label: 'Active',
+      key: 'active',
+      children: <ProductTable filterStatus="active" />,
+    },
+    {
+      label: 'Draft',
+      key: 'draft',
+      children: <ProductTable filterStatus="draft" />,
+    },
+    {
+      label: 'Archived',
+      key: 'archived',
+      children: <ProductTable filterStatus="archived" />,
+    },
+  ];
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: '24px' }}>
-      <Card 
-        title={
-          <Space>
-            <Title level={4} style={{ margin: 0 }}>Location Selection</Title>
-            <Text type="secondary">United States Only</Text>
-          </Space>
-        }
+    <div>
+      <Helmet>
+        <title>Sampli Business Portal || Product</title>
+      </Helmet>
+      <div className="flex md:items-center items-start md:flex-row flex-col justify-between">
+        <h2 className="my-3 text-2xl !font-semibold">Product</h2>
+        <div className="flex-center-center gap-2">
+          {/* <Button
+            onClick={() => {
+              setOpenCsv(true);
+            }}
+            type="default"
+            className="flex items-center justify-center"
+          >
+            Upload CSV
+          </Button> */}
+          <Link to="/product/add-product">
+            <Button className="flex items-center justify-center" type="primary">
+              <FiPlus />
+              Add products
+            </Button>
+          </Link>
+        </div>
+      </div>
+      <Tabs className="!mt-4" items={items} />
+      {/* <Modal
+        centered
+        footer={null}
+        open={openCsv}
+        onCancel={() => setOpenCsv(false)}
+        title="Upload CSV File"
+        width={'fit-content'}
       >
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          {error && (
-            <Alert message={error} type="error" showIcon closable />
-          )}
-
-          <div>
-            <Text strong>Country</Text>
-            <Select
-              value={selectedCountry}
-              style={{ width: '100%', marginTop: 8 }}
-              disabled
-              loading={loading.countries}
-            >
-              {countries.map(country => (
-                <Option key={country.id} value={country.id.toString()}>
-                  {country.name}
-                </Option>
-              ))}
-            </Select>
-            <Text type="secondary" style={{ fontSize: '12px', marginTop: 4, display: 'block' }}>
-              Only United States is available for selection
-            </Text>
-          </div>
-          <div>
-            <Text strong>States</Text>
-            <Select
-              mode="multiple"
-              style={{ width: '100%', marginTop: 8 }}
-              placeholder={loading.states ? "Loading states..." : "Select states"}
-              value={selectedStates}
-              onChange={handleStateChange}
-              loading={loading.states}
-              showSearch
-              filterOption={filterOption}
-              allowClear
-            >
-              {states.map(state => (
-                <Option key={state.id} value={state.id}>
-                  {state.name}
-                </Option>
-              ))}
-            </Select>
-            {getSelectedStateNames().length > 0 && (
-              <div style={{ marginTop: 8 }}>
-                <Text type="secondary">Selected: </Text>
-                {getSelectedStateNames().map((stateName, index) => (
-                  <Tag key={index} color="green" style={{ margin: '2px' }}>
-                    {stateName}
-                  </Tag>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            <Text strong>Cities</Text>
-            <Select
-              mode="multiple"
-              style={{ width: '100%', marginTop: 8 }}
-              placeholder={
-                selectedStates.length === 0 
-                  ? "Please select states first" 
-                  : loading.cities 
-                  ? "Loading cities..." 
-                  : "Select cities"
-              }
-              value={selectedCities}
-              onChange={handleCityChange}
-              loading={loading.cities}
-              disabled={selectedStates.length === 0 || loading.cities}
-              showSearch
-              filterOption={filterOption}
-              allowClear
-            >
-              {cities.map(city => (
-                <Option key={city.id} value={city.id}>
-                  {city.name}
-                </Option>
-              ))}
-            </Select>
-            {getSelectedCityNames().length > 0 && (
-              <div style={{ marginTop: 8 }}>
-                <Text type="secondary">Selected: </Text>
-                {getSelectedCityNames().map((cityName, index) => (
-                  <Tag key={index} color="blue" style={{ margin: '2px' }}>
-                    {cityName}
-                  </Tag>
-                ))}
-              </div>
-            )}
-          </div>
-        </Space>
-      </Card>
+        <UploadCsv setOpenCsv={setOpenCsv} />
+      </Modal> */}
     </div>
   );
 }
