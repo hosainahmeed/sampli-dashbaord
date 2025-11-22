@@ -29,11 +29,10 @@ const ExistingProduct = () => {
   const [current, setCurrent] = useState(0);
   const [createCampaign, { isLoading }] = useCreateCampaignMutation();
   const dispatch = useDispatch();
-
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       const data = Object.values(campaignData);
-      if (data.some((value) => value !== null || value !== '' || value !== undefined || value !== 0 || value !== false)) {
+      if (data.some((value) => value !== null || value !== '' || value !== undefined || value !== 0)) {
         e.preventDefault();
         e.returnValue = "";
       }
@@ -53,7 +52,8 @@ const ExistingProduct = () => {
     }
 
     if (current === 1 && campaignData?.product) {
-      const { minAge, maxAge, startDate, endDate, name, gender } = campaignData;
+      const { minAge, maxAge, startDate, endDate, name, gender, isShowEverywhere } = campaignData;
+
       if ([minAge, maxAge, startDate, endDate, name, gender].some((value) => value === null || value === '')) {
         message.error('Please fill all the fields before proceeding');
         return;
@@ -85,6 +85,7 @@ const ExistingProduct = () => {
               <ul style={{ paddingLeft: 20 }}>
                 <li>All information is accurate and complete</li>
                 <li>You understand that you won't be able to go back to edit after submission</li>
+                <li className={`${isShowEverywhere ? 'text-green-500' : 'text-red-500'}`}>Are you sure you want to proceed with {isShowEverywhere ? 'showing' : 'not showing'} campaign to all?</li>
               </ul>
               <p>Would you like to proceed to the next step?</p>
             </div>

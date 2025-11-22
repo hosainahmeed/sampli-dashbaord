@@ -13,6 +13,7 @@ const initialState = {
     country: [],
     state: [],
     city: [],
+    isShowEverywhere: false,
     paymentMethod: 'Stripe',
 }
 

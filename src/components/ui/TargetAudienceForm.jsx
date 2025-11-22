@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { Form, Input, Select, DatePicker } from 'antd';
+import { Form, Input, Select, DatePicker, Checkbox } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -43,6 +43,7 @@ const TargetAudienceForm = () => {
       gender: campaignData.gender || null,
       startDate: campaignData.startDate ? dayjs(campaignData.startDate) : null,
       endDate: campaignData.endDate ? dayjs(campaignData.endDate) : null,
+      isShowEverywhere: campaignData.isShowEverywhere || false,
     };
   }, [campaignData]);
 
@@ -88,10 +89,7 @@ const TargetAudienceForm = () => {
   const handleChange = (key, value) => {
     const updated = { ...formData, [key]: value };
     setFormData(updated);
-    
     const isDate = key === 'startDate' || key === 'endDate';
-    
-    // Always save changes, but use a small debounce for non-date fields
     const timer = setTimeout(() => {
       autoSaveToRedux(updated);
     }, isDate ? 0 : 500);
@@ -212,6 +210,20 @@ const TargetAudienceForm = () => {
             ))}
           </Select>
         </Form.Item>
+        <Form>
+          <Form.Item>
+            <Form.Item label="Show Campaign to all" valuePropName="checked">
+              <Checkbox
+                size="large"
+                checked={formData.isShowEverywhere === true}
+                onChange={(e) => {
+                  handleImmediateChange('isShowEverywhere', e.target.checked)
+                  dispatch(setCampaignData({ isShowEverywhere: e.target.checked }))
+                }}
+              />
+            </Form.Item>
+          </Form.Item>
+        </Form>
       </Form>
     </div>
   );
