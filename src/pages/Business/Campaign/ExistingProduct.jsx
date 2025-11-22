@@ -9,6 +9,7 @@ import ReviewLaunch from '../../../components/ui/ReviewLaunch';
 import { useCreateCampaignMutation } from '../../../Redux/businessApis/campaign/campaignApis';
 import toast from 'react-hot-toast';
 import { reset } from '../../../Redux/slices/CampaingSlice';
+import { FaInfoCircle } from 'react-icons/fa';
 
 const steps = [
   {
@@ -86,6 +87,17 @@ const ExistingProduct = () => {
                 <li>All information is accurate and complete</li>
                 <li>You understand that you won't be able to go back to edit after submission</li>
                 <li className={`${isShowEverywhere ? 'text-green-500' : 'text-red-500'}`}>Are you sure you want to proceed with {isShowEverywhere ? 'showing' : 'not showing'} campaign to all?</li>
+                {!isShowEverywhere && (
+                  <>
+                    <span className='text-sm mt-2 flex items-center gap-2'><FaInfoCircle /> if you are Show Campaign to all, then you will get:</span>
+                    <ul className='list-disc pl-5'>
+                      <li className='text-sm'>Wider reach</li>
+                      <li className='text-sm'>More referrals</li>
+                      <li className='text-sm'>More impressions</li>
+                      {/* <li className='text-sm'>To avoid limiting their campaign too much</li> */}
+                    </ul>
+                  </>
+                )}
               </ul>
               <p>Would you like to proceed to the next step?</p>
             </div>
