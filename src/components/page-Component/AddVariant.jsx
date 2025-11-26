@@ -35,19 +35,13 @@ function AddVariant() {
 
         formData.append("data", JSON.stringify(formValue));
 
-        // fileList.forEach((file) => {
-        //     formData.append("variant_image", file.originFileObj);
-        // });
-
         try {
             if (editingVariant) {
-                // update variant
                 await updateVariant({ data: formData, id: editingVariant?._id }).unwrap().then((res) => {
                     if (res.success) {
                         toast.dismiss()
                         toast.success(res.message)
                         form.resetFields()
-                        // setFileList([])
                         setEditingVariant(null)
                         refetch()
                     }
