@@ -121,7 +121,7 @@ const Register = () => {
             </div>
           </div> */}
         </div>
-        <div className="mt-4 text-gray-500">
+        {/* <div className="mt-4 text-gray-500">
           Already have an account?{' '}
           <Link
             to="/login"
@@ -140,7 +140,7 @@ const Register = () => {
           <Link to="/terms" className="mr-3 hover:underline transtion-all">
             Terms
           </Link>
-        </div>
+        </div> */}
 
         {/* <div className="mt-4">
           <h1 className="text-[var(--body-text)] font-extralight text-sm">

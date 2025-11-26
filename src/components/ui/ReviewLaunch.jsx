@@ -1,14 +1,13 @@
 import React from 'react';
 import { Card, Empty, Spin } from 'antd';
 import { useGetSingleProductApisQuery } from '../../Redux/sampler/productApis';
+import { useSelector } from 'react-redux';
 
 const ReviewLaunch = () => {
-  const campaignDetails = JSON.parse(localStorage.getItem('targetAudience')) || {};
-  const selectedProducts = localStorage.getItem('selectedProductId') || null;
-
+  const campaignData = useSelector((state) => state.campaign);
   const { data: singleProduct, isLoading: singleProductLoading } = useGetSingleProductApisQuery(
-    { id: selectedProducts },
-    { skip: !selectedProducts }
+    { id: campaignData?.product },
+    { skip: !campaignData?.product }
   );
 
   const dateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -18,9 +17,11 @@ const ReviewLaunch = () => {
   });
 
 
-
+  const sliceMaping = (data) => {
+    return data?.map((item) => item).join(', ')
+  }
   return (
-    <div className="max-w-3xl flex flex-col gap-2 mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="w-xl flex flex-col gap-2 mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-xl font-semibold mb-2 text-center">Review & Launch</h1>
       <p className="text-gray-600 mb-4 text-center">
         Confirm and review your campaign details
@@ -30,15 +31,21 @@ const ReviewLaunch = () => {
         <h2 className="text-lg font-semibold">Campaign Details</h2>
         <div className="grid grid-cols-2 gap-4 mt-2 text-gray-700">
           <p className="font-medium">Campaign name</p>
-          <p>{campaignDetails?.name || 'N/A'}</p>
+          <p>{campaignData?.name || 'N/A'}</p>
           <p className="font-medium">Target audience size</p>
-          <p>{campaignDetails?.numberOfReviewers} Reviewers</p>
+          <p>{campaignData?.numberOfReviewers} Reviewers</p>
           <p className="font-medium">Cost</p>
-          <p>{campaignDetails?.reviewType === 'image' ? '$5' : '$10'} per review</p>
+          <p>{campaignData?.reviewType === 'image' ? '$5' : '$10'} per review</p>
           <p className="font-medium">Timeline</p>
-          <p>{dateFormatter.format(new Date(campaignDetails?.startDate))} - {dateFormatter.format(new Date(campaignDetails?.endDate))}</p>
-          <p className="font-medium">Location</p>
-          <p>{campaignDetails?.location}</p>
+          <p>{dateFormatter.format(new Date(campaignData?.startDate))} - {dateFormatter.format(new Date(campaignData?.endDate))}</p>
+          <p className="font-medium">Gender</p>
+          <p>{campaignData?.gender || 'N/A'}</p>
+          <p className="font-medium">Country</p>
+          <p>{campaignData?.country || 'N/A'}</p>
+          <p className="font-medium">State</p>
+          <p>{sliceMaping(campaignData?.state) || 'N/A'}</p>
+          <p className="font-medium">City</p>
+          <p>{sliceMaping(campaignData?.city) || 'N/A'}</p>
         </div>
       </Card>
 
@@ -78,19 +85,19 @@ const ReviewLaunch = () => {
         <div className="mt-4 text-gray-700">
           <div className="flex justify-between mb-2">
             <p>
-              Base Reviews ({campaignDetails?.numberOfReviewers} × 
-              {campaignDetails?.reviewType === 'image' ? '$5' : '$10'})
+              Base Reviews ({campaignData?.numberOfReviewers} ×
+              {campaignData?.reviewType === 'image' ? '$5' : '$10'})
             </p>
             <p>
-              ${campaignDetails?.numberOfReviewers * (campaignDetails?.reviewType === 'image' ? 5 : 10)}
+              ${campaignData?.numberOfReviewers * (campaignData?.reviewType === 'image' ? 5 : 10)}
             </p>
           </div>
           <div className="flex justify-between mb-2">
             <p>Platform Fee (10%)</p>
             <p>
               $
-              {((campaignDetails?.numberOfReviewers *
-                (campaignDetails?.reviewType === 'image' ? 5 : 10)) *
+              {((campaignData?.numberOfReviewers *
+                (campaignData?.reviewType === 'image' ? 5 : 10)) *
                 0.1).toFixed(2)}
             </p>
           </div>
@@ -98,8 +105,8 @@ const ReviewLaunch = () => {
             <p>Grand total</p>
             <p>
               $
-              {((campaignDetails?.numberOfReviewers *
-                (campaignDetails?.reviewType === 'image' ? 5 : 10)) *
+              {((campaignData?.numberOfReviewers *
+                (campaignData?.reviewType === 'image' ? 5 : 10)) *
                 1.1).toFixed(2)}
             </p>
           </div>

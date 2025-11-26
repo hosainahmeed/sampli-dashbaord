@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Typography, Divider } from "antd";
 import Logo from "../../components/ui/Logo";
 import InputField from "../../components/ui/InputField";
@@ -12,6 +12,7 @@ import fb from "../../assets/socialsLogo/facebook.svg";
 import apple from "../../assets/socialsLogo/apple.png";
 import { FaApple } from "react-icons/fa";
 
+
 const { Title } = Typography;
 
 const LoginForm = () => {
@@ -19,35 +20,36 @@ const LoginForm = () => {
   const onFinish = async (values) => {
     if (values.email && values.password) {
       try {
-        await login(values)
+        const res = await login(values)
           .unwrap()
-          .then((res) => {
-            if (res?.success) {
-              if (!loginLoading) {
-                localStorage.removeItem("token");
-                const token = res?.data?.accessToken;
-                const decoded = jwtDecode(token);
-                localStorage.setItem("token", token);
-                console.log(decoded?.role);
-                if (decoded?.role === "reviewer") {
-                  toast.success(res?.message);
-                  if (window !== undefined) {
-                    window.location.href = "/sampler/campaign";
-                  }
-                } else if (decoded?.role === "bussinessOwner") {
-                  toast.success(res?.message);
-                  if (window !== undefined) {
-                    window.location.href = "/business-dashboard";
-                  }
-                }
+        if (!res.success) {
+          throw new Error(res.message || "something went wrong while sign in!");
+        }
+        if (res?.success) {
+          if (!loginLoading) {
+            localStorage.removeItem("token");
+            const token = res?.data?.accessToken;
+            const decoded = jwtDecode(token);
+            localStorage.setItem("token", token);
+            console.log(decoded?.role);
+            if (decoded?.role === "reviewer") {
+              toast.success(res?.message);
+              if (window !== undefined) {
+                window.location.href = "/sampler/campaign";
+              }
+            } else if (decoded?.role === "bussinessOwner") {
+              toast.success(res?.message);
+              if (window !== undefined) {
+                window.location.href = "/business-dashboard";
               }
             }
-          });
+          }
+        }
       } catch (error) {
         toast.error(
           error?.data?.message ||
-            error?.message ||
-            "something went wrong while sign in!"
+          error?.message ||
+          "something went wrong while sign in!"
         );
       }
     }

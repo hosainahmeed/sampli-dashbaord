@@ -44,7 +44,6 @@ function ShippingProviderModal({
         .then((res) => {
           if (res?.success) {
             toast.success(res?.message);
-            // navigate(res?.data?.url, { replace: false });
             window.open(res?.data?.url, "_blank");
             handleModalCancel();
           }
