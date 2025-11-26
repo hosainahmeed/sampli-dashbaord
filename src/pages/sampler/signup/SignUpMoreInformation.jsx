@@ -22,7 +22,7 @@ const SignUpMoreInformation = () => {
   const onFinish = async (values) => {
     try {
       const res = await addAddress({
-        state: selectedState,
+        state: selectedState || "",
         city: values.city || "",
         zipCode: values.zipCode,
         gender: values.gender,
@@ -84,8 +84,8 @@ const SignUpMoreInformation = () => {
               className="flex items-start"
             >
               {states.map((state) => (
-                <Select.Option key={state.isoCode} value={state.isoCode}>
-                  {state.name} ({state.isoCode})
+                <Select.Option key={state.name} value={state.name}>
+                  {state.name}
                 </Select.Option>
               ))}
             </Select>
@@ -107,10 +107,7 @@ const SignUpMoreInformation = () => {
               disabled={!selectedState}
             >
               {filteredCities.map((city) => (
-                <Select.Option
-                  key={city.name}
-                  value={`${city.name}, ${city.stateCode}`}
-                >
+                <Select.Option key={city.name} value={`${city.name}`}>
                   {city.name}
                 </Select.Option>
               ))}

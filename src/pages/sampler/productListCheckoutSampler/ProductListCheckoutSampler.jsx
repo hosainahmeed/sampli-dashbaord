@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Table,
   Button,
@@ -9,10 +10,15 @@ import {
   Divider,
   Modal,
 } from "antd";
+
 import { DeleteOutlined, ShoppingOutlined } from "@ant-design/icons";
+
 import toast from "react-hot-toast";
+
 import { Link } from "react-router-dom";
+
 import productImage from "/public/product_image.svg";
+
 import {
   useDecreaseItemMutation,
   useDeleteCartMutation,
@@ -20,7 +26,9 @@ import {
   useIncreaseItemMutation,
   useRemoveCartMutation,
 } from "../../../Redux/sampler/cartApis";
+
 import { useGetShippingAddressQuery } from "../../../Redux/sampler/shippingAddressApis";
+
 import {
   useCreateOrderMutation,
   usePostShippingRatesMutation,
