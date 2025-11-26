@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Form, Input, Button, Card, Select, Space, message, Tag, Popconfirm } from "antd";
-// import { UploadOutlined } from "@ant-design/icons";
 import { FaAngleLeft } from "react-icons/fa";
 import { useGetVariantProductApisQuery } from "../../Redux/sampler/productApis";
 import { useAddVariantMutation, useDeleteVariantMutation, useUpdateVariantMutation } from "../../Redux/businessApis/business_product/variantApis";
@@ -13,7 +12,6 @@ function AddVariant() {
     const { productId, name } = useParams();
     const location = useLocation();
     const [form] = Form.useForm();
-    // const [fileList, setFileList] = useState([]);
     const [editingVariant, setEditingVariant] = useState(null);
     const [addVariant, { isLoading: addVariantLoading }] = useAddVariantMutation()
     const [updateVariant, { isLoading: updateVariantLoading }] = useUpdateVariantMutation()
@@ -25,10 +23,6 @@ function AddVariant() {
         isLoading: variantProductLoading,
         refetch,
     } = useGetVariantProductApisQuery({ id: productId });
-
-    // const handleFileChange = ({ fileList: newFileList }) => {
-    //     setFileList(newFileList);
-    // };
 
     const onFinish = async (values) => {
         const formData = new FormData();

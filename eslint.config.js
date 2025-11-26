@@ -5,7 +5,7 @@ import pluginReact from "eslint-plugin-react";
 export default [
   {
     env: {
-      browser: true, // ✅ allows FormData
+      browser: true,
       es2021: true,
       node: true,
     },
