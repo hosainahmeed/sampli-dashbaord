@@ -84,7 +84,7 @@ const SignUpMoreInformation = () => {
               className="flex items-start"
             >
               {states.map((state) => (
-                <Select.Option key={state.name} value={state.name}>
+                <Select.Option key={state.isoCode} value={state.isoCode}>
                   {state.name}
                 </Select.Option>
               ))}

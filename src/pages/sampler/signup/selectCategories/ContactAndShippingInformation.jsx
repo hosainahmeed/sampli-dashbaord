@@ -1,20 +1,25 @@
 import { Form, Input, Select } from "antd";
-import { Country } from "country-state-city";
+import { City, State } from "country-state-city";
 import React from "react";
 import { useAddShippingAddressReviewerMutation } from "../../../../Redux/sampler/authSectionApis";
 import toast from "react-hot-toast";
 
 const ContactAndShippingInformation = ({ prev, next }) => {
   const [addShipping, { isLoading }] = useAddShippingAddressReviewerMutation();
+
+  const states = State.getStatesOfCountry("US");
+
+  const [selectedState, setSelectedState] = React.useState(null);
+  const [filteredCities, setFilteredCities] = React.useState([]);
   const handleFormSubmit = async (values) => {
     try {
       const res = await addShipping({
         company: values.company,
         name: values.name,
-        street1: values.street1,
-        street2: values.street2,
-        country: values.country,
-        zip: values.postalCode,
+        street1: values.street,
+        // street2: values.street2,
+        country: "US",
+        zip: values.zipCode,
         city: values.city,
         phone: values.phone,
         state: values.state,
@@ -84,8 +89,8 @@ const ContactAndShippingInformation = ({ prev, next }) => {
 
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item
-                label="Street 1"
-                name="street1"
+                label="Street"
+                name="street"
                 rules={[
                   { required: true, message: "Please enter your address" },
                 ]}
@@ -93,7 +98,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
               >
                 <Input placeholder="Enter your address" />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 label="Street 2"
                 name="street2"
                 rules={[
@@ -102,66 +107,88 @@ const ContactAndShippingInformation = ({ prev, next }) => {
                 className="w-full"
               >
                 <Input placeholder="Enter your address" />
-              </Form.Item>
+              </Form.Item> */}
             </div>
 
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item
                 label="Country"
                 name="country"
-                rules={[
-                  { required: true, message: "Please select your country" },
-                ]}
-                className="w-full"
+                initialValue="US" // default value
+                rules={[{ required: true }]}
+                className="flex-1"
               >
-                <Select
-                  showSearch
-                  placeholder="Select your country"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option?.label.toLowerCase().includes(input.toLowerCase())
-                  }
-                  options={Country.getAllCountries().map((c) => ({
-                    value: c.isoCode,
-                    label: c.name,
-                  }))}
-                  className="w-full"
-                />
+                <Select disabled>
+                  <Select.Option value="US">United States</Select.Option>
+                </Select>
               </Form.Item>
 
               <Form.Item
-                label="Postal Code"
-                name="postalCode"
+                name="state"
+                label="State"
                 rules={[
-                  {
-                    required: true,
-                    message: "Please enter your ZIP/Postal code",
-                  },
+                  { required: true, message: "Please select your state!" },
                 ]}
-                className="w-full"
+                className="flex-1"
               >
-                <Input placeholder="Enter your ZIP/Postal code" />
+                <Select
+                  showSearch
+                  placeholder={
+                    <div className="flex items-start justify-start">
+                      Select state
+                    </div>
+                  }
+                  onChange={(value) => {
+                    setSelectedState(value);
+                    const cities = City.getCitiesOfState("US", value);
+                    setFilteredCities(cities);
+                  }}
+                  className="flex items-start"
+                >
+                  {states.map((state) => (
+                    <Select.Option key={state.isoCode} value={state.isoCode}>
+                      {state.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </div>
 
             <div className="flex w-full gap-5 items-center justify-between">
               <Form.Item
-                label="City"
                 name="city"
-                rules={[{ required: true, message: "Please select your city" }]}
-                className="w-full"
-              >
-                <Input placeholder="Enter your city" />
-              </Form.Item>
-              <Form.Item
-                label="State"
-                name="state"
+                label="City"
                 rules={[
-                  { required: true, message: "Please select your state" },
+                  { required: false, message: "Please select your city!" },
                 ]}
-                className="w-full"
+                className="flex-1"
               >
-                <Input placeholder="Enter your state" />
+                <Select
+                  showSearch
+                  placeholder={
+                    <div className="flex items-start justify-start">
+                      {selectedState ? "Select city" : "Select state first"}
+                    </div>
+                  }
+                  disabled={!selectedState}
+                >
+                  {filteredCities.map((city) => (
+                    <Select.Option key={city.name} value={`${city.name}`}>
+                      {city.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                label="Zip Code"
+                name="zipCode"
+                rules={[
+                  { required: true, message: "Please enter postal code" },
+                ]}
+                className="flex-1"
+              >
+                <Input placeholder="ZIP code" />
               </Form.Item>
             </div>
 

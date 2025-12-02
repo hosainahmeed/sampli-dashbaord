@@ -1,13 +1,12 @@
-import { Button, Input, Modal, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Form, Input, Modal, Select } from "antd";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import {
   useAddShippingAddressMutation,
   useGetShippingAddressQuery,
   useUpdateShippingAddressMutation,
-  //   useDeleteShippingAddressMutation,
 } from "../../../../../Redux/sampler/shippingAddressApis";
-import { Country } from "country-state-city";
+import { City, State } from "country-state-city";
 
 const ContactAndShipping = () => {
   const { data: shippingAddresses, isLoading } = useGetShippingAddressQuery();
@@ -15,93 +14,77 @@ const ContactAndShipping = () => {
     useUpdateShippingAddressMutation();
   const [addShipping, { isLoading: isAdding }] =
     useAddShippingAddressMutation();
-  //   const [deleteShipping, { isLoading: isDeleting }] =
-  //     useDeleteShippingAddressMutation();
 
+  const states = State.getStatesOfCountry("US");
+
+  const [selectedState, setSelectedState] = useState(null);
+  const [filteredCities, setFilteredCities] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    street1: "",
-    street2: "",
-    company: "",
-    country: "",
-    zip: "",
-    city: "",
-    state: "",
-    phone: "",
-    alternativePhoneNumber: "",
-    email: "",
-  });
 
-  const resetForm = () => {
-    setForm({
-      name: "",
-      street1: "",
-      street2: "",
-      company: "",
-      country: "",
-      zip: "",
-      city: "",
-      state: "",
-      phone: "",
-      alternativePhoneNumber: "",
-      email: "",
-    });
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const [formRef] = Form.useForm();
 
   const handleAddAddress = () => {
-    resetForm();
+    formRef.resetFields();
+    setSelectedState(null);
+    setFilteredCities([]);
     setEditingAddress(null);
     setIsModalVisible(true);
   };
 
   const handleEditAddress = (address) => {
-    setForm(address);
     setEditingAddress(address);
+    setSelectedState(address.state || null);
+    const cities = address.state
+      ? City.getCitiesOfState("US", address.state)
+      : [];
+    setFilteredCities(cities);
+
+    formRef.setFieldsValue({
+      name: address.name,
+      company: address.company,
+      street1: address.street1,
+      street2: address.street2,
+      country: address.country || "US",
+      zip: address.zip,
+      state: address.state,
+      city: address.city,
+      phone: address.phone,
+      alternativePhoneNumber: address.alternativePhoneNumber,
+      email: address.email,
+    });
     setIsModalVisible(true);
   };
 
-  const handleSaveAddress = async () => {
+  const handleSaveAddress = async (values) => {
     try {
       if (editingAddress) {
         await updateShipping({
           id: editingAddress._id,
-          data: form,
+          data: values,
         }).unwrap();
         toast.success("Address updated successfully!");
       } else {
-        await addShipping({ data: form }).unwrap();
+        await addShipping({ data: values }).unwrap();
         toast.success("Address added successfully!");
       }
       setIsModalVisible(false);
-      resetForm();
+      formRef.resetFields();
+      setSelectedState(null);
+      setFilteredCities([]);
     } catch (err) {
+      console.log(err)
       toast.error(
-        editingAddress ? "Failed to update address." : "Failed to add address."
+        editingAddress ? err?.data?.message :err?.data?.message
       );
     }
   };
 
-  const handleDeleteAddress = async (addressId) => {
-    //     if (window.confirm("Are you sure you want to delete this address?")) {
-    //       try {
-    //         await deleteShipping(addressId).unwrap();
-    //         toast.success("Address deleted successfully!");
-    //       } catch (err) {
-    //         toast.error("Failed to delete address.");
-    //       }
-    //     }
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
-    resetForm();
+    formRef.resetFields();
+    setSelectedState(null);
+    setFilteredCities([]);
     setEditingAddress(null);
   };
 
@@ -123,7 +106,7 @@ const ContactAndShipping = () => {
       </div>
 
       <div className="mt-5">
-        {shippingAddresses?.data && shippingAddresses.data.length > 0 ? (
+        {shippingAddresses?.data?.length > 0 ? (
           <div className="space-y-4">
             {shippingAddresses.data.map((address, index) => (
               <div
@@ -142,49 +125,40 @@ const ContactAndShipping = () => {
                     >
                       Edit
                     </Button>
-                    {/* <Button
-                      type="link"
-                      onClick={() => handleDeleteAddress(address._id)}
-                      loading={isDeleting}
-                      className="text-red-600 p-0"
-                    >
-                      Delete
-                    </Button> */}
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-gray-600">Street 1: </span>
-                    <span className="text-gray-800">{address.street1}</span>
+                    <span className="text-gray-600">Street : </span>
+                    {address.street1}
                   </div>
-                  <div>
+                  {/* <div>
                     <span className="text-gray-600">Street 2: </span>
-                    <span className="text-gray-800">{address.street2}</span>
-                  </div>
+                    {address.street2}
+                  </div> */}
                   <div>
                     <span className="text-gray-600">City: </span>
-                    <span className="text-gray-800">{address.city}</span>
+                    {address.city}
                   </div>
                   <div>
                     <span className="text-gray-600">State: </span>
-                    <span className="text-gray-800">{address.state}</span>
+                    {address.state}
                   </div>
                   <div>
                     <span className="text-gray-600">Country: </span>
-                    <span className="text-gray-800">{address.country}</span>
+                    {address.country}
                   </div>
                   <div>
                     <span className="text-gray-600">ZIP Code: </span>
-                    <span className="text-gray-800">{address.zip}</span>
+                    {address.zip}
                   </div>
                   <div>
                     <span className="text-gray-600">Phone: </span>
-                    <span className="text-gray-800">{address.phone}</span>
+                    {address.phone}
                   </div>
                   <div>
                     <span className="text-gray-600">Email: </span>
-                    <span className="text-gray-800">{address.email}</span>
+                    {address.email}
                   </div>
                   {address.alternativePhoneNumber && (
                     <div>
@@ -208,7 +182,6 @@ const ContactAndShipping = () => {
         )}
       </div>
 
-      {/* Add/Edit Address Modal */}
       <Modal
         title={
           editingAddress ? "Edit Shipping Address" : "Add New Shipping Address"
@@ -218,173 +191,147 @@ const ContactAndShipping = () => {
         footer={null}
         width={600}
       >
-        <div className="space-y-4 mt-4">
-          {/* Address */}
-
-          <p className="text-sm text-gray-600 mb-1">Name</p>
-          <Input
+        <Form
+          layout="vertical"
+          form={formRef}
+          onFinish={handleSaveAddress}
+          requiredMark={false}
+        >
+          {/* Name */}
+          <Form.Item
+            label="Name"
             name="name"
-            value={form?.name}
-            onChange={handleChange}
-            type="text"
-            className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-            placeholder="Enter full address"
-          />
-          <p className="text-sm text-gray-600 mb-1 !mt-4">Company</p>
-          <Input
-            name="company"
-            value={form?.company}
-            onChange={handleChange}
-            type="text"
-            className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-            placeholder="Enter full address"
-          />
-          <div className="grid grid-cols-2 gap-4 mt-2">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Street1</p>
-              <Input
-                name="street1"
-                value={form?.street1}
-                onChange={handleChange}
-                type="text"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="Enter full address"
-              />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Street2</p>
-              <Input
-                name="street2"
-                value={form?.street2}
-                onChange={handleChange}
-                type="text"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="Enter full address"
-              />
-            </div>
-          </div>
+            rules={[{ required: true, message: "Please enter your name" }]}
+          >
+            <Input placeholder="Enter your name" />
+          </Form.Item>
 
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Email</p>
-            <Input
-              name="email"
-              value={form?.email}
-              onChange={handleChange}
-              type="text"
-              className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-              placeholder="Enter full address"
-            />
-          </div>
+          {/* Company */}
+          <Form.Item label="Company" name="company">
+            <Input placeholder="Enter your company" />
+          </Form.Item>
 
-          {/* Country & ZIP */}
+          {/* Street */}
+          <Form.Item
+            label="Street"
+            name="street1"
+            rules={[
+              { required: true, message: "Please enter your street address" },
+            ]}
+          >
+            <Input placeholder="Enter street address" />
+          </Form.Item>
+
+          {/* Email */}
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
+
+          {/* Country & State */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Country</p>
+            <Form.Item label="Country" name="country" initialValue="US">
+              <Select disabled>
+                <Select.Option value="US">United States</Select.Option>
+              </Select>
+            </Form.Item>
 
+            <Form.Item
+              label="State"
+              name="state"
+              rules={[{ required: true, message: "Please select your state!" }]}
+            >
               <Select
                 showSearch
-                name="country"
-                value={form?.country}
-                placeholder="Country"
-                optionFilterProp="children"
-                onChange={(value) =>
-                  handleChange({ target: { name: "country", value } })
-                }
-                filterOption={(input, option) =>
-                  option?.label.toLowerCase().includes(input.toLowerCase())
-                }
-                options={Country.getAllCountries().map((c) => ({
-                  value: c.isoCode,
-                  label: c.name,
-                }))}
-                className="!w-full custom-select !h-[40px]"
-              />
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-600 mb-1">ZIP/Postal Code</p>
-              <Input
-                name="zip"
-                value={form?.zip}
-                onChange={handleChange}
-                type="text"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="ZIP code"
-              />
-            </div>
+                placeholder="Select state"
+                onChange={(value) => {
+                  setSelectedState(value);
+                  const cities = City.getCitiesOfState("US", value);
+                  setFilteredCities(cities);
+                  formRef.setFieldsValue({ city: undefined }); // reset city
+                }}
+              >
+                {states.map((state) => (
+                  <Select.Option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
           </div>
 
-          {/* City & State */}
+          {/* City & ZIP */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">City</p>
+            <Form.Item
+              label="City"
+              name="city"
+              rules={[{ required: true, message: "Please select your city!" }]}
+            >
+              <Select
+                showSearch
+                placeholder={
+                  selectedState ? "Select city" : "Select state first"
+                }
+                disabled={!selectedState}
+              >
+                {filteredCities.map((city) => (
+                  <Select.Option key={city.name} value={city.name}>
+                    {city.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
 
-              <Input
-                name="city"
-                value={form?.city}
-                onChange={handleChange}
-                type="tel"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="City"
-              />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">State</p>
-
-              <Input
-                name="state"
-                value={form?.state}
-                onChange={handleChange}
-                type="tel"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="State"
-              />
-            </div>
+            <Form.Item
+              label="ZIP Code"
+              name="zip"
+              rules={[{ required: true, message: "Please enter zip code" }]}
+            >
+              <Input placeholder="ZIP code" />
+            </Form.Item>
           </div>
 
           {/* Phone numbers */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Phone number</p>
-              <Input
-                name="phone"
-                value={form?.phone}
-                onChange={handleChange}
-                type="tel"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="Primary phone"
-              />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">
-                Alternate Phone number
-              </p>
-              <Input
-                name="alternativePhoneNumber"
-                value={form?.alternativePhoneNumber}
-                onChange={handleChange}
-                type="tel"
-                className="w-full p-2 border rounded-md border-gray-200 outline-none h-[40px]"
-                placeholder="Alternative phone (optional)"
-              />
-            </div>
-          </div>
-        </div>
+            <Form.Item
+              label="Phone number"
+              name="phone"
+              rules={[
+                { required: true, message: "Please enter your phone number" },
+              ]}
+            >
+              <Input placeholder="Primary phone" />
+            </Form.Item>
 
-        {/* Modal Footer */}
-        <div className="flex justify-end gap-2 mt-6 pt-4 border-t border-gray-200">
-          <Button onClick={handleCancel} disabled={isAdding || isUpdating}>
-            Cancel
-          </Button>
-          <Button
-            type="primary"
-            onClick={handleSaveAddress}
-            loading={isAdding || isUpdating}
-            className="!text-white"
-          >
-            {editingAddress ? "Update Address" : "Add Address"}
-          </Button>
-        </div>
+            <Form.Item
+              label="Alternate Phone number"
+              name="alternativePhoneNumber"
+            >
+              <Input placeholder="Alternative phone (optional)" />
+            </Form.Item>
+          </div>
+
+          {/* Modal Footer */}
+          <div className="flex justify-end gap-2 mt-6 pt-4 border-t border-gray-200">
+            <Button onClick={handleCancel} disabled={isAdding || isUpdating}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isAdding || isUpdating}
+              className="!text-white"
+            >
+              {editingAddress ? "Update Address" : "Add Address"}
+            </Button>
+          </div>
+        </Form>
       </Modal>
     </div>
   );
