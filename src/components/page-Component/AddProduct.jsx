@@ -266,8 +266,9 @@ function AddProduct() {
               multiple
               listType="picture-card"
               fileList={fileList}
-              beforeUpload={() => false}
+              beforeUpload={()=>false} 
               onChange={handleFileChange}
+              accept=".jpg,.jpeg,.png"
             >
               <div className="flex items-center flex-col">
                 <UploadOutlined />
