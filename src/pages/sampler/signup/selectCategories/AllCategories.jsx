@@ -43,7 +43,7 @@ const AllCategories = ({ next }) => {
         layout="vertical"
         onFinish={handleFormSubmit}
         className="p-6"
-        requiredMark={false}
+        requiredMark={true}
       >
         <div className="flex flex-col justify-between  h-[425px]">
           <div>

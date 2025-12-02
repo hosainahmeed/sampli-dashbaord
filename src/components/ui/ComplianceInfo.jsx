@@ -91,7 +91,7 @@ const ComplianceInfo = () => {
           </h1>
         </div>
         <Form
-          requiredMark={false}
+          requiredMark={true}
           form={form}
           layout="vertical"
           onFinish={handleSubmit}

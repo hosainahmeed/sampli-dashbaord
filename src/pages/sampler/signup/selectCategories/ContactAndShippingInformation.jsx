@@ -44,7 +44,7 @@ const ContactAndShippingInformation = ({ prev, next }) => {
         layout="vertical"
         className="p-6"
         onFinish={handleFormSubmit}
-        requiredMark={false}
+        requiredMark={true}
       >
         <div className="!flex !flex-col !justify-between h-auto">
           <div>

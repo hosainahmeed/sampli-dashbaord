@@ -351,7 +351,7 @@ const EarningsSampler = () => {
         centered
       >
         <Form
-          requiredMark={false}
+          requiredMark={true}
           layout="vertical"
           onFinish={handleOkWithdraw}
         >

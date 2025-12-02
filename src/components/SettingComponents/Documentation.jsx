@@ -91,7 +91,7 @@ const Documentation = ({ data }) => {
 
   return (
     <Card className="h-fit">
-      <Form form={form} requiredMark={false} layout="vertical" onFinish={handleSubmit}>
+      <Form form={form} requiredMark={true} layout="vertical" onFinish={handleSubmit}>
         <Form.Item label="Certificate of Incorporation">
           {certificateFileList.length > 0 ? (
             <div className="border border-gray-300 rounded-lg p-3 bg-gray-100">

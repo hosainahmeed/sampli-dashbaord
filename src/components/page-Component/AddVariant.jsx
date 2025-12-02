@@ -113,7 +113,7 @@ function AddVariant() {
 
                 <Card bordered className="rounded-2xl p-4">
                     <Form
-                        requiredMark={false}
+                        requiredMark={true}
                         form={form}
                         onFinish={onFinish}
                         layout="vertical"

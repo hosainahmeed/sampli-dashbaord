@@ -131,7 +131,7 @@ function TargetAudienceLocation() {
     setSelectedStates(stateIds);
     const stateNames = states
       .filter(state => stateIds.includes(state.id))
-      .map(state => state.name);
+      .map(state => state?.state_code);
 
     dispatch(setCampaignData({
       state: stateNames,
@@ -188,7 +188,7 @@ function TargetAudienceLocation() {
             </Text>
           </div>
           <div>
-            <Text strong>States</Text>
+            <Text strong><span className='text-red-500'>*</span>States</Text>
             <Select
               mode="multiple"
               style={{ width: '100%', marginTop: 8 }}

@@ -69,7 +69,7 @@ function EditCampaign() {
       <Form
         layout="vertical"
         form={form} r
-        requiredMark={false}
+        requiredMark={true}
         onFinish={onFinish}
         className="space-y-4"
       >

@@ -50,7 +50,7 @@ const CompanyInfoForm = () => {
                 form={form}
                 layout="vertical"
                 onFinish={handleSubmit}
-                requiredMark={false}
+                requiredMark={true}
 
             >
                 <Row gutter={16}>

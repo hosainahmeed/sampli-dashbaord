@@ -75,7 +75,9 @@ const ProductSelection = () => {
       {productLoading || isFetching ? <Skeleton /> : <div className="space-y-3 flex flex-col gap-3">
         {productData?.data?.result?.length > 0 ? (
           productData?.data?.result?.map((product) => (
-            <Card key={product?._id} className="p-4">
+            <Card
+              onClick={() => handleSelect(product)}
+              key={product?._id} className={`p-4 ${campaignData?.product === product._id ? "!border-[#1677FF]" : ""}`}>
               <div className="flex w-full justify-between items-center">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 rounded-xl overflow-hidden">
