@@ -1,41 +1,41 @@
-import { Checkbox } from 'antd'
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
-import { useAddCurrentlyShareReviewerMutation } from '../../../../Redux/sampler/authSectionApis'
+import { Checkbox } from "antd";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useAddCurrentlyShareReviewerMutation } from "../../../../Redux/sampler/authSectionApis";
 
 const ReviewPlatforms = ({ prev, next }) => {
-  const [selectedReviews, setSelectedReviews] = useState([])
+  const [selectedReviews, setSelectedReviews] = useState([]);
   const [addCurrentlyShare, { isLoading }] =
-    useAddCurrentlyShareReviewerMutation()
+    useAddCurrentlyShareReviewerMutation();
 
   const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target
+    const { value, checked } = e.target;
     setSelectedReviews((prev) =>
       checked ? [...prev, value] : prev.filter((item) => item !== value)
-    )
-  }
+    );
+  };
 
   const handleSubmit = async () => {
     if (selectedReviews.length === 0) {
-      toast.error('Please select at least one platform before proceeding.')
-      return
+      toast.error("Please select at least one platform before proceeding.");
+      return;
     }
     try {
       const res = await addCurrentlyShare({
         currentlyShareReview: selectedReviews,
-      }).unwrap()
+      }).unwrap();
       if (res.success) {
-        toast.success(res.message)
-        next()
+        toast.success(res.message);
+        next();
       } else {
-        toast.error(res.message)
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error(
-        error?.data?.message || 'Something went wrong. Please try again.'
-      )
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   return (
     <div className="">
@@ -44,14 +44,15 @@ const ReviewPlatforms = ({ prev, next }) => {
       </p>
       <div className="flex flex-col justify-between h-[425px]">
         <div className="grid grid-cols-2 gap-4">
-          {['Youtube', 'TikTok', 'Instagram', 'Blog', 'WhatsApp'].map(
+          {["Youtube", "TikTok", "Instagram", "Blog", "WhatsApp"].map(
             (platform) => (
               <div
                 key={platform}
                 className="p-5 border border-gray-500 cursor-pointer"
               >
-                <Checkbox value={platform} onChange={handleCheckboxChange} />
-                <span className="ml-2">{platform}</span>
+                <Checkbox value={platform} onChange={handleCheckboxChange}>
+                  {platform}
+                </Checkbox>
               </div>
             )
           )}
@@ -68,12 +69,12 @@ const ReviewPlatforms = ({ prev, next }) => {
             onClick={handleSubmit}
             className="cursor-pointer hover:!text-blue-500"
           >
-            {isLoading ? 'Loading...' : ' Next'}
+            {isLoading ? "Loading..." : " Next"}
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ReviewPlatforms
+export default ReviewPlatforms;

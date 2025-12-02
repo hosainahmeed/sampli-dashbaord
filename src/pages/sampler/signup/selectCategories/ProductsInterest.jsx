@@ -1,43 +1,43 @@
-import { Checkbox } from 'antd'
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
-import { useCategorySectionApisQuery } from '../../../../Redux/sampler/categoryApis'
-import Loader from '../../../loader/Loader'
-import { useAddInterestedCategoryReviewerMutation } from '../../../../Redux/sampler/authSectionApis'
+import { Checkbox } from "antd";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useCategorySectionApisQuery } from "../../../../Redux/sampler/categoryApis";
+import Loader from "../../../loader/Loader";
+import { useAddInterestedCategoryReviewerMutation } from "../../../../Redux/sampler/authSectionApis";
 
 const ProductsInterest = ({ prev, next }) => {
-  const [selectedInterests, setSelectedInterests] = useState([])
-  const { data: getAllCategory, isLoading } = useCategorySectionApisQuery()
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const { data: getAllCategory, isLoading } = useCategorySectionApisQuery();
   const [addInterestedCategory, { isLoading: interestedLoading }] =
-    useAddInterestedCategoryReviewerMutation()
-  console.log(getAllCategory?.data)
+    useAddInterestedCategoryReviewerMutation();
+  console.log(getAllCategory?.data);
   const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target
+    const { value, checked } = e.target;
     setSelectedInterests((prev) =>
       checked ? [...prev, value] : prev.filter((item) => item !== value)
-    )
-  }
+    );
+  };
   const handleSubmit = async () => {
     if (selectedInterests.length === 0) {
-      toast.error('Please select at least one interest before proceeding.')
-      return
+      toast.error("Please select at least one interest before proceeding.");
+      return;
     }
     try {
       const res = await addInterestedCategory({
         interestedCategory: selectedInterests,
-      }).unwrap()
+      }).unwrap();
       if (res.success) {
-        toast.success(res.message)
-        next()
+        toast.success(res.message);
+        next();
       } else {
-        toast.error(res.message)
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error(
-        error?.data?.message || 'Something went wrong. Please try again.'
-      )
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
-  }
+  };
 
   return (
     <div>
@@ -49,11 +49,12 @@ const ProductsInterest = ({ prev, next }) => {
         <div className="grid grid-cols-2 gap-4 -mt-20">
           {getAllCategory?.data?.map((item) => (
             <div
-              key={item}
+              key={item?._id}
               className="p-5 border border-gray-500 cursor-pointer"
             >
-              <Checkbox value={item?._id} onChange={handleCheckboxChange} />
-              <span className="ml-2">{item?.name}</span>
+              <Checkbox value={item?._id} onChange={handleCheckboxChange}>
+                {item?.name}
+              </Checkbox>
             </div>
           ))}
         </div>
@@ -68,12 +69,12 @@ const ProductsInterest = ({ prev, next }) => {
             onClick={handleSubmit}
             className=" flex justify-end cursor-pointer hover:!text-blue-500"
           >
-            {interestedLoading ? 'Loading...' : ' Next'}
+            {interestedLoading ? "Loading..." : " Next"}
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductsInterest
+export default ProductsInterest;
