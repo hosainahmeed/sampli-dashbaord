@@ -56,7 +56,7 @@ const JoditComponent = ({ content, setContent, title }) => {
       <JoditEditor
         ref={editor}
         value={content || ''}
-        onChange={(newContent) => setContent(newContent)}
+        onBlur={(newContent) => setContent(newContent)}
         config={config}
         tabIndex={1}
       />
@@ -70,8 +70,8 @@ const JoditComponent = ({ content, setContent, title }) => {
 
   return (
     <>
-    <h1>{title}</h1>
-    <div className="border border-gray-200 rounded-lg overflow-hidden">{memoizedEditor}</div>
+      <h1>{title}</h1>
+      <div className="border border-gray-200 rounded-lg overflow-hidden">{memoizedEditor}</div>
     </>
   );
 };

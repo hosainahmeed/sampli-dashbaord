@@ -8,10 +8,11 @@ const ReviewPlatforms = ({ prev, next }) => {
   const [addCurrentlyShare, { isLoading }] =
     useAddCurrentlyShareReviewerMutation();
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
+  const toggleSelect = (value) => {
     setSelectedReviews((prev) =>
-      checked ? [...prev, value] : prev.filter((item) => item !== value)
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
     );
   };
 
@@ -24,6 +25,7 @@ const ReviewPlatforms = ({ prev, next }) => {
       const res = await addCurrentlyShare({
         currentlyShareReview: selectedReviews,
       }).unwrap();
+
       if (res.success) {
         toast.success(res.message);
         next();
@@ -37,26 +39,39 @@ const ReviewPlatforms = ({ prev, next }) => {
     }
   };
 
+  const platforms = ["Youtube", "TikTok", "Instagram", "Blog", "WhatsApp"];
+
   return (
-    <div className="">
+    <div>
       <p className="pb-4 text-2xl text-center font-semibold">
         Where do you currently share reviews?
       </p>
+
       <div className="flex flex-col justify-between h-[425px]">
         <div className="grid grid-cols-2 gap-4">
-          {["Youtube", "TikTok", "Instagram", "Blog", "WhatsApp"].map(
-            (platform) => (
-              <div
-                key={platform}
-                className="p-5 border border-gray-500 cursor-pointer"
+          {platforms.map((platform) => (
+            <div
+              key={platform}
+              onClick={() => toggleSelect(platform)}
+              className={`p-5 border rounded cursor-pointer
+                ${selectedReviews.includes(platform)
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-500"
+                }
+              `}
+            >
+              <Checkbox
+                value={platform}
+                checked={selectedReviews.includes(platform)}
+                onChange={() => toggleSelect(platform)}
+                onClick={(e) => e.stopPropagation()}
               >
-                <Checkbox value={platform} onChange={handleCheckboxChange}>
-                  {platform}
-                </Checkbox>
-              </div>
-            )
-          )}
+                {platform}
+              </Checkbox>
+            </div>
+          ))}
         </div>
+
         <div className="flex justify-between">
           <button
             onClick={prev}

@@ -7,16 +7,19 @@ import { useAddInterestedCategoryReviewerMutation } from "../../../../Redux/samp
 
 const ProductsInterest = ({ prev, next }) => {
   const [selectedInterests, setSelectedInterests] = useState([]);
+  console.log(selectedInterests)
   const { data: getAllCategory, isLoading } = useCategorySectionApisQuery();
   const [addInterestedCategory, { isLoading: interestedLoading }] =
     useAddInterestedCategoryReviewerMutation();
-  console.log(getAllCategory?.data);
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
+  
+  const toggleSelect = (id) => {
     setSelectedInterests((prev) =>
-      checked ? [...prev, value] : prev.filter((item) => item !== value)
+      prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id]
     );
   };
+
   const handleSubmit = async () => {
     if (selectedInterests.length === 0) {
       toast.error("Please select at least one interest before proceeding.");
@@ -50,12 +53,22 @@ const ProductsInterest = ({ prev, next }) => {
           {getAllCategory?.data?.map((item) => (
             <div
               key={item?._id}
-              className="p-5 border border-gray-500 cursor-pointer"
+              onClick={() => toggleSelect(item?._id)}
+              className={`p-5 border ${selectedInterests.includes(item?._id)
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-500"
+                } cursor-pointer`}
             >
-              <Checkbox value={item?._id} onChange={handleCheckboxChange}>
+              <Checkbox
+                value={item?._id}
+                checked={selectedInterests.includes(item?._id)}
+                onChange={(e) => toggleSelect(item?._id)}
+                onClick={(e) => e.stopPropagation()} // prevent double trigger
+              >
                 {item?.name}
               </Checkbox>
             </div>
+
           ))}
         </div>
         <div className="flex justify-between">

@@ -44,24 +44,26 @@ const SignUpMoreInformation = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 gradient-container">
       <div className="gradient-ellipse"></div>
-      <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
-        <Title level={3} className="text-blue-500">
-          <Logo />
-        </Title>
-        <div
-          className="flex items-center text-gray-500 gap-2 my-2 cursor-pointer text-xl  hover:text-blue-500"
-          onClick={() => Navigate(-1)}
-        >
-          <IoMdArrowRoundBack />
-          <div>back</div>
-        </div>
-        <div className="flex mb-6 flex-col items-start">
-          <Title level={2}>Please provide your information</Title>
-          <h1 className="text-[var(--body-text)] ">
-            You are new here, let’s know a bit about you.
-          </h1>
-        </div>
+      <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg">
+        <div className="text-center">
+          <Title level={3} className="text-blue-500">
+            <Logo />
+          </Title>
+          <div
+            className="flex items-center text-gray-500 gap-2 my-2 cursor-pointer text-xl  hover:text-blue-500"
+            onClick={() => Navigate(-1)}
+          >
+            <IoMdArrowRoundBack />
+            <div>back</div>
+          </div>
+          <div className="flex mb-6 flex-col items-start">
+            <Title level={2}>Please provide your information</Title>
+            <h1 className="text-[var(--body-text)] ">
+              You are new here, let’s know a bit about you.
+            </h1>
+          </div>
 
+        </div>
         <FormWrapper onFinish={onFinish}>
           {/* Select State */}
           <Form.Item
@@ -70,6 +72,7 @@ const SignUpMoreInformation = () => {
             rules={[{ required: true, message: "Please select your state!" }]}
           >
             <Select
+              size="large"
               showSearch
               placeholder={
                 <div className="flex items-start justify-start">
@@ -98,6 +101,7 @@ const SignUpMoreInformation = () => {
             rules={[{ required: false, message: "Please select your city!" }]}
           >
             <Select
+              size="large"
               showSearch
               placeholder={
                 <div className="flex items-start justify-start">
@@ -143,7 +147,7 @@ const SignUpMoreInformation = () => {
               textAlign: "start",
             }}
           >
-            <Select size="middle" placeholder="Select your gender">
+            <Select size="large" placeholder="Select your gender">
               <Select.Option value="Male">Male</Select.Option>
               <Select.Option value="Female">Female</Select.Option>
               <Select.Option value="Other">Other</Select.Option>
@@ -166,7 +170,7 @@ const SignUpMoreInformation = () => {
               textAlign: "start",
             }}
           >
-            <Select size="middle" showSearch placeholder="Select your age">
+            <Select size="large" showSearch placeholder="Select your age">
               {Array.from({ length: 133 }).map((_, i) => (
                 <Select.Option key={i + 18} value={i + 18}>
                   {i + 18}
@@ -181,12 +185,13 @@ const SignUpMoreInformation = () => {
             htmlType="submit"
             className="w-full"
             style={{ marginTop: 10 }}
+            size="large"
           >
             Continue
           </Button>
         </FormWrapper>
 
-        <div className="mt-4 text-gray-500 text-[14px]">
+        <div className="mt-4 text-gray-500 text-center text-[14px]">
           Already have an account?{" "}
           <Link
             to="/login"
