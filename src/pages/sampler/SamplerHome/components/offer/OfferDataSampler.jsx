@@ -29,18 +29,13 @@ import Loader from "../../../../loader/Loader";
 const OfferDataSampler = () => {
   const Navigate = useNavigate();
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
 
   const { data: getAllOffers, isLoading: offerLoading } =
     useGetCampaignListQuery({
-      page,
-      limit,
+      limit: 4,
     });
-
+  console.log(getAllOffers);
   const productData = getAllOffers?.data?.result;
-
-
 
   return (
     <div className="">
@@ -55,7 +50,7 @@ const OfferDataSampler = () => {
       </div>
       <div>{offerLoading ? <Loader message="Loading Offers..." /> : null}</div>
       {!offerLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {productData && productData?.length > 0 ? (
             productData?.map((product) => (
               <OfferCardSampler key={product._id} product={product} />

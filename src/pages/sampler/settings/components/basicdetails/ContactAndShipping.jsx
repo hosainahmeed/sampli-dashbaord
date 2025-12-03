@@ -298,7 +298,7 @@ const ContactAndShipping = () => {
           </div>
 
           {/* Phone numbers */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className=" gap-4">
             <Form.Item
               label="Phone number"
               name="phone"
@@ -309,12 +309,12 @@ const ContactAndShipping = () => {
               <Input placeholder="Primary phone" />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               label="Alternate Phone number"
               name="alternativePhoneNumber"
             >
-              <Input placeholder="Alternative phone (optional)" />
-            </Form.Item>
+              <Input placeholder="Alternative phone (optional)" />sss
+            </Form.Item> */}
           </div>
 
           {/* Modal Footer */}
