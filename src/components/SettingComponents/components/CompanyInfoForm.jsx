@@ -44,7 +44,7 @@ const CompanyInfoForm = () => {
     };
 
     return (
-        <div className="mx-auto p-6 bg-white rounded-2xl shadow">
+        <div className="mx-auto bg-white rounded-2xl">
             <h2 className="text-2xl font-semibold mb-6">Company Information</h2>
             <Form
                 form={form}
@@ -56,25 +56,20 @@ const CompanyInfoForm = () => {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item name="name" label="Store Name" rules={[{ required: true }]}>
-                            <Input placeholder="Enter store name" />
+                            <Input size="large" placeholder="Enter store name" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item name="company" label="Company" rules={[{ required: true }]}>
-                            <Input placeholder="Enter company name" />
+                            <Input size="large" placeholder="Enter company name" />
                         </Form.Item>
                     </Col>
                 </Row>
 
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item name="street1" label="Street 1" rules={[{ required: true }]}>
-                            <Input placeholder="Enter street address" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item name="street2" label="Street 2">
-                            <Input placeholder="Enter suite/apt/etc." />
+                <Row gutter={24}>
+                    <Col span={24}>
+                        <Form.Item name="street1" label="Street" rules={[{ required: true }]}>
+                            <Input size="large" placeholder="Enter street address" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -153,32 +148,24 @@ const CompanyInfoForm = () => {
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item name="zip" label="ZIP" rules={[{ required: true }]}>
-                            <Input placeholder="Enter ZIP" />
+                            <Input size="large" placeholder="Enter ZIP" />
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
+                <Row gutter={24}>
+                    <Col span={24}>
                         <Form.Item name="phone" label="Phone" rules={[{ required: true }]}>
-                            <Input placeholder="Enter phone number" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name="alternativePhoneNumber"
-                            label="Alternative Phone"
-                        >
-                            <Input placeholder="Enter alternative phone number" />
+                            <Input size="large" placeholder="Enter phone number" />
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}>
-                    <Input placeholder="Enter email address" />
+                    <Input size="large" placeholder="Enter email address" />
                 </Form.Item>
 
                 <Form.Item name="tagline" label="Tagline">
-                    <Input placeholder="Enter your tagline" />
+                    <Input size="large" placeholder="Enter your tagline" />
                 </Form.Item>
 
                 <Form.Item name="description" label="Description">
