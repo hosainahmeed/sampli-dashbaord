@@ -315,7 +315,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
               <div className="text-sm text-gray-500">
                 <strong className="text-black">Reward</strong>
                 <div className="mt-1">
-                  ${geSingleCampaignOffer?.data?.campaign?.amountForEachReview}
+                  ${geSingleCampaignOffer?.data?.amount}
                 </div>
               </div>
             </div>
@@ -435,7 +435,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             )}
           </div>
 
-          <h4 className="font-semibold text-xl !mb-5 !mt-12">Shipping Information</h4>
+          <h4 className="font-semibold text-xl !mb-5 !mt-12">
+            Shipping Information
+          </h4>
           {/* <div className="grid grid-cols-3 gap-8">
             <div className="flex items-start gap-2">
               <img src={phone} alt="contact" className="w-[20px]" />
@@ -509,6 +511,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
         <ReviewsVideo
           showModal={showModal}
           product={geSingleCampaignOffer?.data?.product?._id}
+          status={geSingleCampaignOffer?.data?.status}
         />
       ),
     },

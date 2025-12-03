@@ -3,13 +3,14 @@ import { FiMessageCircle, FiMoreHorizontal, FiShare2 } from "react-icons/fi";
 import { CiHeart } from "react-icons/ci";
 import { useGetAllReviewQuery } from "../../../../../../Redux/sampler/reviewApis";
 
-const ReviewsVideo = ({ showModal, product }) => {
+const ReviewsVideo = ({ showModal, product, status }) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
   const { data: reviewList } = useGetAllReviewQuery({
     product,
   });
   const reviewListProduct = reviewList?.data?.data?.result;
 
+  console.log(reviewList);
   console.log(reviewListProduct);
   return (
     <>
@@ -17,8 +18,15 @@ const ReviewsVideo = ({ showModal, product }) => {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Uploaded reviews</h2>
           <button
-            className="bg-blue-500 !text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer"
+            className={`bg-blue-500 !text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium ${
+              status !== "Processing" ? "cursor-not-allowed" : "cursor-pointer "
+            }`}
             onClick={showModal}
+            disabled={status !== "Processing"}
+            // className={
+            //   reviewList?.data?.status !== "Processing" &&
+            //   "!bg-blue-500 !text-white"
+            // }
           >
             Upload New review
           </button>
