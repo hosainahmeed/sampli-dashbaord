@@ -87,10 +87,13 @@ const AllOfferSampler = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [status, setStatus] = useState("Processing");
-  const { data: getCampaignOffer, isLoading: campaignOfferLoading } =
-    useGetMyCampaignOfferQuery({
-      status: status,
-    });
+  const {
+    data: getCampaignOffer,
+    isLoading: campaignOfferLoading,
+    isFetching,
+  } = useGetMyCampaignOfferQuery({
+    status: status,
+  });
   const { data: getCampaignOfferListData, isLoading: offerLoading } =
     useGetCampaignListQuery({
       page,
@@ -223,7 +226,7 @@ const AllOfferSampler = () => {
       ),
       children: (
         <div>
-          {campaignOfferLoading ? (
+          {campaignOfferLoading || isFetching ? (
             <div className="h-screen w-full flex items-center justify-center">
               <Loader />
             </div>

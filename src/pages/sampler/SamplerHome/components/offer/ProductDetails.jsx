@@ -15,6 +15,8 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
     id: productId,
   });
 
+  console.log(getOneCampaign);
+
   const [postCampaign, { isLoading: campaignLoading }] =
     useAcceptCampaignOfferMutation();
   const [selectAddressId, setSelectedAddressId] = useState("");
@@ -59,7 +61,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           amount: getOneCampaign?.data?.product?.price,
         };
         const res = await postCampaign(data);
-        console.log(res)
+        console.log(res);
         // toast.success(res?.data?.data?.message);
       } catch (error) {
         console.log(error);
@@ -154,7 +156,9 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
                   Area 59, Delaware, USA
                 </Descriptions.Item> */}
                 <Descriptions.Item label="Rewards">
-                  ${getOneCampaign?.data?.amountForEachReview}
+                  $
+                  {getOneCampaign?.data?.totalBugget /
+                    getOneCampaign?.data?.numberOfReviewers}
                 </Descriptions.Item>
                 <Descriptions.Item label="Quantity">
                   {getOneCampaign?.data?.numberOfReviewers}
@@ -209,13 +213,13 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                       <div>
-                        <span className="text-gray-600">Street 1: </span>
+                        <span className="text-gray-600">Street: </span>
                         <span className="text-gray-800">{address.street1}</span>
                       </div>
-                      <div>
+                      {/* <div>
                         <span className="text-gray-600">Street 2: </span>
                         <span className="text-gray-800">{address.street2}</span>
-                      </div>
+                      </div> */}
                       <div>
                         <span className="text-gray-600">City: </span>
                         <span className="text-gray-800">{address.city}</span>
@@ -281,7 +285,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
             loading={campaignLoading}
             disabled={page === 2 && selectAddressId === ""}
           >
-            {page === 1 ?  "Next" : "Accept Offer"}
+            {page === 1 ? "Next" : "Accept Offer"}
           </Button>
         </div>
       </div>

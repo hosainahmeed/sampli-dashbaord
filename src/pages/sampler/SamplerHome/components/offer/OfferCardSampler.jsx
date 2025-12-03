@@ -15,12 +15,14 @@ const OfferCardSampler = ({ product, processing }) => {
   return (
     <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow flex flex-col justify-between">
       {/* Product Image */}
-      <div className=" flex justify-center w-full">
-        <img
-          src={product?.product?.images?.[0]}
-          alt={product?.product?.name}
-          className="w-full h-full  object-contain object-center"
-        />
+      <div className=" flex justify-center  h-[400px] w-full overflow-hidden">
+        <div>
+          <img
+            src={product?.product?.images?.[0]}
+            alt={product?.product?.name}
+            className="w-full h-full  object-cover object-center"
+          />
+        </div>
       </div>
 
       {/* Product Details */}
@@ -30,7 +32,9 @@ const OfferCardSampler = ({ product, processing }) => {
         </h3>
         <div
           className="text-gray-500 text-xs"
-          dangerouslySetInnerHTML={{ __html: product?.product?.description }}
+          dangerouslySetInnerHTML={{
+            __html: product?.product?.shortDescription,
+          }}
         />
 
         {/* Rewards & Due */}
@@ -39,9 +43,14 @@ const OfferCardSampler = ({ product, processing }) => {
             <span className="text-gray-500 ">Rewards:</span>{" "}
             <span className="text-black">
               $
-              {product?.amountForEachReview
+              {product?.amount
+                ? product?.amount
+                : product?.totalBugget / product?.numberOfReviewers}
+              {/* ? product?.amountForEachReview
+                : product?.campaign?.amountForEachReview} */}
+              {/* {product?.amountForEachReview
                 ? product?.amountForEachReview
-                : product?.campaign?.amountForEachReview}
+                : product?.campaign?.amountForEachReview} */}
             </span>
           </span>
 
