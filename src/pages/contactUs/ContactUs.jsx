@@ -51,7 +51,7 @@ const ContactUs = () => {
 
         {/* Contact Form Section */}
         <div className="w-full md:w-1/2 mt-6 md:mt-0 border border-gray-200 p-6 rounded-lg">
-          <Form layout="vertical" onFinish={submitForm} requiredMark={false}>
+          <Form layout="vertical" onFinish={submitForm} requiredMark={true}>
             <Form.Item
               label="Full Name"
               name="name"

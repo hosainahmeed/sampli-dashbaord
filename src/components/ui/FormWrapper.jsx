@@ -3,7 +3,7 @@ import { Form } from "antd";
 
 const FormWrapper = ({ children, onFinish, layout = "vertical", form, ...props }) => {
   return (
-    <Form form={form} requiredMark={false} layout={layout} onFinish={onFinish} {...props}>
+    <Form form={form} requiredMark={true} layout={layout} onFinish={onFinish} {...props}>
       {children}
     </Form>
   );

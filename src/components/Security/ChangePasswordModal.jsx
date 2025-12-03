@@ -26,7 +26,7 @@ const ChangePasswordModal = ({ open, onCancel, onSubmit, loading }) => {
       <Form
         form={form}
         layout="vertical"
-        requiredMark={false}
+        requiredMark={true}
         onFinish={handleFinish}
       >
         <Form.Item

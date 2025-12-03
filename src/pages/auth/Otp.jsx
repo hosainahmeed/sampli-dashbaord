@@ -66,7 +66,7 @@ const OTPVerification = () => {
         <Form onFinish={handleContinue}>
           <Form.Item className="!w-full !flex !justify-center" name={"verifyCode"} rules={[{ required: true }]}>
             <Input.OTP
-              className="!w-full !h-[50px] !mt-[10px]"
+              className="!w-[70px] !h-[50px] !mt-[10px]"
               variant="outlined"
               length={5}
               size="middle"

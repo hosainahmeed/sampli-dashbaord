@@ -27,7 +27,7 @@ function PrimaryContactInformation({ data }) {
     <div>
       <Card className="w-full flex-1">
         <Form
-          requiredMark={false}
+          requiredMark={true}
           layout="vertical"
           onFinish={onFinishForm}
           form={form}

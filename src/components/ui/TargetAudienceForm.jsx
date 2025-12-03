@@ -28,6 +28,7 @@ const initialFormState = {
 const TargetAudienceForm = () => {
   const dispatch = useDispatch();
   const campaignData = useSelector((state) => state.campaign);
+  const [currentDate, setCurrentDate] = useState(null)
 
   const [formData, setFormData] = useState(initialFormState);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -103,6 +104,12 @@ const TargetAudienceForm = () => {
     autoSaveToRedux(updated);
   };
 
+
+  const disabledDate = (current) => {
+    if (!currentDate) return false;
+    const minEndDate = dayjs(currentDate).add(3, "week");
+    return current && current <= minEndDate;
+  };
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold text-center">
@@ -112,7 +119,7 @@ const TargetAudienceForm = () => {
         Define who should review your product and when
       </p>
 
-      <Form requiredMark={false} layout="vertical">
+      <Form requiredMark={true} layout="vertical">
         <Form.Item label="Campaign Name" required>
           <Input
             size="large"
@@ -182,7 +189,10 @@ const TargetAudienceForm = () => {
               size="large"
               className="w-full"
               value={formData.startDate}
-              onChange={(date) => handleChange('startDate', date)}
+              onChange={(date) => {
+                setCurrentDate(date)
+                handleChange('startDate', date)
+              }}
             />
           </Form.Item>
 
@@ -191,6 +201,7 @@ const TargetAudienceForm = () => {
               size="large"
               className="w-full"
               value={formData.endDate}
+              disabledDate={disabledDate}
               onChange={(date) => handleChange('endDate', date)}
             />
           </Form.Item>
@@ -211,19 +222,20 @@ const TargetAudienceForm = () => {
           </Select>
         </Form.Item>
         <Form>
-          <Form.Item>
-            <Form.Item label="Show Campaign to all" valuePropName="checked">
-              <Checkbox
-                size="large"
-                checked={formData.isShowEverywhere === true}
-                onChange={(e) => {
-                  handleImmediateChange('isShowEverywhere', e.target.checked)
-                  dispatch(setCampaignData({ isShowEverywhere: e.target.checked }))
-                }}
-              />
-            </Form.Item>
+          <Form.Item
+            label="Show Campaign to all"
+            valuePropName="checked"
+          >
+            <Checkbox
+              onChange={(e) => {
+                const value = e.target.checked;
+                handleImmediateChange("isShowEverywhere", value);
+                dispatch(setCampaignData({ isShowEverywhere: value }));
+              }}
+            />
           </Form.Item>
         </Form>
+
       </Form>
     </div>
   );

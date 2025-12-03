@@ -94,7 +94,7 @@ const BusinessSendOtp = () => {
 
                 <Form onFinish={handleContinue}>
                     <Form.Item className="flex items-center justify-center flex-col" name={"verifyCode"} rules={[{ required: true }]}>
-                        <Input.OTP style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
+                        <Input.OTP className="!w-[70px] !h-[50px] !mt-[10px]" style={{ width: "100%", height: "50px", marginTop: "10px" }} variant="outlined" length={5} size="middle" />
                     </Form.Item>
                     <Form.Item>
                         <Button
@@ -108,16 +108,12 @@ const BusinessSendOtp = () => {
                     </Form.Item>
                 </Form>
                 <div className="mt-3">
-                    {timeLeft > 10 ? (
-                        <Text>00:{timeLeft < 10 ? `0${timeLeft}` : timeLeft}</Text>
-                    ) : (
-                        <h1
-                            className="text-blue-500 cursor-pointer text-[14px] hover:text-blue-800"
-                            onClick={handleResend}
-                        >
-                            {resendLoading ? 'Loading...' : '  Resend One Time Password'}
-                        </h1>
-                    )}
+                    <h1
+                        className="text-blue-500 cursor-pointer text-[14px] hover:text-blue-800"
+                        onClick={handleResend}
+                    >
+                        {resendLoading ? 'Loading...' : '  Resend One Time Password'}
+                    </h1>
                 </div>
 
                 <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5 ">

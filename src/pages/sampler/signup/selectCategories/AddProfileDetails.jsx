@@ -174,7 +174,7 @@ const AddProfileDetails = ({ prev, next }) => {
       layout="vertical"
       className="p-6"
       onFinish={handleFormSubmit}
-      requiredMark={false}
+      requiredMark={true}
     >
       <div className="flex flex-col justify-between h-[500px]">
         <div>

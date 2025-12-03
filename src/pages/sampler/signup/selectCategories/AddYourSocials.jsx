@@ -42,7 +42,7 @@ const AddYourSocials = ({ prev }) => {
       layout="vertical"
       onFinish={handleFormSubmit}
       className="p-6"
-      requiredMark={false}
+      requiredMark={true}
     >
       <div className="flex justify-between flex-col h-[500px] ">
         <div>

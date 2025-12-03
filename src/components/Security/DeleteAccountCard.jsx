@@ -62,7 +62,7 @@ function DeleteAccountCard() {
           are disassociated (not deleted) from your account unless you delete
           them beforehand.
         </h3>
-        <Form className="!mt-5" requiredMark={false} layout="vertical">
+        <Form className="!mt-5" requiredMark={true} layout="vertical">
           <Form.Item
             label={<h1 className="text-[#6D7486]">Reason for leaving</h1>}
             name="reason"

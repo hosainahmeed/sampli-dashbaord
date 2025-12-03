@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, message, Modal } from 'antd';
+import { Button, Card,  Modal } from 'antd';
 import TargetAudienceLocation from '../../../components/ui/TargetAudienceLocation';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductSelection from '../Product/ProductSelection';
@@ -10,6 +10,7 @@ import { useCreateCampaignMutation } from '../../../Redux/businessApis/campaign/
 import toast from 'react-hot-toast';
 import { reset } from '../../../Redux/slices/CampaingSlice';
 import { FaInfoCircle } from 'react-icons/fa';
+import {useLocation } from 'react-router-dom';
 
 const steps = [
   {
@@ -30,10 +31,29 @@ const ExistingProduct = () => {
   const [current, setCurrent] = useState(0);
   const [createCampaign, { isLoading }] = useCreateCampaignMutation();
   const dispatch = useDispatch();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const userReloadAccess = query.get("user_reload_access");
+
   useEffect(() => {
+    // const page_reload = localStorage.getItem("page_reload")
+    // if (page_reload) {
+    //   localStorage.removeItem("page_reload")
+    //   dispatch(reset())
+    //   return
+    // }
     const handleBeforeUnload = (e) => {
       const data = Object.values(campaignData);
-      if (data.some((value) => value !== null || value !== '' || value !== undefined || value !== 0)) {
+
+      const hasUnsavedChanges = data.some(
+        (value) =>
+          value !== null &&
+          value !== "" &&
+          value !== undefined &&
+          value !== 0
+      );
+
+      if (hasUnsavedChanges) {
         e.preventDefault();
         e.returnValue = "";
       }
@@ -44,23 +64,40 @@ const ExistingProduct = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, []);
+  }, [userReloadAccess, campaignData, current]);
+
+
 
   const next = async () => {
     if (!campaignData?.product && current === 0 || campaignData?.product === null || campaignData?.product === '') {
-      message.error('Please select a product before proceeding');
+      toast.error('Please select a product before proceeding');
       return;
     }
 
     if (current === 1 && campaignData?.product) {
-      const { minAge, maxAge, startDate, endDate, name, gender, isShowEverywhere } = campaignData;
+      const { minAge, maxAge, startDate, endDate, name, gender, isShowEverywhere, reviewType, numberOfReviewers } = campaignData;
 
-      if ([minAge, maxAge, startDate, endDate, name, gender].some((value) => value === null || value === '')) {
-        message.error('Please fill all the fields before proceeding');
-        return;
+      const fields = {
+        minAge,
+        maxAge,
+        startDate,
+        endDate,
+        name,
+        gender,
+        reviewType,
+        numberOfReviewers
+      };
+
+      for (const [key, value] of Object.entries(fields)) {
+        if (value === null || value === "") {
+          toast.dismiss()
+          toast.error(`Please fill the "${key}" field before proceeding`);
+          return;
+        }
       }
+
       if (minAge > maxAge) {
-        message.error('Min age should be less than max age');
+        toast.error('Min age should be less than max age');
         return;
       }
       const start = campaignData.startDate ? dayjs(campaignData.startDate) : null;
@@ -68,11 +105,11 @@ const ExistingProduct = () => {
 
       if (start && end) {
         if (start.isAfter(end)) {
-          message.error('Start date should be less than end date');
+          toast.error('Start date should be less than end date');
           return;
         }
         if (end.diff(start, 'days') < 21) {
-          message.error('End date should be at least 21 days after start date');
+          toast.error('End date should be at least 21 days after start date');
           return;
         }
       }
@@ -117,9 +154,9 @@ const ExistingProduct = () => {
     }
 
     if (current === 2 && campaignData?.product) {
-      const { country, state, city } = campaignData;
-      if ([country, state, city].some((value) => value.length === 0 || value === null || value === '')) {
-        message.error('Please select a location before proceeding');
+      const { country, state } = campaignData;
+      if ([country, state].some((value) => value.length === 0 || value === null || value === '')) {
+        toast.error('Please select a location before proceeding');
         return;
       }
       return new Promise((resolve) => {
@@ -138,6 +175,7 @@ const ExistingProduct = () => {
           onOk: () => {
             setCurrent(current + 1);
             resolve(true);
+            localStorage.setItem("page_reload", false)
           },
           onCancel: () => {
             resolve(false);

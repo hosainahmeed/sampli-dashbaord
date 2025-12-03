@@ -43,7 +43,7 @@ const AllCategories = ({ next }) => {
         layout="vertical"
         onFinish={handleFormSubmit}
         className="p-6"
-        requiredMark={false}
+        requiredMark={true}
       >
         <div className="flex flex-col justify-between  h-[425px]">
           <div>
@@ -56,7 +56,7 @@ const AllCategories = ({ next }) => {
                 ]}
                 className="w-full"
               >
-                <Select placeholder="Select">
+                <Select size='large' placeholder="Select">
                   <Option value="White/Caucasian">White/Caucasian</Option>
                   <Option value="Black/African American">
                     Black/African American
@@ -82,7 +82,7 @@ const AllCategories = ({ next }) => {
                 ]}
                 className="w-full"
               >
-                <Select placeholder="Select">
+                <Select size='large' placeholder="Select">
                   <Option value="High School">High School</Option>
                   <Option value="Associate Degree">Associate Degree</Option>
                   <Option value="Bachelor's Degree">
@@ -107,7 +107,7 @@ const AllCategories = ({ next }) => {
                 ]}
                 className="w-full"
               >
-                <Select placeholder="Select">
+                <Select size='large' placeholder="Select">
                   <Option value="Single">Single</Option>
                   <Option value="Married">Married</Option>
                   <Option value="Separated">Separated</Option>
@@ -127,7 +127,7 @@ const AllCategories = ({ next }) => {
                 ]}
                 className="w-full"
               >
-                <Select placeholder="Select">
+                <Select size='large' placeholder="Select">
                   <Option value="Employed">Employed</Option>
                   <Option value="Unemployed">Unemployed</Option>
                   <Option value="Student">Student</Option>
@@ -149,7 +149,7 @@ const AllCategories = ({ next }) => {
                 ]}
                 className="w-full"
               >
-                <Select placeholder="Select">
+                <Select size='large' placeholder="Select">
                   <Option value="Below $25,000">Below $25,000</Option>
                   <Option value="$25,000 - $50,000">$25,000 - $50,000</Option>
                   <Option value="$50,001 - $75,000">$50,001 - $75,000</Option>
@@ -169,7 +169,7 @@ const AllCategories = ({ next }) => {
                 ]}
                 className="w-full"
               >
-                <Select placeholder="Select">
+                <Select size='large' placeholder="Select">
                   <Option value="None">None</Option>
                   <Option value="1">1</Option>
                   <Option value="2">2</Option>
