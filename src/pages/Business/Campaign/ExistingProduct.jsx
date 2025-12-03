@@ -36,12 +36,12 @@ const ExistingProduct = () => {
   const userReloadAccess = query.get("user_reload_access");
 
   useEffect(() => {
-    const page_reload = localStorage.getItem("page_reload")
-    if (page_reload) {
-      localStorage.removeItem("page_reload")
-      dispatch(reset())
-      return
-    }
+    // const page_reload = localStorage.getItem("page_reload")
+    // if (page_reload) {
+    //   localStorage.removeItem("page_reload")
+    //   dispatch(reset())
+    //   return
+    // }
     const handleBeforeUnload = (e) => {
       const data = Object.values(campaignData);
 
