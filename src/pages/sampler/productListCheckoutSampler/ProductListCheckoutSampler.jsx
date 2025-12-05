@@ -67,7 +67,7 @@ const SoloStoveCart = () => {
     try {
       const data = {
         shippingAddress: shippingAddressId,
-        paymentMethod: paymentMethod,
+        paymentMethod: "Stripe",
         selectedRateId: selectedRateId,
         shipmentId: shipmentId,
       };
@@ -431,13 +431,13 @@ const SoloStoveCart = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                       <div>
-                        <span className="text-gray-600">Street 1: </span>
+                        <span className="text-gray-600">Street: </span>
                         <span className="text-gray-800">{address.street1}</span>
                       </div>
-                      <div>
+                      {/* <div>
                         <span className="text-gray-600">Street 2: </span>
                         <span className="text-gray-800">{address.street2}</span>
-                      </div>
+                      </div> */}
                       <div>
                         <span className="text-gray-600">City: </span>
                         <span className="text-gray-800">{address.city}</span>
@@ -462,14 +462,14 @@ const SoloStoveCart = () => {
                         <span className="text-gray-600">Email: </span>
                         <span className="text-gray-800">{address.email}</span>
                       </div>
-                      {address.alternativePhoneNumber && (
+                      {/* {address.alternativePhoneNumber && (
                         <div>
                           <span className="text-gray-600">Alt Phone: </span>
                           <span className="text-gray-800">
                             {address.alternativePhoneNumber}
                           </span>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 ))}
@@ -567,7 +567,7 @@ const SoloStoveCart = () => {
               </div>
             )}
 
-            {providerList?.length > 0 && (
+            {/* {providerList?.length > 0 && (
               <div className="flex items-center mt-4 mx-auto gap-5 justify-center">
                 <div
                   className={`border border-gray-200 rounded-lg p-4 cursor-pointer ${
@@ -577,16 +577,16 @@ const SoloStoveCart = () => {
                 >
                   Stripe
                 </div>
-                {/* <div
+                <div
                   className={`border border-gray-200 rounded-lg p-4  cursor-pointer ${
                     paymentMethod === "Paypal" ? "!bg-blue-500 !text-white" : ""
                   }`}
                   onClick={() => setPaymentMethod("Paypal")}
                 >
                   Paypal
-                </div> */}
+                </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </Modal>
