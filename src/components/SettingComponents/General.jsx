@@ -52,7 +52,7 @@ function General() {
   }, [businessStoreData, form]);
 
   const countryOptions = useMemo(
-    () => Country.getAllCountries().map(c => ({ value: c.isoCode, label: `${c.name} (${c.isoCode})` })),
+    () => Country.getAllCountries().map(c => ({ value: c?.isoCode, label: c?.name })),
     []
   );
 
@@ -147,7 +147,7 @@ function General() {
 
               {/* Store Info */}
               <InputField
-                className="col-span-2 md:col-span-1"
+                className="col-span-2"
                 label="Legal Business Name"
                 name="businessName"
                 rules={[{ required: true, message: "Please enter your legal business name!" }]}

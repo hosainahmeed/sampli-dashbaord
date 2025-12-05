@@ -17,7 +17,7 @@ const InputField = ({
         type={type}
         placeholder={placeholder}
       /> : <Input
-        size={size}
+        size={size || "large"}
         type={type}
         placeholder={placeholder}
       />}

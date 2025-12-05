@@ -22,7 +22,7 @@ const SelectField = ({
 
   return (
     <Form.Item className="flex items-start justify-start" label={label} name={name} rules={rules} {...props}>
-      <Select loading={loading} placeholder={placeholder} onChange={handleChange} disabled={disabled}>
+      <Select size="large" loading={loading} placeholder={placeholder} onChange={handleChange} disabled={disabled}>
         {options.map((option) => (
           <Option key={option.value} value={option.value}>
             {option.label}

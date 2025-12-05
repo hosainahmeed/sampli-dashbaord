@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <HelmetProvider>
-        <GoogleOAuthProvider clientId="748981961334-237a8tipg748890hq4n993lavoo5ik9h.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_API || ""}>
           <Toaster position="top-center" />
           <RouterProvider router={router} />
         </GoogleOAuthProvider>
