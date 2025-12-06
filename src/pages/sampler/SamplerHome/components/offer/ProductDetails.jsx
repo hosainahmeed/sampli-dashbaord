@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Modal, Button, Descriptions, Carousel } from "antd";
+import { Modal, Button, Descriptions, Carousel, Spin } from "antd";
 import toast from "react-hot-toast";
 import {
   useAcceptCampaignOfferMutation,
@@ -57,10 +57,15 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           shippingAddress: selectAddressId,
           amount: getOneCampaign?.data?.product?.price,
         };
-        const res = await postCampaign(data);
-        toast.success(res?.data?.data?.message);
+        const res = await postCampaign(data).unwrap()
+        if (!res?.data?.success) {
+          throw new Error(res?.data?.message)
+        }
+        toast.success(res?.data?.message || res?.message);
+
       } catch (error) {
-        console.log(error);
+        console.log(error)
+        toast.error(error?.data?.message || error?.message || "something went wrong!")
       }
       onCancel();
     } else {
@@ -76,9 +81,16 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
       onCancel={onCancel}
       mask={true}
       keyboard={true}
-      onOk={() => handleClick()}
-      okText={page === 1 ? "Next" : "Accept Offer"}
+      onOk={() => {
+        if (selectAddressId === "" && page !== 1) {
+          return
+        }
+        handleClick()
+      }}
+      okText={page === 1 ? "Next" : campaignLoading ? <div className="flex gap-1 items-center"> <div className="w-3 h-3 border-l border-r rounded-full animate-spin" /> Accept Offer</div> : "Accept Offer"
+      }
       cancelButtonProps={{ style: { display: 'none' } }}
+      okButtonProps={{ style: { backgroundColor: selectAddressId === "" && page !== 1 ? "#BFC3EA" : "#3480FA", cursor: selectAddressId === "" && page !== 1 ? "not-allowed" : "" } }}
       width={600}
       style={{
         position: "absolute",
@@ -193,6 +205,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
             <h2 className="text-xl font-semibold text-black">
               Select one of your shipping addresses
             </h2>
+            {selectAddressId === "" && (<small>please select a address first</small>)}
             {shippingAddresses?.data && shippingAddresses.data.length > 0 ? (
               <div className="space-y-4">
                 {shippingAddresses.data.map((address, index) => (
@@ -288,7 +301,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           </Button> */}
         </div>
       </div>
-    </Modal>
+    </Modal >
   );
 };
 
