@@ -136,6 +136,7 @@ function TimeLineCard({ order }) {
       };
     });
   };
+  console.log(order)
 
   return (
     <Card className="order-timeline-card">
@@ -156,10 +157,9 @@ function TimeLineCard({ order }) {
             <Title level={4} style={{ margin: 0 }}>
               {order?.product?.name}
             </Title>
-            <Text type="secondary">{order?.campaign?.name}</Text>
             <Text type="secondary">
-              Campaign: {order?.campaign?.name} (Reward: $
-              {order?.campaign?.amountForEachReview})
+              Campaign: {order?.campaign?.name} 
+              {/* {order?.campaign}) */}
             </Text>
           </Col>
           <Col flex="none">

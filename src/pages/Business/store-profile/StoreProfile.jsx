@@ -202,7 +202,7 @@ const CardComponent = ({ item, setReviewId }) => {
       className="shadow-md cursor-pointer border-[1px] overflow-hidden border-[#eee]"
       cover={
         <img
-          className="lg:h-[250px] sm:h-[200px] h-[180px] object-contain xl:h-[300px]"
+          className="lg:h-[250px] sm:h-[200px] h-[180px] object-cover xl:h-[300px]"
           alt={item?.name}
           src={item?.images[0]}
         />

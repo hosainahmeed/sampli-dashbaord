@@ -15,7 +15,7 @@ function Security() {
     success: false,
     changePass: false,
   });
-  
+
   const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
   const handlePasswordUpdate = async (values) => {
     try {
@@ -26,7 +26,7 @@ function Security() {
         toast.success(res?.message || "Password updated successfully!");
         setModalState({ changePass: false, success: true });
         localStorage.removeItem("token");
-      }else{
+      } else {
         throw new Error(res?.message || "Something went wrong!");
       }
     } catch (error) {
@@ -40,14 +40,14 @@ function Security() {
   return (
     <div>
       <Title level={3}>Security</Title>
-      <Card className="!mb-4">
-        <div className="flex-center-between mt-3">
+      <Card onClick={() => setModalState((p) => ({ ...p, changePass: true }))} className="!mb-4">
+        <div
+          className="flex-center-between mt-3">
           <div>
             <Title level={4}>Password</Title>
             <Text>Change your password</Text>
           </div>
           <Button
-            onClick={() => setModalState((p) => ({ ...p, changePass: true }))}
             shape="circle"
           >
             <FaAngleRight />

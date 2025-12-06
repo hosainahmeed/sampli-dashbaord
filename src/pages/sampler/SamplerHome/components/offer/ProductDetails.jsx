@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
-import { Modal, Button, Descriptions, Carousel, Form, Input } from "antd";
+import { Modal, Button, Descriptions, Carousel } from "antd";
 import toast from "react-hot-toast";
-import productImage from "/public/product_image.svg";
 import {
   useAcceptCampaignOfferMutation,
   useGetOneCampaignQuery,
@@ -11,11 +10,9 @@ import { Link } from "react-router-dom";
 
 const ProductDetails = ({ productId, visible, onCancel }) => {
   const { data: shippingAddresses, isLoading } = useGetShippingAddressQuery();
-  const { data: getOneCampaign } = useGetOneCampaignQuery({
+  const { data: getOneCampaign, isLoading: singleCampaignLoading, isFetching } = useGetOneCampaignQuery({
     id: productId,
   });
-
-  console.log(getOneCampaign);
 
   const [postCampaign, { isLoading: campaignLoading }] =
     useAcceptCampaignOfferMutation();
@@ -61,8 +58,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           amount: getOneCampaign?.data?.product?.price,
         };
         const res = await postCampaign(data);
-        console.log(res);
-        // toast.success(res?.data?.data?.message);
+        toast.success(res?.data?.data?.message);
       } catch (error) {
         console.log(error);
       }
@@ -74,21 +70,26 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
 
   return (
     <Modal
+      loading={isLoading || singleCampaignLoading || isFetching}
       title="Offer details"
       visible={visible}
       onCancel={onCancel}
-      footer={null}
+      mask={true}
+      keyboard={true}
+      onOk={() => handleClick()}
+      okText={page === 1 ? "Next" : "Accept Offer"}
+      cancelButtonProps={{ style: { display: 'none' } }}
       width={600}
-      className="rounded-lg overflow-y-auto !h-screen  "
       style={{
         position: "absolute",
-        top: "0",
+        top: "0%",
         right: "0",
-        transform: "translateX(0)",
+        height: "80%"
       }}
+      bordered
       centered
     >
-      <div>
+      <div className="rounded-lg overflow-y-auto bg-gray-100 scrollbar-none !h-[85vh] p-4">
         {page === 1 && (
           <div className="flex flex-col items-center mt-10">
             <div className="w-full mb-4">
@@ -96,11 +97,11 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
                 {images?.map((image, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-center h-64"
+                    className="flex items-center aspect-square justify-center h-64"
                   >
                     <img
                       src={image}
-                      className="max-h-full max-w-full object-contain mx-auto"
+                      className="max-h-full max-w-full  object-cover aspect-square mx-auto"
                     />
                   </div>
                 ))}
@@ -111,11 +112,10 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
               {images?.map((image, index) => (
                 <div
                   key={index}
-                  className={`cursor-pointer p-1 rounded transition-all ${
-                    activeIndex === index
-                      ? "border-2 border-blue-500"
-                      : "border-2 border-transparent"
-                  }`}
+                  className={`cursor-pointer p-1 rounded transition-all ${activeIndex === index
+                    ? "border-2 border-blue-500"
+                    : "border-2 border-transparent"
+                    }`}
                   onClick={() => handleThumbnailClick(index)}
                 >
                   <img
@@ -198,11 +198,10 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
                 {shippingAddresses.data.map((address, index) => (
                   <div
                     key={address._id}
-                    className={` rounded-lg p-4 bg-gray-50 cursor-pointer ${
-                      selectAddressId === address?._id
-                        ? "border border-blue-500"
-                        : "border border-gray-300"
-                    }`}
+                    className={` rounded-lg p-4 bg-gray-50 cursor-pointer ${selectAddressId === address?._id
+                      ? "border border-blue-500"
+                      : "border border-gray-300"
+                      }`}
                     onClick={() => setSelectedAddressId(address?._id)}
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -278,7 +277,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           >
             Reject Offer
           </Button> */}
-          <Button
+          {/* <Button
             type="primary"
             className="w-full py-2"
             onClick={handleClick}
@@ -286,7 +285,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
             disabled={page === 2 && selectAddressId === ""}
           >
             {page === 1 ? "Next" : "Accept Offer"}
-          </Button>
+          </Button> */}
         </div>
       </div>
     </Modal>

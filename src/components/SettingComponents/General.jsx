@@ -155,17 +155,17 @@ function General() {
               />
               <InputField
                 className="col-span-2 md:col-span-1"
-                label="Street Address Line 1"
+                label="Street Address Line"
                 name="street1"
                 rules={[{ required: true, message: "Please enter your street address!" }]}
                 placeholder="Enter your street address"
               />
-              <InputField
+              {/* <InputField
                 className="col-span-2 md:col-span-1"
                 label="Street Address Line 2"
                 name="street2"
                 placeholder="Enter your suite / apt (optional)"
-              />
+              /> */}
               <SelectField
                 label="Country"
                 name="country"
