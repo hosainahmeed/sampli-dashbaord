@@ -58,11 +58,11 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           amount: getOneCampaign?.data?.product?.price,
         };
         const res = await postCampaign(data).unwrap()
-        if (!res?.data?.success) {
-          throw new Error(res?.data?.message)
+        console.log(res)
+        if (!res?.success) {
+          throw new Error(res?.message)
         }
         toast.success(res?.data?.message || res?.message);
-
       } catch (error) {
         console.log(error)
         toast.error(error?.data?.message || error?.message || "something went wrong!")
