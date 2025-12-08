@@ -30,7 +30,6 @@ function AddProduct() {
 
   const onFinish = async (values) => {
     try {
-
       let tags = [];
       if (content === '' && !isDraft) {
         throw new Error('Please enter Description!');
@@ -266,7 +265,7 @@ function AddProduct() {
               multiple
               listType="picture-card"
               fileList={fileList}
-              beforeUpload={()=>false} 
+              beforeUpload={() => false}
               onChange={handleFileChange}
               accept=".jpg,.jpeg,.png"
             >

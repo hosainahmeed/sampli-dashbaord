@@ -19,6 +19,7 @@ const InputField = ({
       /> : <Input
         size={size || "large"}
         type={type}
+        numerProrps
         placeholder={placeholder}
       />}
     </Form.Item>

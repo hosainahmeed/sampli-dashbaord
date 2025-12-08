@@ -12,6 +12,10 @@ const SelectField = ({
   onChange,
   loading,
   disabled = false,
+  showSearch = false,
+  optionFilterProp = 'children',
+  filterOption = (input, option) =>
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
   ...props
 }) => {
   const handleChange = (value) => {
@@ -22,9 +26,19 @@ const SelectField = ({
 
   return (
     <Form.Item className="flex items-start justify-start" label={label} name={name} rules={rules} {...props}>
-      <Select size="large" loading={loading} placeholder={placeholder} onChange={handleChange} disabled={disabled}>
+      <Select 
+        size="large" 
+        loading={loading} 
+        placeholder={placeholder} 
+        onChange={handleChange} 
+        disabled={disabled}
+        showSearch={showSearch}
+        optionFilterProp={optionFilterProp}
+        filterOption={filterOption}
+        style={{ width: '100%' }}
+      >
         {options.map((option) => (
-          <Option key={option.value} value={option.value}>
+          <Option key={option.value} value={option.value} label={option.label}>
             {option.label}
           </Option>
         ))}

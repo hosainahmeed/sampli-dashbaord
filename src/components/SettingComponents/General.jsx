@@ -18,7 +18,7 @@ const { Title } = Typography;
 function General() {
   const [form] = Form.useForm();
   const [showStoreForm, setShowStoreForm] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState('US');
   const [selectedState, setSelectedState] = useState(null);
 
   const { data: profile, isLoading: isBusinessLoading } = useGetProfileQuery();
@@ -160,23 +160,13 @@ function General() {
                 rules={[{ required: true, message: "Please enter your street address!" }]}
                 placeholder="Enter your street address"
               />
-              {/* <InputField
-                className="col-span-2 md:col-span-1"
-                label="Street Address Line 2"
-                name="street2"
-                placeholder="Enter your suite / apt (optional)"
-              /> */}
               <SelectField
                 label="Country"
                 name="country"
                 placeholder="Select your country"
                 rules={[{ required: true, message: "Please select your country!" }]}
-                options={countryOptions}
-                onChange={(val) => {
-                  setSelectedCountry(val);
-                  setSelectedState(null);
-                  form.setFieldsValue({ state: undefined, city: undefined });
-                }}
+                options={[{ value: 'US', label: 'United States' }]}
+                defaultValue="US"
                 className="w-full col-span-2 md:col-span-1"
               />
               <SelectField
@@ -184,6 +174,11 @@ function General() {
                 name="state"
                 placeholder="Select your state"
                 options={stateOptions}
+                showSearch
+                optionFilterProp="label"
+                filterOption={(input, option) => 
+                  option.label.toLowerCase().includes(input.toLowerCase())
+                }
                 disabled={!selectedCountry}
                 onChange={(val) => {
                   setSelectedState(val);
@@ -196,6 +191,11 @@ function General() {
                 name="city"
                 placeholder="Select your city"
                 options={cityOptions}
+                showSearch
+                optionFilterProp="label"
+                filterOption={(input, option) => 
+                  option.label.toLowerCase().includes(input.toLowerCase())
+                }
                 disabled={!selectedState}
                 className="w-full col-span-2 md:col-span-1"
               />
