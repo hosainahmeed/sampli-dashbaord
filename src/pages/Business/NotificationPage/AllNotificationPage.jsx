@@ -56,7 +56,7 @@ const getIcon = (type) => {
 const AllNotificationPage = () => {
   const [limit, setLimit] = useState(10)
   const [type, setType] = useState("")
-  const { data: notificationRes, isLoading: notificationLoading } = useNotificationPageQuery({
+  const { data: notificationRes, isLoading: notificationLoading , isFetching } = useNotificationPageQuery({
     limit,
     ...(type !== "" && { type })
   })
@@ -141,7 +141,7 @@ const AllNotificationPage = () => {
       </div>
 
       {/* Notifications list */}
-      <Card loading={notificationLoading} className="p-4">
+      <Card loading={notificationLoading || isFetching} className="p-4">
         <div className="divide-y divide-gray-200">
           {notificationRes?.data?.result?.length > 0 ? notificationRes?.data?.result?.map((item, index) => (
             <div

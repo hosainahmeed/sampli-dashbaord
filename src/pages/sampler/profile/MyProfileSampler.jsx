@@ -50,20 +50,16 @@ const MyProfileSampler = () => {
   const { data: profileData, isLoading } = useGetProfileApisQuery();
   const profile = profileData?.data;
 
-  const onChange = (key) => {
-    console.log(key);
-  };
-
   return (
     <div className="responsive-width !mb-32">
       <div className="mx-auto bg-white p-6 text-gray-900">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4 ">
-            <div>
+            <div className="border border-gray-200 rounded-full shadow">
               <img
-                src={`${profile?.profile_image}`}
+                src={`${profile?.profile_image || 'https://placehold.co/600x400?text=USER'}`}
                 alt="Profile"
-                className="w-24 h-24 rounded-full object-center object-cover"
+                className="w-24 h-24  rounded-full object-center object-cover"
               />
             </div>
             <div className="leading-0">
@@ -82,7 +78,7 @@ const MyProfileSampler = () => {
             Edit Profile
           </Link>
         </div>
-        <p className="!mt-2 text-gray-700 text-sm">{profile?.bio}</p>
+        <p className="!mt-2 text-gray-700 text-sm">{profile?.bio || 'please update your bio'}</p>
         <div className="flex items-center gap-2 text-2xl">
           {profile?.instagram && (
             <FaInstagram
@@ -139,7 +135,7 @@ const MyProfileSampler = () => {
         </div>
 
         <div className="mt-10">
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+          <Tabs defaultActiveKey="1" items={items}/>
         </div>
       </div>
     </div>

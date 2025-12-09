@@ -189,6 +189,7 @@ const ShipmentsSampler = () => {
           <Table
             key="table1"
             columns={columns2}
+            loading={isLoadingOrder || campaignLoading}
             dataSource={productData2}
             rowKey="id"
             pagination={false}

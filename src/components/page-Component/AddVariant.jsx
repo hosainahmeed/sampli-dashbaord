@@ -48,7 +48,6 @@ function AddVariant() {
                 })
             } else {
                 await addVariant(formData).unwrap().then((res) => {
-                    console.log(res)
                     if (res.success) {
                         toast.dismiss()
                         toast.success(res.message)
@@ -83,7 +82,7 @@ function AddVariant() {
     const handleDelete = async (id) => {
         try {
             await deleteVariant(id).unwrap().then((res) => {
-                console.log(res)
+             
                 if (res.success) {
                     toast.success(res.message)
                     refetch()
@@ -93,7 +92,7 @@ function AddVariant() {
             toast.error("Something went wrong!");
         }
     }
-    console.log(variantProduct)
+
     return (
         <div className="w-full">
             <div

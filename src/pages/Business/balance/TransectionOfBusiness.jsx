@@ -58,7 +58,6 @@ const TransectionOfBusiness = () => {
         }
       });
     } catch (error) {
-      console.log(error);
       toast.error(error?.data?.message || error?.message || "Something went wrong");
     }
   };
@@ -72,11 +71,9 @@ const TransectionOfBusiness = () => {
         }
       })
     } catch (error) {
-      console.log(error);
       toast.error(error?.data?.message || error?.message || "Something went wrong")
     }
   }
-  console.log(profileData?.data?.isStripeAccountConnected)
   return (
     <div className="">
       <div

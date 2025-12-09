@@ -32,18 +32,19 @@ function AllFeedCard() {
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         {reviewLoading ? <Skeleton.Input size="small" /> : <h1 className="text-2xl font-semibold mb-4 md:mb-0">Reviews</h1>}
         {reviewLoading ? <Skeleton.Input size="small" /> :
-          <SelectField
+          reviewList?.data?.data?.result?.length > 0 ? <SelectField
             disabled={reviewList?.data?.data?.result?.length === 0}
             className="w-full md:w-40"
             name="feed"
             rules={[{ required: true }]}
             options={options}
             placeholder="Sort by"
-          />}
+          /> : ''
+        }
       </div>
 
       {/* Feed Cards Grid */}
-      <div>
+      <div className='mt-4'>
         {reviewList?.data?.data?.result?.length === 0 ? (
           <Card>
             <div className="!w-full col-span-2 flex flex-col items-center justify-center py-20 text-center">

@@ -1,25 +1,28 @@
 import { Card } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const { Meta } = Card;
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useBookmarkUpdateMutation } from "../../../../../Redux/sampler/productApis";
 import toast from "react-hot-toast";
-import heartAnimation from "../../../../../../public/heart.json";
-import Lottie from "lottie-react";
 const CardComponent = ({ item }) => {
   const navigate = useNavigate();
-  console.log("item=======================%%%%", item);
-  const [bookmarkUpdate, { isLoading: bookmarkLoading }] =
+  const [localBookmark, setLocalBookmark] = useState(item?.isBookmark);
+
+  const [bookmarkUpdate] =
     useBookmarkUpdateMutation();
+
   const handleClickBookmark = async (product) => {
+    const previousState = localBookmark;
+    setLocalBookmark(!localBookmark);
     try {
       const res = await bookmarkUpdate({
         id: product,
       }).unwrap();
       toast.success(res?.message);
     } catch (error) {
-      console.log(error);
+      setLocalBookmark(previousState);
+      toast.error(error?.data?.message || error?.message || 'Something went wrong!');
     }
   };
 
@@ -29,7 +32,7 @@ const CardComponent = ({ item }) => {
       cover={
         <div>
           <button className="absolute top-4 right-4 z-10">
-            {item?.isBookmark ? (
+            {localBookmark ? (
               <HeartFilled
                 className="text-2xl font-bold !text-red-500 rounded-full p-1 "
                 onClick={() => {

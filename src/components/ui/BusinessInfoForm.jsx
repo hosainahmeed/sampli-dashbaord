@@ -42,7 +42,6 @@ const BusinessInfoForm = () => {
   const location = useLocation()
   const router = useNavigate();
   const onFinish = (values) => {
-    console.log('Success:', values);
     localStorage.setItem('businessInfo', JSON.stringify({ ...values, email: location?.state?.email }));
     toast.success('Form submitted successfully!');
     router('/user-info');

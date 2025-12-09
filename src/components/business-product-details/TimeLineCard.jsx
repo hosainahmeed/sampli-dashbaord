@@ -136,7 +136,7 @@ function TimeLineCard({ order }) {
       };
     });
   };
-  console.log(order)
+
 
   return (
     <Card className="order-timeline-card">

@@ -5,7 +5,7 @@ import gift from "../../../assets/gift-02.svg";
 import sale from "../../../assets/sale-03.svg";
 import { useGetMyReviewsQuery } from "../../../Redux/sampler/profileApis";
 import { AiFillHeart } from "react-icons/ai";
-import { Pagination } from "antd";
+import { Card, Pagination } from "antd";
 
 const ProfileReviewsVideo = () => {
   const [sortBy, setSortBy] = useState("");
@@ -18,39 +18,33 @@ const ProfileReviewsVideo = () => {
     page,
   });
   const myReview = myReviews?.data?.data?.result;
-
-  if (isLoading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 "></div>
-      </div>
-    );
-  }
   return (
-    <div>
+    <Card loading={isLoading}>
       <div className="flex justify-between items-center mt-3">
         <h2 className="text-xl font-semibold">My Reviews</h2>
-        <div className="flex items-center gap-2">
+        {myReview?.length !== 0 && <div className="flex items-center gap-2">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="outline-none border border-gray-200 hover:bg-gray-100 px-2 py-2 rounded-lg !text-sm cursor-pointer"
+            className="outline-none border border-gray-200 hover:bg-gray-100 px-2 py-2 mb-4 rounded-lg !text-sm cursor-pointer"
           >
             <option value="">Sort by : New</option>
             <option value="totalView">Highest Views</option>
             <option value="totalReferralSales">Highest Referrals </option>
           </select>
-        </div>
+        </div>}
       </div>
       <div>
         {myReview?.length === 0 && (
-          <div className="text-center flex flex-col items-center justify-center py-10 w-full h-[30vh]">
-            <p className="font-bold text-xl">No Reviews Yet</p>
-            <p className="mt-5 text-gray-500">
-              Looks like you don&apos;t have any reviews at the moment. Check
-              back soon!
-            </p>
-          </div>
+          <Card>
+            <div className="text-center flex flex-col items-center justify-center py-10 w-full h-[30vh]">
+              <p className="font-bold text-xl">No Reviews Yet</p>
+              <p className="mt-5 text-gray-500">
+                Looks like you don&apos;t have any reviews at the moment. Check
+                back soon!
+              </p>
+            </div>
+          </Card>
         )}
       </div>
 
@@ -201,7 +195,7 @@ const ProfileReviewsVideo = () => {
         </div>
       ))}
 
-      <div className="mx-auto flex items-center justify-center mt-10">
+      {myReview?.length !== 0 && <div className="mx-auto flex items-center justify-center mt-10">
         <Pagination
           currentPage={myReviews?.data?.data?.meta?.page}
           totalPages={myReviews?.data?.data?.meta?.totalPage}
@@ -210,8 +204,8 @@ const ProfileReviewsVideo = () => {
             setLimit(limit + 10);
           }}
         />
-      </div>
-    </div>
+      </div>}
+    </Card>
   );
 };
 

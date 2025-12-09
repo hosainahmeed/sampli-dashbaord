@@ -84,7 +84,6 @@ const GoogleAuthButton = ({ role, loginForm }) => {
           error?.error ||
           "Something went wrong"
       );
-      console.log("===========error", error);
       if (
         error?.data?.message ===
           "User validation failed: role: Path `role` is required." &&
@@ -98,7 +97,6 @@ const GoogleAuthButton = ({ role, loginForm }) => {
   };
 
   const handleGoogleError = (error) => {
-    console.log(error);
     toast.error(
       error?.data?.message ||
         error?.message ||

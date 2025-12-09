@@ -90,7 +90,6 @@ function AddProduct() {
       }
 
     } catch (error) {
-      console.log(error)
       toast.dismiss()
       toast.error(error?.message || 'Something went wrong!');
     }

@@ -15,10 +15,8 @@ const ContactInfo = () => {
   const [addComplianceInfo, { isLoading }] = useAddComplianceInfoMutation()
   const onFinish = async (values) => {
     try {
-      console.log('Success:', values);
       await addComplianceInfo(values).unwrap().then((res) => {
         if (res.success) {
-          console.log(res)
           toast.success(res.message)
           router('/compliance-info')
         } else {

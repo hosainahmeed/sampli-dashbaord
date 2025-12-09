@@ -27,7 +27,6 @@ const Register = () => {
         .unwrap()
         .then((res) => {
           if (res?.success) {
-            console.log(res)
             toast.success(res?.message);
             navigate('/business/otp', {
               state: { email: registerData.email },

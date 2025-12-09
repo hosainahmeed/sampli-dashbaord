@@ -1,31 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import OfferCardSampler from "./OfferCardSampler";
 import { useNavigate } from "react-router-dom";
-import productImage from "/public/product_image.svg";
 import { useGetCampaignListQuery } from "../../../../../Redux/sampler/campaignApis";
 import Loader from "../../../../loader/Loader";
-
-// const productData = [
-//   {
-//     id: 1,
-//     image: productImage,
-//     title: "Mini Portable Refillable Spray...",
-//     description: "We are a factory direct sales store...",
-//     rewards: 5,
-//     due: "- 5 days",
-//     status: "Offer Accepted",
-//   },
-
-//   {
-//     id: 5,
-//     image: productImage,
-//     title: "Mini Portable Refillable Spray...",
-//     description: "We are a factory direct sales store...",
-//     rewards: 5,
-//     due: "- 1 days",
-//     status: "Accept Offer",
-//   },
-// ];
+import { Card } from "antd";
 const OfferDataSampler = () => {
   const Navigate = useNavigate();
 
@@ -33,12 +11,13 @@ const OfferDataSampler = () => {
   const { data: getAllOffers, isLoading: offerLoading } =
     useGetCampaignListQuery({
       limit: 4,
+      sortOrder: "desc",
     });
-  console.log(getAllOffers);
+
   const productData = getAllOffers?.data?.result;
 
   return (
-    <div className="">
+    <>
       <div className="flex justify-between items-center mb-5 mt-14 ">
         <div className="  text-xl font-semibold">Offers</div>
         <div
@@ -48,7 +27,13 @@ const OfferDataSampler = () => {
           See all
         </div>
       </div>
-      <div>{offerLoading ? <Loader message="Loading Offers..." /> : null}</div>
+      <div>{offerLoading ?
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i} loading={true} />
+          ))}
+        </div>
+        : null}</div>
       {!offerLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {productData && productData?.length > 0 ? (
@@ -66,7 +51,7 @@ const OfferDataSampler = () => {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

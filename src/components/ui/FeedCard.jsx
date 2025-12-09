@@ -155,7 +155,6 @@ const FeedCard = ({ content }) => {
               "whatsapp",
               "email",
             ]}
-            onSocialButtonClicked={(data) => console.log(data)}
           />
         </Modal>
       </div>

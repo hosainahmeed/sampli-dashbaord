@@ -1,94 +1,19 @@
 import React, { useRef } from "react";
 import { Card, Carousel, Skeleton } from "antd";
 import {
-  HeartFilled,
-  HeartOutlined,
   LeftOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-import { CiHeart } from "react-icons/ci";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import productImage from "/public/product_image.svg";
 import {
-  useBookmarkUpdateMutation,
   useGetAllProductsQuery,
 } from "../../../../../Redux/sampler/productApis";
+import CardComponent from "./CardComponent";
 
 const { Meta } = Card;
 
-// const items = [
-//   {
-//     id: 1,
-//     image: productImage,
-//     title: "BENGOO G9000 Stereo Gaming Headset",
-//     description: "High-quality wireless headphones with noise cancellation",
-//     price: "$5.00",
-//     originalPrice: "$4.00",
-//   },
-//   {
-//     id: 2,
-//     image: productImage,
-//     title: "Mini Portable Refillable Sprayer Atomizer Bottle 5ml",
-//     description: "Compact and portable sprayer for your favorite fragrance",
-//     price: "$3.00",
-//     originalPrice: "$2.50",
-//   },
-//   {
-//     id: 3,
-//     image: productImage,
-//     title: "Ox 18 Inches Standing Plus Fan",
-//     description: "Powerful fan to keep you cool during hot days",
-//     price: "$10.00",
-//     originalPrice: "$8.00",
-//   },
-//   {
-//     id: 4,
-//     image: productImage,
-//     title: "Gaming Headset",
-//     description: "Immersive sound experience for gamers",
-//     price: "$7.00",
-//     originalPrice: "$5.50",
-//   },
-//   {
-//     id: 5,
-//     image: productImage,
-//     title: "Portable Speaker",
-//     description: "Compact speaker with high-quality sound",
-//     price: "$15.00",
-//     originalPrice: "$12.00",
-//   },
-//   {
-//     id: 6,
-//     image: productImage,
-//     title: "Smartwatch",
-//     description: "Feature-rich smartwatch with multiple health tracking",
-//     price: "$25.00",
-//     originalPrice: "$20.00",
-//   },
-//   {
-//     id: 7,
-//     image: productImage,
-//     title: "Wireless Bluetooth Earbuds",
-//     description: "Comfortable earbuds with superior sound quality",
-//     price: "$30.00",
-//     originalPrice: "$25.00",
-//   },
-//   {
-//     id: 8,
-//     image: productImage,
-//     title: "Digital Camera",
-//     description: "Capture high-resolution photos and videos",
-//     price: "$200.00",
-//     originalPrice: "$180.00",
-//   },
-// ];
-
 function BestSellers() {
   const carouselRef = useRef(null);
-
   const { data: getProducts, isLoading } = useGetAllProductsQuery();
-
   const items = getProducts?.data?.result;
 
   return (
@@ -198,77 +123,3 @@ function BestSellers() {
 }
 
 export default BestSellers;
-
-const CardComponent = ({ item }) => {
-  const navigate = useNavigate();
-
-  const [bookmarkUpdate] = useBookmarkUpdateMutation();
-  const handleClickBookmark = async (product) => {
-    try {
-      const res = await bookmarkUpdate({
-        id: product,
-      }).unwrap();
-      toast.success(res?.message);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  return (
-    <Card
-      className=" border   border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
-      cover={
-        <div>
-          <button className="absolute top-4 right-4 z-10">
-            {item?.isBookmark ? (
-              <HeartFilled
-                className="text-2xl font-bold !text-red-500 rounded-full p-1 "
-                onClick={() => {
-                  handleClickBookmark(item?._id);
-                }}
-              />
-            ) : (
-              <HeartOutlined
-                className="text-2xl text-gray-600 font-bold rounded-full p-1"
-                onClick={() => {
-                  handleClickBookmark(item?._id);
-                }}
-              />
-            )}
-          </button>
-          <img
-            className="w-full h-[230px]   object-cover object-center"
-            alt={item?.name}
-            src={item?.images?.[0]}
-          />
-        </div>
-      }
-    >
-      <Meta
-        onClick={() => {
-          navigate(`/sampler/shop/category/${item?.name}/${item?._id}`);
-        }}
-        className="cursor-pointer"
-        title={item?.name}
-        description={
-          <div className="flex justify-between flex-col  h-[100px]">
-            <div
-              className="text-sm text-gray-600"
-              dangerouslySetInnerHTML={{
-                __html:
-                  item?.description?.length > 50
-                    ? `${item?.description?.slice(0, 50)}...`
-                    : item?.description,
-              }}
-            ></div>
-            <div className="flex gap-3 items-center mt-2 text-[18px]">
-              <span className=" font-semibold text-black">${item?.price}</span>
-              {/* <span className="text-gray-500   line-through ">
-                {item?.originalPrice}
-              </span> */}
-            </div>
-          </div>
-        }
-      />
-    </Card>
-  );
-};

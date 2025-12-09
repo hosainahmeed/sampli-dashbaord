@@ -31,7 +31,6 @@ const LoginForm = () => {
             const token = res?.data?.accessToken;
             const decoded = jwtDecode(token);
             localStorage.setItem("token", token);
-            console.log(decoded?.role);
             if (decoded?.role === "reviewer") {
               toast.success(res?.message);
               if (window !== undefined) {

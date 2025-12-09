@@ -20,7 +20,7 @@ function EditProduct() {
   const [content, setContent] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location?.state?.status)
+
   const { data: singleProduct, isLoading: singleProductLoading } = useGetSingleProductApisQuery(
     { id: location?.state?.id },
     { skip: !location?.state?.id }

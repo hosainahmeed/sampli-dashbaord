@@ -42,7 +42,7 @@ function DetailsPurchasesProduct() {
         <div>
           <div className="flex items-center gap-2">
             <Title level={3} className="m-0">
-              Campaign ID: #{order?._id}
+              Campaign ID: #{order?._id?.slice(0,8)}
             </Title>
           </div>
           <p className="text-gray-500 mt-2">
@@ -55,10 +55,10 @@ function DetailsPurchasesProduct() {
             disabled={isLoading || !order?.product?._id}
             onClick={() => navigate(`/product/${order?.product?._id}`, { state: { productId: order?.product?._id } })}
           >Go to item</Button>
-          <Button type="primary" className="flex items-center">
+          {/* <Button type="primary" className="flex items-center">
             Track Item
             <GoLinkExternal className="text-blue-700 ml-1" />
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="flex !mt-12 justify-between xl:flex-row flex-col items-start gap-4">

@@ -50,8 +50,6 @@ const UploadCsv = ({ setOpenCsv }) => {
     formData.append('file', selectedFile);
 
     // Simulate file upload and log data
-    console.log('Submitting file:', selectedFile.name);
-    console.log('File data:', csvPreview);
 
     // Uncomment this section to handle actual file upload
     // upload(formData)
