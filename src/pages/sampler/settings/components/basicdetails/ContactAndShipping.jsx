@@ -42,7 +42,7 @@ const ContactAndShipping = () => {
 
     formRef.setFieldsValue({
       name: address.name,
-      company: address.company,
+      // company: address.company,
       street1: address.street1,
       street2: address.street2,
       country: address.country || "US",
@@ -207,9 +207,9 @@ const ContactAndShipping = () => {
           </Form.Item>
 
           {/* Company */}
-          <Form.Item label="Company" name="company">
+          {/* <Form.Item label="Company" name="company">
             <Input placeholder="Enter your company" />
-          </Form.Item>
+          </Form.Item> */}
 
           {/* Street */}
           <Form.Item
