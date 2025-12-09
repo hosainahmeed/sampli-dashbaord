@@ -10,7 +10,7 @@ import { FaTiktok } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useUpdateProfileApisMutation } from "../../../../Redux/sampler/profileApis";
 
-const AddYourSocials = ({ prev }) => {
+const AddYourSocials = ({ prev, next }) => {
   const [form] = Form.useForm();
   const Navigate = useNavigate();
 
@@ -27,13 +27,15 @@ const AddYourSocials = ({ prev }) => {
     try {
       await updateProfile(values).unwrap();
       toast.success("Socials have been uploaded successfully!");
+      next();
     } catch (error) {
       console.error("Upload error:", error);
       toast.error("Failed to update your socials");
-      throw error;
+      return;
     }
-    console.log("Submitted Values:", values);
-    Navigate("/sampler/campaign");
+
+    // Navigate to campaign after successful submit
+    // Navigate("/sampler/campaign");
   };
 
   return (
@@ -44,11 +46,26 @@ const AddYourSocials = ({ prev }) => {
       className="p-6"
       requiredMark={true}
     >
-      <div className="flex justify-between flex-col h-[500px] ">
+      <div className="flex justify-between flex-col h-[500px]">
         <div>
-          <p className="pb-5 text-2xl text-center font-bold">
-            Add your socials (OPTIONAL)
-          </p>
+          <div className="flex  w-full mb-8">
+            <div className=" text-2xl text-center font-bold w-2/3 flex items-end  justify-end">
+              <div> Add your socials (OPTIONAL)</div>
+            </div>
+
+            <div className="flex items-end justify-end  w-1/3 text-blue-600 cursor-pointer hover:text-blue-400 text-[17px]">
+              <div>
+                <button
+                  type="button"
+                  onClick={next}
+                  className="cursor-pointer hover:!text-blue-500"
+                >
+                  Skip
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="flex flex-col space-y-4">
             <Form.Item name="instagram" className="w-full">
               <div className="flex items-center space-x-3">
@@ -56,18 +73,21 @@ const AddYourSocials = ({ prev }) => {
                 <Input placeholder="Instagram username" />
               </div>
             </Form.Item>
+
             <Form.Item name="twitter" className="w-full">
               <div className="flex items-center space-x-3">
                 <AiFillTwitterCircle size={24} className="text-blue-400" />
                 <Input placeholder="Twitter username" />
               </div>
             </Form.Item>
+
             <Form.Item name="youtube" className="w-full">
               <div className="flex items-center space-x-3">
                 <AiFillYoutube size={24} className="text-red-600" />
                 <Input placeholder="YouTube Channel" />
               </div>
             </Form.Item>
+
             <Form.Item name="tiktok" className="w-full">
               <div className="flex items-center space-x-3">
                 <FaTiktok size={24} className="text-black" />
@@ -76,6 +96,8 @@ const AddYourSocials = ({ prev }) => {
             </Form.Item>
           </div>
         </div>
+
+        {/* Buttons */}
         <div className="flex justify-between text-[16px]">
           <button
             type="button"
@@ -84,6 +106,7 @@ const AddYourSocials = ({ prev }) => {
           >
             Back
           </button>
+
           <button type="submit" className="cursor-pointer hover:!text-blue-500">
             {isLoading ? "Uploading..." : "Next"}
           </button>

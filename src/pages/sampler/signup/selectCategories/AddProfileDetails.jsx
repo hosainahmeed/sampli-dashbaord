@@ -7,6 +7,7 @@ import image3 from "/public/randomImage/121.png";
 import image4 from "/public/randomImage/123.png";
 import image5 from "/public/randomImage/125.png";
 import { useUpdateProfileApisMutation } from "../../../../Redux/sampler/profileApis";
+import { useNavigate } from "react-router-dom";
 
 const images = [image1, image2, image3, image4, image5];
 
@@ -14,6 +15,7 @@ const AddProfileDetails = ({ prev, next }) => {
   const [fileList, setFileList] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const Navigate = useNavigate();
 
   const [updateProfile, { isLoading }] = useUpdateProfileApisMutation();
 
@@ -146,7 +148,7 @@ const AddProfileDetails = ({ prev, next }) => {
         const finalResult = await updateProfile(profileFormData).unwrap();
         console.log("Final profile update result:", finalResult);
         toast.success("Profile updated successfully!");
-        next();
+        Navigate("/sampler/campaign");
       } catch (profileError) {
         console.error("Profile update error:", profileError);
         toast.error("Failed to update profile");
