@@ -7,7 +7,7 @@ import {
   useUpdateCampaignMutation,
 } from "../../../Redux/businessApis/campaign/campaignApis";
 import toast from "react-hot-toast";
-import { Country, State, City } from "country-state-city";
+import { State, City } from "country-state-city";
 
 const { Option } = Select;
 
@@ -72,13 +72,6 @@ function EditCampaign() {
   }, [campaignData, form, states]);
 
   const onFinish = async (values) => {
-
-    const selectedStates = values.state?.map(stateCode => {
-      const state = states.find(s => s.isoCode === stateCode);
-      return state?.name || stateCode;
-    }) || [];
-
-
     const payload = {
       ...values,
       startDate: values.startDate?.toISOString(),
@@ -213,7 +206,6 @@ function EditCampaign() {
           <Form.Item
             name="city"
             label="Cities"
-            rules={[{ required: true, message: 'Please select at least one city' }]}
           >
             <Select
               mode="multiple"
