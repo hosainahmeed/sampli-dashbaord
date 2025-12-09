@@ -13,16 +13,14 @@ const OfferCardSampler = ({ product, processing }) => {
     setIsModalVisible(false);
   };
   return (
-    <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow flex flex-col justify-between">
+    <div className=" bg-white  rounded-md shadow-md overflow-hidden hover:shadow-xl border border-gray-200  transition-shadow flex flex-col justify-between">
       {/* Product Image */}
       <div className=" flex justify-center  h-[400px] w-full overflow-hidden">
-        <div>
-          <img
-            src={product?.product?.images?.[0]}
-            alt={product?.product?.name}
-            className="w-full h-full  object-cover object-center"
-          />
-        </div>
+        <img
+          src={product?.product?.images?.[0]}
+          alt={product?.product?.name}
+          className="w-full h-full  object-cover object-center"
+        />
       </div>
 
       {/* Product Details */}
@@ -31,7 +29,7 @@ const OfferCardSampler = ({ product, processing }) => {
           {product?.product?.name}
         </h3>
         <div
-          className="text-gray-500 text-xs"
+          className="text-gray-500 line-clamp-1 text-xs"
           dangerouslySetInnerHTML={{
             __html: product?.product?.shortDescription,
           }}
@@ -65,10 +63,10 @@ const OfferCardSampler = ({ product, processing }) => {
                       : product?.campaign?.endDate
                   ) - new Date()
                 ) /
-                  1000 /
-                  60 /
-                  60 /
-                  24
+                1000 /
+                60 /
+                60 /
+                24
               )} days left`}
             </span>
           </span>
@@ -89,13 +87,12 @@ const OfferCardSampler = ({ product, processing }) => {
             {!processing && (
               <Button
                 onClick={showModal}
-                className={` !w-full  !font-medium !text-sm !py-4 ${
-                  product?.status === "Active"
-                    ? "!text-white !bg-blue-500 !cursor-pointer"
-                    : product?.status === "Scheduled"
+                className={` !w-full  !font-medium !text-sm !py-4 ${product?.status === "Active"
+                  ? "!text-white !bg-blue-500 !cursor-pointer"
+                  : product?.status === "Scheduled"
                     ? "!cursor-not-allowed !text-black !py-6"
                     : "!text-white !bg-blue-500 "
-                } ${processing && "!cursor-not-allowed !text-black "}`}
+                  } ${processing && "!cursor-not-allowed !text-black "}`}
                 disabled={product.status === "Scheduled" || processing}
               >
                 {product.status === "Active" ? (

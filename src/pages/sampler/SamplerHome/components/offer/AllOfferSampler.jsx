@@ -8,81 +8,6 @@ import {
 } from "../../../../../Redux/sampler/campaignApis";
 import Loader from "../../../../loader/Loader";
 
-const productData = [
-  {
-    id: 1,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 5 days",
-    status: "Offer Accepted",
-  },
-  {
-    id: 2,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 4 days",
-    status: "Offer Expired",
-  },
-  {
-    id: 3,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 3 days",
-    status: "Accept Offer",
-  },
-  {
-    id: 4,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 2 days",
-    status: "Accept Offer",
-  },
-  {
-    id: 5,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 1 days",
-    status: "Accept Offer",
-  },
-  {
-    id: 6,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 1 days",
-    status: "Completed Offer",
-  },
-  {
-    id: 7,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 1 days",
-    status: "Completed Offer",
-  },
-  {
-    id: 8,
-    image: productImage,
-    title: "Mini Portable Refillable Spray...",
-    description: "We are a factory direct sales store...",
-    rewards: 5,
-    due: "- 1 days",
-    status: "Completed Offer",
-  },
-];
-
 const AllOfferSampler = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -106,6 +31,8 @@ const AllOfferSampler = () => {
     }
     setStatus(key);
   };
+
+
   const items = [
     {
       key: "1",
@@ -440,7 +367,7 @@ const AllOfferSampler = () => {
     },
   ];
   return (
-    <div className="responsive-width !mt-5 h-screen overflow-y-scroll scrollbar-none">
+    <div className="responsive-width !mt-5 ">
       <div className="text-2xl font-semibold">Offers</div>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
     </div>

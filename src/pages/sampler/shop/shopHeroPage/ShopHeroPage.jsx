@@ -12,7 +12,7 @@ const ShopHeroPage = () => {
       <ShopCategory />
       <BestSellers />
       <FlashSales />
-      <FeaturedBrands />
+      {/* <FeaturedBrands /> */}
     </div>
   );
 };
