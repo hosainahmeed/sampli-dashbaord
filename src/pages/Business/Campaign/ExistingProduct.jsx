@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card,  Modal } from 'antd';
+import { Button, Card, Modal } from 'antd';
 import TargetAudienceLocation from '../../../components/ui/TargetAudienceLocation';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductSelection from '../Product/ProductSelection';
@@ -10,44 +10,32 @@ import { useCreateCampaignMutation } from '../../../Redux/businessApis/campaign/
 import toast from 'react-hot-toast';
 import { reset } from '../../../Redux/slices/CampaingSlice';
 import { FaInfoCircle } from 'react-icons/fa';
-import {useLocation } from 'react-router-dom';
 
 const steps = [
-  {
-    content: <ProductSelection />,
-  },
-  {
-    content: <TargetAudienceForm />,
-  },
-  {
-    content: <TargetAudienceLocation />,
-  },
-  {
-    content: <ReviewLaunch />,
-  },
+  { content: <ProductSelection /> },
+  { content: <TargetAudienceForm /> },
+  { content: <TargetAudienceLocation /> },
+  { content: <ReviewLaunch /> },
 ];
+
 const ExistingProduct = () => {
   const campaignData = useSelector((state) => state.campaign);
   const [current, setCurrent] = useState(0);
+
   const [createCampaign, { isLoading }] = useCreateCampaignMutation();
   const dispatch = useDispatch();
-  const { search } = useLocation();
-  const query = new URLSearchParams(search);
-  const userReloadAccess = query.get("user_reload_access");
+
+  // ======================================================
+  //  REAL RELOAD / TAB CLOSE PROTECTION (iOS Compatible)
+  // ======================================================
 
   useEffect(() => {
-    // const page_reload = localStorage.getItem("page_reload")
-    // if (page_reload) {
-    //   localStorage.removeItem("page_reload")
-    //   dispatch(reset())
-    //   return
-    // }
     const handleBeforeUnload = (e) => {
-      const data = Object.values(campaignData);
+      if (current === 3) return;
 
+      const data = Object.values(campaignData);
       const hasUnsavedChanges = data.some(
-        (value) =>
-          value !== null &&
+        value => value !== null &&
           value !== "" &&
           value !== undefined &&
           value !== 0
@@ -55,18 +43,22 @@ const ExistingProduct = () => {
 
       if (hasUnsavedChanges) {
         e.preventDefault();
-        e.returnValue = "";
+        // Modern browsers require both of these
+        e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+        return e.returnValue;
       }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [userReloadAccess, campaignData, current]);
+  }, [campaignData, current]); 
 
 
+  // ======================================================
+  // NEXT STEP LOGIC 
+  // ======================================================
 
   const next = async () => {
     if (!campaignData?.product && current === 0 || campaignData?.product === null || campaignData?.product === '') {
@@ -186,6 +178,9 @@ const ExistingProduct = () => {
     }
     setCurrent(current + 1);
   };
+  // ======================================================
+  // PREV STEP LOGIC 
+  // ======================================================
 
   const prev = () => {
     if (current > 0 && current < 3) {
@@ -193,6 +188,10 @@ const ExistingProduct = () => {
     }
   };
 
+
+  // ======================================================
+  // SUBMIT LOGIC UNCHANGED
+  // ======================================================
   const validatePayload = (data) => {
     const requiredKeys = [
       'product',
@@ -207,14 +206,10 @@ const ExistingProduct = () => {
       'paymentMethod',
     ];
 
-    const missing = requiredKeys.filter((key) => !data[key]);
-    const invalid = requiredKeys.filter((key) => data[key] === null || data[key] === '' || data[key] === undefined || data[key] === 0 || data[key] === false);
+    const invalid = requiredKeys.filter((key) => !data[key]);
 
-    if (missing.length) {
-      throw new Error(`Missing required fields: ${missing.join(', ')}`);
-    }
     if (invalid.length) {
-      throw new Error(`Invalid fields: ${invalid.join(', ')}`);
+      throw new Error(`Missing or invalid fields: ${invalid.join(', ')}`);
     }
   };
 
@@ -222,40 +217,38 @@ const ExistingProduct = () => {
     try {
       validatePayload(campaignData);
       const res = await createCampaign(campaignData).unwrap();
-      if (!res?.success) {
-        throw new Error(res?.message);
-      }
+
+      if (!res?.success) throw new Error(res?.message);
+
       toast.success(res?.message);
-      if (window !== undefined) {
-        window.open(res?.data?.url, '_blank');
-        dispatch(reset())
-        window.location.reload();
-      }
+      window.location.href = res?.data?.url
+      dispatch(reset());
     } catch (err) {
-      const msg = err?.data?.message || err?.message || 'Something went wrong';
-      toast.error(msg);
+      toast.error(err?.message || 'Something went wrong');
     }
   };
 
   return (
     <Card>
-      <div className='w-xl mx-auto h-[70vh] overflow-y-auto scrollbar'>{steps[current].content}</div>
-      <div className='mx-auto w-xl mt-12'>
+      <div className="w-xl mx-auto h-[70vh] overflow-y-auto scrollbar">
+        {steps[current].content}
+      </div>
 
+      <div className="mx-auto w-xl mt-12">
         {current > 0 && current < 2 && (
-          <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+          <Button style={{ margin: '0 8px' }} onClick={prev}>
             Previous
           </Button>
         )}
+
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
+          <Button type="primary" onClick={next}>
             Next
           </Button>
         )}
+
         {current === steps.length - 1 && (
-          <Button loading={isLoading} type="primary" onClick={() => {
-            handleSubmit();
-          }}>
+          <Button loading={isLoading} type="primary" onClick={handleSubmit}>
             Confirm & Pay
           </Button>
         )}
