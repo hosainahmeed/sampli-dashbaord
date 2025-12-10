@@ -11,20 +11,6 @@ import { GoLinkExternal } from "react-icons/go";
 
 const { Title, Text } = Typography;
 
-// const getStatusColor = (status) => {
-//   switch (status) {
-//     case "Delivered":
-//       return "green";
-//     case "Waiting to be shipped":
-//       return "orange";
-//     case "Shipped":
-//     case "Shipped":
-//       return "blue";
-//     default:
-//       return "purple";
-//   }
-// };
-
 const formatDateTime = (iso) => {
   if (!iso) return null;
   try {
@@ -41,7 +27,7 @@ const formatDateTime = (iso) => {
   }
 };
 
-const SHIPPO_STATUS_MAP = {
+export const SHIPPO_STATUS_MAP = {
   UNKNOWN: "Order processed",
   PRE_TRANSIT: "Order processed",
   TRANSIT: "Item shipped",
@@ -51,7 +37,7 @@ const SHIPPO_STATUS_MAP = {
   FAILURE: "Delivery failed",
 };
 
-const BASE_TIMELINE = [
+export const BASE_TIMELINE = [
   { key: "processed", label: "Order processed" },
   { key: "payment", label: "Payment confirmed" },
   { key: "shipped", label: "Item shipped" },
@@ -79,7 +65,6 @@ const OrderDetails = () => {
   const buildTimelineItems = () => {
     const trackingHistory = trackOrder?.data?.trackingData?.tracking_history || [];
     const latestTrack = trackOrder?.data?.trackingData?.tracking_status;
-
     const trackingEvents = trackingHistory.map((t) => {
       const mappedLabel = SHIPPO_STATUS_MAP[t.status] || t.status || null;
       return {
