@@ -39,7 +39,7 @@ const campaignApis = baseApis.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["campaign"],
+      invalidatesTags: ["campaign","campaignStats"],
     }),
     getCampaignStatus: builder.query({
       query: () => ({
