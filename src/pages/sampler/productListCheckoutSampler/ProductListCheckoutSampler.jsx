@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Table,
@@ -11,7 +11,11 @@ import {
   Modal,
 } from "antd";
 
-import { DeleteOutlined, ShoppingOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  ShoppingOutlined,
+  SaveOutlined,
+} from "@ant-design/icons";
 
 import toast from "react-hot-toast";
 
@@ -20,11 +24,9 @@ import { Link } from "react-router-dom";
 import productImage from "/public/product_image.svg";
 
 import {
-  useDecreaseItemMutation,
-  useDeleteCartMutation,
   useGetAllCartItemsQuery,
-  useIncreaseItemMutation,
   useRemoveCartMutation,
+  useUpdateCartItemMutation,
 } from "../../../Redux/sampler/cartApis";
 
 import { useGetShippingAddressQuery } from "../../../Redux/sampler/shippingAddressApis";
@@ -44,9 +46,8 @@ const SoloStoveCart = () => {
     usePostShippingRatesMutation();
   const [createOrder, { isLoading: createOrderLoading }] =
     useCreateOrderMutation();
-  const [increasedQuantity] = useIncreaseItemMutation();
-  const [decreasedQuantity] = useDecreaseItemMutation();
-  const [deleteQuantity] = useDeleteCartMutation();
+  const [updateCart, { isLoading: updateCartLoading }] =
+    useUpdateCartItemMutation();
   const [removeCartItem] = useRemoveCartMutation();
   const [providerList, setProviderList] = useState([]);
   const [shippingAddressId, setShippingAddressId] = useState("");
@@ -54,11 +55,27 @@ const SoloStoveCart = () => {
   const [selectedRateId, setSelectedRateId] = useState("");
   const [shipmentId, setShipment] = useState("");
 
+  // State to track modified quantities
+  const [modifiedQuantities, setModifiedQuantities] = useState({});
+  const [hasChanges, setHasChanges] = useState(false);
+
   const cart = cartItems?.data;
   const cartData = cartItems?.data?.items;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenProvider, setIsModalOpenProvider] = useState(false);
+
+  // Initialize quantities when cart data loads
+  useEffect(() => {
+    if (cartData) {
+      const initialQuantities = {};
+      cartData.forEach((item) => {
+        const key = `${item.product._id}-${item?.variant?._id || "no-variant"}`;
+        initialQuantities[key] = item.quantity;
+      });
+      setModifiedQuantities(initialQuantities);
+    }
+  }, [cartData]);
 
   const showModalProvider = async () => {
     setIsModalOpenProvider(true);
@@ -104,41 +121,63 @@ const SoloStoveCart = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const increaseQuantity = async (itemId, variantId = null) => {
-    try {
-      const data = {
-        productId: itemId,
-        variantId,
-      };
-      const res = await increasedQuantity({
-        data,
-      });
-      if (res?.data?.success) {
-        refetch();
-        // toast.success("Quantity increased!");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to increase quantity");
+
+  const handleQuantityChange = (productId, variantId, newQuantity) => {
+    const key = `${productId}-${variantId || "no-variant"}`;
+    setModifiedQuantities((prev) => ({
+      ...prev,
+      [key]: newQuantity,
+    }));
+    setHasChanges(true);
+  };
+
+  const increaseQuantity = (productId, variantId) => {
+    const key = `${productId}-${variantId || "no-variant"}`;
+    const currentQuantity = modifiedQuantities[key] || 1;
+    handleQuantityChange(productId, variantId, currentQuantity + 1);
+  };
+
+  const decreaseQuantity = (productId, variantId) => {
+    const key = `${productId}-${variantId || "no-variant"}`;
+    const currentQuantity = modifiedQuantities[key] || 1;
+    if (currentQuantity > 1) {
+      handleQuantityChange(productId, variantId, currentQuantity - 1);
     }
   };
 
-  const decreaseQuantity = async (itemId, variantId = null) => {
+  const saveAllChanges = async () => {
     try {
-      const data = {
-        productId: itemId,
-        variantId,
-      };
-      const res = await decreasedQuantity({
-        data,
+      // Find items that have changed
+      const changedItems = cartData.filter((item) => {
+        const key = `${item.product._id}-${item?.variant?._id || "no-variant"}`;
+        return modifiedQuantities[key] !== item.quantity;
       });
-      if (res?.data?.success) {
-        refetch();
-        // toast.success("Quantity decreased!");
+
+      if (changedItems.length === 0) {
+        toast.info("No changes to save");
+        return;
       }
+
+      // Update all changed items
+      for (const item of changedItems) {
+        const key = `${item.product._id}-${item?.variant?._id || "no-variant"}`;
+        const newQuantity = modifiedQuantities[key];
+
+        const data = {
+          productId: item.product._id,
+          variantId: item?.variant?._id,
+          quantity: newQuantity,
+        };
+
+        await updateCart({ data });
+      }
+
+      await refetch();
+      setHasChanges(false);
+      toast.success("Cart updated successfully!");
     } catch (error) {
       console.log(error);
-      toast.error("Failed to decrease quantity");
+      toast.error("Failed to update cart");
     }
   };
 
@@ -153,7 +192,7 @@ const SoloStoveCart = () => {
       });
       if (res?.data?.success) {
         refetch();
-        // toast.success("Item removed from cart!");
+        toast.success("Item removed from cart!");
       }
     } catch (error) {
       console.log(error);
@@ -168,6 +207,25 @@ const SoloStoveCart = () => {
       </div>
     );
   }
+
+  // Calculate updated totals based on modified quantities
+  const calculateUpdatedTotals = () => {
+    if (!cartData) return { subTotal: 0, totalPrice: 0 };
+
+    let subTotal = 0;
+    cartData.forEach((item) => {
+      const key = `${item.product._id}-${item?.variant?._id || "no-variant"}`;
+      const currentQuantity = modifiedQuantities[key] || item.quantity;
+      subTotal += (item.price || 0) * currentQuantity;
+    });
+
+    return {
+      subTotal: subTotal,
+      totalPrice: subTotal, // Add delivery fee here if needed
+    };
+  };
+
+  const updatedTotals = calculateUpdatedTotals();
 
   const columns = [
     {
@@ -197,7 +255,7 @@ const SoloStoveCart = () => {
       key: "price",
       width: 120,
       align: "center",
-      render: (price) => `$${price?.toFixed(2) || "0.00"}`,
+      render: (price) => `${price?.toFixed(2) || "0.00"}`,
     },
     {
       title: "Quantity",
@@ -205,56 +263,78 @@ const SoloStoveCart = () => {
       key: "quantity",
       width: 150,
       align: "center",
-      render: (quantity, record) => (
-        <Space>
-          <Button
-            onClick={() =>
-              decreaseQuantity(record.product._id, record?.variant?._id)
-            }
-            disabled={quantity <= 1}
-          >
-            -
-          </Button>
-          <InputNumber
-            min={1}
-            value={quantity}
-            style={{ width: 50, textAlign: "center" }}
-            readOnly
-          />
-          <Button
-            onClick={() =>
-              increaseQuantity(record.product._id, record?.variant?._id)
-            }
-          >
-            +
-          </Button>
-        </Space>
-      ),
+      render: (quantity, record) => {
+        const key = `${record.product._id}-${
+          record?.variant?._id || "no-variant"
+        }`;
+        const currentQuantity = modifiedQuantities[key] || quantity;
+
+        return (
+          <Space>
+            <Button
+              onClick={() =>
+                decreaseQuantity(record.product._id, record?.variant?._id)
+              }
+              disabled={currentQuantity <= 1}
+            >
+              -
+            </Button>
+            <InputNumber
+              min={1}
+              value={currentQuantity}
+              onChange={(value) =>
+                handleQuantityChange(
+                  record.product._id,
+                  record?.variant?._id,
+                  value
+                )
+              }
+              style={{ width: 50, textAlign: "center" }}
+            />
+            <Button
+              onClick={() =>
+                increaseQuantity(record.product._id, record?.variant?._id)
+              }
+            >
+              +
+            </Button>
+          </Space>
+        );
+      },
     },
     {
       title: "Total",
       key: "total",
       width: 120,
       align: "right",
-      render: (record) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ marginRight: 8 }}>
-            ${((record.price || 0) * (record.quantity || 0)).toFixed(2)}
-          </span>
-          <Button
-            type="text"
-            icon={<DeleteOutlined />}
-            onClick={() => removeItem(record.product._id, record?.variant?._id)}
-            danger
-          />
-        </div>
-      ),
+      render: (record) => {
+        const key = `${record.product._id}-${
+          record?.variant?._id || "no-variant"
+        }`;
+        const currentQuantity = modifiedQuantities[key] || record.quantity;
+
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ marginRight: 8 }}>
+              ${((record.price || 0) * currentQuantity).toFixed(2)}
+            </span>
+            <Button
+              type="text"
+              icon={<DeleteOutlined />}
+              onClick={() =>
+                removeItem(record.product._id, record?.variant?._id)
+              }
+              danger
+            />
+          </div>
+        );
+      },
     },
   ];
 
@@ -284,7 +364,7 @@ const SoloStoveCart = () => {
               summary={() => (
                 <Table.Summary>
                   {/* Row 1 - Subtotal */}
-                  <Table.Summary.Row>
+                  {/* <Table.Summary.Row>
                     <Table.Summary.Cell index={0} colSpan={3}>
                       <Text strong style={{ fontSize: 16 }}>
                         Sub Total:
@@ -292,26 +372,12 @@ const SoloStoveCart = () => {
                     </Table.Summary.Cell>
                     <Table.Summary.Cell index={1} align="right">
                       <Text strong style={{ fontSize: 20 }}>
-                        ${cart?.subTotal?.toFixed(2) || "0.00"}
-                      </Text>
-                    </Table.Summary.Cell>
-                  </Table.Summary.Row>
-
-                  {/* Row 2 - Delivery Fee */}
-                  {/* <Table.Summary.Row>
-                    <Table.Summary.Cell index={0} colSpan={3}>
-                      <Text strong style={{ fontSize: 16 }}>
-                        Delivery Fee:
-                      </Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={1} align="right">
-                      <Text strong style={{ fontSize: 20 }}>
-                        ${cart?.deliveryFee?.toFixed(2) || "0.00"}
+                        ${updatedTotals.subTotal.toFixed(2)}
                       </Text>
                     </Table.Summary.Cell>
                   </Table.Summary.Row> */}
 
-                  {/* Row 3 - Grand Total */}
+                  {/* Row 2 - Grand Total */}
                   <Table.Summary.Row>
                     <Table.Summary.Cell index={0} colSpan={3}>
                       <Text strong style={{ fontSize: 18 }}>
@@ -320,7 +386,7 @@ const SoloStoveCart = () => {
                     </Table.Summary.Cell>
                     <Table.Summary.Cell index={1} align="right">
                       <Text strong style={{ fontSize: 22, color: "green" }}>
-                        ${cart?.totalPrice?.toFixed(2) || "0.00"}
+                        ${updatedTotals.totalPrice.toFixed(2)}
                       </Text>
                     </Table.Summary.Cell>
                   </Table.Summary.Row>
@@ -328,7 +394,23 @@ const SoloStoveCart = () => {
               )}
             />
 
-            <div style={{ marginTop: 24 }}>
+            {hasChanges && (
+              <div style={{ marginTop: 16 }}>
+                <Button
+                  type="default"
+                  size="large"
+                  block
+                  onClick={saveAllChanges}
+                  loading={updateCartLoading}
+                  icon={<SaveOutlined />}
+                  className="!bg-green-700 !text-white hover:!bg-green-600"
+                >
+                  Save Changes
+                </Button>
+              </div>
+            )}
+
+            <div style={{ marginTop: 16 }}>
               <Button
                 type="primary"
                 size="large"
@@ -434,10 +516,6 @@ const SoloStoveCart = () => {
                         <span className="text-gray-600">Street: </span>
                         <span className="text-gray-800">{address.street1}</span>
                       </div>
-                      {/* <div>
-                        <span className="text-gray-600">Street 2: </span>
-                        <span className="text-gray-800">{address.street2}</span>
-                      </div> */}
                       <div>
                         <span className="text-gray-600">City: </span>
                         <span className="text-gray-800">{address.city}</span>
@@ -462,14 +540,6 @@ const SoloStoveCart = () => {
                         <span className="text-gray-600">Email: </span>
                         <span className="text-gray-800">{address.email}</span>
                       </div>
-                      {/* {address.alternativePhoneNumber && (
-                        <div>
-                          <span className="text-gray-600">Alt Phone: </span>
-                          <span className="text-gray-800">
-                            {address.alternativePhoneNumber}
-                          </span>
-                        </div>
-                      )} */}
                     </div>
                   </div>
                 ))}
@@ -566,27 +636,6 @@ const SoloStoveCart = () => {
                 </div>
               </div>
             )}
-
-            {/* {providerList?.length > 0 && (
-              <div className="flex items-center mt-4 mx-auto gap-5 justify-center">
-                <div
-                  className={`border border-gray-200 rounded-lg p-4 cursor-pointer ${
-                    paymentMethod === "Stripe" ? "!bg-blue-500 !text-white" : ""
-                  }`}
-                  onClick={() => setPaymentMethod("Stripe")}
-                >
-                  Stripe
-                </div>
-                <div
-                  className={`border border-gray-200 rounded-lg p-4  cursor-pointer ${
-                    paymentMethod === "Paypal" ? "!bg-blue-500 !text-white" : ""
-                  }`}
-                  onClick={() => setPaymentMethod("Paypal")}
-                >
-                  Paypal
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       </Modal>
