@@ -1,6 +1,6 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCircleChevronRight } from "react-icons/fa6";
-import { Modal, Input, Button, Upload, message } from "antd";
+import { Modal, Input, Button, Upload, message, Select } from "antd";
 import toast from "react-hot-toast";
 import { UploadOutlined } from "@ant-design/icons";
 import {
@@ -12,10 +12,18 @@ import {
   useGetReviewerProfileQuery,
   useUpdateReviewerProfileMutation,
 } from "../../../../../Redux/sampler/reviewerProfileApis";
+import { City, State } from "country-state-city";
 
 const BasicDetailsSettingsSampler = () => {
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showPhotoModal, setShowPhotoModal] = useState(false);
+
+  const states = State.getStatesOfCountry("US");
+
+  const [selectedState, setSelectedState] = useState(null);
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
 
   const { data: getAllShippingAddress } = useGetShippingAddressQuery();
   const [updateShipping] = useUpdateShippingAddressMutation();
@@ -23,27 +31,29 @@ const BasicDetailsSettingsSampler = () => {
   const [updateReviewerProfile, { isLoading: isUpdating }] =
     useUpdateReviewerProfileMutation();
 
-  const [username, setUsername] = useState(
-    getReviewerData?.data?.username || ""
-  );
-  const [name, setName] = useState(getReviewerData?.data?.name || "");
-  const [bio, setBio] = useState(getReviewerData?.data?.bio || "");
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
     if (getReviewerData?.data) {
       const profileData = getReviewerData.data;
-      setUsername(profileData.username);
-      setName(profileData.name);
-      setBio(profileData.bio);
+      setUsername(profileData.username || "");
+      setName(profileData.name || "");
+      setBio(profileData.bio || "");
+      setSelectedState(profileData.state || null);
+      setCity(profileData.city || "");
+      setZipCode(profileData.zipCode || "");
+
+      // Load cities if state exists
+      if (profileData.state) {
+        const cities = City.getCitiesOfState("US", profileData.state);
+        setFilteredCities(cities);
+      }
     }
   }, [getReviewerData]);
-
-  const handleSavePhoto = () => {
-    setShowPhotoModal(false);
-    toast.success("Photo selected!");
-  };
 
   const handleInfoUpdate = async () => {
     try {
@@ -59,6 +69,8 @@ const BasicDetailsSettingsSampler = () => {
         JSON.stringify({
           name,
           bio,
+          state: selectedState,
+          city,
         })
       );
 
@@ -145,11 +157,59 @@ const BasicDetailsSettingsSampler = () => {
                 <p className="text-sm text-gray-600 mb-1">Name</p>
                 <Input
                   type="text"
-                  className="w-full text-sm p-2 border rounded-md border-gray-200 outline-none h-[40px]"
+                  className="w-full !text-[17px]  p-2 border rounded-md border-gray-200 outline-none h-[40px]"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
+            </div>
+
+            {/* Select State */}
+            <div className="mb-4">
+              <label className="text-sm text-gray-600 mb-1 block">
+                State <span className="text-red-500">*</span>
+              </label>
+              <Select
+                size="large"
+                showSearch
+                placeholder="Select state"
+                value={selectedState}
+                onChange={(value) => {
+                  setSelectedState(value);
+                  const cities = City.getCitiesOfState("US", value);
+                  setFilteredCities(cities);
+                  setCity("");
+                }}
+                className="w-full !text-sm"
+              >
+                {states.map((state) => (
+                  <Select.Option key={state.isoCode} value={state.isoCode} className="!text-sm">
+                    {state.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+
+            {/* Select City */}
+            <div className="mb-4">
+              <label className="text-sm text-gray-600 mb-1 block">City</label>
+              <Select
+                size="large"
+                showSearch
+                placeholder={
+                  selectedState ? "Select city" : "Select state first"
+                }
+                disabled={!selectedState}
+                value={city || undefined}
+                onChange={(value) => setCity(value)}
+                className="w-full"
+              >
+                {filteredCities.map((city) => (
+                  <Select.Option key={city.name} value={city.name}>
+                    {city.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </div>
 
             <div className="text-sm">
@@ -191,7 +251,6 @@ const BasicDetailsSettingsSampler = () => {
             key="save"
             type="primary"
             onClick={() => {
-              setUsername(username);
               setShowUsernameModal(false);
             }}
           >
