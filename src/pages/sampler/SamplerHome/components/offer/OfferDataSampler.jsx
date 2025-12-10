@@ -2,7 +2,6 @@ import React from "react";
 import OfferCardSampler from "./OfferCardSampler";
 import { useNavigate } from "react-router-dom";
 import { useGetCampaignListQuery } from "../../../../../Redux/sampler/campaignApis";
-import Loader from "../../../../loader/Loader";
 import { Card } from "antd";
 const OfferDataSampler = () => {
   const Navigate = useNavigate();

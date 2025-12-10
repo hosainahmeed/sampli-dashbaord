@@ -18,10 +18,7 @@ import {
   HeartOutlined,
   HeartFilled,
   MessageOutlined,
-  MoreOutlined,
   SendOutlined,
-  EllipsisOutlined,
-  CameraOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import followingInactiveLogo from "../../../assets/feedLogo/following.svg";
@@ -44,6 +41,7 @@ import {
 import { useAddToCartMutation } from "../../../Redux/sampler/cartApis";
 import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
 import { usePostFollowUnfollowMutation } from "../../../Redux/sampler/followUnfollowApis";
+import Spinner from "../../../components/ui/Spinner";
 
 const { TabPane } = Tabs;
 
@@ -53,7 +51,7 @@ const SamplerFeed = () => {
 
   const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
 
-  const { data: getMyProfile, isLoading: myProfileLoading } =
+  const { data: getMyProfile } =
     useGetProfileApisQuery();
 
   const profileData = getMyProfile?.data;
@@ -90,7 +88,7 @@ const SamplerFeed = () => {
     id: reviewId,
     limit,
   });
-  const [reviewLikeUnlike] = useChangeLikesMutation();
+  const [reviewLikeUnlike, { isLikeLoading }] = useChangeLikesMutation();
   const [postReplyChat] = usePostCommentRepliesMutation();
 
   const users = getReviewerLikers?.data?.result;
@@ -100,9 +98,8 @@ const SamplerFeed = () => {
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
-  const [following, setFollowing] = useState({});
 
-  const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
+  const { data: reviewList, isLoading: reviewLoading, isFetching } = useGetAllReviewQuery({
     category: activeCategory,
     following: activeTab == "following" ? true : undefined,
     sortBy: activeTab != "popular" ? undefined : "totalView",
@@ -132,7 +129,7 @@ const SamplerFeed = () => {
 
       setCommentText("");
       setReplyingTo(null);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleFollow = async (id) => {
@@ -148,7 +145,6 @@ const SamplerFeed = () => {
     setShowShareModal(true);
   };
 
-  const [addCart, { isLoading }] = useAddToCartMutation();
 
   const [isModalOpenLike, setIsModalOpenLike] = useState(false);
   const showModalLike = (id) => {
@@ -244,7 +240,7 @@ const SamplerFeed = () => {
           </div>
         </div>
 
-        <div>{}</div>
+        <div>{ }</div>
 
         {/* right side */}
         <div className="w-2/3 max-lg:w-full">
@@ -499,14 +495,17 @@ const SamplerFeed = () => {
                       className="flex items-center gap-1 text-gray-500 cursor-pointer"
                       onClick={() => handleLike(post?._id)}
                     >
-                      {post?.isLike == true ? (
-                        <HeartFilled className="!text-red-500" />
-                      ) : (
-                        <HeartOutlined />
-                      )}
+                      {isLikeLoading || isFetching ?
+                        <Spinner />
+                        : post?.isLike == true ? (
+                          <HeartFilled className="!text-red-500" />
+                        ) : (
+                          <HeartOutlined />
+                        )}
                       {post?.totalLikers}
                     </button>
                     <button
+                      disabled={post?.totalComments === 0}
                       className="flex items-center gap-1 text-gray-500 cursor-pointer"
                       onClick={() => handleAllComments(post?._id)}
                     >

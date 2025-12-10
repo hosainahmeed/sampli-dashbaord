@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, DatePicker, Select, Card } from "antd";
+import { Form, Input, Button, DatePicker, Select, Card, Checkbox } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import {
@@ -53,10 +53,8 @@ function EditCampaign() {
   useEffect(() => {
     if (campaignData?.data) {
       const d = campaignData.data;
-
       const initialStates = Array.isArray(d.state) ? d.state : [];
       setSelectedState(initialStates);
-
       form.setFieldsValue({
         name: d.name,
         minAge: d.minAge,
@@ -67,6 +65,7 @@ function EditCampaign() {
         country: 'US',
         state: d.state || [],
         city: d.city || [],
+        isShowEverywhere: d.isShowEverywhere
       });
     }
   }, [campaignData, form, states]);
@@ -80,7 +79,6 @@ function EditCampaign() {
       state: values.state || [],
       city: values.city || [],
     };
-
 
     delete payload.country;
     try {
@@ -100,7 +98,7 @@ function EditCampaign() {
   </div>;
 
   return (
-    <div className="max-w-screen-md mx-auto mt-8">
+    <div className="max-w-screen-md mx-auto mt-8 pb-28">
       <Form
         layout="vertical"
         form={form} r
@@ -113,7 +111,7 @@ function EditCampaign() {
           name="name"
           rules={[{ required: true, message: "Please enter campaign name" }]}
         >
-          <Input placeholder="Campaign name" />
+          <Input size="large" placeholder="Campaign name" />
         </Form.Item>
 
         <div className="grid grid-cols-2 gap-4">
@@ -122,7 +120,7 @@ function EditCampaign() {
             name="minAge"
             rules={[{ required: true, message: "Enter min age" }]}
           >
-            <Input type="number" placeholder="18" />
+            <Input size="large" type="number" placeholder="18" />
           </Form.Item>
 
           <Form.Item
@@ -130,7 +128,7 @@ function EditCampaign() {
             name="maxAge"
             rules={[{ required: true, message: "Enter max age" }]}
           >
-            <Input type="number" placeholder="45" />
+            <Input size="large" type="number" placeholder="45" />
           </Form.Item>
         </div>
 
@@ -140,7 +138,7 @@ function EditCampaign() {
             name="startDate"
             rules={[{ required: true, message: "Select start date" }]}
           >
-            <DatePicker className="w-full" />
+            <DatePicker size="large" className="w-full" />
           </Form.Item>
 
           <Form.Item
@@ -148,7 +146,7 @@ function EditCampaign() {
             name="endDate"
             rules={[{ required: true, message: "Select end date" }]}
           >
-            <DatePicker className="w-full" />
+            <DatePicker size="large" className="w-full" />
           </Form.Item>
         </div>
 
@@ -157,9 +155,9 @@ function EditCampaign() {
           name="gender"
           rules={[{ required: true, message: "Select gender" }]}
         >
-          <Select placeholder="Select gender">
+          <Select size="large" placeholder="Select gender">
             {genderOptions.map((g) => (
-              <Option key={g.value} value={g.value}>
+              <Option  key={g.value} value={g.value}>
                 {g.label}
               </Option>
             ))}
@@ -172,7 +170,7 @@ function EditCampaign() {
             label="Country"
             rules={[{ required: true, message: 'Please select a country' }]}
           >
-            <Select disabled>
+            <Select size="large" disabled>
               <Option value="US">United States</Option>
             </Select>
           </Form.Item>
@@ -189,6 +187,7 @@ function EditCampaign() {
                 setSelectedState(value);
                 form.setFieldsValue({ city: [] });
               }}
+              size="large"
               showSearch
               optionFilterProp="children"
               filterOption={(input, option) =>
@@ -211,6 +210,7 @@ function EditCampaign() {
               mode="multiple"
               placeholder="Select cities"
               showSearch
+              size="large"
               optionFilterProp="children"
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -227,6 +227,9 @@ function EditCampaign() {
               }).flat()}
             </Select>
           </Form.Item>
+          <Form.Item name="isShowEverywhere" valuePropName="checked">
+            <Checkbox size="large">Show Campaign to all</Checkbox>
+          </Form.Item>
         </div>
 
         <Button
@@ -234,6 +237,7 @@ function EditCampaign() {
           htmlType="submit"
           className="w-full"
           loading={isUpdating}
+          size="large"
         >
           Save Changes
         </Button>

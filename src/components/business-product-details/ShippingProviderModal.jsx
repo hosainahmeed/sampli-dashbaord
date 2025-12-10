@@ -39,15 +39,14 @@ function ShippingProviderModal({
         selectedRateId: selectedProvider?.objectId,
         campaignOfferId: id,
       };
-      await confirmShipping(payload)
-        .unwrap()
-        .then((res) => {
-          if (res?.success) {
-            toast.success(res?.message);
-            window.open(res?.data?.url, "_blank");
-            handleModalCancel();
-          }
-        });
+      const res = await confirmShipping(payload).unwrap()
+      if (!res?.success) {
+        throw new Error(res?.message)
+      }
+      toast.success(res?.message);
+      window.location.href = res?.data?.url
+      handleModalCancel();
+
     } catch (error) {
       toast.error(
         error?.data?.message || error?.message || "Something went wrong"
@@ -172,11 +171,10 @@ function ShippingProviderModal({
                   </div> */}
                   <div
                     onClick={() => setPaymentMethod("Stripe")}
-                    className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${
-                      paymentMethod === "Stripe"
-                        ? "bg-blue-200 !border-2 !border-[#1890FF]"
-                        : ""
-                    }`}
+                    className={`flex-1 border border-gray-200 shadow rounded p-2 h-full ${paymentMethod === "Stripe"
+                      ? "bg-blue-200 !border-2 !border-[#1890FF]"
+                      : ""
+                      }`}
                   >
                     <img
                       src={stripeIcon}

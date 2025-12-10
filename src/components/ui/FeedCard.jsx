@@ -104,10 +104,7 @@ const FeedCard = ({ content }) => {
       <div className="mt-4">
         <Button
           className="!text-[#6D7486]"
-          onClick={() => {
-            setLike(!like);
-            like ? toast.error("Unliked") : toast.success("Liked");
-          }}
+          disabled
           type="text"
           icon={content?.isLike ? <FaHeart fill="red" /> : <CiHeart />}
         >
