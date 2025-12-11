@@ -6,7 +6,7 @@ import { useGetCampaignMetaDataQuery } from '../../Redux/businessApis/meta/camap
 const { Option } = Select;
 function SalesAnalytics() {
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('This Week');
+  const [selectedOption, setSelectedOption] = useState('thisWeek');
   const { data: campaignData, isLoading: campaignLoading, isFetching } = useGetCampaignMetaDataQuery({
     dateRange: selectedOption,
   });
