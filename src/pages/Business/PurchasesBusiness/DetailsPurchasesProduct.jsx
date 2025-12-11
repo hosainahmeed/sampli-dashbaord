@@ -17,7 +17,7 @@ const { Text, Title } = Typography;
 
 function DetailsPurchasesProduct() {
   const { id } = useLocation().state;
-  const { data, isLoading } = useGetCampaignPurchaseByIdQuery(id);
+  const { data, isLoading } = useGetCampaignPurchaseByIdQuery(id, { skip: !id });
   const order = data?.data;
   const navigate = useNavigate();
 
