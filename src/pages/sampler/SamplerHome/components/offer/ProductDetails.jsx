@@ -10,7 +10,11 @@ import { Link } from "react-router-dom";
 
 const ProductDetails = ({ productId, visible, onCancel }) => {
   const { data: shippingAddresses, isLoading } = useGetShippingAddressQuery();
-  const { data: getOneCampaign, isLoading: singleCampaignLoading, isFetching } = useGetOneCampaignQuery({
+  const {
+    data: getOneCampaign,
+    isLoading: singleCampaignLoading,
+    isFetching,
+  } = useGetOneCampaignQuery({
     id: productId,
   });
 
@@ -57,21 +61,25 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           shippingAddress: selectAddressId,
           amount: getOneCampaign?.data?.product?.price,
         };
-        const res = await postCampaign(data).unwrap()
-        console.log(res)
+        const res = await postCampaign(data).unwrap();
+        console.log(res);
         if (!res?.success) {
-          throw new Error(res?.message)
+          throw new Error(res?.message);
         }
         toast.success(res?.data?.message || res?.message);
       } catch (error) {
-        console.log(error)
-        toast.error(error?.data?.message || error?.message || "something went wrong!")
+        console.log(error);
+        toast.error(
+          error?.data?.message || error?.message || "something went wrong!"
+        );
       }
       onCancel();
     } else {
       setPage((prev) => prev + 1);
     }
   };
+
+  console.log(getOneCampaign?.data);
 
   return (
     <Modal
@@ -83,20 +91,37 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
       keyboard={true}
       onOk={() => {
         if (selectAddressId === "" && page !== 1) {
-          return
+          return;
         }
-        handleClick()
+        handleClick();
       }}
-      okText={page === 1 ? "Next" : campaignLoading ? <div className="flex gap-1 items-center"> <div className="w-3 h-3 border-l border-r rounded-full animate-spin" /> Accept Offer</div> : "Accept Offer"
+      okText={
+        page === 1 ? (
+          "Next"
+        ) : campaignLoading ? (
+          <div className="flex gap-1 items-center">
+            {" "}
+            <div className="w-3 h-3 border-l border-r rounded-full animate-spin" />{" "}
+            Accept Offer
+          </div>
+        ) : (
+          "Accept Offer"
+        )
       }
-      cancelButtonProps={{ style: { display: 'none' } }}
-      okButtonProps={{ style: { backgroundColor: selectAddressId === "" && page !== 1 ? "#BFC3EA" : "#3480FA", cursor: selectAddressId === "" && page !== 1 ? "not-allowed" : "" } }}
+      cancelButtonProps={{ style: { display: "none" } }}
+      okButtonProps={{
+        style: {
+          backgroundColor:
+            selectAddressId === "" && page !== 1 ? "#BFC3EA" : "#3480FA",
+          cursor: selectAddressId === "" && page !== 1 ? "not-allowed" : "",
+        },
+      }}
       width={600}
       style={{
         position: "absolute",
         top: "0%",
         right: "0",
-        height: "80%"
+        height: "80%",
       }}
       bordered
       centered
@@ -124,10 +149,11 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
               {images?.map((image, index) => (
                 <div
                   key={index}
-                  className={`cursor-pointer p-1 rounded transition-all ${activeIndex === index
-                    ? "border-2 border-blue-500"
-                    : "border-2 border-transparent"
-                    }`}
+                  className={`cursor-pointer p-1 rounded transition-all ${
+                    activeIndex === index
+                      ? "border-2 border-blue-500"
+                      : "border-2 border-transparent"
+                  }`}
                   onClick={() => handleThumbnailClick(index)}
                 >
                   <img
@@ -158,11 +184,11 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
                   {getOneCampaign?.data?.product?._id}
                 </Descriptions.Item>
                 <Descriptions.Item label="END DATE">
-                  {new Intl.DateTimeFormat("en-US", {
+                  {new Date(getOneCampaign?.data?.endDate).toLocaleDateString("en-GB", {
+                    day: "2-digit",
                     month: "long",
-                    day: "numeric",
                     year: "numeric",
-                  }).format(new Date("2025-03-10T00:00:00.000Z"))}
+                  })}
                 </Descriptions.Item>
                 {/* <Descriptions.Item label="Shipping from">
                   Area 59, Delaware, USA
@@ -205,16 +231,19 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
             <h2 className="text-xl font-semibold text-black">
               Select one of your shipping addresses
             </h2>
-            {selectAddressId === "" && (<small>please select a address first</small>)}
+            {selectAddressId === "" && (
+              <small>please select a address first</small>
+            )}
             {shippingAddresses?.data && shippingAddresses.data.length > 0 ? (
               <div className="space-y-4">
                 {shippingAddresses.data.map((address, index) => (
                   <div
                     key={address._id}
-                    className={` rounded-lg p-4 bg-gray-50 cursor-pointer ${selectAddressId === address?._id
-                      ? "border border-blue-500"
-                      : "border border-gray-300"
-                      }`}
+                    className={` rounded-lg p-4 bg-gray-50 cursor-pointer ${
+                      selectAddressId === address?._id
+                        ? "border border-blue-500"
+                        : "border border-gray-300"
+                    }`}
                     onClick={() => setSelectedAddressId(address?._id)}
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -301,7 +330,7 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
           </Button> */}
         </div>
       </div>
-    </Modal >
+    </Modal>
   );
 };
 
