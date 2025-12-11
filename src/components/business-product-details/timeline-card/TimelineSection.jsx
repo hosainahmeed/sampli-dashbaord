@@ -4,6 +4,7 @@ import {
     ClockCircleOutlined,
     EnvironmentOutlined
 } from "@ant-design/icons";
+import { BASE_TIMELINE } from '../../../pages/Business/order/OrderDetails';
 const { Title, Text } = Typography
 function TimelineSection({ order, shippoTimelineData, trackData }) {
 

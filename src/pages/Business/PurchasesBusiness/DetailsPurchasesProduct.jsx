@@ -1,8 +1,8 @@
-import { Button, Card, Tag, Typography } from "antd";
-import React, { useState } from "react";
+import { Button, Card, Typography } from "antd";
+import React from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FiMail, FiMapPin, FiPhoneCall, FiShoppingBag } from "react-icons/fi";
+import { FiMapPin } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import { GoLinkExternal } from "react-icons/go";
 import TimeLineCard from "../../../components/business-product-details/TimeLineCard";
@@ -10,20 +10,20 @@ import ContactInformationCustomer from "../../../components/business-product-det
 import ShippingAddressCustomer from "../../../components/business-product-details/ShippingAddressCustomer";
 // import BillingAddressCustomer from "../../../components/business-product-details/BillingAddressCustomer";
 import { useGetCampaignPurchaseByIdQuery } from "../../../Redux/businessApis/campaign/campaignPurchaseApis";
-import loadingImg from "../../../assets/truck.gif"
 import toast from "react-hot-toast";
 
 const { Text, Title } = Typography;
 
 function DetailsPurchasesProduct() {
-  const { id } = useLocation().state;
-  const { data, isLoading } = useGetCampaignPurchaseByIdQuery(id, { skip: !id });
+  const location = useLocation()
+  console.log(location?.state?.id)
+  const { data, isLoading } = useGetCampaignPurchaseByIdQuery(location?.state?.id, { skip: !location?.state?.id });
   const order = data?.data;
   const navigate = useNavigate();
 
   const handleTrackItem = (url) => {
     try {
-      if (!id) {
+      if (!location?.state?.id) {
         throw new Error('Product not found!')
       }
       window.location.href = url

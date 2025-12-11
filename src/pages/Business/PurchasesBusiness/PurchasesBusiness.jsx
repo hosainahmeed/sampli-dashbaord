@@ -39,7 +39,7 @@ const PurchasesBusiness = () => {
     const orders = data?.data?.result ?? [];
     const meta = data?.data?.meta ?? {};
     const productData = transformOrders(orders);
-
+    console.log(productData)
     const columns = [
         {
             title: "Product",
