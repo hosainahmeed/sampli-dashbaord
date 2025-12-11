@@ -1,7 +1,7 @@
 import { Button, Card, Typography } from "antd";
 import React from "react";
 import { FaAngleLeft } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FiMapPin } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import { GoLinkExternal } from "react-icons/go";
@@ -15,15 +15,14 @@ import toast from "react-hot-toast";
 const { Text, Title } = Typography;
 
 function DetailsPurchasesProduct() {
-  const location = useLocation()
-  console.log(location?.state?.id)
-  const { data, isLoading } = useGetCampaignPurchaseByIdQuery(location?.state?.id, { skip: !location?.state?.id });
+  const { id } = useParams();
+  const { data, isLoading } = useGetCampaignPurchaseByIdQuery(id, { skip: !id });
   const order = data?.data;
   const navigate = useNavigate();
 
   const handleTrackItem = (url) => {
     try {
-      if (!location?.state?.id) {
+      if (!id) {
         throw new Error('Product not found!')
       }
       window.location.href = url
