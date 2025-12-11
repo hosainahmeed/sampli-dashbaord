@@ -1,8 +1,8 @@
 import { Button, Card, Tag, Typography } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FiShoppingBag } from "react-icons/fi";
+import { FiMail, FiMapPin, FiPhoneCall, FiShoppingBag } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import { GoLinkExternal } from "react-icons/go";
 import TimeLineCard from "../../../components/business-product-details/TimeLineCard";
@@ -11,6 +11,7 @@ import ShippingAddressCustomer from "../../../components/business-product-detail
 // import BillingAddressCustomer from "../../../components/business-product-details/BillingAddressCustomer";
 import { useGetCampaignPurchaseByIdQuery } from "../../../Redux/businessApis/campaign/campaignPurchaseApis";
 import loadingImg from "../../../assets/truck.gif"
+import toast from "react-hot-toast";
 
 const { Text, Title } = Typography;
 
@@ -20,12 +21,16 @@ function DetailsPurchasesProduct() {
   const order = data?.data;
   const navigate = useNavigate();
 
-  if (isLoading) return (
-    <div className="flex flex-col items-center h-[calc(100vh-100px)] justify-center">
-      <img src={loadingImg} alt="" className="w-24 h-24" />
-      <h1>Loading...</h1>
-    </div>
-  );
+  const handleTrackItem = (url) => {
+    try {
+      if (!id) {
+        throw new Error('Product not found!')
+      }
+      window.location.href = url
+    } catch (error) {
+      toast.error(error?.data?.message || error?.message || 'Something went wrong!')
+    }
+  }
 
   return (
     <div className="p-6">
@@ -42,7 +47,7 @@ function DetailsPurchasesProduct() {
         <div>
           <div className="flex items-center gap-2">
             <Title level={3} className="m-0">
-              Campaign ID: #{order?._id?.slice(0,8)}
+              Campaign ID: #{order?._id?.slice(0, 8)}
             </Title>
           </div>
           <p className="text-gray-500 mt-2">
@@ -55,7 +60,10 @@ function DetailsPurchasesProduct() {
             disabled={isLoading || !order?.product?._id}
             onClick={() => navigate(`/product/${order?.product?._id}`, { state: { productId: order?.product?._id } })}
           >Go to item</Button>
-          <Button type="primary" className="flex items-center">
+          <Button
+            disabled={!order?.shipping?.trackingUrl}
+            onClick={() => handleTrackItem(order?.shipping?.trackingUrl)}
+            type="primary" className="flex items-center">
             Track Item
             <GoLinkExternal className="text-blue-700 ml-1" />
           </Button>
@@ -65,27 +73,27 @@ function DetailsPurchasesProduct() {
 
         <div className="w-full xl:flex-1">
           <TimeLineCard
-            status={order?.deliveryStatus?.toUpperCase()}
             order={order}
           />
         </div>
         <div className="w-full xl:flex-1 flex flex-col gap-4">
-          <Card className="shadow p-4">
+          <Card loading={isLoading} className="shadow p-4">
             <Title level={3} className="mt-6">
               Customer
             </Title>
             <div className="flex items-center text-[var(--body-text-2)] justify-start gap-2">
               <LuUserRound />
-              <h1 className="!mt-2">{order?.shippingAddress?.name || "Guest"}</h1>
+              <h1>{order?.shippingAddress?.name}</h1>
             </div>
             <div className="flex items-center text-[var(--body-text-2)] justify-start gap-2">
-              <FiShoppingBag />
-              <h1 className="!mt-2">1 order</h1>
+              <FiMapPin />
+              <Text>{order?.shippingAddress?.street1}, {order?.shippingAddress?.city}, {order?.shippingAddress?.state}, {order?.shippingAddress?.zip}, {order?.shippingAddress?.country}</Text>
             </div>
+
           </Card>
 
-          {order?.shippingAddress && <ContactInformationCustomer order={order} />}
-          {order?.shippingAddress && <ShippingAddressCustomer order={order} />}
+          {order?.shippingAddress && <ContactInformationCustomer isLoading={isLoading} order={order} />}
+          {order?.shippingAddress && <ShippingAddressCustomer isLoading={isLoading} order={order} />}
           {/* <BillingAddressCustomer order={order} /> */}
         </div>
       </div>

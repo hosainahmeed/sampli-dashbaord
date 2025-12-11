@@ -13,9 +13,6 @@ import toast from "react-hot-toast";
 import Dragger from "antd/es/upload/Dragger";
 import ReviewsVideo from "./ReviewsVideo";
 import { GoLinkExternal } from "react-icons/go";
-import phone from "../../../../../../assets/phone.svg";
-import contact from "../../../../../../assets/contact.svg";
-import shipping from "../../../../../../assets/shipping.svg";
 import {
   useGetSingleOfferCampaignQuery,
   useGetSingleOfferCampaignTrackQuery,
@@ -25,10 +22,6 @@ import {
   useCreateReviewMutation,
   useCreateUploadApisMutation,
 } from "../../../../../../Redux/sampler/videoUploadApis";
-import {
-  useGetOrderDetailsByIdQuery,
-  useGetOrderTrackOrderByIdQuery,
-} from "../../../../../../Redux/sampler/orderApis";
 import { Contact } from "lucide-react";
 
 const { Step } = Steps;

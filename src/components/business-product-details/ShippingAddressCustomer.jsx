@@ -1,11 +1,12 @@
 import { Card, Typography, Space, Button } from 'antd';
 import { CiEdit } from 'react-icons/ci';
-import { FiMap } from 'react-icons/fi';
+import { FiMap, FiMapPin, FiPhoneCall } from 'react-icons/fi';
 import React from 'react';
+import { LuUserRound } from 'react-icons/lu';
 
 const { Title, Text } = Typography;
 
-function ShippingAddressCustomer({ order }) {
+function ShippingAddressCustomer({ order , isLoading }) {
   const address = order?.shippingAddress;
   if (!address) return null;
   const fullAddress = `${address.street1 || ''}, ${address.street2 || ''}, ${address.city || ''}, ${address.state || ''} ${address.zip || ''}, ${address.country || ''}`;
@@ -17,7 +18,7 @@ function ShippingAddressCustomer({ order }) {
 
   return (
     <div>
-      <Card className="shadow p-4 rounded-lg">
+      <Card loading={isLoading} className="shadow p-4 rounded-lg">
         <div className="flex items-center justify-between">
           <Title level={4} className="mt-0">
             Shipping Address
@@ -27,7 +28,7 @@ function ShippingAddressCustomer({ order }) {
         <Space direction="vertical" size="middle" className="w-full">
           <div className="flex items-center space-x-2">
             <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center">
-              <span className="text-white">👤</span>
+              <LuUserRound />
             </div>
             <Text strong>{address.name}</Text>
           </div>
@@ -36,13 +37,14 @@ function ShippingAddressCustomer({ order }) {
             <Text type="secondary">{address.company}</Text>
           )}
 
-          <Text type="secondary">{fullAddress}</Text>
-
-          <Text type="secondary">{address.phone}</Text>
-          {address.alternativePhoneNumber && (
-            <Text type="secondary">{address.alternativePhoneNumber}</Text>
-          )}
-
+          <div className="flex items-center text-[var(--body-text-2)] justify-start gap-2">
+            <FiMapPin />
+            <Text type="secondary">{fullAddress}</Text>
+          </div>
+          <div className="flex items-center text-[var(--body-text-2)] justify-start gap-2">
+            <FiPhoneCall />
+            <Text type="secondary">{address.phone}</Text>
+          </div>
           <Button
             type="link"
             className="mt-2 p-0 flex items-center gap-1"
