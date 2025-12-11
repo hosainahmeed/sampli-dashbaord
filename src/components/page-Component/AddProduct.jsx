@@ -64,34 +64,46 @@ function AddProduct() {
         height: parseFloat(values?.height),
       }
       formData.append("data", JSON.stringify(data));
+      console.log(fileList)
+
+
+      let size = 0;
       fileList.forEach((file) => {
+        size += file?.size;
+        if (size > 25 * 1024 * 1024) {
+          throw new Error('Total image size should be less than 25MB!');
+        }
         formData.append("product_image", file.originFileObj);
       });
       if (isDraft) {
-        await saveDraftProduct(formData).unwrap().then((res) => {
-          if (res.success) {
-            toast.dismiss()
-            toast.success(res.message)
-            navigate(-1)
-          }
-        })
+        const res = await saveDraftProduct(formData).unwrap()
+        if (!res?.success) {
+          throw new Error(res?.message || 'Something went wrong!')
+        }
+        if (res?.success) {
+          toast.dismiss()
+          toast.success(res?.message)
+          navigate(-1)
+        }
       } else {
-        await createProduct(formData).unwrap().then((res) => {
-          if (res.success) {
-            toast.dismiss()
-            toast.success(res.message)
-            setProductId(res?.data?._id)
-            form.resetFields()
-            setContent('')
-            setFileList([])
-            setOpenSuccessModal(true)
-          }
-        })
+        const res = await createProduct(formData).unwrap()
+        if (!res?.success) {
+          throw new Error(res?.message || 'Something went wrong!')
+        }
+        if (res?.success) {
+          toast.dismiss()
+          toast.success(res?.message)
+          setProductId(res?.data?._id)
+          form.resetFields()
+          setContent('')
+          setFileList([])
+          setOpenSuccessModal(true)
+        }
       }
 
     } catch (error) {
       toast.dismiss()
-      toast.error(error?.message || 'Something went wrong!');
+      toast.error(error?.data?.message || error?.message || 'Something went wrong!');
     }
   };
 
@@ -267,6 +279,7 @@ function AddProduct() {
               beforeUpload={() => false}
               onChange={handleFileChange}
               accept=".jpg,.jpeg,.png"
+              maxCount={5}
             >
               <div className="flex items-center flex-col">
                 <UploadOutlined />
