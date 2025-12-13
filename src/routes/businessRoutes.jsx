@@ -22,6 +22,7 @@ import ProductDetails from "../pages/Business/Product/ProductDetails";
 import DetailsPurchasesProduct from "../pages/Business/PurchasesBusiness/DetailsPurchasesProduct";
 import OrderSuccess from "../pages/Business/order/OrderSuccess";
 import PurchasesBusiness from "../pages/Business/PurchasesBusiness/PurchasesBusiness";
+import ShippingSuccess from "../pages/Business/order/ShippingSuccess";
 
 export const businessRoutes = {
   path: "/",
@@ -60,6 +61,7 @@ export const businessRoutes = {
     },
     { path: "/business/purchases", element: <PurchasesBusiness /> },
     { path: "/business/purchases/:id", element: <DetailsPurchasesProduct /> },
-    { path: '/order/success', element: <OrderSuccess /> },
+    { path: "/order/success", element: <OrderSuccess /> },
+    { path: "/campaign-shipping/success", element: <ShippingSuccess /> },
   ],
 };
