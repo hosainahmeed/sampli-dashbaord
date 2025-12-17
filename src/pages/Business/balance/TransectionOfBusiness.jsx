@@ -9,7 +9,8 @@ import {
   Input,
   Alert,
   Skeleton,
-  Tag
+  Tag,
+  Divider
 } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -26,14 +27,16 @@ import TransectionTableOfBusiness from "./TransectionTableOfBusiness";
 import { useGetBusinessMetaQuery } from "../../../Redux/businessApis/meta/bussinessMetaApis";
 import { useGetProfileQuery } from "../../../Redux/businessApis/business _profile/getprofileApi";
 import { useUpdateConnectedAccountMutation } from "../../../Redux/businessApis/stripesConnected/stripecreateOnboardingApis";
+import { useWithdrawPostMutation } from "../../../Redux/sampler/withDrawApis";
 const TransectionOfBusiness = () => {
   const { data: businessMeta, isLoading: businessMetaLoading } = useGetBusinessMetaQuery();
   const [isGetPaidModalVisible, setIsGetPaidModalVisible] = useState(false);
   const [paymentModal, showPaymentModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const { data: profileData, isLoading: profileLoading } = useGetProfileQuery();
+  console.log(profileData)
   const [updateConnectedAccount, { isLoading: updateConnectedAccountLoading }] = useUpdateConnectedAccountMutation();
-  // const [isModalVisible, setIsModalVisible] = useState(false)
+  const [withdrawCreate, { isLoading: withdrawLoading }] = useWithdrawPostMutation()
   const [createPayment, { isLoading: createOnboardingLoading }] =
     usePostPaymentMutation();
   const navigate = useNavigate();
@@ -42,10 +45,21 @@ const TransectionOfBusiness = () => {
     setIsGetPaidModalVisible(false);
   };
 
-  const handleWithdraw = () => {
-    toast.success(`Withdrawing $${withdrawAmount}`);
-    showPaymentModal(false);
-    setIsGetPaidModalVisible(false);
+  const handleWithdraw = async () => {
+    try {
+      const data = {
+        amount: parseInt(withdrawAmount)
+      }
+      const res = await withdrawCreate(data).unwrap()
+      if (!res?.success) {
+        throw new Error(res?.message)
+      }
+      toast.success(res?.message);
+      showPaymentModal(false);
+      setIsGetPaidModalVisible(false);
+    } catch (error) {
+      toast.error(error?.data?.message || error?.message || 'something went wrong!')
+    }
   };
 
   const setUpOnBoarding = async () => {
@@ -74,6 +88,7 @@ const TransectionOfBusiness = () => {
       toast.error(error?.data?.message || error?.message || "Something went wrong")
     }
   }
+  console.log(profileData?.data?.isStripeAccountConnected)
   return (
     <div className="">
       <div
@@ -177,7 +192,8 @@ const TransectionOfBusiness = () => {
           </div>
         </Card> */}
 
-        <Card className="!mt-5">
+        <Card
+          className="!mt-5">
           <div className="flex justify-between items-center ">
             <section>
               <div className="flex items-center">
@@ -209,64 +225,90 @@ const TransectionOfBusiness = () => {
               }
             </div>
           </div>
-          {profileData?.data?.isStripeAccountConnected && <div className="flex justify-end ">
-            <Button
-              type="primary"
-              onClick={() => {
-                showModalWithdraw();
-                handleCancel();
-              }}
-            >
-              Choose
-            </Button>
-          </div>}
+          {profileData?.data?.isStripeAccountConnected &&
+            <div className="flex flex-col justify-end">
+              <Divider />
+              <Button
+                type="primary"
+                onClick={() => {
+                  setIsGetPaidModalVisible(true);
+                }}
+              >
+                Select
+              </Button>
+            </div>}
         </Card>
       </Modal>
 
       <Modal
-        title="Get paid"
         open={isGetPaidModalVisible}
         onCancel={handleCancelGetPaid}
         footer={null}
         width={500}
         centered
+        destroyOnClose
       >
-        <div className="flex flex-col items-center mb-4">
-          <LuBadgeDollarSign style={{ fontSize: 32, color: "#FF7A00" }} />
-          <div className="ml-3 mt-2 max-w-[300px] w-full">
-            <h3 className="text-gray-500 text-center">
-              Enter the amount you wish to withdraw from your total balance.
-            </h3>
-            <p className="text-center">
-              Available Balance:{" "}
-              <span className="font-bold text-x text-blue-500">$426.25</span>
-            </p>
-          </div>
+        {/* Header */}
+        <div className="flex flex-col items-center text-center mb-6">
+          <h2 className="text-lg font-semibold text-gray-800">
+            Withdraw Funds
+          </h2>
+
+          <p className="text-sm text-gray-500 max-w-[340px] mt-1">
+            Enter the amount you’d like to withdraw from your available balance.
+          </p>
         </div>
 
-        {/* Withdrawal Amount Input */}
-        <div className="mb-4">
-          <label htmlFor="withdrawAmount">Withdrawal Amount</label>
+        {/* Available Balance Card */}
+        <div className="bg-gray-50 border rounded-lg p-4 mb-5 flex items-center justify-between">
+          <span className="text-sm text-gray-500">Available Balance</span>
+          <span className="text-lg font-semibold text-blue-600">
+            ${businessMeta?.data?.currentBalance?.toFixed(2)}
+          </span>
+        </div>
+
+        {/* Withdrawal Input */}
+        <div className="mb-6">
+          <label
+            htmlFor="withdrawAmount"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Withdrawal Amount
+          </label>
+
           <Input
             id="withdrawAmount"
-            prefix="$"
+            size="large"
+            prefix={<span className="text-gray-400">$</span>}
+            placeholder="Enter amount"
             value={withdrawAmount}
+            max={businessMeta?.data?.currentBalance}
             onChange={(e) => setWithdrawAmount(e.target.value)}
-            style={{ width: "100%" }}
           />
+
+          <p className="text-xs text-yellow-400 mt-3">
+            You can withdraw up to your available balance.
+          </p>
         </div>
 
-        {/* Withdraw Button */}
-        <div className="flex justify-center">
-          <Button
-            type="primary"
-            onClick={handleWithdraw}
-            style={{ width: "100%", fontSize: "16px", fontWeight: "500" }}
-          >
-            Withdraw
-          </Button>
-        </div>
+        {/* Action Button */}
+        <Button
+          type="primary"
+          size="large"
+          loading={withdrawLoading}
+          disabled={
+            withdrawLoading ||
+            !withdrawAmount ||
+            Number(withdrawAmount) <= 0 ||
+            Number(withdrawAmount) > businessMeta?.data?.currentBalance
+          }
+          onClick={handleWithdraw}
+          className="w-full font-medium"
+        >
+          Withdraw Now
+        </Button>
       </Modal>
+
     </div>
   );
 };
