@@ -45,7 +45,7 @@ export const businessRoutes = {
     { path: "/settings", element: <SettingPage /> },
     { path: "/campaign/single-campaign/:id", element: <SingleCampaign /> },
     {
-      path: "/campaign/single-campaign/edit-campaign",
+      path: "/campaign/single-campaign/edit-campaign/:id",
       element: <EditCampaign />,
     },
     { path: "/sales/single-order", element: <OrderDetails /> },

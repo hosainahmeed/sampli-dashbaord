@@ -25,7 +25,7 @@ function SingleCampaign() {
 
   const handleBack = () => navigate(-1);
   const handleEdit = () =>
-    navigate("/campaign/single-campaign/edit-campaign", { state: { id } });
+    navigate(`/campaign/single-campaign/edit-campaign/${id}`, { state: { id } });
 
   const handleStatusChange = useCallback(
     async (newStatus) => {
