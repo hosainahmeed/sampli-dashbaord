@@ -398,7 +398,9 @@ const SamplerFeed = () => {
               // >
               //   {category?.name}
               // </Button>
-              <div className="flex gap-2 rounded-full flex-nowrap items-center justify-start bg-gray-100 pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1">
+              <div
+                onClick={() => setActiveCategory(category?._id)}
+                className={`flex gap-2 rounded-full flex-nowrap items-center justify-start ${activeCategory === category?._id ? 'bg-[#1677FF] text-white' : 'bg-gray-100'} pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1`}>
                 <Avatar src={category?.category_image} alt="category" />
                 <span className="text-nowrap">{category?.name}</span>
               </div>
@@ -766,7 +768,7 @@ const SamplerFeed = () => {
                 </div>
               </div>
             ))}
-            {isFetching && loading && <CustomSkeleton />}
+            {isFetching && loading && <CustomSkeleton isHeight={false} />}
           </div>
         </div>
 
@@ -840,9 +842,9 @@ const SamplerFeed = () => {
 export default SamplerFeed;
 
 
-const CustomSkeleton = () => {
+const CustomSkeleton = ({ isHeight = true }) => {
   return (
-    <div className="h-screen w-full">
+    <div className={` ${isHeight ? "h-screen" : ""} w-full`}>
       <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
         {/* Header */}
         <div className="flex justify-between mb-2 w-full">
