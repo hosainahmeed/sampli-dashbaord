@@ -23,6 +23,7 @@ import {
   useCreateUploadApisMutation,
 } from "../../../../../../Redux/sampler/videoUploadApis";
 import { Contact } from "lucide-react";
+import ImageReview from "./ImageReview";
 
 const { Step } = Steps;
 
@@ -45,12 +46,19 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
   const { data: getOrderDetails } = useGetSingleOfferCampaignQuery({ id });
   const { data: getOrderTrack } = useGetSingleOfferCampaignTrackQuery({ id });
 
-  const [createPresignedUrl, { isLoading: uploadLoading }] =
+  const [createPresignedUrl] =
     useCreateUploadApisMutation();
   const [createReview, { isLoading: reviewLoading }] =
     useCreateReviewMutation();
+  const [ImageReviewModal, setImageReviewModal] = useState(false)
+  const [campaignId, setCampaignId] = useState(null)
 
-  const showModal = () => {
+  const showModal = (data) => {
+    if (data?.campaign?.reviewType === 'image') {
+      setImageReviewModal(true)
+      setCampaignId(data?._id)
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -267,12 +275,12 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                 <div className="mt-1">
                   {geSingleCampaignOffer?.data?.createdAt
                     ? new Intl.DateTimeFormat("en-US", {
-                        month: "long",
-                        day: "2-digit",
-                        year: "numeric",
-                      }).format(
-                        new Date(geSingleCampaignOffer?.data?.createdAt)
-                      )
+                      month: "long",
+                      day: "2-digit",
+                      year: "numeric",
+                    }).format(
+                      new Date(geSingleCampaignOffer?.data?.createdAt)
+                    )
                     : "-"}
                 </div>
               </div>
@@ -293,10 +301,10 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                       geSingleCampaignOffer?.data?.status === "Processing"
                         ? "orange"
                         : geSingleCampaignOffer?.data?.status === "Accepted"
-                        ? "green"
-                        : geSingleCampaignOffer?.data?.status === "Cancelled"
-                        ? "red"
-                        : "blue"
+                          ? "green"
+                          : geSingleCampaignOffer?.data?.status === "Cancelled"
+                            ? "red"
+                            : "blue"
                     }
                   >
                     {geSingleCampaignOffer?.data?.status}
@@ -380,7 +388,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                     geSingleCampaignOffer?.data?.status !== "Processing" &&
                     "!bg-blue-500 !text-white"
                   }
-                  onClick={showModal}
+                  onClick={() => {
+                    showModal(geSingleCampaignOffer?.data)
+                  }}
                 >
                   Upload Review
                 </Button>
@@ -527,7 +537,18 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
       ) : (
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       )}
-
+      <Modal
+        title={<div className="text-xl">Submit review</div>}
+        onCancel={() => setImageReviewModal(false)}
+        open={ImageReviewModal}
+        cancelButtonProps={{ style: { display: "none" } }}
+        confirmLoading={reviewLoading}
+        centered
+        footer={null}
+        width={600}
+      >
+        <ImageReview campaignId={campaignId} />
+      </Modal>
       <Modal
         title={<div className="text-xl">Submit review</div>}
         open={isModalOpen}

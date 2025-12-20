@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Avatar,
   Button,
@@ -198,6 +198,75 @@ const SamplerFeed = () => {
     }
   };
 
+  const renderImage = (images) => {
+    const count = images.length
+    if (count === 0) return null
+    const gridClass =
+      count === 1
+        ? 'grid-cols-1'
+        : count === 2
+          ? 'grid-cols-2'
+          : count === 3
+            ? 'grid-cols-3'
+            : 'grid-cols-2'
+
+    const setShowAllImage = (images) => {
+      return new Promise((resolve) => {
+        Modal.confirm({
+          content: (
+            <div className="grid grid-cols-2 gap-4">
+              {
+                images?.map((img, index) => {
+                  return (
+                    <div className="w-full bg-gray-50 p-4 flex items-center justify-center rounded-md h-full object-cover" key={index}>
+                      <img className="w-full h-full object-cover" src={img} alt={img} />
+                    </div>
+                  )
+                })
+              }
+            </div>
+          ),
+          icon: null,
+          okText: 'close',
+          okCancel: false,
+          onOk: () => {
+            resolve(true);
+          },
+          width: 600
+        });
+      });
+    }
+    return (
+      <div className={`grid ${gridClass} gap-1 w-full mb-4`}>
+        {images.slice(0, 4).map((img, index) => {
+          const isLast = index === 3 && count > 4
+          return (
+            <div
+              key={index}
+              className="relative w-full aspect-auto bg-gray-50 flex items-center justify-center overflow-hidden"
+            >
+              <img
+                src={img}
+                alt="post_image"
+                className="w-48 h-48 aspect-square object-contain"
+              />
+
+              {isLast && (
+                <div
+                  onClick={() => setShowAllImage(images)}
+                  className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-white text-3xl font-semibold">
+                    +{count - 4}
+                  </span>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   return (
     <div className="responsive-width !mt-2 !mb-20 ">
       <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
@@ -291,14 +360,18 @@ const SamplerFeed = () => {
           {/* Category Pills */}
           <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
             {categoryList?.data?.map((category) => (
-              <Button
-                key={category?._id}
-                type={activeCategory === category?._id ? "primary" : "default"}
-                className="!rounded-full !py-5"
-                onClick={() => setActiveCategory(category?._id)}
-              >
-                {category?.name}
-              </Button>
+              // <Button
+              //   key={category?._id}
+              //   type={activeCategory === category?._id ? "primary" : "default"}
+              //   className="!rounded-full !py-5"
+              //   onClick={() => setActiveCategory(category?._id)}
+              // >
+              //   {category?.name}
+              // </Button>
+              <div className="flex gap-2 rounded-full flex-nowrap items-center justify-start bg-gray-100 pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1">
+                <Avatar src={category?.category_image} alt="category" />
+                <span className="text-nowrap">{category?.name}</span>
+              </div>
             ))}
           </div>
 
@@ -488,6 +561,11 @@ const SamplerFeed = () => {
                     </div>
                   </div>
                 )}
+                {
+                  post?.images?.length > 0 && (
+                    renderImage(post?.images)
+                  )
+                }
 
                 <div className="flex items-center justify-between mb-4 text-gray-500">
                   <div className="flex items-center gap-4">
