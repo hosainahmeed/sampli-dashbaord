@@ -1,6 +1,6 @@
 import { Select, Skeleton } from "antd";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -15,7 +15,7 @@ import { useGetCampaignPerformanceQuery } from "../../Redux/businessApis/campaig
 const { Option } = Select;
 
 function CampaignPerformanceChart() {
-  const { id } = useLocation().state || {};
+  const { id } = useParams();
   const [selectedOption, setSelectedOption] = React.useState("this-year");
 
   const { data, isLoading } = useGetCampaignPerformanceQuery(

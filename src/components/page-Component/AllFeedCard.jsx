@@ -3,13 +3,14 @@ import SelectField from './SelectField';
 import FeedCard from '../ui/FeedCard';
 import { Card, Pagination, Skeleton } from 'antd';
 import { useGetAllReviewQuery } from '../../Redux/sampler/reviewApis';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 function AllFeedCard() {
-  const { id } = useLocation().state;
+  const { id } = useParams();
   const [page, setPage] = useState(1);
   const { data: reviewList, isLoading: reviewLoading } = useGetAllReviewQuery({
     campaign: id,
+    sortOrder: "desc",
     limit: 4,
     page: page,
   });

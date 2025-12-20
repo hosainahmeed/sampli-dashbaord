@@ -28,7 +28,6 @@ const ProductDetails = ({ productId, visible, onCancel }) => {
   const mainCarouselRef = useRef(null);
 
   const onChange = (currentSlide) => {
-    console.log(currentSlide);
     setActiveIndex(currentSlide);
   };
 

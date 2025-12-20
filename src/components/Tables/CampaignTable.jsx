@@ -17,6 +17,7 @@ const CampaignTable = () => {
 
   const { data: campaignsData, isLoading, isFetching } = useGetCampaignsQuery({
     searchTerm: searchText,
+    sortOrder: "desc",
     limit: pageSize,
     page: currentPage,
     seatchTerm: searchText,

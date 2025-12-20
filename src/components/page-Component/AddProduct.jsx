@@ -64,8 +64,6 @@ function AddProduct() {
         height: parseFloat(values?.height),
       }
       formData.append("data", JSON.stringify(data));
-      console.log(fileList)
-
 
       let size = 0;
       fileList.forEach((file) => {

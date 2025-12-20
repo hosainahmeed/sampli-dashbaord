@@ -114,7 +114,6 @@ const SamplerFeed = () => {
   };
 
   const handleCommentLike = async (commentId) => {
-    console.log(commentId);
     try {
       await postCommentLike({ id: commentId });
       refetch();
@@ -211,7 +210,6 @@ const SamplerFeed = () => {
   };
 
   const handleClickRepliesChat = (commentId) => {
-    console.log(commentId);
     if (showRepliesForComment === commentId) {
       setShowRepliesForComment(null); // Hide if already showing
     } else {

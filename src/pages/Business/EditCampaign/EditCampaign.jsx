@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, DatePicker, Select, Card, Checkbox } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import {
   useGetCampaignByIdQuery,
@@ -19,7 +19,7 @@ const genderOptions = [
 ];
 
 function EditCampaign() {
-  const { id } = useLocation().state;
+  const { id } = useParams();
   const { data: campaignData, isLoading } = useGetCampaignByIdQuery(id, {
     skip: !id,
   });

@@ -74,7 +74,6 @@ const EarningsSampler = () => {
   const setUpOnBoarding = async () => {
     try {
       const res = await createPayment();
-      console.log(res);
       window.open(res?.data?.data, "_blank");
       setIsGetPaidModalVisible(false);
     } catch (error) {

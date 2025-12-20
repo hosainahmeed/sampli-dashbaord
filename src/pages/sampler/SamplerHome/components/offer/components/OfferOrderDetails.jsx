@@ -159,7 +159,6 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
   };
 
   const handleVideoUpload = (file) => {
-    console.log(file);
     const isVideo = file.type.startsWith("video/");
     if (!isVideo) {
       toast.error("Please upload a video file!");
@@ -219,9 +218,6 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
       };
 
       const response = await uploadWithProgress();
-
-      console.log(response);
-
       if (response.status !== 200) {
         throw new Error("Failed to upload to S3");
       }

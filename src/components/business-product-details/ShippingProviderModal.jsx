@@ -2,9 +2,8 @@ import { Button, Modal, Spin, Alert, List, Tag, Typography } from "antd";
 import React, { useState } from "react";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
-import paypalIcon from "../../assets/payment-icon/PayPal.png";
 import stripeIcon from "../../assets/payment-icon/Stripe.png";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useConfirmShippingMutation } from "../../Redux/businessApis/campaign/campaignProceedDeliveryApis";
 
 const { Title, Paragraph } = Typography;
@@ -15,7 +14,7 @@ function ShippingProviderModal({
   providerList,
   getShippingRatesForOfferShipmentLoading,
 }) {
-  const { id } = useLocation().state;
+  const { id } = useParams();
   const [confirmShipping, { isLoading: confirmShippingLoading }] =
     useConfirmShippingMutation();
   const [selectedRateId, setSelectedRateId] = useState(null);

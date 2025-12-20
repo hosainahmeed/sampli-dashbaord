@@ -7,7 +7,6 @@ import { useAddInterestedCategoryReviewerMutation } from "../../../../Redux/samp
 
 const ProductsInterest = ({ prev, next }) => {
   const [selectedInterests, setSelectedInterests] = useState([]);
-  console.log(selectedInterests)
   const { data: getAllCategory, isLoading } = useCategorySectionApisQuery();
   const [addInterestedCategory, { isLoading: interestedLoading }] =
     useAddInterestedCategoryReviewerMutation();

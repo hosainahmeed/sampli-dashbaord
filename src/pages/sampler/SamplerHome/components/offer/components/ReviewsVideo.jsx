@@ -9,9 +9,7 @@ const ReviewsVideo = ({ showModal, product, status }) => {
     product,
   });
   const reviewListProduct = reviewList?.data?.data?.result;
-
-  console.log(reviewList);
-  console.log(reviewListProduct);
+  
   return (
     <>
       <div className=" mx-auto bg-white rounded-lg my-5">

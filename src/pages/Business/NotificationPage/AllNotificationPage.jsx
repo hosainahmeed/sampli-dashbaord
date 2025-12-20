@@ -56,8 +56,9 @@ const getIcon = (type) => {
 const AllNotificationPage = () => {
   const [limit, setLimit] = useState(10)
   const [type, setType] = useState("")
-  const { data: notificationRes, isLoading: notificationLoading , isFetching } = useNotificationPageQuery({
+  const { data: notificationRes, isLoading: notificationLoading, isFetching } = useNotificationPageQuery({
     limit,
+    sortOrder: "desc",
     ...(type !== "" && { type })
   })
   // LIKE: 'likeOnPost',

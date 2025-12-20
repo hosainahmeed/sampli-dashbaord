@@ -137,20 +137,13 @@ const AddProfileDetails = ({ prev, next }) => {
         }
       }
 
-      console.log("Profile FormData prepared:", {
-        bio: values.bio,
-        avatarData,
-        uploadResult,
-      });
 
       // Send the complete profile data
       try {
         const finalResult = await updateProfile(profileFormData).unwrap();
-        console.log("Final profile update result:", finalResult);
         toast.success("Profile updated successfully!");
         Navigate("/sampler/campaign");
       } catch (profileError) {
-        console.error("Profile update error:", profileError);
         toast.error("Failed to update profile");
       }
     } catch (error) {

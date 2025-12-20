@@ -15,7 +15,6 @@ const StoreProfileSampler = ({ businessId }) => {
   const { data: getBusinessProfile } = useGetSingleBusinessProfileQuery({
     id: businessId,
   });
-  console.log(getBusinessProfile);
   const storeInfo = getBusinessProfile?.data;
 
   return (

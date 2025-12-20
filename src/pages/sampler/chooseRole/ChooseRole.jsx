@@ -6,9 +6,6 @@ import Logo from '../../../components/ui/Logo';
 const { Title, Text } = Typography;
 
 const ChooseRole = () => {
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
 
   const [selectedOption, setSelectedOption] = useState('');
   const router = useNavigate();

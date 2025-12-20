@@ -88,7 +88,6 @@ const SoloStoveCart = () => {
         selectedRateId: selectedRateId,
         shipmentId: shipmentId,
       };
-      console.log(data);
       const res = await createOrder({ data });
       window.open(res?.data?.data?.url, "_blank");
       setIsModalOpenProvider(false);
@@ -104,14 +103,12 @@ const SoloStoveCart = () => {
   };
   const handleOk = async () => {
     if (!shippingAddressId) return;
-    console.log(shippingAddressId);
     try {
       const data = {
         shippingAddressId: shippingAddressId,
       };
       const res = await shippingRates({ data });
       setProviderList(res?.data?.data);
-      console.log(res?.data?.data);
       setIsModalOpen(false);
       showModalProvider();
     } catch (error) {
@@ -339,7 +336,6 @@ const SoloStoveCart = () => {
   ];
 
   const handleSetAddressId = (addressId) => {
-    console.log(addressId);
     setShippingAddressId(addressId);
   };
 

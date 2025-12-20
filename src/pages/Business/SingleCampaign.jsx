@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Button, Card, Progress, Tooltip } from "antd";
 import { FaAngleLeft } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import CampaignPerformanceChart from "../../components/ui/CampaignPerformanceChart";
 import AllFeedCard from "../../components/page-Component/AllFeedCard";
@@ -11,9 +11,8 @@ import {
 } from "../../Redux/businessApis/campaign/campaignApis";
 
 function SingleCampaign() {
-  const { id } = useLocation().state || {};
+  const { id } = useParams();
   const navigate = useNavigate();
-
   const {
     data: campaignSummary,
     isLoading: campaignLoading,

@@ -121,7 +121,6 @@ const OrderDetails = ({ setIsClicked, id }) => {
                 <Button
                   onClick={() => {
                     const url = getOrderDetails?.data?.shipping?.labelUrl;
-                    console.log(url);
                     if (!url) return;
                     window.open(url, "_blank");
                   }}

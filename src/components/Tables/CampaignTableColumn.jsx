@@ -75,7 +75,7 @@ export const CampaignTableColumn = ({ statusColors, navigate }) => {
             key: 'action',
 
             render: (_, record) => (
-                <Link to={"/campaign/single-campaign"} state={{ id: record?._id }}>
+                <Link to={`/campaign/single-campaign/${record?._id}`} state={{ id: record?._id }}>
                     <Button
                         type="default"
                         className="!border-blue-500 !text-blue-500 hover:bg-gray-100"

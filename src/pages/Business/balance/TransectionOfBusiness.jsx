@@ -34,7 +34,7 @@ const TransectionOfBusiness = () => {
   const [paymentModal, showPaymentModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const { data: profileData, isLoading: profileLoading } = useGetProfileQuery();
-  console.log(profileData)
+
   const [updateConnectedAccount, { isLoading: updateConnectedAccountLoading }] = useUpdateConnectedAccountMutation();
   const [withdrawCreate, { isLoading: withdrawLoading }] = useWithdrawPostMutation()
   const [createPayment, { isLoading: createOnboardingLoading }] =
@@ -88,7 +88,6 @@ const TransectionOfBusiness = () => {
       toast.error(error?.data?.message || error?.message || "Something went wrong")
     }
   }
-  console.log(profileData?.data?.isStripeAccountConnected)
   return (
     <div className="">
       <div

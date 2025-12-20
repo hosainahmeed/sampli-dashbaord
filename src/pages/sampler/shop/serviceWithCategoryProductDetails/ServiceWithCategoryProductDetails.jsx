@@ -23,7 +23,6 @@ const ServiceWithCategoryProductDetails = () => {
   const location = useLocation();
   const { id } = useParams();
   const { referral } = location.state || {};
-  console.log(referral);
   const [businessId, setBusinessId] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
 

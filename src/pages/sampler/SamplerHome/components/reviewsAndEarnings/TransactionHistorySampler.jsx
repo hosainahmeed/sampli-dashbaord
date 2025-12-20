@@ -78,7 +78,7 @@ const TransactionHistorySampler = () => {
   //     refId: '709692663',
   //   },
   // ]
-  console.log(getAllMyTransaction);
+  
   const transactionData = getAllMyTransaction?.data?.result;
   const columns = [
     {

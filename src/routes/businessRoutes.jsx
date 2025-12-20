@@ -43,7 +43,7 @@ export const businessRoutes = {
     { path: "/edit-product/:productId", element: <EditProduct /> },
     { path: "/add-variant/:productId", element: <AddVariant /> },
     { path: "/settings", element: <SettingPage /> },
-    { path: "/campaign/single-campaign", element: <SingleCampaign /> },
+    { path: "/campaign/single-campaign/:id", element: <SingleCampaign /> },
     {
       path: "/campaign/single-campaign/edit-campaign",
       element: <EditCampaign />,

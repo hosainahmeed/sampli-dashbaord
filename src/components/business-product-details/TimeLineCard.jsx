@@ -17,7 +17,7 @@ import {
 import toast from "react-hot-toast";
 import { useGetShippingRatesForOfferShipmentMutation } from "../../Redux/businessApis/shipo_business_apis/shippoOfferShipmentApis";
 import { useGetSingleOfferCampaignTrackQuery } from "../../Redux/sampler/campaignApis";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { SHIPPO_STATUS_CONFIG } from "../../constant/shippoRelate";
 
 // Lazy load components
@@ -36,7 +36,7 @@ const LoadingSkeleton = () => (
 );
 
 function TimeLineCard({ order }) {
-  const { id } = useLocation().state;
+  const { id } = useParams();
   const [getShippingRatesForOfferShipment, { isLoading: getShippingRatesForOfferShipmentLoading }] =
     useGetShippingRatesForOfferShipmentMutation();
   const [providerList, setProviderList] = useState(null);

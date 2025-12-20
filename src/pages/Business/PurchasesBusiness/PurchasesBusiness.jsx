@@ -39,7 +39,7 @@ const PurchasesBusiness = () => {
     const orders = data?.data?.result ?? [];
     const meta = data?.data?.meta ?? {};
     const productData = transformOrders(orders);
-    console.log(productData)
+
     const columns = [
         {
             title: "Product",
@@ -68,17 +68,25 @@ const PurchasesBusiness = () => {
             ),
         },
         {
-            title: "Shipping",
+            title: "Shipping Amount",
             dataIndex: "shipping",
             key: "shipping",
             render: (shipping) => (
-                <div className="flex flex-col gap-1 items-start">
-                    <span className="text-lg font-medium">Amount: {shipping.amount}</span>
-                    <span className="text-sm font-normal text-gray-400">Status: <Tag size="small" color="orange">{shipping.status}</Tag></span>
-                    {shipping.trackingNumber && (
-                        <span className="text-sm font-normal text-gray-400">Tracking: {shipping.trackingNumber}</span>
-                    )}
-                </div>
+                <span>${shipping.amount}</span>
+            ),
+        },
+        {
+            title: "Shipping Status",
+            dataIndex: "shipping",
+            key: "shipping",
+            render: (shipping) => (
+                <Tag size="small" color={
+                    shipping.status === "PURCHASED"
+                        ? "green"
+                        : shipping.status === "PENDING"
+                            ? "orange"
+                            : "red"
+                }>{shipping.status}</Tag>
             ),
         },
         {

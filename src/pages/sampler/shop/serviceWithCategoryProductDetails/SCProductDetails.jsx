@@ -29,8 +29,6 @@ const SCProductDetails = ({ referral }) => {
   });
 
   const product = getSingleProduct?.data;
-
-  console.log("==============================", getSingleProduct);
   const variants = getVariantProduct?.data || [];
 
   const [selectedVariant, setSelectedVariant] = useState(null);
