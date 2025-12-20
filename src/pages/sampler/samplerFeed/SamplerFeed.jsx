@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Avatar,
   Button,
@@ -90,22 +90,23 @@ const SamplerFeed = () => {
   });
   const [reviewLikeUnlike, { isLikeLoading }] = useChangeLikesMutation();
   const [postReplyChat] = usePostCommentRepliesMutation();
-
   const users = getReviewerLikers?.data?.result;
-
   const [activeTab, setActiveTab] = useState("");
-
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [reviewLimit, setReviewLimit] = useState(3)
 
   const { data: reviewList, isLoading: reviewLoading, isFetching } = useGetAllReviewQuery({
     category: activeCategory,
     following: activeTab == "following" ? true : undefined,
     sortBy: activeTab != "popular" ? undefined : "totalView",
     sortOrder: activeTab != "popular" ? undefined : "desc",
+    limit: reviewLimit
   });
+
   const posts = reviewList?.data?.data?.result;
+  const [loading, setLoading] = useState(false)
 
   const handleLike = async (postId) => {
     await reviewLikeUnlike({ id: postId });
@@ -144,6 +145,35 @@ const SamplerFeed = () => {
   const handleShare = () => {
     setShowShareModal(true);
   };
+
+
+  const handleScroll = useCallback(() => {
+    if (loading || isFetching) return
+
+    const scrollTop =
+      window.pageYOffset || document.documentElement.scrollTop
+
+    const windowHeight = window.innerHeight
+    const fullHeight = document.documentElement.scrollHeight
+
+    if (scrollTop + windowHeight >= fullHeight - 200) {
+      setLoading(true)
+      setReviewLimit(prev => prev + 8)
+    }
+  }, [loading, isFetching])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
+
+  // ✅ Reset loading AFTER data is fetched
+  useEffect(() => {
+    if (!isFetching) {
+      setLoading(false)
+    }
+  }, [isFetching])
+
 
 
   const [isModalOpenLike, setIsModalOpenLike] = useState(false);
@@ -377,96 +407,7 @@ const SamplerFeed = () => {
 
           {/* Skeleton */}
           {reviewLoading && (
-            <div className="h-screen">
-              <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
-                {/* Header */}
-                <div className="flex justify-between mb-2 w-full">
-                  <div className="flex items-center gap-2 w-full">
-                    <Skeleton.Avatar active size="large" shape="circle" />
-                    <div>
-                      <Skeleton.Input
-                        active
-                        size="small"
-                        style={{ width: 120 }}
-                      />
-                      <div className="flex items-center gap-2 mt-1">
-                        <Skeleton.Input
-                          active
-                          size="small"
-                          style={{ width: 60 }}
-                        />
-                        <Skeleton.Input
-                          active
-                          size="small"
-                          style={{ width: 40 }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <Skeleton.Button active size="small" shape="round" />
-                </div>
-
-                <Skeleton paragraph={{ rows: 2 }} active />
-
-                <div className="flex justify-between items-center mt-4 w-full">
-                  <div className="flex gap-4">
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                  </div>
-                  <Skeleton.Button active size="small" shape="round" />
-                </div>
-              </div>
-              <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
-                {/* Header */}
-                <div className="flex justify-between mb-2 w-full">
-                  <div className="flex items-center gap-2 w-full">
-                    <Skeleton.Avatar active size="large" shape="circle" />
-                    <div>
-                      <Skeleton.Input
-                        active
-                        size="small"
-                        style={{ width: 120 }}
-                      />
-                      <div className="flex items-center gap-2 mt-1">
-                        <Skeleton.Input
-                          active
-                          size="small"
-                          style={{ width: 60 }}
-                        />
-                        <Skeleton.Input
-                          active
-                          size="small"
-                          style={{ width: 40 }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <Skeleton.Button active size="small" shape="round" />
-                </div>
-
-                <Skeleton paragraph={{ rows: 2 }} active />
-
-                <div className="flex justify-between items-center mt-4 w-full">
-                  <div className="flex gap-4">
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                    <Skeleton.Button active size="small" shape="round" />
-                  </div>
-                  <Skeleton.Button active size="small" shape="round" />
-                </div>
-              </div>
-            </div>
+            <CustomSkeleton />
           )}
 
           <div>
@@ -477,7 +418,7 @@ const SamplerFeed = () => {
             )}
           </div>
           {/* Feed Posts */}
-          <div className="space-y-4">
+          <div className="space-y-4 relative w-full">
             {posts?.map((post) => (
               <div
                 key={post.id}
@@ -825,6 +766,7 @@ const SamplerFeed = () => {
                 </div>
               </div>
             ))}
+            {isFetching && loading && <CustomSkeleton />}
           </div>
         </div>
 
@@ -896,3 +838,99 @@ const SamplerFeed = () => {
 };
 
 export default SamplerFeed;
+
+
+const CustomSkeleton = () => {
+  return (
+    <div className="h-screen w-full">
+      <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
+        {/* Header */}
+        <div className="flex justify-between mb-2 w-full">
+          <div className="flex items-center gap-2 w-full">
+            <Skeleton.Avatar active size="large" shape="circle" />
+            <div>
+              <Skeleton.Input
+                active
+                size="small"
+                style={{ width: 120 }}
+              />
+              <div className="flex items-center gap-2 mt-1">
+                <Skeleton.Input
+                  active
+                  size="small"
+                  style={{ width: 60 }}
+                />
+                <Skeleton.Input
+                  active
+                  size="small"
+                  style={{ width: 40 }}
+                />
+              </div>
+            </div>
+          </div>
+          <Skeleton.Button active size="small" shape="round" />
+        </div>
+
+        <Skeleton paragraph={{ rows: 2 }} active />
+
+        <div className="flex justify-between items-center mt-4 w-full">
+          <div className="flex gap-4">
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+          </div>
+          <Skeleton.Button active size="small" shape="round" />
+        </div>
+      </div>
+      <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
+        {/* Header */}
+        <div className="flex justify-between mb-2 w-full">
+          <div className="flex items-center gap-2 w-full">
+            <Skeleton.Avatar active size="large" shape="circle" />
+            <div>
+              <Skeleton.Input
+                active
+                size="small"
+                style={{ width: 120 }}
+              />
+              <div className="flex items-center gap-2 mt-1">
+                <Skeleton.Input
+                  active
+                  size="small"
+                  style={{ width: 60 }}
+                />
+                <Skeleton.Input
+                  active
+                  size="small"
+                  style={{ width: 40 }}
+                />
+              </div>
+            </div>
+          </div>
+          <Skeleton.Button active size="small" shape="round" />
+        </div>
+
+        <Skeleton paragraph={{ rows: 2 }} active />
+
+        <div className="flex justify-between items-center mt-4 w-full">
+          <div className="flex gap-4">
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+            <Skeleton.Button active size="small" shape="round" />
+          </div>
+          <Skeleton.Button active size="small" shape="round" />
+        </div>
+      </div>
+    </div>
+  )
+}
