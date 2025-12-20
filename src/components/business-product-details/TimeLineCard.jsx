@@ -145,9 +145,9 @@ function TimeLineCard({ order }) {
         </Suspense>
         <Divider />
         {/* Order Summary */}
-        <Suspense fallback={<Skeleton active paragraph={{ rows: 4 }} />}>
+        {/* <Suspense fallback={<Skeleton active paragraph={{ rows: 4 }} />}>
           <OrderSummary subtotal={subtotal} shipping={shipping} />
-        </Suspense>
+        </Suspense> */}
         {/* Timeline Section */}
         <Suspense fallback={<Skeleton active paragraph={{ rows: 4 }} />}>
           <TimelineSection order={order} shippoTimelineData={shippoTimelineData} trackData={trackData} />
