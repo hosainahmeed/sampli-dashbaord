@@ -169,7 +169,7 @@ const CommentItem = memo(({
                             <Divider className="!my-2" />
 
                             <div className="flex items-center">
-                                <div className="w-8 bg-gray-200 h-8 ml-5 -mt-3" />
+                                <div className="w-8 border-l-2 border-b-2 rounded-bl-2xl border-gray-200 h-8 ml-5 -mt-2" />
                                 <Button
                                     type="text"
                                     size="small"
