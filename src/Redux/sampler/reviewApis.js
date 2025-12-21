@@ -73,6 +73,13 @@ const reviewApis = baseApis.injectEndpoints({
       }),
       providesTags: ["Comments", "Review", "RepliesComments"],
     }),
+    deleteComment: builder.mutation({
+      query: ({ id }) => ({
+        url: `/comment/delete-comment/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Comments", "Review", "RepliesComments"],
+    }),
   }),
 });
 
@@ -86,4 +93,5 @@ export const {
   useGetCommentsRepliesQuery,
   usePostCommentRepliesMutation,
   useGetSingleProductReviewQuery,
+  useDeleteCommentMutation,
 } = reviewApis;

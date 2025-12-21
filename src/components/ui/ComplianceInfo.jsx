@@ -108,7 +108,7 @@ const ComplianceInfo = () => {
 
             {/* Certificate of Incorporation Upload */}
             <Form.Item
-              label="Certificate of Incorporation *"
+              label="Certificate of Incorporation"
               className="!w-full"
             >
               {certificateFileList.length > 0 ? (
@@ -172,7 +172,7 @@ const ComplianceInfo = () => {
             </Form.Item>
 
             {/* Business License Upload */}
-            <Form.Item label="Business License *" className="!w-full">
+            <Form.Item label="Business License" className="!w-full">
               {licenseFileList.length > 0 ? (
                 <div className="border rounded-lg p-3 flex justify-between items-center bg-gray-100">
                   <div className="flex items-center gap-2">

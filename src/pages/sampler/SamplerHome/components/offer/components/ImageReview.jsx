@@ -11,7 +11,7 @@ function ImageReview({ campaignId }) {
   const [form] = Form.useForm();
   const [rating, setRating] = useState(0);
   const formData = new FormData();
-  const [createReview] = useCreateReviewMutation()
+  const [createReview,{isLoading}] = useCreateReviewMutation()
 
   const onFinish = async (values) => {
     if (!campaignId) {
@@ -35,13 +35,13 @@ function ImageReview({ campaignId }) {
 
       const response = await createReview(formData).unwrap();
       if (!response?.success) {
-       throw new Error(response?.message || 'Failed to submit review')
+        throw new Error(response?.message || 'Failed to submit review')
       }
       toast.success(response?.message || "Review submitted successfully!");
       form.resetFields();
       // Handle form submission here
     } catch (error) {
-      const message =  error?.data?.message || error?.message || 'Something went wrong!'
+      const message = error?.data?.message || error?.message || 'Something went wrong!'
       toast.error(message)
     }
   };
@@ -125,6 +125,8 @@ function ImageReview({ campaignId }) {
 
         <Form.Item>
           <Button
+            loading={isLoading}
+            disabled={isLoading}
             type="primary"
             htmlType="submit"
             size="large"

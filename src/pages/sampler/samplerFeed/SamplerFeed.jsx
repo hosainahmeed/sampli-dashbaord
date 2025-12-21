@@ -43,6 +43,8 @@ import { useGetProfileApisQuery } from "../../../Redux/sampler/profileApis";
 import { usePostFollowUnfollowMutation } from "../../../Redux/sampler/followUnfollowApis";
 import Spinner from "../../../components/ui/Spinner";
 import toast from "react-hot-toast";
+import { CustomSkeleton } from "./CustomSkeleton";
+import ReviewPost from "./ReviewPost";
 
 const { TabPane } = Tabs;
 
@@ -57,20 +59,7 @@ const SamplerFeed = () => {
 
   const profileData = getMyProfile?.data;
 
-  const [showRepliesForComment, setShowRepliesForComment] = useState(null);
-
-  const { data: getCommentReplies } = useGetCommentsRepliesQuery(
-    {
-      id: showRepliesForComment,
-    },
-    {
-      skip: !showRepliesForComment,
-    }
-  );
-
-  const [createComments] = useCreateCommentMutation();
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
-  const [postCommentLike] = usePostCommentLikesMutation();
   const [reviewId, setReviewId] = useState("");
   const [replyText, setReplyText] = useState("");
   const [comments, setComments] = useState(false);
@@ -79,17 +68,6 @@ const SamplerFeed = () => {
       id: reviewId,
     });
 
-  const [limit, setLimit] = useState(10);
-
-  const {
-    data: getReviewComments,
-    isLoading: commentsLoading,
-    refetch,
-  } = useGetReviewerCommentsQuery({
-    id: reviewId,
-    limit,
-  });
-  const [reviewLikeUnlike, { isLikeLoading }] = useChangeLikesMutation();
   const [postReplyChat] = usePostCommentRepliesMutation();
   const users = getReviewerLikers?.data?.result;
   const [activeTab, setActiveTab] = useState("");
@@ -109,30 +87,6 @@ const SamplerFeed = () => {
   const posts = reviewList?.data?.data?.result;
   const [loading, setLoading] = useState(false)
 
-  const handleLike = async (postId) => {
-    await reviewLikeUnlike({ id: postId });
-  };
-
-  const handleCommentLike = async (commentId) => {
-    try {
-      await postCommentLike({ id: commentId });
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleComment = async (postId) => {
-    try {
-      await createComments({
-        data: { text: commentText, review: postId },
-      });
-
-      setCommentText("");
-      setReplyingTo(null);
-    } catch (error) { }
-  };
-
   const handleFollow = async (id) => {
     try {
       const res = await changeFollowUnfollow(id);
@@ -141,11 +95,6 @@ const SamplerFeed = () => {
       console.log(error);
     }
   };
-
-  const handleShare = () => {
-    setShowShareModal(true);
-  };
-
 
   const handleScroll = useCallback(() => {
     if (loading || isFetching) return
@@ -182,10 +131,6 @@ const SamplerFeed = () => {
 
 
   const [isModalOpenLike, setIsModalOpenLike] = useState(false);
-  const showModalLike = (id) => {
-    setReviewId(id);
-    setIsModalOpenLike(true);
-  };
   const handleOkLike = () => {
     setIsModalOpenLike(false);
   };
@@ -193,16 +138,6 @@ const SamplerFeed = () => {
     setIsModalOpenLike(false);
   };
 
-  const [followStatus, setFollowStatus] = useState(
-    users?.reduce((acc, user) => ({ ...acc, [user?._id]: false }), {})
-  );
-
-  const toggleFollow = (userId) => {
-    setFollowStatus((prevStatus) => ({
-      ...prevStatus,
-      [userId]: !prevStatus[userId],
-    }));
-  };
 
   const handleAllComments = (id) => {
     setComments((prev) => !prev);
@@ -211,17 +146,12 @@ const SamplerFeed = () => {
 
   const handleClickRepliesChat = (commentId) => {
     if (showRepliesForComment === commentId) {
-      setShowRepliesForComment(null); // Hide if already showing
+      setShowRepliesForComment(null);
     } else {
-      setShowRepliesForComment(commentId); // Show replies for this comment
+      setShowRepliesForComment(commentId);
     }
   };
 
-  const moreOptions = [
-    { key: "save", label: "Save Post" },
-    { key: "report", label: "Report Post" },
-    { key: "mute", label: "Mute User" },
-  ];
 
   const handleReply = async (commentId) => {
     try {
@@ -231,75 +161,6 @@ const SamplerFeed = () => {
       console.log(error);
     }
   };
-
-  const renderImage = (images) => {
-    const count = images.length
-    if (count === 0) return null
-    const gridClass =
-      count === 1
-        ? 'grid-cols-1'
-        : count === 2
-          ? 'grid-cols-2'
-          : count === 3
-            ? 'grid-cols-3'
-            : 'grid-cols-2'
-
-    const setShowAllImage = (images) => {
-      return new Promise((resolve) => {
-        Modal.confirm({
-          content: (
-            <div className="grid grid-cols-2 gap-4">
-              {
-                images?.map((img, index) => {
-                  return (
-                    <div className="w-full bg-gray-50 p-4 flex items-center justify-center rounded-md h-full object-cover" key={index}>
-                      <img className="w-full h-full object-cover" src={img} alt={img} />
-                    </div>
-                  )
-                })
-              }
-            </div>
-          ),
-          icon: null,
-          okText: 'close',
-          okCancel: false,
-          onOk: () => {
-            resolve(true);
-          },
-          width: 600
-        });
-      });
-    }
-    return (
-      <div className={`grid ${gridClass} gap-1 w-full mb-4`}>
-        {images.slice(0, 4).map((img, index) => {
-          const isLast = index === 3 && count > 4
-          return (
-            <div
-              key={index}
-              className="relative w-full aspect-auto bg-gray-50 flex items-center justify-center overflow-hidden"
-            >
-              <img
-                src={img}
-                alt="post_image"
-                className="w-48 h-48 aspect-square object-contain"
-              />
-
-              {isLast && (
-                <div
-                  onClick={() => setShowAllImage(images)}
-                  className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                  <span className="text-white text-3xl font-semibold">
-                    +{count - 4}
-                  </span>
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
 
   return (
     <div className="responsive-width !mt-2 !mb-20 ">
@@ -342,13 +203,10 @@ const SamplerFeed = () => {
             </div>
           </div>
         </div>
-
-        <div>{ }</div>
-
         {/* right side */}
         <div className="w-2/3 max-lg:w-full">
           {/* Feed Tabs */}
-          <Tabs activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
+          <Tabs type="card" activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
             <TabPane
               tab={
                 <div className="flex gap-2">
@@ -394,14 +252,6 @@ const SamplerFeed = () => {
           {/* Category Pills */}
           <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
             {categoryList?.data?.map((category) => (
-              // <Button
-              //   key={category?._id}
-              //   type={activeCategory === category?._id ? "primary" : "default"}
-              //   className="!rounded-full !py-5"
-              //   onClick={() => setActiveCategory(category?._id)}
-              // >
-              //   {category?.name}
-              // </Button>
               <div
                 onClick={() => setActiveCategory(category?._id)}
                 className={`flex gap-2 rounded-full flex-nowrap items-center justify-start ${activeCategory === category?._id ? 'bg-[#1677FF] text-white' : 'bg-gray-100'} pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1`}>
@@ -424,353 +274,18 @@ const SamplerFeed = () => {
             )}
           </div>
           {/* Feed Posts */}
-          <div className="space-y-4 relative w-full">
+          <div className="!space-y-4 relative w-full">
             {posts?.map((post) => (
-              <div
-                key={post.id}
-                className="shadow-md border border-gray-200 rounded-2xl p-5"
-              >
-                <div className="flex justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar src={post?.reviewer?.profile_image} />
-
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">
-                          {post?.reviewer?.name}
-                        </span>
-                        <span className="text-gray-500 text-sm">
-                          {post?.reviewer?.username}
-                        </span>
-                        <span className="text-gray-400 text-sm">
-                          {new Intl.DateTimeFormat("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "2-digit",
-                          }).format(new Date(post?.createdAt))}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 ">
-                        <Rate
-                          disabled
-                          defaultValue={post?.rating}
-                          className="!text-[16px] !text-[#FD8240] "
-                        />
-                        <span className="text-gray-500">{post?.rating}</span>
-                        <span className="text-gray-500">•</span>
-                        <span className=" underline underline-offset-4 cursor-pointer">
-                          {post?.product?.name}
-                        </span>
-                        <span className="text-gray-500">•</span>
-                        <span className="text-green-500">
-                          {post?.product?.price}
-                        </span>
-                        <span className=" underline underline-offset-4 cursor-pointer">
-                          /{post?.category?.name}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  {!post?.isMyReview && (
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type={post?.reviewer?.isFollow ? "default" : "primary"}
-                        // ghost
-                        onClick={() => handleFollow(post?.reviewer?._id)}
-                      >
-                        {post?.reviewer?.isFollow ? "Following" : "Follow"}
-                      </Button>
-                    </div>
-                  )}
-                </div>
-
-                <p className="!my-5 text-gray-700 ">{post?.description}</p>
-
-                {post?.video && (
-                  <div
-                    className="relative rounded-lg overflow-hidden bg-gray-100 mb-4"
-                    style={{ paddingTop: "56.25%" }}
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {isLoadingVideo && (
-                        <div className="loader absolute">
-                          <p className="text-gray-500">Loading video...</p>
-                        </div>
-                      )}
-
-                      <video
-                        src={post?.video}
-                        controls
-                        preload="metadata"
-                        className="absolute inset-0 w-full h-full"
-                        onLoadedData={() => setIsLoadingVideo(false)}
-                      ></video>
-                    </div>
-                  </div>
-                )}
-                {
-                  post?.images?.length > 0 && (
-                    renderImage(post?.images)
-                  )
-                }
-
-                <div className="flex items-center justify-between mb-4 text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <button
-                      className="flex items-center gap-1 text-gray-500 cursor-pointer"
-                      onClick={() => handleLike(post?._id)}
-                    >
-                      {isLikeLoading || isFetching ?
-                        <Spinner />
-                        : post?.isLike == true ? (
-                          <HeartFilled className="!text-red-500" />
-                        ) : (
-                          <HeartOutlined />
-                        )}
-                      {post?.totalLikers}
-                    </button>
-                    <button
-                      disabled={post?.totalComments === 0}
-                      className="flex items-center gap-1 text-gray-500 cursor-pointer"
-                      onClick={() => handleAllComments(post?._id)}
-                    >
-                      <MessageOutlined />
-                      {post?.totalComments}
-                    </button>
-                    <button
-                      className="flex items-center gap-1 text-gray-500"
-                      onClick={() => handleShare(post)}
-                    >
-                      <ShareAltOutlined />
-                      Share
-                    </button>
-                  </div>
-                  <Link
-                    to={`/sampler/shop/category/${post?.product?.name}/${post?.product?._id}`}
-                    className="border px-5 py-2 rounded-md border-blue-500 text-blue-500 hover: cursor-pointer"
-                    state={{
-                      referral: {
-                        reviewerId: post?.reviewer?._id,
-                        reviewId: post?._id,
-                        amount: post?.product?.price,
-                      },
-                    }}
-                  >
-                    Add to cart
-                  </Link>
-                </div>
-
-                {post?.totalLikers > 0 && (
-                  <div
-                    className="flex items-center space-x-2 mb-2 cursor-pointer"
-                    onClick={() => showModalLike(post?._id)}
-                  >
-                    {post?.likers &&
-                      post?.likers.length > 0 &&
-                      post?.likers?.slice(0, 5).map((user, index) => (
-                        <Tooltip
-                          key={index}
-                          title={user.name}
-                          placement="top"
-                          className={index !== 0 ? "-ml-4" : ""}
-                        >
-                          <div className="relative">
-                            <Avatar
-                              src={user?.profile_image}
-                              size={30}
-                              className="border-2 border-white "
-                            />
-                            <HeartFilled className="absolute bottom-0 right-0 !text-red-500 bg-white rounded-full text-[7px] p-1" />
-                          </div>
-                        </Tooltip>
-                      ))}
-                    {users && users?.length > 5 && (
-                      <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full text-gray-600 font-semibold">
-                        {`+${users?.length - 5}`}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Comment Input */}
-                <div className="my-4 flex items-center gap-2">
-                  <Avatar size="small" src={post?.reviewer?.profile_image} />
-                  <Input
-                    placeholder={
-                      replyingTo ? "Write a reply..." : "Write a comment..."
-                    }
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    suffix={
-                      <div className="flex items-center gap-2">
-                        <SendOutlined
-                          className="text-blue-500 cursor-pointer"
-                          onClick={() => handleComment(post?._id)}
-                        />
-                      </div>
-                    }
-                    onPressEnter={() => handleComment(post?._id)}
-                  />
-                </div>
-
-                {/* Comments Section */}
-                <div className="space-y-4">
-                  {comments &&
-                    getReviewComments?.data?.result.map((comment) => (
-                      <div key={comment._id} className="pl-8 space-y-2">
-                        <div className="flex items-start gap-2">
-                          <Avatar
-                            size="small"
-                            src={comment?.commentorProfileImage}
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">
-                                {comment?.commentorName}
-                              </span>
-                              <span className="text-gray-400 text-xs">
-                                {new Intl.DateTimeFormat("en-US", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "2-digit",
-                                }).format(new Date(comment?.createdAt))}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              {comment?.text}
-                            </p>
-                            <div className="flex items-center gap-4 mt-1">
-                              <button
-                                className="!text-xs !text-gray-500 cursor-pointer flex gap-1"
-                                onClick={() => handleCommentLike(comment._id)}
-                              >
-                                {comment?.isMyLike ? (
-                                  <HeartFilled className="!text-red-500 !text-sm" />
-                                ) : (
-                                  <HeartOutlined />
-                                )}
-                                {comment?.totalLike}
-                              </button>
-
-                              <button
-                                className="!text-xs !text-gray-500 cursor-pointer"
-                                onClick={() => {
-                                  setReplyingTo(comment?._id);
-                                  setReplyText("");
-                                }}
-                              >
-                                Reply
-                              </button>
-                            </div>
-
-                            {/* Reply Input Field - Only show for the comment being replied to */}
-                            {replyingTo === comment?._id && (
-                              <div className="mt-3 flex items-center gap-2">
-                                <Avatar
-                                  size="small"
-                                  src={post?.reviewer?.profile_image}
-                                />
-                                <Input
-                                  placeholder="Write a reply..."
-                                  value={replyText}
-                                  onChange={(e) => setReplyText(e.target.value)}
-                                  suffix={
-                                    <div className="flex items-center gap-2">
-                                      <SendOutlined
-                                        className="text-blue-500 cursor-pointer"
-                                        onClick={() =>
-                                          handleReply(comment?._id)
-                                        }
-                                      />
-                                    </div>
-                                  }
-                                  onPressEnter={() => handleReply(comment?._id)}
-                                  autoFocus
-                                />
-                              </div>
-                            )}
-
-                            {/* Show replies button */}
-                            {comment?.totalReplies > 0 && (
-                              <div
-                                className="cursor-pointer text-sm mt-5 hover:text-blue-500"
-                                onClick={() =>
-                                  handleClickRepliesChat(comment?._id)
-                                }
-                              >
-                                {showRepliesForComment === comment?._id
-                                  ? `Hide ${comment?.totalReplies} replies`
-                                  : `See ${comment?.totalReplies} replies`}
-                              </div>
-                            )}
-
-                            {/* Only show replies for the specific comment that was clicked */}
-                            {showRepliesForComment === comment?._id &&
-                              getCommentReplies?.data?.result?.length > 0 &&
-                              getCommentReplies?.data?.result.map((reply) => (
-                                <div
-                                  key={reply._id}
-                                  className="ml-8 mt-3 p-3 bg-gray-50 rounded-lg"
-                                >
-                                  <div className="flex items-start gap-2">
-                                    <Avatar
-                                      size="small"
-                                      src={reply?.commentorProfileImage}
-                                    />
-                                    <div className="flex-1">
-                                      <div className="flex items-center gap-2">
-                                        <span className="font-medium">
-                                          {reply?.commentorName}
-                                        </span>
-                                        <span className="text-gray-400 text-xs">
-                                          {new Intl.DateTimeFormat("en-US", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "2-digit",
-                                          }).format(new Date(reply?.createdAt))}
-                                        </span>
-                                      </div>
-                                      <p className="text-sm text-gray-600">
-                                        {reply?.text}
-                                      </p>
-                                      <div className="flex items-center gap-4 mt-1">
-                                        <button
-                                          className="!text-xs !text-gray-500 cursor-pointer flex gap-1"
-                                          onClick={() =>
-                                            handleCommentLike(reply._id)
-                                          }
-                                        >
-                                          {reply?.isMyLike ? (
-                                            <HeartFilled className="!text-red-500 !text-sm" />
-                                          ) : (
-                                            <HeartOutlined />
-                                          )}
-                                          {reply?.totalLike}
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  {comments && (
-                    <div
-                      onClick={() => {
-                        setLimit((limit) => limit + 10);
-                        refetch();
-                      }}
-                      className="cursor-pointer text-sm mt-5 hover:text-blue-500 text-end"
-                    >
-                      {getReviewComments?.data?.meta?.total > limit
-                        ? "Load More"
-                        : ""}
-                    </div>
-                  )}
-                </div>
-              </div>
+              <ReviewPost
+                post={post}
+                key={post?._id}
+                isFetching={isFetching}
+                replyingTo={replyingTo}
+                setIsLoadingVideo={setIsLoadingVideo}
+                isLoadingVideo={isLoadingVideo}
+                handleReply={handleReply}
+                handleClickRepliesChat={handleClickRepliesChat}
+              />
             ))}
             {(isFetching || loading || reviewList?.data?.data?.meta?.total > reviewLimit) && <CustomSkeleton isHeight={false} />}
           </div>
@@ -846,98 +361,3 @@ const SamplerFeed = () => {
 export default SamplerFeed;
 
 
-const CustomSkeleton = ({ isHeight = true }) => {
-  return (
-    <div className={` ${isHeight ? "h-screen" : ""} w-full`}>
-      <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
-        {/* Header */}
-        <div className="flex justify-between mb-2 w-full">
-          <div className="flex items-center gap-2 w-full">
-            <Skeleton.Avatar active size="large" shape="circle" />
-            <div>
-              <Skeleton.Input
-                active
-                size="small"
-                style={{ width: 120 }}
-              />
-              <div className="flex items-center gap-2 mt-1">
-                <Skeleton.Input
-                  active
-                  size="small"
-                  style={{ width: 60 }}
-                />
-                <Skeleton.Input
-                  active
-                  size="small"
-                  style={{ width: 40 }}
-                />
-              </div>
-            </div>
-          </div>
-          <Skeleton.Button active size="small" shape="round" />
-        </div>
-
-        <Skeleton paragraph={{ rows: 2 }} active />
-
-        <div className="flex justify-between items-center mt-4 w-full">
-          <div className="flex gap-4">
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-            <Skeleton.Button active size="small" shape="round" />
-          </div>
-          <Skeleton.Button active size="small" shape="round" />
-        </div>
-      </div>
-      {isHeight &&
-        <div className="shadow-md border border-gray-200 rounded-2xl p-5 mb-5 w-full ">
-          {/* Header */}
-          <div className="flex justify-between mb-2 w-full">
-            <div className="flex items-center gap-2 w-full">
-              <Skeleton.Avatar active size="large" shape="circle" />
-              <div>
-                <Skeleton.Input
-                  active
-                  size="small"
-                  style={{ width: 120 }}
-                />
-                <div className="flex items-center gap-2 mt-1">
-                  <Skeleton.Input
-                    active
-                    size="small"
-                    style={{ width: 60 }}
-                  />
-                  <Skeleton.Input
-                    active
-                    size="small"
-                    style={{ width: 40 }}
-                  />
-                </div>
-              </div>
-            </div>
-            <Skeleton.Button active size="small" shape="round" />
-          </div>
-
-          <Skeleton paragraph={{ rows: 2 }} active />
-
-          <div className="flex justify-between items-center mt-4 w-full">
-            <div className="flex gap-4">
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-              <Skeleton.Button active size="small" shape="round" />
-            </div>
-            <Skeleton.Button active size="small" shape="round" />
-          </div>
-        </div>}
-    </div>
-  )
-}

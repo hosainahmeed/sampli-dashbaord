@@ -80,6 +80,7 @@ const ChooseRole = () => {
 
         <Button
           type="primary"
+          size='large'
           onClick={handleNext}
           disabled={selectedOption === ''}
           className="btn-primary w-full cursor-pointer mt-6 px-4 py-2 bg-[var(--baseColor)] hover:bg-blue-600 text-center transition-all duration-150"
@@ -96,7 +97,7 @@ const ChooseRole = () => {
           </Link>
         </div>
 
-        <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5 ">
+        {/* <div className="mt-10 text-gray-500 text-center flex items-center justify-center gap-5 ">
           <Link to="/" className="text-blue-500 hover:underline transition-all">
             Help
           </Link>
@@ -106,7 +107,7 @@ const ChooseRole = () => {
           <Link to="/" className="text-blue-500 hover:underline transition-all">
             Terms
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

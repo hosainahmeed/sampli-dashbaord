@@ -62,7 +62,7 @@ const UserInfo = () => {
 
         <FormWrapper onFinish={onFinish}>
           <InputField
-            type="text"
+            type="number"
             className="text-start"
             label="Phone Number"
             name="phone"

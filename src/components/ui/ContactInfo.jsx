@@ -74,6 +74,7 @@ const ContactInfo = () => {
           <Button
             type="primary"
             htmlType="submit"
+            size='large'
             className="w-full"
             style={{ marginTop: 10 }}
             loading={isLoading}

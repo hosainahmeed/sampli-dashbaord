@@ -71,6 +71,7 @@ const Documentation = ({ data }) => {
         }
       })
     } catch (error) {
+      toast.dismiss()
       toast.error(error?.data?.message || error?.message || "Something went wrong!");
     }
   };

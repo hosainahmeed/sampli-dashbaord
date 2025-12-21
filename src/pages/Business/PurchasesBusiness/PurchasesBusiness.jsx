@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Button, Table, Tabs, Tag } from "antd";
 import { useGetCampaignPurchaseQuery } from "../../../Redux/businessApis/campaign/campaignPurchaseApis";
@@ -95,7 +96,7 @@ const PurchasesBusiness = () => {
             key: "date",
         },
         {
-            title: "",
+            title: "Action",
             key: "action",
             render: (_, record) => (
                 <Link to={`/business/purchases/${record?.key}`} state={{ id: record?.key }}>
@@ -147,7 +148,7 @@ const PurchasesBusiness = () => {
                 return originalElement;
             },
         },
-        scroll: { x: 1000 },
+        scroll: { x:'max-content' },
     };
 
     return (

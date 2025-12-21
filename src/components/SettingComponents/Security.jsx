@@ -33,6 +33,7 @@ function Security() {
       if (error?.data?.fieldErrors) {
         return error.data.fieldErrors;
       }
+      toast.dismiss()
       toast.error(error?.data?.message || error?.message || "Something went wrong!");
     }
   };

@@ -44,7 +44,7 @@ function StoreFooter() {
           </li>
         </ul>
 
-        <p className=" md:block hidden">
+        <p className="md:block hidden">
           © {new Date().getFullYear()} Sampli. All Rights Reserved.
         </p>
       </div>

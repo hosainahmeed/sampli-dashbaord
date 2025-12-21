@@ -229,35 +229,60 @@ function AddProduct() {
           </Divider>
 
           <InputField
-            label="Weight (in lbs)"
+            label={<span>Weight (in lbs) <small className="text-[#999Eab]">min-0.1 max-150</small></span>}
             name="weight"
-            rules={[{ required: isDraft ? false : true, message: "Please enter weight (in lbs) !" }]}
+            rules={[
+              { required: isDraft ? false : true, message: "Please enter weight (in lbs)!" },
+              { type: 'number', min: 0.1, message: 'Weight must be at least 0.1 lbs' },
+              { type: 'number', max: 150, message: 'Weight cannot exceed 150 lbs' }
+            ]}
             placeholder="Enter weight"
             type="number"
+            min={0.1}
+            max={150}
+            step="0.1"
             className="w-full"
           />
           <InputField
-            label="Length (in inches)"
+            label={<span>Length (in inches) <small className="text-[#999Eab]">min-1 max-48</small></span>}
             name="length"
-            rules={[{ required: isDraft ? false : true, message: "Please enter length (in inches) !" }]}
+            rules={[
+              { required: isDraft ? false : true, message: "Please enter length (in inches)!" },
+              { type: 'number', min: 1, message: 'Length must be at least 1 inch' },
+              { type: 'number', max: 48, message: 'Length cannot exceed 48 inches' }
+            ]}
             placeholder="Enter length"
             type="number"
+            min={1}
+            max={48}
             className="w-full"
           />
           <InputField
-            label="Width (in inches)"
+            label={<span>Width (in inches) <small className="text-[#999Eab]">min-1 max-36</small></span>}
             name="width"
-            rules={[{ required: isDraft ? false : true, message: "Please enter width (in inches)!" }]}
+            rules={[
+              { required: isDraft ? false : true, message: "Please enter width (in inches)!" },
+              { type: 'number', min: 1, message: 'Width must be at least 1 inch' },
+              { type: 'number', max: 36, message: 'Width cannot exceed 36 inches' }
+            ]}
             placeholder="Enter width"
             type="number"
+            min={1}
+            max={36}
             className="w-full"
           />
           <InputField
-            label="Height (in inches)"
+            label={<span>Height (in inches) <small className="text-[#999Eab]">min-1 max-36</small></span>}
             name="height"
-            rules={[{ required: isDraft ? false : true, message: "Please enter height (in inches)!" }]}
+            rules={[
+              { required: isDraft ? false : true, message: "Please enter height (in inches)!" },
+              { type: 'number', min: 1, message: 'Height must be at least 1 inch' },
+              { type: 'number', max: 36, message: 'Height cannot exceed 36 inches' }
+            ]}
             placeholder="Enter height"
             type="number"
+            min={1}
+            max={36}
             className="w-full"
           />
           <Form.Item

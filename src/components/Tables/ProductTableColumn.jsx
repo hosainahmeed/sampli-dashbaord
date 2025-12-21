@@ -95,7 +95,8 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
     // Memoize columns to prevent unnecessary re-renders
     const columns = useMemo(() => [
         {
-            title: <span className="text-xs xl:text-lg">Item Name</span>,
+            // title: <span className="text-xs xl:text-lg">Item Name</span>,
+            title:"Item Name",
             dataIndex: 'name',
             key: 'name',
             width: '25%',
@@ -120,7 +121,7 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
             ),
         },
         {
-            title: <span className="text-xs xl:text-lg">Price</span>,
+            title: "Price",
             dataIndex: 'price',
             key: 'price',
             width: '15%',
@@ -131,7 +132,7 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
             ),
         },
         {
-            title: <span className="text-xs xl:text-lg">Status</span>,
+            title: "Status",
             dataIndex: 'status',
             key: 'status',
             width: '10%',
@@ -142,19 +143,19 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
             ),
         },
         {
-            title: <span className="text-xs xl:text-lg">In Stock</span>,
+            title: "In Stock",
             dataIndex: 'stock',
             key: 'stock',
             render: (stock) => stock || 0,
         },
         {
-            title: <span className="text-xs xl:text-lg">Total Sales</span>,
+            title: "Total Sales",
             dataIndex: 'sales',
             key: 'sales',
             render: (sales) => sales || 0,
         },
         {
-            title: <span className="text-xs xl:text-lg">Date Created</span>,
+            title:"Date Created",
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (createdAt) => (
@@ -164,14 +165,14 @@ export const productTableColumn = ({ statusColors, handleDelete, handleView, fil
             ),
         },
         {
-            title: <span className="text-xs xl:text-lg">Action</span>,
+            title: "Action",
             key: 'action',
             width: '10%',
             render: (_, record) => (
                 <Dropdown
-                    overlay={
-                        <Menu items={getActionItems(record)} />
-                    }
+                    menu={{
+                        items: getActionItems(record),
+                    }}
                     placement="bottomRight"
                     trigger={['click']}
                     arrow

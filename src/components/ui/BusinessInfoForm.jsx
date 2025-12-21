@@ -119,12 +119,12 @@ const BusinessInfoForm = () => {
             className="text-start"
           ></InputField>
 
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button size='large' type="primary" htmlType="submit" className="w-full">
             Continue
           </Button>
         </FormWrapper>
 
-        <Divider />
+        {/* <Divider />
         <div className="mt-4 text-gray-500">
           <Link to="/help" className="mr-3">
             Help
@@ -133,7 +133,7 @@ const BusinessInfoForm = () => {
             Privacy
           </Link>
           <Link to="/terms">Terms</Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

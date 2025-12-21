@@ -4,10 +4,11 @@ import { useGoogleLoginMutation } from "../Redux/sampler/oAuthApis";
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
 
 const GoogleAuthButton = ({ role, loginForm }) => {
   const navigate = useNavigate();
-  const [googleLogin] = useGoogleLoginMutation();
+  const [googleLogin, { isLoading }] = useGoogleLoginMutation();
   const handleGoogleSuccess = async (credentialResponse) => {
     if (!role && !loginForm) throw new Error("Role is required");
     if (!credentialResponse?.credential)
@@ -80,13 +81,13 @@ const GoogleAuthButton = ({ role, loginForm }) => {
       toast.dismiss();
       toast.error(
         error?.data?.message ||
-          error?.message ||
-          error?.error ||
-          "Something went wrong"
+        error?.message ||
+        error?.error ||
+        "Something went wrong"
       );
       if (
         error?.data?.message ===
-          "User validation failed: role: Path `role` is required." &&
+        "User validation failed: role: Path `role` is required." &&
         error?.status === 503
       ) {
         toast.dismiss();
@@ -99,15 +100,20 @@ const GoogleAuthButton = ({ role, loginForm }) => {
   const handleGoogleError = (error) => {
     toast.error(
       error?.data?.message ||
-        error?.message ||
-        error?.error ||
-        "Something went wrong"
+      error?.message ||
+      error?.error ||
+      "Something went wrong"
     );
   };
 
   return (
     <div className="flex items-center justify-center">
+      {isLoading &&
+        <div className="fixed top-0 left-0 h-screen w-full z-[999] bg-black opacity-20 flex items-center justify-center">
+          <Spin />
+        </div>}
       <GoogleLogin
+        isLoading={isLoading}
         onSuccess={handleGoogleSuccess}
         onError={handleGoogleError}
         useOneTap={false}

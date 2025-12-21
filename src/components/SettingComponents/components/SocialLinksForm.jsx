@@ -42,12 +42,12 @@ const SocialLinksForm = ({ data }) => {
                                 name={platform}
                                 label={platform.charAt(0).toUpperCase() + platform.slice(1)}
                             >
-                                <Input placeholder={`Enter your ${platform} URL`} />
+                                <Input size='large' placeholder={`Enter your ${platform} URL`} />
                             </Form.Item>
                         </Col>
                     ))}
                 </Row>
-                <Button loading={updateProfileLoading} htmlType="submit" type="primary" icon={<UploadOutlined />}>
+                <Button loading={updateProfileLoading} size='large' htmlType="submit" type="primary" icon={<UploadOutlined />}>
                     Save Social Links
                 </Button>
             </Form>

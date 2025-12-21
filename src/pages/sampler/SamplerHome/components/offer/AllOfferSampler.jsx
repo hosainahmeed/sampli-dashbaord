@@ -18,6 +18,7 @@ const AllOfferSampler = () => {
     isFetching,
   } = useGetMyCampaignOfferQuery({
     status: status,
+    sortOrder: "desc",
   });
   const { data: getCampaignOfferListData, isLoading: offerLoading } =
     useGetCampaignListQuery({

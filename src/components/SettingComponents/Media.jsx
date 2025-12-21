@@ -57,6 +57,7 @@ const Media = () => {
         [type]: warning,
       }));
     } catch (error) {
+      toast.dismiss()
       toast.error(error?.data?.message)
     }
   };
