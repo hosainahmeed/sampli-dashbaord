@@ -17,7 +17,7 @@ export const renderImage = (images) => {
         return new Promise((resolve) => {
             Modal.confirm({
                 content: (
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                         {
                             images?.map((img, index) => {
                                 return (
@@ -35,7 +35,7 @@ export const renderImage = (images) => {
                 onOk: () => {
                     resolve(true);
                 },
-                width: 600
+                width: 1200
             });
         });
     }

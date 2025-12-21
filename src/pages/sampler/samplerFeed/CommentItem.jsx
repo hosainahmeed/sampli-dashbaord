@@ -156,7 +156,9 @@ const CommentItem = memo(({
                         <Button
                             type="text"
                             size="small"
-                            onClick={() => onStartReply(comment._id)}
+                            onClick={() => {
+                                onStartReply(comment._id)
+                            }}
                             className={`flex items-center gap-1 ${isReplying ? '!text-blue-500' : 'text-gray-500'}`}
                         >
                             <MessageOutlined />
@@ -217,6 +219,7 @@ const CommentItem = memo(({
                                                     onReply={onReply}
                                                     onDelete={onDelete}
                                                     currentUser={currentUser}
+                                                    onStartReply={onStartReply}
                                                 />
                                             </div>
                                         ))

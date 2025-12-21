@@ -7,21 +7,12 @@ import {
     Skeleton,
     Typography,
     Divider,
-    Space,
-    Dropdown
 } from 'antd';
 import {
     SendOutlined,
-    HeartOutlined,
-    HeartFilled,
     MessageOutlined,
     MoreOutlined,
-    EditOutlined,
-    DeleteOutlined,
-    DownOutlined,
-    UpOutlined
 } from '@ant-design/icons';
-import { formatDistanceToNow } from 'date-fns';
 import { message } from 'antd';
 
 import {
@@ -37,6 +28,7 @@ const { Text } = Typography;
 const CommentsModal = ({ visible, onClose, post }) => {
     const [commentText, setCommentText] = useState('');
     const [replyingTo, setReplyingTo] = useState(null);
+    console.log("replyTo" ,replyingTo)
     const [limit, setLimit] = useState(10);
 
     const {
@@ -119,14 +111,14 @@ const CommentsModal = ({ visible, onClose, post }) => {
                             • {post?.totalComments || 0}
                         </Text>
                     </div>
-                    <Button type="text" icon={<MoreOutlined />} />
+                    {/* <Button type="text" icon={<MoreOutlined />} /> */}
                 </div>
             }
             open={visible}
             onCancel={onClose}
             footer={null}
             centered
-            width={600}
+            width={1200}
             className="comments-modal"
             bodyStyle={{ padding: '24px 0' }}
             destroyOnClose

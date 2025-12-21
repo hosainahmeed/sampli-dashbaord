@@ -12,6 +12,7 @@ import {
   Spin,
   Skeleton,
   Empty,
+  Card,
 } from "antd";
 import {
   ShareAltOutlined,
@@ -54,7 +55,7 @@ const SamplerFeed = () => {
 
   const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
 
-  const { data: getMyProfile } =
+  const { data: getMyProfile , isLoading } =
     useGetProfileApisQuery();
 
   const profileData = getMyProfile?.data;
@@ -166,43 +167,45 @@ const SamplerFeed = () => {
     <div className="responsive-width !mt-2 !mb-20 ">
       <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
-        <div className="p-4 w-1/3  max-lg:w-full">
-          <div className="flex items-center justify-between ">
-            <div className="flex items-center gap-4 ">
-              <Avatar size={64} src={`${profileData?.profile_image}`} />
-              <div className="mt-3">
-                <h2 className="text-lg font-semibold">{profileData?.name}</h2>
-                <p className="text-gray-500 text-sm">
-                  @{profileData?.username}
-                </p>
+        <Card loading={isLoading} className="!w-1/3  max-lg:!w-full">
+          <div>
+            <div className="flex items-center justify-between ">
+              <div className="flex items-center gap-4 ">
+                <Avatar style={{ border: '1px solid gray', padding: '4px' }} size={60} src={`${profileData?.profile_image}`} />
+                <div className="mt-3 flex items-start flex-col">
+                  <span className="text-lg font-semibold">{profileData?.name}</span>
+                  <small className="text-gray-500 text-sm">
+                    @{profileData?.username}
+                  </small>
+                </div>
               </div>
+              <Link to={"/sampler/my-profile"} className="mb-5">
+                <Button type="default">My Profile</Button>
+              </Link>
             </div>
-            <Link to={"/sampler/my-profile"} className="mb-5">
-              <Button type="default">My Profile</Button>
-            </Link>
-          </div>
 
-          <div className="flex justify-between text-center">
-            <div>
-              <div className="font-semibold ">
-                {profileData?.totalFollowers}
+            <div className="flex justify-between text-center">
+              <div>
+                <div className="font-semibold ">
+                  {profileData?.totalFollowers}
+                </div>
+                <div className="text-gray-500 ">Reviews</div>
               </div>
-              <div className="text-gray-500 ">Reviews</div>
-            </div>
-            <div>
-              <div className="font-semibold  ">
-                {profileData?.totalFollowing}
+              <div>
+                <div className="font-semibold  ">
+                  {profileData?.totalFollowing}
+                </div>
+                <div className="text-gray-500 ">Followers</div>
               </div>
-              <div className="text-gray-500 ">Followers</div>
-            </div>
-            <div>
-              <div className="font-semibold  ">
-                {profileData?.totalReferralSales}
+              <div>
+                <div className="font-semibold  ">
+                  {profileData?.totalReferralSales}
+                </div>
+                <div className="text-gray-500 ">Referrals</div>
               </div>
-              <div className="text-gray-500 ">Referrals</div>
             </div>
           </div>
-        </div>
+        </Card>
         {/* right side */}
         <div className="w-2/3 max-lg:w-full">
           {/* Feed Tabs */}
