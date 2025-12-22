@@ -20,13 +20,18 @@ const { Panel } = Collapse;
 const SCProductDetails = ({ referral }) => {
   const { id } = useParams();
 
-  const { data: getSingleProduct, refetch } = useGetSingleProductApisQuery({
+  const {
+    data: getSingleProduct,
+    refetch,
+    isLoading: singleLoading,
+  } = useGetSingleProductApisQuery({
     id,
   });
 
-  const { data: getVariantProduct } = useGetVariantProductApisQuery({
-    id,
-  });
+  const { data: getVariantProduct, isLoading: variantLoading } =
+    useGetVariantProductApisQuery({
+      id,
+    });
 
   const product = getSingleProduct?.data;
   const variants = getVariantProduct?.data || [];
@@ -141,6 +146,9 @@ const SCProductDetails = ({ referral }) => {
       refetch();
     } catch (error) {
       console.log(error);
+      toast.error(
+        error?.data?.message || error?.message || "Something went wrong"
+      );
     }
   };
 

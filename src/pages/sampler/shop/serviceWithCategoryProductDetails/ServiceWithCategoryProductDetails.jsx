@@ -17,7 +17,7 @@ import {
 } from "../../../../Redux/sampler/productApis";
 import Meta from "antd/es/card/Meta";
 import { useGetSingleProductReviewQuery } from "../../../../Redux/sampler/reviewApis";
-
+import Loader from "../../../loader/Loader";
 
 const ServiceWithCategoryProductDetails = () => {
   const location = useLocation();
@@ -25,15 +25,29 @@ const ServiceWithCategoryProductDetails = () => {
   const { referral } = location.state || {};
   const [businessId, setBusinessId] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
+  const [reviewPage, setReviewPage] = useState(1);
 
   const carouselRef = useRef(null);
-  const { data: getSingleProduct, refetch } = useGetSingleProductApisQuery({
+  const { data: getSingleProduct, isLoading: singleProductLoading } =
+    useGetSingleProductApisQuery({
+      id,
+    });
+
+  const {
+    data: getSingleProductReview,
+    isLoading: singleProductReviewLoading,
+  } = useGetSingleProductReviewQuery({
     id,
   });
 
-  const { data: getSingleProductReview } = useGetSingleProductReviewQuery({
-    id,
-  });
+  const { data: getBusinessProducts, isLoading: businessProductLoading } =
+    useGetBusinessProductApisQuery(businessId ? { id: businessId } : {}, {
+      skip: !businessId,
+    });
+  const { data: getCategoryProducts, isLoading: categoryProductLoading } =
+    useGetCategoryProductApisQuery(categoryId ? { id: categoryId } : {}, {
+      skip: !categoryId,
+    });
 
   useEffect(() => {
     if (getSingleProduct) {
@@ -42,16 +56,19 @@ const ServiceWithCategoryProductDetails = () => {
     }
   }, [getSingleProduct]);
 
-  const { data: getBusinessProducts, isLoading: businessProductLoading } =
-    useGetBusinessProductApisQuery(businessId ? { id: businessId } : {}, {
-      skip: !businessId,
-    });
-  const { data: getCategoryProducts } = useGetCategoryProductApisQuery(
-    categoryId ? { id: categoryId } : {},
-    { skip: !categoryId }
-  );
+  if (
+    singleProductLoading ||
+    singleProductReviewLoading ||
+    businessProductLoading ||
+    categoryProductLoading
+  ) {
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
-  const [reviewPage, setReviewPage] = useState(1);
   const reviewsPerPage = 5;
 
   const onReviewPageChange = (page) => {
