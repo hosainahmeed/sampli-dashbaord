@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo, useRef, useEffect } from 'react';
 import {
     Modal,
     Avatar,
@@ -28,8 +28,31 @@ const { Text } = Typography;
 const CommentsModal = ({ visible, onClose, post }) => {
     const [commentText, setCommentText] = useState('');
     const [replyingTo, setReplyingTo] = useState(null);
-    console.log("replyTo" ,replyingTo)
+    const commentInputRef = useRef(null);
+
+    // Focus the input when replying to a comment
+    const handleSetReplyingTo = (commentId) => {
+        setReplyingTo(commentId);
+        // Focus the input after state update
+        setTimeout(() => {
+            if (commentInputRef.current) {
+                commentInputRef.current.focus();
+            }
+        }, 0);
+    };
+
     const [limit, setLimit] = useState(10);
+
+    // Focus the input when the modal opens
+    useEffect(() => {
+        if (visible && commentInputRef.current) {
+            // Small timeout to ensure the modal is fully rendered
+            const timer = setTimeout(() => {
+                commentInputRef.current?.focus();
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [visible]);
 
     const {
         data: commentsData,
@@ -134,6 +157,7 @@ const CommentsModal = ({ visible, onClose, post }) => {
                             onChange={(e) => setCommentText(e.target.value)}
                             onPressEnter={handleSubmitComment}
                             className="rounded-full"
+                            ref={commentInputRef}
                             suffix={
                                 <Button
                                     type="text"
@@ -178,7 +202,7 @@ const CommentsModal = ({ visible, onClose, post }) => {
                                 onReply={handleSubmitComment}
                                 onDelete={handleDeleteComment}
                                 isReplying={replyingTo === comment._id}
-                                onStartReply={setReplyingTo}
+                                onStartReply={handleSetReplyingTo}
                                 currentUser={{ id: post?.reviewer?._id }}
                             />
                         ))}

@@ -84,11 +84,6 @@ const CommentItem = memo(({
     const menuItems = [
         ...(comment?.isMyComment ? [
             {
-                key: 'edit',
-                label: 'Edit',
-                icon: <EditOutlined />,
-            },
-            {
                 key: 'delete',
                 label: 'Delete',
                 icon: <DeleteOutlined />,
