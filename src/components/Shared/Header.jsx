@@ -29,21 +29,14 @@ import { useGetProfileQuery } from "../../Redux/businessApis/business _profile/g
 import { useGetReviewerProfileQuery } from "../../Redux/sampler/reviewerProfileApis";
 
 function Header() {
-  const [token, setToken] = useState(null)
-  const { data: profile } = useGetProfileQuery();
-  const { data: reviewerProfile } =
+  const token = localStorage.getItem("token");
+  const { data: profile, isLoading } = useGetProfileQuery();
+  const { data: reviewerProfile, isLoading: reviewerProfileLoading } =
     useGetReviewerProfileQuery();
-
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, [])
-
   let decode;
   if (token) {
     decode = jwtDecode(localStorage.getItem("token"));
   }
-
-
 
   const [userType, setUserType] = useState(decode?.role); // sampler, business
   // const [show, setShow] = useState(true);

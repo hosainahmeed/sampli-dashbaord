@@ -39,6 +39,7 @@ const ReviewPost = memo((props) => {
     onFollow,
     onShare,
     onPostAction,
+    isFollowing
   } = props;
 
   const [post, setPost] = useState(initialPost);
@@ -241,15 +242,16 @@ const ReviewPost = memo((props) => {
               size="small"
               onClick={handleFollow}
               className="font-medium"
+              loading={isFollowing}
             >
               {post?.reviewer?.isFollow ? "Following" : "Follow"}
             </Button>
           )}
-          <Button
+          {/* <Button
             type="text"
             icon={<EllipsisOutlined />}
             onClick={() => onPostAction?.("menu", post)}
-          />
+          /> */}
         </Space>
       </div>
 

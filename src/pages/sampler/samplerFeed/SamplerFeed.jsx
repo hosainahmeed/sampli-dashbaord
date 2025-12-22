@@ -54,7 +54,7 @@ const SamplerFeed = () => {
   const { data: categoryList } = useCategorySectionApisQuery();
   const [activeCategory, setActiveCategory] = useState("");
 
-  const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
+  const [changeFollowUnfollow, { isLoading: isFollowing }] = usePostFollowUnfollowMutation();
 
   const { data: getMyProfile, isLoading } =
     useGetProfileApisQuery();
@@ -91,10 +91,13 @@ const SamplerFeed = () => {
 
   const handleFollow = async (id) => {
     try {
-      const res = await changeFollowUnfollow(id);
-      console.log(res);
+      const res = await changeFollowUnfollow(id).unwrap()
+      if (!res.success) {
+        throw new Error(res.message)
+      }
+      toast.success(res?.message)
     } catch (error) {
-      console.log(error);
+      toast.error(error?.data?.message || error?.message || "Something went wrong")
     }
   };
 
@@ -303,6 +306,8 @@ const SamplerFeed = () => {
                 handleReply={handleReply}
                 onShare={handleShare}
                 handleClickRepliesChat={handleClickRepliesChat}
+                onFollow={handleFollow}
+                isFollowing={isFollowing}
               />
             ))}
             {(isFetching || loading || reviewList?.data?.data?.meta?.total > reviewLimit) && <CustomSkeleton isHeight={false} />}
