@@ -28,7 +28,7 @@ function AllFeedCard() {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-1 md:p-4">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         {reviewLoading ? <Skeleton.Input size="small" /> : <h1 className="text-2xl font-semibold mb-4 md:mb-0">Reviews</h1>}

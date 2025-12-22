@@ -29,31 +29,31 @@ const ExistingProduct = () => {
   //  REAL RELOAD / TAB CLOSE PROTECTION (iOS Compatible)
   // ======================================================
 
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      if (current === 3) return;
+  // useEffect(() => {
+  //   const handleBeforeUnload = (e) => {
+  //     if (current === 3) return;
 
-      const data = Object.values(campaignData);
-      const hasUnsavedChanges = data.some(
-        value => value !== null &&
-          value !== "" &&
-          value !== undefined &&
-          value !== 0
-      );
+  //     const data = Object.values(campaignData);
+  //     const hasUnsavedChanges = data.some(
+  //       value => value !== null &&
+  //         value !== "" &&
+  //         value !== undefined &&
+  //         value !== 0
+  //     );
 
-      if (hasUnsavedChanges) {
-        e.preventDefault();
-        // Modern browsers require both of these
-        e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
-        return e.returnValue;
-      }
-    };
+  //     if (hasUnsavedChanges) {
+  //       e.preventDefault();
+  //       // Modern browsers require both of these
+  //       e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+  //       return e.returnValue;
+  //     }
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [campaignData, current]); 
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [campaignData, current]); 
 
 
   // ======================================================

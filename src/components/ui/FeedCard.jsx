@@ -126,8 +126,8 @@ const FeedCard = ({ content }) => {
   return (
     <Card className="w-full rounded-md shadow-xl">
       <div className="flex-center-between mb-10">
-        <div className="flex">
-          <Avatar size={40} src={content?.reviewer?.profile_image} />
+        <div className="flex overflow-x-auto">
+          <Avatar size={40} className="!min-w-10 !min-h-10 !shadow-md !border" src={content?.reviewer?.profile_image} />
           <div style={{ marginLeft: 10 }}>
             <Title level={5} style={{ margin: 0 }}>
               {content?.reviewer?.name}{" "}
@@ -140,20 +140,22 @@ const FeedCard = ({ content }) => {
               <Rate
                 disabled
                 defaultValue={content?.rating}
+                count={5}
                 style={{ fontSize: 9, marginRight: 5 }}
+                className="!text-nowrap"
               />
-              <Text>{content?.rating}</Text> •
+              <Text className="!text-nowrap">{content?.rating}</Text> •
               <Text
-                className="!text-[#6D7486] !underline"
+                className="!text-[#6D7486] !underline !text-nowrap"
                 style={{ marginLeft: 10 }}
               >
                 {content?.product?.name}
               </Text> •
-              <Text className="!ml-2 mt-1" style={{ color: "green" }}>
+              <Text className="!ml-2 mt-1 !text-nowrap" style={{ color: "green" }}>
                 ${content?.product?.price}
               </Text>
               <Text
-                className="!text-[#6D7486] !underline"
+                className="!text-[#6D7486] !text-nowrap !underline"
                 style={{ marginLeft: 10 }}
               >
                 • {content?.category?.name}
@@ -237,8 +239,8 @@ const FeedCard = ({ content }) => {
         onCancel={() => setShowCommentModal(false)}
         footer={null}
       >
-        <div className="flex">
-          <Avatar size={40} src={selectedComment?.reviewer?.profile_image} />
+        <div className="flex overflow-x-auto mb-4">
+          <Avatar size={40} className="!min-w-10 !min-h-10 !shadow-md !border" src={selectedComment?.reviewer?.profile_image} />
           <div style={{ marginLeft: 10 }}>
             <Title level={5} style={{ margin: 0 }}>
               {selectedComment?.reviewer?.name}{" "}
@@ -251,20 +253,22 @@ const FeedCard = ({ content }) => {
               <Rate
                 disabled
                 defaultValue={selectedComment?.rating}
+                count={5}
                 style={{ fontSize: 9, marginRight: 5 }}
+                className="!text-nowrap"
               />
-              <Text>{selectedComment?.rating}</Text>•
+              <Text className="!text-nowrap">{selectedComment?.rating}</Text> •
               <Text
-                className="!text-black !underline"
+                className="!text-[#6D7486] !underline !text-nowrap"
                 style={{ marginLeft: 10 }}
               >
                 {selectedComment?.product?.name}
-              </Text>
-              <Text className="!ml-2 mt-1" style={{ color: "green" }}>
+              </Text> •
+              <Text className="!ml-2 mt-1 !text-nowrap" style={{ color: "green" }}>
                 ${selectedComment?.product?.price}
               </Text>
               <Text
-                className="!text-black !underline"
+                className="!text-[#6D7486] !text-nowrap !underline"
                 style={{ marginLeft: 10 }}
               >
                 • {selectedComment?.category?.name}
@@ -272,6 +276,10 @@ const FeedCard = ({ content }) => {
             </div>
           </div>
         </div>
+        <Divider />
+        <Text style={{ marginTop: 10 }}>
+          {selectedComment?.description}
+        </Text>
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ marginLeft: 10 }}>
             {selectedComment?.video && <div className="mt-4 h-[300px]">
@@ -284,9 +292,7 @@ const FeedCard = ({ content }) => {
             {
               selectedComment?.images && renderImage(selectedComment?.images)
             }
-            <Text style={{ marginTop: 10 }}>
-              {selectedComment?.description}
-            </Text>
+
           </div>
         </div>
         <Divider />

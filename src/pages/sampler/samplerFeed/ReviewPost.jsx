@@ -186,11 +186,10 @@ const ReviewPost = memo((props) => {
     >
       <Button
         type="primary"
-        ghost
         className="flex items-center gap-2 hover:scale-105 transition-transform"
-        size="middle"
+        size="large"
+        shape="round"
       >
-        <FaCartShopping className="text-blue-600" />
         <span className="font-medium">View Details</span>
       </Button>
     </Link>

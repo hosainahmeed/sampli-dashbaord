@@ -106,9 +106,13 @@ const TargetAudienceForm = () => {
 
 
   const disabledDate = (current) => {
+
     if (!currentDate) return false;
     const minEndDate = dayjs(currentDate).add(3, "week");
     return current && current <= minEndDate;
+  };
+  const disabledStartDate = (current) => {
+    return current && current < dayjs().startOf('day');
   };
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -193,6 +197,7 @@ const TargetAudienceForm = () => {
                 setCurrentDate(date)
                 handleChange('startDate', date)
               }}
+              disabledDate={disabledStartDate}
             />
           </Form.Item>
 
