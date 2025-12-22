@@ -48,7 +48,7 @@ const ReviewPost = memo((props) => {
   const [showLikesModal, setShowLikesModal] = useState(false);
 
   const [reviewLikeUnlike] = useChangeLikesMutation();
-  const { data: likersData } = useGetReviewerLikersQuery(
+  const { data: likersData, isLoading: likersLoading } = useGetReviewerLikersQuery(
     {
       id: initialPost?._id,
     },
@@ -310,6 +310,7 @@ const ReviewPost = memo((props) => {
           likers={likersData?.data?.result || []}
           totalLikers={post.totalLikers}
           onShowAll={() => setShowLikesModal(true)}
+          likersLoading={likersLoading}
         />
       )}
 

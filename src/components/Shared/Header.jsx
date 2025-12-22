@@ -29,14 +29,21 @@ import { useGetProfileQuery } from "../../Redux/businessApis/business _profile/g
 import { useGetReviewerProfileQuery } from "../../Redux/sampler/reviewerProfileApis";
 
 function Header() {
-  const token = localStorage.getItem("token");
-  const { data: profile, isLoading } = useGetProfileQuery();
-  const { data: reviewerProfile, isLoading: reviewerProfileLoading } =
+  const [token, setToken] = useState(null)
+  const { data: profile } = useGetProfileQuery();
+  const { data: reviewerProfile } =
     useGetReviewerProfileQuery();
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, [])
+
   let decode;
   if (token) {
     decode = jwtDecode(localStorage.getItem("token"));
   }
+
+
 
   const [userType, setUserType] = useState(decode?.role); // sampler, business
   // const [show, setShow] = useState(true);
@@ -349,8 +356,8 @@ function Header() {
               <Link
                 key={item.to}
                 className={`flex flex-col items-center text-xs ${location.pathname.startsWith(item.to)
-                    ? "text-blue-600"
-                    : "text-gray-600"
+                  ? "text-blue-600"
+                  : "text-gray-600"
                   }`}
                 to={item.to}
               >
