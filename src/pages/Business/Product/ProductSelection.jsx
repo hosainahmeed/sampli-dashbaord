@@ -17,6 +17,7 @@ const ProductSelection = () => {
 
   const { data: productData, isLoading: productLoading, isFetching } = useGetBusinessProductApisQuery({
     id: profile?.data?._id,
+    status: 'active',
     searchTerm: search,
     ...(selectedCategory !== null && { category: selectedCategory }),
   }, {

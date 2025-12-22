@@ -80,7 +80,7 @@ function AddProduct() {
         }
         if (res?.success) {
           toast.dismiss()
-          toast.success(res?.message)
+          toast.success('product saved as draft')
           navigate(-1)
         }
       } else {
@@ -138,7 +138,7 @@ function AddProduct() {
         </Card>
       }
       <div
-        className="flex items-center gap-2 text-[#999Eab] cursor-pointer hover:text-[#111] transition-all"
+        className="flex items-center w-fit gap-2 text-[#999Eab] cursor-pointer hover:text-[#111] transition-all"
         onClick={() => navigate(-1)}
       >
         <FaAngleLeft />
