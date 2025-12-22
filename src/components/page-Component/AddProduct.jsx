@@ -233,8 +233,18 @@ function AddProduct() {
             name="weight"
             rules={[
               { required: isDraft ? false : true, message: "Please enter weight (in lbs)!" },
-              { type: 'number', min: 0.1, message: 'Weight must be at least 0.1 lbs' },
-              { type: 'number', max: 150, message: 'Weight cannot exceed 150 lbs' }
+              {
+                validator: (_, value) => {
+                  const numValue = parseFloat(value);
+                  if (isNaN(numValue) || numValue < 0.1) {
+                    return Promise.reject('Weight must be at least 0.1 lbs');
+                  }
+                  if (numValue > 150) {
+                    return Promise.reject('Weight cannot exceed 150 lbs');
+                  }
+                  return Promise.resolve();
+                },
+              }
             ]}
             placeholder="Enter weight"
             type="number"
@@ -248,8 +258,18 @@ function AddProduct() {
             name="length"
             rules={[
               { required: isDraft ? false : true, message: "Please enter length (in inches)!" },
-              { type: 'number', min: 1, message: 'Length must be at least 1 inch' },
-              { type: 'number', max: 48, message: 'Length cannot exceed 48 inches' }
+              {
+                validator: (_, value) => {
+                  const numValue = parseFloat(value);
+                  if (isNaN(numValue) || numValue < 1) {
+                    return Promise.reject('Length must be at least 1 inch');
+                  }
+                  if (numValue > 48) {
+                    return Promise.reject('Length cannot exceed 48 inches');
+                  }
+                  return Promise.resolve();
+                },
+              }
             ]}
             placeholder="Enter length"
             type="number"
@@ -262,8 +282,18 @@ function AddProduct() {
             name="width"
             rules={[
               { required: isDraft ? false : true, message: "Please enter width (in inches)!" },
-              { type: 'number', min: 1, message: 'Width must be at least 1 inch' },
-              { type: 'number', max: 36, message: 'Width cannot exceed 36 inches' }
+              {
+                validator: (_, value) => {
+                  const numValue = parseFloat(value);
+                  if (isNaN(numValue) || numValue < 1) {
+                    return Promise.reject('Width must be at least 1 inch');
+                  }
+                  if (numValue > 36) {
+                    return Promise.reject('Width cannot exceed 36 inches');
+                  }
+                  return Promise.resolve();
+                },
+              }
             ]}
             placeholder="Enter width"
             type="number"
@@ -276,8 +306,18 @@ function AddProduct() {
             name="height"
             rules={[
               { required: isDraft ? false : true, message: "Please enter height (in inches)!" },
-              { type: 'number', min: 1, message: 'Height must be at least 1 inch' },
-              { type: 'number', max: 36, message: 'Height cannot exceed 36 inches' }
+              {
+                validator: (_, value) => {
+                  const numValue = parseFloat(value);
+                  if (isNaN(numValue) || numValue < 1) {
+                    return Promise.reject('Height must be at least 1 inch');
+                  }
+                  if (numValue > 36) {
+                    return Promise.reject('Height cannot exceed 36 inches');
+                  }
+                  return Promise.resolve();
+                },
+              }
             ]}
             placeholder="Enter height"
             type="number"

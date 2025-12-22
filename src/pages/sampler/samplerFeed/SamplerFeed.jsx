@@ -46,6 +46,7 @@ import Spinner from "../../../components/ui/Spinner";
 import toast from "react-hot-toast";
 import { CustomSkeleton } from "./CustomSkeleton";
 import ReviewPost from "./ReviewPost";
+import { frontendUrl, url } from "../../../Redux/main/server";
 
 const { TabPane } = Tabs;
 
@@ -55,7 +56,7 @@ const SamplerFeed = () => {
 
   const [changeFollowUnfollow] = usePostFollowUnfollowMutation();
 
-  const { data: getMyProfile , isLoading } =
+  const { data: getMyProfile, isLoading } =
     useGetProfileApisQuery();
 
   const profileData = getMyProfile?.data;
@@ -160,6 +161,19 @@ const SamplerFeed = () => {
       setReplyText("");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleShare = (post) => {
+    // console.log(post)
+    if (navigator.share) {
+      navigator.share({
+        title: post?.product?.name || "Event",
+        text: "Check this out!",
+        url: `${frontendUrl}/sampler/shop/category/${encodeURIComponent(post?.product?.name || '')}/${post?.product?._id}`,
+      });
+    } else {
+      alert("Share not supported on this device");
     }
   };
 
@@ -287,6 +301,7 @@ const SamplerFeed = () => {
                 setIsLoadingVideo={setIsLoadingVideo}
                 isLoadingVideo={isLoadingVideo}
                 handleReply={handleReply}
+                onShare={handleShare}
                 handleClickRepliesChat={handleClickRepliesChat}
               />
             ))}
