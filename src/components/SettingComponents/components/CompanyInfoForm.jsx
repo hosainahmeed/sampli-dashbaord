@@ -163,7 +163,7 @@ const CompanyInfoForm = () => {
                         <Form.Item
                             name="zip"
                             label="ZIP"
-                            rules={[{ required: true, type: "number", message: "Please enter a valid ZIP" }]}
+                            rules={[{ required: true, message: "Please enter a valid ZIP" }]}
                             className="w-full"
                         >
                             <Input type="number" size="large" placeholder="Enter ZIP" className="w-full" />
@@ -175,7 +175,7 @@ const CompanyInfoForm = () => {
                         <Form.Item
                             name="phone"
                             label="Phone"
-                            rules={[{ required: true, type: 'number', message: 'Please enter a valid phone number' }]}
+                            rules={[{ required: true, message: 'Please enter a valid phone number' }]}
                             className="w-full"
                         >
                             <Input

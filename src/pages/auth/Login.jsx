@@ -32,11 +32,13 @@ const LoginForm = () => {
             const decoded = jwtDecode(token);
             localStorage.setItem("token", token);
             if (decoded?.role === "reviewer") {
+              toast.dismiss()
               toast.success(res?.message);
               if (window !== undefined) {
                 window.location.href = "/sampler/campaign";
               }
             } else if (decoded?.role === "bussinessOwner") {
+              toast.dismiss()
               toast.success(res?.message);
               if (window !== undefined) {
                 window.location.href = "/business-dashboard";
@@ -45,6 +47,7 @@ const LoginForm = () => {
           }
         }
       } catch (error) {
+        toast.dismiss()
         toast.error(
           error?.data?.message ||
           error?.message ||

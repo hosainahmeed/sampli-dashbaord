@@ -29,7 +29,7 @@ const CardComponent = ({ item }) => {
             className="border border-gray-200 w-full max-w-[250px] rounded-lg overflow-hidden h-[400px]"
             cover={
                 <div>
-                    <button className="absolute top-4 right-4 z-10">
+                    <button className="absolute bg-white rounded-sm top-4 right-4 z-10">
                         {localBookmark ? (
                             <HeartFilled
                                 className="text-2xl font-bold !text-red-500 rounded-full p-1"

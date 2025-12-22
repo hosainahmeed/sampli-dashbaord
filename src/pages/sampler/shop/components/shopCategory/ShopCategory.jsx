@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Carousel } from "antd";
+import { Card, Carousel, Skeleton } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useCategorySectionApisQuery } from "../../../../../Redux/sampler/categoryApis";
@@ -28,12 +28,12 @@ const CategoryCarousel = () => {
           >
             <RightOutlined className="!text-white" />
           </button>
-          {isLoading && (
+          {/* {isLoading && (
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
               <p className="text-[20px] font-semibold ml-2 !mt-5">Loading...</p>
             </div>
-          )}
+          )} */}
           <Carousel
             ref={carouselRef}
             dots={false}
@@ -45,27 +45,35 @@ const CategoryCarousel = () => {
               { breakpoint: 480, settings: { slidesToShow: 1 } },
             ]}
           >
-            {categories?.map((category, index) => (
-              <Link
-                to={`/sampler/shop/${category._id}/${category.name}`}
-                key={index}
-                className="p-2"
-                state={{ categoryId: category.id }}
-              >
-                <div className="flex flex-col items-center">
-                  <div className="flex flex-col items-center overflow-hidden  justify-center w-52 h-52  border-gray-300 rounded-full border cursor-pointer hover:shadow-lg transition">
-                    <img
-                      src={category.category_image}
-                      alt={category.name}
-                      className="w-52 h-52 bg-gray-100 rounded-full mx-auto  object-cover object-center"
-                    />
+            {isLoading ?
+              Array.from({ length: 4 }).map((_, index) => (
+                <div className="flex ml-12 items-center justify-center">
+                  <div className="max-w-52 aspect-square h-52 rounded-full animate-pulse bg-gray-200 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full border-l2 border-b-2 animate-spin"></div>
                   </div>
-                  <p className="text-sm text-black font-medium !mt-5 text-center">
-                    {category.name}
-                  </p>
                 </div>
-              </Link>
-            ))}
+              ))
+              : categories?.map((category, index) => (
+                <Link
+                  to={`/sampler/shop/${category._id}/${category.name}`}
+                  key={index}
+                  className="p-2"
+                  state={{ categoryId: category.id }}
+                >
+                  <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center overflow-hidden  justify-center w-52 h-52  border-gray-300 rounded-full border cursor-pointer hover:shadow-lg transition">
+                      <img
+                        src={category.category_image}
+                        alt={category.name}
+                        className="w-52 h-52 bg-gray-100 rounded-full mx-auto  object-cover object-center"
+                      />
+                    </div>
+                    <p className="text-sm text-black font-medium !mt-5 text-center">
+                      {category.name}
+                    </p>
+                  </div>
+                </Link>
+              ))}
           </Carousel>
         </>
       ) : (
