@@ -135,7 +135,9 @@ const CommentItem = memo(({
                     <p className="my-2 text-gray-800 whitespace-pre-line">
                         {comment.text}
                     </p>
-
+                    {comment.image && <div className="w-48 h-auto mt-3 aspect-video flex items-center justify-center">
+                        <img src={comment.image} alt={comment?.commentorName} />
+                    </div>}
                     <Space size="middle" className="text-sm">
                         <Button
                             type="text"

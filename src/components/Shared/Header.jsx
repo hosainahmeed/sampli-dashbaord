@@ -228,7 +228,7 @@ function Header() {
                   className="cursor-pointer hover:scale-110 transition-all"
                 />
               </Dropdown>
-              <IoMdArrowDropdown className="!text-[#6D7486B2]" />
+              {/* <IoMdArrowDropdown className="!text-[#6D7486B2]" /> */}
             </div>
           </div>
         </div>

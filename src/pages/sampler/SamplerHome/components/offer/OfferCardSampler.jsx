@@ -26,7 +26,7 @@ const OfferCardSampler = ({ product, processing }) => {
       {/* Product Details */}
       <div className="p-4 border-t border-gray-100">
         <h3 className="text-sm font-semibold truncate">
-          {product?.product?.name}
+          {product?.name}
         </h3>
         <div
           className="text-gray-500 line-clamp-1 text-xs"

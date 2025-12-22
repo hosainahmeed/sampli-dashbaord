@@ -18,7 +18,7 @@ const reviewApis = baseApis.injectEndpoints({
       providesTags: ["Review"],
     }),
     createComment: builder.mutation({
-      query: ({ data }) => ({
+      query: (data) => ({
         url: `/comment/create`,
         method: "POST",
         body: data,
@@ -80,6 +80,13 @@ const reviewApis = baseApis.injectEndpoints({
       }),
       invalidatesTags: ["Comments", "Review", "RepliesComments"],
     }),
+    getCommentLikers: builder.query({
+      query: (id) => ({
+        url: `/comment/get-likers/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Comments", "Review"],
+    }),
   }),
 });
 
@@ -94,4 +101,5 @@ export const {
   usePostCommentRepliesMutation,
   useGetSingleProductReviewQuery,
   useDeleteCommentMutation,
+  useGetCommentLikersQuery,
 } = reviewApis;

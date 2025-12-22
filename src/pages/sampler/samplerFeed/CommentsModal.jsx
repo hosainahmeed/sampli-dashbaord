@@ -22,12 +22,16 @@ import {
     useDeleteCommentMutation,
 } from '../../../Redux/sampler/reviewApis';
 import CommentItem from './CommentItem';
+import { FaImage } from 'react-icons/fa';
+import { CloseOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 
 const CommentsModal = ({ visible, onClose, post }) => {
     const [commentText, setCommentText] = useState('');
     const [replyingTo, setReplyingTo] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const fileInputRef = useRef(null);
     const commentInputRef = useRef(null);
 
     // Focus the input when replying to a comment
@@ -71,24 +75,48 @@ const CommentsModal = ({ visible, onClose, post }) => {
     const [deleteComment] = useDeleteCommentMutation();
 
     const handleSubmitComment = useCallback(async () => {
-        if (!commentText.trim() || !post?._id) return;
+        if ((!commentText.trim() && !imageFile) || !post?._id) return;
+
+        const formData = new FormData();
+        const data = {
+            text: commentText,
+            review: post._id,
+            ...(replyingTo && { parent: replyingTo })
+        };
+
+        formData.append('data', JSON.stringify(data));
+        
+        if (imageFile && imageFile instanceof File) {
+            formData.append('comment_image', imageFile);
+        }
 
         try {
-            await createComment({
-                data: {
-                    text: commentText,
-                    review: post._id,
-                    ...(replyingTo && { parent: replyingTo })
-                },
-            }).unwrap();
-
+            await createComment(formData).unwrap();
             setCommentText('');
+            setImageFile(null);
             setReplyingTo(null);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
             refetch();
         } catch (error) {
             console.error('Error posting comment:', error);
         }
-    }, [commentText, post?._id, replyingTo, createComment, refetch]);
+    }, [commentText, imageFile, post?._id, replyingTo, createComment, refetch]);
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+        }
+    };
+
+    const removeImage = () => {
+        setImageFile(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
 
     const handleCommentLike = useCallback(async (commentId) => {
         try {
@@ -150,7 +178,7 @@ const CommentsModal = ({ visible, onClose, post }) => {
             <div className="sticky top-0 bg-white z-10 px-6 pb-4">
                 <div className="flex gap-3">
                     <Avatar src={post?.reviewer?.profile_image} size={40} />
-                    <div className="flex-1">
+                    <div className="flex-1 flex items-center gap-2">
                         <Input
                             placeholder={replyingTo ? "Write a reply..." : "Write a comment..."}
                             value={commentText}
@@ -163,13 +191,65 @@ const CommentsModal = ({ visible, onClose, post }) => {
                                     type="text"
                                     icon={<SendOutlined />}
                                     onClick={handleSubmitComment}
-                                    disabled={!commentText.trim() || isCreating}
+                                    disabled={!commentText.trim() && !imageFile || isCreating}
                                     loading={isCreating}
                                     className="!text-blue-500"
                                 />
                             }
                             autoFocus
                         />
+                        <div className="flex items-center gap-2">
+                            <div className="relative">
+                                <label htmlFor="image" className="cursor-pointer">
+                                    <Button
+                                        type="primary"
+                                        shape='circle'
+                                        icon={<FaImage />}
+                                        loading={isCreating}
+                                        className="!text-white"
+                                        onClick={(e) => {
+                                            // Prevent form submission when clicking the image button
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            fileInputRef.current?.click();
+                                        }}
+                                    />
+                                </label>
+                                <input 
+                                    ref={fileInputRef}
+                                    className='hidden' 
+                                    type='file' 
+                                    id='image' 
+                                    accept="image/jpeg, image/png, image/jpg"
+                                    onChange={handleImageChange}
+                                />
+                            </div>
+                            {imageFile && (
+                                <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1 pr-2">
+                                    <div className="w-8 h-8 rounded overflow-hidden bg-gray-200 flex items-center justify-center">
+                                        <img 
+                                            src={URL.createObjectURL(imageFile)} 
+                                            alt="Preview" 
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <span className="text-sm text-gray-600 max-w-[120px] truncate">
+                                        {imageFile.name}
+                                    </span>
+                                    <Button 
+                                        type="text" 
+                                        size="small" 
+                                        icon={<CloseOutlined className="text-gray-500" />} 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            removeImage();
+                                        }}
+                                        className="!p-0 !w-5 !h-5 flex items-center justify-center hover:!bg-transparent"
+                                    />
+                                </div>
+                            )}
+                        </div>
                         {replyingTo && (
                             <div className="mt-2 text-sm text-gray-500">
                                 <Button

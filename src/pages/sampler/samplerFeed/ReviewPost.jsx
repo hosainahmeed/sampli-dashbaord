@@ -29,6 +29,7 @@ import {
   useChangeLikesMutation,
   useGetReviewerLikersQuery,
 } from "../../../Redux/sampler/reviewApis";
+import PostLikerModal from "./PostLikerModal";
 
 const { Title, Text } = Typography;
 
@@ -47,6 +48,7 @@ const ReviewPost = memo((props) => {
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [showComments, setShowComments] = useState(false);
   const [showLikesModal, setShowLikesModal] = useState(false);
+  const [postId, setPostId] = useState(null);
 
   const [reviewLikeUnlike] = useChangeLikesMutation();
   const { data: likersData, isLoading: likersLoading } = useGetReviewerLikersQuery(
@@ -57,7 +59,7 @@ const ReviewPost = memo((props) => {
       skip: !initialPost?._id,
     }
   );
-
+  console.log(likersData)
   // Sync local state with props
   useEffect(() => {
     setPost(initialPost);
@@ -309,9 +311,13 @@ const ReviewPost = memo((props) => {
       {/* Likes Preview */}
       {post?.totalLikers > 0 && (
         <PostLikesPreview
+          id={post?._id}
           likers={likersData?.data?.result || []}
           totalLikers={post.totalLikers}
-          onShowAll={() => setShowLikesModal(true)}
+          onShowAll={(id) => {
+            setPostId(id)
+            setShowLikesModal(true);
+          }}
           likersLoading={likersLoading}
         />
       )}
@@ -346,6 +352,11 @@ const ReviewPost = memo((props) => {
         visible={showComments}
         onClose={() => setShowComments(false)}
         post={post}
+      />
+      <PostLikerModal
+        visible={showLikesModal}
+        onClose={() => setShowLikesModal(false)}
+        postId={postId}
       />
 
       {/* Add Likes Modal component here */}
