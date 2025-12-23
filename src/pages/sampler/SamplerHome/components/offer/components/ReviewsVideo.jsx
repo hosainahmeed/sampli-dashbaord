@@ -24,7 +24,7 @@ const ReviewsVideo = ({ showModal, product, status }) => {
       <div className=" mx-auto bg-white rounded-lg my-5">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Uploaded reviews</h2>
-          <button
+          {/* <button
             className={`bg-blue-500 !text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium ${
               status !== "Processing"
                 ? "cursor-not-allowed "
@@ -33,8 +33,8 @@ const ReviewsVideo = ({ showModal, product, status }) => {
             onClick={showModal}
             disabled={status !== "Processing"}
           >
-            Upload New review
-          </button>
+            Upload New reviewss
+          </button> */}
         </div>
       </div>
 
@@ -87,9 +87,9 @@ const ReviewsVideo = ({ showModal, product, status }) => {
                     </div>
                   </div>
                 </div>
-                <button className="text-gray-400">
+                {/* <button className="text-gray-400">
                   <FiMoreHorizontal size={16} />
-                </button>
+                </button> */}
               </div>
 
               <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">

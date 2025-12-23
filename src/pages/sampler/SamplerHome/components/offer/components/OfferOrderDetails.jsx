@@ -110,6 +110,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
         setVideoFile(null);
         setFinalVideoUrl("");
         setUploadProgress(0);
+        window.location.reload();
       } catch (error) {
         toast.error("Failed to submit review");
         console.error("Review submission error:", error);
