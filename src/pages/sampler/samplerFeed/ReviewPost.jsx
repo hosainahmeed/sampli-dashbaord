@@ -143,7 +143,7 @@ const ReviewPost = memo((props) => {
 
   const renderVideo = () => {
     if (!post?.video) return null;
-
+    console.log(post)
     return (
       <div className="relative rounded-xl overflow-hidden bg-black my-4">
         <video

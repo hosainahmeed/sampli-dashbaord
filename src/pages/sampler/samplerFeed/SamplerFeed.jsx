@@ -182,9 +182,19 @@ const SamplerFeed = () => {
 
   return (
     <div className="responsive-width !mt-2 !mb-20 ">
-      <div className=" bg-white flex justify-between items-start gap-10 max-lg:flex-col">
+      <div className="bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
-        <Card loading={isLoading} className="!w-1/3  max-lg:!w-full">
+        <Card 
+          loading={isLoading} 
+          className="!w-1/3 max-lg:!w-full"
+          style={{ 
+            position: 'sticky',
+            top: '70px',
+            alignSelf: 'flex-start',
+            maxHeight: 'calc(100vh - 40px)',
+            overflowY: 'auto'
+          }}
+        >
           <div>
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-4 ">
