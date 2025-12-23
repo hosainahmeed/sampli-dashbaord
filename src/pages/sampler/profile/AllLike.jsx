@@ -82,7 +82,9 @@ const AllLike = () => {
                                     style={{ paddingTop: "56.25%" }}
                                 >
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <video src={post?.video} controls className="w-full h-full" />
+                                        <video
+                                            controlsList="nodownload"
+                                            src={post?.video} controls className="w-full h-full" />
                                     </div>
                                 </div>
                             )}

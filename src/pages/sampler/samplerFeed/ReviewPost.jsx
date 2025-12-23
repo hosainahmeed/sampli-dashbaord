@@ -151,6 +151,7 @@ const ReviewPost = memo((props) => {
           controls
           preload="metadata"
           className="w-full max-h-[600px] object-contain"
+          controlsList="nodownload"
           playsInline
           onLoadedData={() => setIsVideoLoading(false)}
           onError={() => setIsVideoLoading(false)}

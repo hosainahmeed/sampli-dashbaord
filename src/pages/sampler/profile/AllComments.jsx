@@ -86,6 +86,7 @@ const AllComments = () => {
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <video
+                        controlsList="nodownload"
                         src={post?.review?.video}
                         controls
                         className="w-full h-full"

@@ -543,7 +543,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
         footer={null}
         width={600}
       >
-        <ImageReview campaignId={campaignId} />
+        <ImageReview setImageReviewModal={setImageReviewModal} campaignId={campaignId} />
       </Modal>
       <Modal
         title={<div className="text-xl">Submit review</div>}
@@ -608,7 +608,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
             <InboxOutlined />
           </p>
           <p className="ant-upload-text">
-            {videoFile ? `Selected: ${videoFile.name}` : "Upload video file"}
+            {videoFile ? `Selected: ${videoFile?.name?.slice(0, 10)}` : "Upload video file"}
           </p>
           <p className="ant-upload-hint">
             MP4, MPEG-4, MOV - Max file size 1GB

@@ -7,11 +7,11 @@ import { useCreateReviewMutation } from '../../../../../../Redux/sampler/videoUp
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
-function ImageReview({ campaignId }) {
+function ImageReview({ campaignId, setImageReviewModal }) {
   const [form] = Form.useForm();
   const [rating, setRating] = useState(0);
   const formData = new FormData();
-  const [createReview,{isLoading}] = useCreateReviewMutation()
+  const [createReview, { isLoading }] = useCreateReviewMutation()
 
   const onFinish = async (values) => {
     if (!campaignId) {
@@ -39,10 +39,12 @@ function ImageReview({ campaignId }) {
       }
       toast.success(response?.message || "Review submitted successfully!");
       form.resetFields();
+      setImageReviewModal(false)
       // Handle form submission here
     } catch (error) {
       const message = error?.data?.message || error?.message || 'Something went wrong!'
       toast.error(message)
+      setImageReviewModal(false)
     }
   };
 

@@ -6,10 +6,13 @@ import sale from "../../../assets/sale-03.svg";
 import { useGetMyReviewsQuery } from "../../../Redux/sampler/profileApis";
 import { AiFillHeart } from "react-icons/ai";
 import { Card, Pagination } from "antd";
+import { renderImage } from "../samplerFeed/renderImage";
+import Spinner from "../../../components/ui/Spinner";
 
 const ProfileReviewsVideo = () => {
   const [sortBy, setSortBy] = useState("");
   const [limit, setLimit] = useState(10);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [page, setPage] = useState(1);
   const { data: myReviews, isLoading } = useGetMyReviewsQuery({
     sortBy,
@@ -18,6 +21,35 @@ const ProfileReviewsVideo = () => {
     page,
   });
   const myReview = myReviews?.data?.data?.result;
+
+
+  const renderVideo = (videoUrl) => {
+    if (!videoUrl) return null;
+
+    return (
+      <div className="relative rounded-xl overflow-hidden bg-black my-4">
+        <video
+          src={videoUrl}
+          controls
+          preload="metadata"
+          className="w-full max-h-[600px] object-contain"
+          playsInline
+          controlsList="nodownload"
+          onLoadedData={() => setIsVideoLoading(false)}
+          onError={() => setIsVideoLoading(false)}
+        >
+          <track kind="captions" />
+        </video>
+
+        {isVideoLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+            <Spinner size="large" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <Card loading={isLoading}>
       <div className="flex justify-between items-center mt-3">
@@ -112,17 +144,9 @@ const ProfileReviewsVideo = () => {
             <p className="my-3 text-gray-700">{review?.description}</p>
             <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">
               {review?.video ? (
-                <video
-                  src={review.video}
-                  controls
-                  preload="metadata"
-                  className="w-full h-full min-h-[200px] max-h-[500px] object-cover rounded-lg"
-                  style={{ aspectRatio: "16/9" }}
-                />
+                renderVideo(review?.video)
               ) : (
-                <div className="aspect-video bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500">No video available</span>
-                </div>
+                renderImage(review?.images)
               )}
             </div>
 

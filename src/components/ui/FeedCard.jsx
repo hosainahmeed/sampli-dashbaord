@@ -169,6 +169,7 @@ const FeedCard = ({ content }) => {
         <div className="mt-4 shadow w-full rounded-3xl aspect-video h-auto md:h-[400px]">
           <video
             src={content?.video}
+            controlsList="nodownload"
             controls
             className="w-full h-full rounded-3xl aspect-video mt-4 overflow-hidden"
           />
@@ -284,6 +285,7 @@ const FeedCard = ({ content }) => {
           <div style={{ marginLeft: 10 }}>
             {selectedComment?.video && <div className="mt-4 h-[300px]">
               <video
+                controlsList="nodownload"
                 src={selectedComment?.video}
                 controls
                 className="w-full h-full rounded-3xl aspect-video mt-4 overflow-hidden"

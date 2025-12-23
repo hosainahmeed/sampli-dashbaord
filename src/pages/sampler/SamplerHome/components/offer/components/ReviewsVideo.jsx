@@ -9,22 +9,21 @@ const ReviewsVideo = ({ showModal, product, status }) => {
     product,
   });
   const reviewListProduct = reviewList?.data?.data?.result;
-  
+
   return (
     <>
       <div className=" mx-auto bg-white rounded-lg my-5">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Uploaded reviews</h2>
           <button
-            className={`bg-blue-500 !text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium ${
-              status !== "Processing" ? "cursor-not-allowed" : "cursor-pointer "
-            }`}
+            className={`bg-blue-500 !text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium ${status !== "Processing" ? "cursor-not-allowed" : "cursor-pointer "
+              }`}
             onClick={showModal}
             disabled={status !== "Processing"}
-            // className={
-            //   reviewList?.data?.status !== "Processing" &&
-            //   "!bg-blue-500 !text-white"
-            // }
+          // className={
+          //   reviewList?.data?.status !== "Processing" &&
+          //   "!bg-blue-500 !text-white"
+          // }
           >
             Upload New review
           </button>
@@ -116,6 +115,7 @@ const ReviewsVideo = ({ showModal, product, status }) => {
                       <video
                         src={review?.video}
                         controls
+                        controlsList="nodownload"
                         preload="metadata"
                         className="absolute inset-0 w-full h-full"
                         onLoadedData={() => setIsLoadingVideo(false)}

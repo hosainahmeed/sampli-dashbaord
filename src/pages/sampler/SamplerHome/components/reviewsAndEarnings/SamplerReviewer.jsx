@@ -34,9 +34,8 @@ const SamplerReviewer = () => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`w-4 h-4 ${
-          i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-        }`}
+        className={`w-4 h-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+          }`}
       />
     ));
   };
@@ -189,6 +188,7 @@ const SamplerReviewer = () => {
                 <video
                   src={reviewData?.video}
                   controls
+                  controlsList="nodownload"
                   preload="metadata"
                   className="absolute inset-0 w-full h-full"
                   onLoadedData={() => setIsLoadingVideo(false)}
