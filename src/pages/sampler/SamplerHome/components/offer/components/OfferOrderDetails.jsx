@@ -378,9 +378,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
                   )}
                 </div>
                 <Button
-                  disabled={
-                    geSingleCampaignOffer?.data?.status !== "Processing"
-                  }
+                  // disabled={
+                  //   geSingleCampaignOffer?.data?.status !== "Processing"
+                  // }
                   className={
                     geSingleCampaignOffer?.data?.status !== "Processing" &&
                     "!bg-blue-500 !text-white"
