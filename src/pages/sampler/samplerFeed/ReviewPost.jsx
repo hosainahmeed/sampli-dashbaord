@@ -140,14 +140,14 @@ const ReviewPost = memo((props) => {
 
   const renderVideo = () => {
     if (!post?.video) return null;
-   
+
     return (
       <div className="relative rounded-xl overflow-hidden bg-black my-4">
         <video
           src={post.video}
           controls
           preload="metadata"
-          className="w-full max-h-[500px] h-[500px] aspect-video object-contain"
+          className="w-full max-h-[500px]  aspect-video object-contain"
           controlsList="nodownload"
           playsInline
           poster={post?.thumbnail}
