@@ -198,7 +198,7 @@ function Header() {
     <div>
       {/* Hosain part */}
       {userType !== "reviewer" ? (
-        <div className="px-2 border-b-[1px] border-[#eee] h-16 flex justify-between items-center">
+        <div className="px-2 border-b-[1px] border-[#eee]  h-16 flex justify-between items-center">
           <Link to={"/business-dashboard"}>
             <img src={brandlogo} alt="brand logo" />
           </Link>
@@ -237,8 +237,9 @@ function Header() {
         <>
           {/* Top navbar */}
           <div
-            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"
-              }`}
+            // className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"
+            //   }`}
+            className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300`}
           >
             <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
               <Link to={"/sampler/campaign"}>

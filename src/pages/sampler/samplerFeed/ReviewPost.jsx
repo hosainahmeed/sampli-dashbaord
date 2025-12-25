@@ -13,12 +13,9 @@ import {
 } from "antd";
 import {
   ShareAltOutlined,
-  HeartOutlined,
   HeartFilled,
   MessageOutlined,
-  EllipsisOutlined,
 } from "@ant-design/icons";
-import { FaCartShopping } from "react-icons/fa6";
 
 import Spinner from "../../../components/ui/Spinner";
 import { renderImage } from "./renderImage";
@@ -143,16 +140,17 @@ const ReviewPost = memo((props) => {
 
   const renderVideo = () => {
     if (!post?.video) return null;
-    console.log(post)
+   
     return (
       <div className="relative rounded-xl overflow-hidden bg-black my-4">
         <video
           src={post.video}
           controls
           preload="metadata"
-          className="w-full max-h-[600px] object-contain"
+          className="w-full max-h-[500px] h-[500px] aspect-video object-contain"
           controlsList="nodownload"
           playsInline
+          poster={post?.thumbnail}
           onLoadedData={() => setIsVideoLoading(false)}
           onError={() => setIsVideoLoading(false)}
         >
@@ -250,11 +248,6 @@ const ReviewPost = memo((props) => {
               {post?.reviewer?.isFollow ? "Following" : "Follow"}
             </Button>
           )}
-          {/* <Button
-            type="text"
-            icon={<EllipsisOutlined />}
-            onClick={() => onPostAction?.("menu", post)}
-          /> */}
         </Space>
       </div>
 

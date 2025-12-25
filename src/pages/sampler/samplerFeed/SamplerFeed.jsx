@@ -47,7 +47,8 @@ import toast from "react-hot-toast";
 import { CustomSkeleton } from "./CustomSkeleton";
 import ReviewPost from "./ReviewPost";
 import { frontendUrl, url } from "../../../Redux/main/server";
-
+import SidebarHome from "./SidebarHome";
+import logo from "../../../assets/logo/logo.svg"
 const { TabPane } = Tabs;
 
 const SamplerFeed = () => {
@@ -135,6 +136,7 @@ const SamplerFeed = () => {
 
 
 
+
   const [isModalOpenLike, setIsModalOpenLike] = useState(false);
   const handleOkLike = () => {
     setIsModalOpenLike(false);
@@ -180,22 +182,30 @@ const SamplerFeed = () => {
     }
   };
 
+  if (reviewLoading) {
+    return (
+      <div className="w-full h-screen bg-white animate-pulse flex items-center justify-center" >
+        <img className="w-16 h-16 object-contain animate-spin animation: 2s linear infinite" src={logo} alt="sampli-logo" />
+      </div>
+    )
+  }
+
   return (
     <div className="responsive-width !mt-2 !mb-20 ">
       <div className="bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
-        <Card 
-          loading={isLoading} 
-          className="!w-1/3 max-lg:!w-full"
-          style={{ 
-            position: 'sticky',
-            top: '70px',
-            alignSelf: 'flex-start',
-            maxHeight: 'calc(100vh - 40px)',
-            overflowY: 'auto'
-          }}
-        >
-          <div>
+        <div className="grid grid-cols-8 gap-4">
+          <Card
+            loading={isLoading}
+            className="!min-w-1/3 !p-0 !col-span-2 hidden lg:block max-lg:!w-full"
+            style={{
+              position: 'sticky',
+              top: '70px',
+              alignSelf: 'flex-start',
+              maxHeight: 'calc(100vh - 40px)',
+              overflowY: 'auto'
+            }}
+          >
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-4 ">
                 <Avatar style={{ border: '1px solid gray', padding: '4px' }} size={60} src={`${profileData?.profile_image}`} />
@@ -231,96 +241,107 @@ const SamplerFeed = () => {
                 <div className="text-gray-500 ">Referrals</div>
               </div>
             </div>
-          </div>
-        </Card>
-        {/* right side */}
-        <div className="w-2/3 max-lg:w-full">
-          {/* Feed Tabs */}
-          <Tabs type="card" activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "" ? (
-                    <img src={newActiveLogo} alt="new active" />
-                  ) : (
-                    <img src={newLogo} alt="new inactive" />
-                  )}
-                  <span>New</span>
-                </div>
-              }
-              key=""
-            />
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "following" ? (
-                    <img src={followingActiveLogo} alt="following active" />
-                  ) : (
-                    <img src={followingInactiveLogo} alt="following inactive" />
-                  )}
-                  <span>Following</span>
-                </div>
-              }
-              key="following"
-            />
-
-            <TabPane
-              tab={
-                <div className="flex gap-2">
-                  {activeTab === "popular" ? (
-                    <img src={popularActiveLogo} alt="popular active" />
-                  ) : (
-                    <img src={popularInActiveLogo} alt="popular inactive" />
-                  )}
-                  <span>Popular</span>
-                </div>
-              }
-              key="popular"
-            />
-          </Tabs>
-
-          {/* Category Pills */}
-          <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
-            {categoryList?.data?.map((category) => (
-              <div
-                onClick={() => setActiveCategory(category?._id)}
-                className={`flex gap-2 rounded-full flex-nowrap items-center justify-start ${activeCategory === category?._id ? 'bg-[#1677FF] text-white' : 'bg-gray-100'} pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1`}>
-                <Avatar src={category?.category_image} alt="category" />
-                <span className="text-nowrap">{category?.name}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Skeleton */}
-          {reviewLoading && (
-            <CustomSkeleton />
-          )}
-
-          <div>
-            {posts?.length == 0 && (
-              <div className="h-screen">
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              </div>
-            )}
-          </div>
-          {/* Feed Posts */}
-          <div className="!space-y-4 relative w-full">
-            {posts?.map((post) => (
-              <ReviewPost
-                post={post}
-                key={post?._id}
-                isFetching={isFetching}
-                replyingTo={replyingTo}
-                setIsLoadingVideo={setIsLoadingVideo}
-                isLoadingVideo={isLoadingVideo}
-                handleReply={handleReply}
-                onShare={handleShare}
-                handleClickRepliesChat={handleClickRepliesChat}
-                onFollow={handleFollow}
-                isFollowing={isFollowing}
+          </Card>
+          {/* right side */}
+          <div className="w-full !col-span-12 lg:!col-span-4">
+            {/* Feed Tabs */}
+            <Tabs type="card" activeKey={activeTab} onChange={setActiveTab} className="!mt-5">
+              <TabPane
+                tab={
+                  <div className="flex gap-2">
+                    {activeTab === "" ? (
+                      <img src={newActiveLogo} alt="new active" />
+                    ) : (
+                      <img src={newLogo} alt="new inactive" />
+                    )}
+                    <span>New</span>
+                  </div>
+                }
+                key=""
               />
-            ))}
-            {(isFetching || loading || reviewList?.data?.data?.meta?.total > reviewLimit) && <CustomSkeleton isHeight={false} />}
+              <TabPane
+                tab={
+                  <div className="flex gap-2">
+                    {activeTab === "following" ? (
+                      <img src={followingActiveLogo} alt="following active" />
+                    ) : (
+                      <img src={followingInactiveLogo} alt="following inactive" />
+                    )}
+                    <span>Following</span>
+                  </div>
+                }
+                key="following"
+              />
+
+              <TabPane
+                tab={
+                  <div className="flex gap-2">
+                    {activeTab === "popular" ? (
+                      <img src={popularActiveLogo} alt="popular active" />
+                    ) : (
+                      <img src={popularInActiveLogo} alt="popular inactive" />
+                    )}
+                    <span>Popular</span>
+                  </div>
+                }
+                key="popular"
+              />
+            </Tabs>
+
+            {/* Category Pills */}
+            <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
+              {categoryList?.data?.map((category) => (
+                <div
+                  onClick={() => setActiveCategory(category?._id)}
+                  className={`flex gap-2 rounded-full flex-nowrap items-center justify-start ${activeCategory === category?._id ? 'bg-[#1677FF] text-white' : 'bg-gray-100'} pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1`}>
+                  <Avatar src={category?.category_image} alt="category" />
+                  <span className="text-nowrap">{category?.name}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Skeleton */}
+            {reviewLoading && (
+              <CustomSkeleton />
+            )}
+
+            <div>
+              {posts?.length == 0 && (
+                <div className="h-screen">
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                </div>
+              )}
+            </div>
+            {/* Feed Posts */}
+            <div className="!space-y-4 relative w-full">
+              {posts?.map((post) => (
+                <ReviewPost
+                  post={post}
+                  key={post?._id}
+                  isFetching={isFetching}
+                  replyingTo={replyingTo}
+                  setIsLoadingVideo={setIsLoadingVideo}
+                  isLoadingVideo={isLoadingVideo}
+                  handleReply={handleReply}
+                  onShare={handleShare}
+                  handleClickRepliesChat={handleClickRepliesChat}
+                  onFollow={handleFollow}
+                  isFollowing={isFollowing}
+                />
+              ))}
+              {(isFetching || loading || reviewList?.data?.data?.meta?.total > reviewLimit) && <CustomSkeleton isHeight={false} />}
+            </div>
+          </div>
+
+          <div
+            style={{
+              position: 'sticky',
+              top: '70px',
+              alignSelf: 'flex-start',
+              maxHeight: 'calc(100vh - 40px)',
+              overflowY: 'auto'
+            }} className="!col-span-2 !divide-y !divide-amber-400 !hidden lg:!block" >
+            <SidebarHome />
           </div>
         </div>
 

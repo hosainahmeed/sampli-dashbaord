@@ -32,11 +32,13 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  console.log(thumbnailUrl)
   const [videoFile, setVideoFile] = useState(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [finalVideoUrl, setFinalVideoUrl] = useState(false);
+  const [thumbnailFile, setThumbnailFile] = useState(null)
 
   const { data: geSingleCampaignOffer, isLoading: loadingSingleOffer } =
     useGetSingleOfferCampaignQuery({
@@ -63,7 +65,7 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
   };
 
   const handleOk = async () => {
-    if (!rating || !description || !thumbnailUrl || !id) {
+    if (!rating || !description || !thumbnailFile || !id) {
       toast.error("Please fill all required fields and upload a video");
       return;
     }
@@ -90,7 +92,9 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
       try {
         const formData = new FormData();
 
-        formData.append("thumbnail", thumbnailUrl);
+        if (thumbnailFile instanceof File) {
+          formData.append("thumbnail", thumbnailFile);
+        }
         const data = {
           campaignOfferId: id,
           description: description,
@@ -146,10 +150,12 @@ const OfferOrderDetails = ({ setIsClicked, id }) => {
   };
 
   const handleThumbnailChange = async (info) => {
+    setThumbnailFile(info?.fileList[0]?.originFileObj)
     if (info.file.status === "done" || info.file.status === "uploading") {
       const fileObj = info.file.originFileObj;
       if (fileObj) {
         const previewUrl = URL.createObjectURL(fileObj);
+        console.log(previewUrl)
         setThumbnailUrl(previewUrl);
       }
     }

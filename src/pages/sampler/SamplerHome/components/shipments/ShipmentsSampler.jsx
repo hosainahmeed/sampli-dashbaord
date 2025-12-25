@@ -39,8 +39,8 @@ const ShipmentsSampler = () => {
         item.deliveryStatus === "Waiting to be shipped"
           ? "orange"
           : item.deliveryStatus === "Delivered"
-          ? "green"
-          : "red",
+            ? "green"
+            : "red",
     })) || [];
 
   const columns = [
@@ -84,8 +84,8 @@ const ShipmentsSampler = () => {
         order.paymentStatus === "Success"
           ? "green"
           : order.paymentStatus === "Pending"
-          ? "orange"
-          : "red",
+            ? "orange"
+            : "red",
     })) || [];
 
   const columns2 = [

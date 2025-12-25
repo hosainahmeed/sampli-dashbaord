@@ -23,17 +23,18 @@ const ProfileReviewsVideo = () => {
   const myReview = myReviews?.data?.data?.result;
 
 
-  const renderVideo = (videoUrl) => {
-    if (!videoUrl) return null;
+  const renderVideo = (review) => {
+    if (!review?.video) return null;
 
     return (
       <div className="relative rounded-xl overflow-hidden bg-black my-4">
         <video
-          src={videoUrl}
+          src={review?.video}
           controls
           preload="metadata"
           className="w-full max-h-[600px] object-contain"
           playsInline
+          poster={review?.thumbnail}
           controlsList="nodownload"
           onLoadedData={() => setIsVideoLoading(false)}
           onError={() => setIsVideoLoading(false)}
@@ -144,7 +145,7 @@ const ProfileReviewsVideo = () => {
             <p className="my-3 text-gray-700">{review?.description}</p>
             <div className="relative rounded-lg overflow-hidden bg-gray-100 mb-3">
               {review?.video ? (
-                renderVideo(review?.video)
+                renderVideo(review)
               ) : (
                 renderImage(review?.images)
               )}

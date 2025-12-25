@@ -12,9 +12,7 @@
 }
 
 .responsive-width {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding-inline: 10px;
+ @apply container mx-auto
 }
 
 * {
