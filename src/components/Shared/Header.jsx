@@ -241,7 +241,7 @@ function Header() {
             //   }`}
             className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300`}
           >
-            <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white responsive-width">
+            <div className="px-10 border-b-[1px] border-[#eee] h-16 flex justify-between items-center bg-white container mx-auto">
               <Link to={"/sampler/campaign"}>
                 <img src={brandlogo} alt="brand logo" />
               </Link>

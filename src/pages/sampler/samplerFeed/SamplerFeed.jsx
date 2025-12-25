@@ -191,7 +191,7 @@ const SamplerFeed = () => {
   }
 
   return (
-    <div className="responsive-width !mt-2 !mb-20 ">
+    <div className="container mx-auto !mt-2 !mb-20 ">
       <div className="bg-white flex justify-between items-start gap-10 max-lg:flex-col">
         {/* left side */}
         <div className="grid grid-cols-8 gap-4">
