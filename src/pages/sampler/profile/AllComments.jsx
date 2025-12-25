@@ -37,7 +37,7 @@ const AllComments = () => {
                     {post?.review?.reviewer?.name}
                   </span> */}
                         <span className="text-gray-400 text-sm">
-                          {new Intl.DateTimeFormat("en-US", {
+                          {post?.review?.createdAt && new Intl.DateTimeFormat("en-US", {
                             year: "numeric",
                             month: "long",
                             day: "2-digit",
