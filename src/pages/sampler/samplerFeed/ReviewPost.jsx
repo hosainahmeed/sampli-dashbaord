@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, memo } from "react";
+import React, { useState, useEffect, useCallback, memo, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -25,8 +25,10 @@ import PostLikesPreview from "./PostLikesPreview";
 import {
   useChangeLikesMutation,
   useGetReviewerLikersQuery,
+  useReviewViewMutation,
 } from "../../../Redux/sampler/reviewApis";
 import PostLikerModal from "./PostLikerModal";
+import { FaPause, FaPlay, FaPushed } from "react-icons/fa";
 
 const { Title, Text } = Typography;
 
@@ -56,8 +58,9 @@ const ReviewPost = memo((props) => {
       skip: !initialPost?._id,
     }
   );
-  console.log(likersData)
-  // Sync local state with props
+
+  const [reviewView] = useReviewViewMutation()
+
   useEffect(() => {
     setPost(initialPost);
   }, [initialPost]);
@@ -123,16 +126,16 @@ const ReviewPost = memo((props) => {
         disabled
         value={post?.rating}
         allowHalf
-        className="text-yellow-500"
+        className="text-yellow-500 !text-nowrap"
         style={{ fontSize: 14 }}
       />
-      <Text className="font-medium">{post?.rating}</Text>
+      <Text className="font-medium !text-nowrap">{post?.rating}</Text>
       <Divider type="vertical" />
-      <Text className="text-blue-600 hover:underline cursor-pointer">
+      <Text className="text-blue-600 hover:underline cursor-pointer !line-clamp-1">
         {post?.product?.name}
       </Text>
       <Divider type="vertical" />
-      <Text className="text-green-600 font-semibold">
+      <Text className="text-green-600 font-semibold !text-nowrap">
         ${parseFloat(post?.product?.price || 0).toFixed(2)}
       </Text>
     </div>
@@ -141,27 +144,113 @@ const ReviewPost = memo((props) => {
   const renderVideo = () => {
     if (!post?.video) return null;
 
+    const videoRef = useRef(null);
+    const viewTimerRef = useRef(null);
+
+    const [isVideoLoading, setIsVideoLoading] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [viewCounted, setViewCounted] = useState(false);
+    const [isHovering, setIsHovering] = useState(false)
+
+    const handlerViewCount = useCallback(async () => {
+      if (!viewCounted) {
+        setViewCounted(true);
+        try {
+          const res = await reviewView({ _id: post._id }).unwrap()
+          if (!res.success) {
+            throw new Error(res.message)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }, [viewCounted, post._id, reviewView]);
+
+    const togglePlayPause = () => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      if (video.paused) {
+        video.play();
+        setIsPlaying(true);
+      } else {
+        video.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            video.play();
+            setIsPlaying(true);
+
+            if (!viewTimerRef.current && !viewCounted) {
+              viewTimerRef.current = setTimeout(() => {
+                handlerViewCount();
+              }, 3000);
+            }
+          } else {
+            video.pause();
+            setIsPlaying(false);
+
+            if (viewTimerRef.current) {
+              clearTimeout(viewTimerRef.current);
+              viewTimerRef.current = null;
+            }
+          }
+        },
+        { threshold: 0.6 }
+      );
+
+      observer.observe(video);
+
+      return () => {
+        observer.disconnect();
+        if (viewTimerRef.current) clearTimeout(viewTimerRef.current);
+      };
+    }, [handlerViewCount, viewCounted]);
+
     return (
-      <div className="relative rounded-xl overflow-hidden bg-black my-4">
+      <div
+        className="relative rounded-xl overflow-hidden bg-black my-4 group"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         <video
+          ref={videoRef}
           src={post.video}
-          controls
           preload="metadata"
-          className="w-full max-h-[500px]  aspect-video object-contain"
-          controlsList="nodownload"
+          className="w-full max-h-[500px] aspect-video object-contain"
           playsInline
           poster={post?.thumbnail}
           onLoadedData={() => setIsVideoLoading(false)}
           onError={() => setIsVideoLoading(false)}
+          controls
+          autoPlay
+          muted
         >
           <track kind="captions" />
         </video>
 
+        {/* ⏳ Loading Spinner */}
         {isVideoLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
             <Spinner size="large" />
           </div>
         )}
+
+        <button
+          onClick={togglePlayPause}
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/60 !text-white px-4 py-2 rounded-full hover:bg-black transition-opacity duration-200 ${(isHovering || !isPlaying) ? 'opacity-100' : 'opacity-0'
+            }`}
+        >
+          {isPlaying ? <FaPause color="white" /> : <FaPlay color="white" />}
+        </button>
       </div>
     );
   };
@@ -169,7 +258,59 @@ const ReviewPost = memo((props) => {
   const renderImages = () => {
     if (!post?.images?.length) return null;
 
-    return <div className="my-4">{renderImage(post.images)}</div>;
+    const imageContainerRef = useRef(null);
+    const viewTimerRef = useRef(null);
+    const [viewCounted, setViewCounted] = useState(false);
+
+    const handlerViewCount = useCallback(async () => {
+      if (!viewCounted) {
+        setViewCounted(true);
+        try {
+          const res = await reviewView({ _id: post._id }).unwrap();
+          if (!res.success) {
+            throw new Error(res.message);
+          }
+        } catch (error) {
+          console.error('Error counting image view:', error);
+        }
+      }
+    }, [viewCounted, post._id, reviewView]);
+
+    useEffect(() => {
+      const imageContainer = imageContainerRef.current;
+      if (!imageContainer) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            if (!viewTimerRef.current && !viewCounted) {
+              viewTimerRef.current = setTimeout(() => {
+                handlerViewCount();
+              }, 3000);
+            }
+          } else {
+            if (viewTimerRef.current) {
+              clearTimeout(viewTimerRef.current);
+              viewTimerRef.current = null;
+            }
+          }
+        },
+        { threshold: 0.6 }
+      );
+
+      observer.observe(imageContainer);
+
+      return () => {
+        observer.disconnect();
+        if (viewTimerRef.current) clearTimeout(viewTimerRef.current);
+      };
+    }, [handlerViewCount, viewCounted]);
+
+    return (
+      <div ref={imageContainerRef} className="my-4">
+        {renderImage(post.images)}
+      </div>
+    );
   };
 
   const renderAddToCart = () => (
@@ -212,14 +353,14 @@ const ReviewPost = memo((props) => {
           />
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <Link
+              {/* <Link
                 to={`/profile/${post?.reviewer?.username}`}
                 className="hover:underline"
-              >
-                <Title level={5} className="!mb-0 !text-gray-900">
-                  {post?.reviewer?.name}
-                </Title>
-              </Link>
+              > */}
+              <Title level={5} className="!mb-0 !text-gray-900 ">
+                {post?.reviewer?.name}
+              </Title>
+              {/* </Link> */}
               <Text type="secondary" className="text-sm">
                 @{post?.reviewer?.username}
               </Text>
@@ -230,8 +371,8 @@ const ReviewPost = memo((props) => {
 
             {renderProductInfo()}
 
-            <Text type="secondary" className="text-sm">
-              in <span className="text-blue-600">{post?.category?.name}</span>
+            <Text type="secondary" className="text-sm !text-nowrap flex flex-nowrap gap-2">
+              in <span className="text-blue-600 !line-clamp-1">{post?.category?.name}</span>
             </Text>
           </div>
         </div>
@@ -253,7 +394,7 @@ const ReviewPost = memo((props) => {
 
       {/* Post Content */}
       <div className="post-content mb-4">
-        <p className="text-gray-800 leading-relaxed whitespace-pre-line">
+        <p className="text-gray-800 leading-relaxed whitespace-pre-line ">
           {post?.description}
         </p>
 

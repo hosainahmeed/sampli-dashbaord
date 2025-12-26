@@ -20,7 +20,7 @@ const PostActions = memo(({
                 <Button
                     type="text"
                     size="large"
-                    loading={isLikeLoading}
+                    // loading={isLikeLoading}
                     onClick={onLike}
                     className={`flex items-center gap-2 ${post?.isLike ? '!text-red-600' : 'text-gray-600'}`}
                     icon={post?.isLike ? <IoMdHeart /> : <IoIosHeartEmpty />}
