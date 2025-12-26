@@ -87,6 +87,13 @@ const reviewApis = baseApis.injectEndpoints({
       }),
       providesTags: ["Comments", "Review"],
     }),
+    reviewView: builder.mutation({
+      query: ({ _id }) => ({
+        url: `/review/view/${_id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Review","ReviewerProfile"],
+    }),
   }),
 });
 
@@ -102,4 +109,5 @@ export const {
   useGetSingleProductReviewQuery,
   useDeleteCommentMutation,
   useGetCommentLikersQuery,
+  useReviewViewMutation,
 } = reviewApis;

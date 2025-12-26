@@ -49,10 +49,11 @@ import ReviewPost from "./ReviewPost";
 import { frontendUrl, url } from "../../../Redux/main/server";
 import SidebarHome from "./SidebarHome";
 import logo from "../../../assets/logo/logo.svg"
+import FeedCategorySection from "./FeedCategorySection";
 const { TabPane } = Tabs;
 
 const SamplerFeed = () => {
-  const { data: categoryList } = useCategorySectionApisQuery();
+ 
   const [activeCategory, setActiveCategory] = useState("");
 
   const [changeFollowUnfollow, { isLoading: isFollowing }] = usePostFollowUnfollowMutation();
@@ -74,8 +75,6 @@ const SamplerFeed = () => {
   const [postReplyChat] = usePostCommentRepliesMutation();
   const users = getReviewerLikers?.data?.result;
   const [activeTab, setActiveTab] = useState("");
-  const [commentText, setCommentText] = useState("");
-  const [replyingTo, setReplyingTo] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [reviewLimit, setReviewLimit] = useState(3)
 
@@ -289,17 +288,7 @@ const SamplerFeed = () => {
             </Tabs>
 
             {/* Category Pills */}
-            <div className="flex gap-2 py-4 overflow-x-auto mb-3 ">
-              {categoryList?.data?.map((category) => (
-                <div
-                  onClick={() => setActiveCategory(category?._id)}
-                  className={`flex gap-2 rounded-full flex-nowrap items-center justify-start ${activeCategory === category?._id ? 'bg-[#1677FF] text-white' : 'bg-gray-100'} pl-1 cursor-pointer hover:bg-gray-200 pr-3 py-1`}>
-                  <Avatar src={category?.category_image} alt="category" />
-                  <span className="text-nowrap">{category?.name}</span>
-                </div>
-              ))}
-            </div>
-
+           <FeedCategorySection  setActiveCategory={setActiveCategory} activeCategory={activeCategory} />
             {/* Skeleton */}
             {reviewLoading && (
               <CustomSkeleton />
@@ -319,7 +308,6 @@ const SamplerFeed = () => {
                   post={post}
                   key={post?._id}
                   isFetching={isFetching}
-                  replyingTo={replyingTo}
                   setIsLoadingVideo={setIsLoadingVideo}
                   isLoadingVideo={isLoadingVideo}
                   handleReply={handleReply}
